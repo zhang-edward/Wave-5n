@@ -13,7 +13,7 @@ public class FollowerEnemy : MonoBehaviour {
 		{
 			if (col.CompareTag("Player"))
 			{
-				Debug.Log ("found player");
+//				Debug.Log ("found player");
 			}
 		}
 

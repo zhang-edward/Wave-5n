@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class LungingEnemy : MonoBehaviour {
+public class ShooterEnemy : MonoBehaviour {
 
 	public Transform player;
 	public EntityPhysics body;
@@ -17,7 +17,9 @@ public class LungingEnemy : MonoBehaviour {
 	private State state;
 	public bool canAttack = true;
 
-	private bool killBox = false;
+	public GameObject projectile;
+
+	//private bool killBox = false;
 
 
 	void Start()
@@ -28,7 +30,7 @@ public class LungingEnemy : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		
+
 	}
 
 	/*void OnDrawGizmosSelected()
@@ -41,7 +43,7 @@ public class LungingEnemy : MonoBehaviour {
 		while (state == State.Moving)
 		{
 			Vector3 target = (Vector2)(player.position)
-				+ new Vector2(Random.Range(-1,2), Random.Range(-1,2));		// add a random offset;
+				+ new Vector2(Random.Range(-3,4), Random.Range(-3,4));		// add a random offset;
 
 			while (Vector3.Distance(transform.position, target) > 0.1f)
 			{
@@ -73,15 +75,9 @@ public class LungingEnemy : MonoBehaviour {
 		charge(out dir);
 		yield return new WaitForSeconds (0.5f);
 
-		// Lunge
-		lunge(dir);
+		// Shoot
+		shoot(dir.normalized);
 		yield return new WaitForSeconds (0.2f);
-
-		// Reset vars
-		killBox = false;
-		body.moveSpeed = DEFAULT_SPEED;
-		body.move (dir.normalized);
-		yield return new WaitForSeconds (0.3f);
 
 		state = State.Moving;
 		StartCoroutine ("MoveState");
@@ -95,21 +91,22 @@ public class LungingEnemy : MonoBehaviour {
 	{
 		anim.SetTrigger ("Charge");
 		body.move (Vector2.zero);
-		dir = (Vector2)(player.position - transform.position); // freeze moving direction
+		dir = (Vector2)(player.position - transform.position) // freeze moving direction
+			+ new Vector2(Random.value, Random.value);		// add a random offset
 	}
 
-	private void lunge(Vector3 dir)
+	private void shoot(Vector2 dir)
 	{
-		killBox = true;
-
 		anim.SetTrigger ("Attack");
-		body.moveSpeed = 10f;
-		body.move (dir.normalized);
+		GameObject o = Instantiate (projectile);
+		Projectile p = o.GetComponent<Projectile> ();
+		UnityEngine.Assertions.Assert.IsNotNull (p);
+		p.Init (transform.position, dir);
 	}
 
 	private bool isPlayerNearby()
 	{
-		Collider2D[] cols = Physics2D.OverlapCircleAll (transform.position, 2f);
+		Collider2D[] cols = Physics2D.OverlapCircleAll (transform.position, 4f);
 		foreach (Collider2D col in cols)
 		{
 			if (col.CompareTag ("Player"))
@@ -124,11 +121,7 @@ public class LungingEnemy : MonoBehaviour {
 	{
 		if (col.CompareTag("Player"))
 		{
-			if (killBox)
-			{
-				Player player = col.GetComponentInChildren<Player>();
-				Debug.Log ("Killbox");
-			}
+			
 		}
 	}
 }
