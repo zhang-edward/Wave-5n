@@ -1,13 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class LungingEnemy : MonoBehaviour {
-
-	public Transform player;
-	public EntityPhysics body;
-	public Animator anim;
-
-	private float DEFAULT_SPEED;
+public class LungingEnemy : Enemy {
+	
 	private string DEFAULT_STATE;
 
 	private enum State {
@@ -36,7 +31,7 @@ public class LungingEnemy : MonoBehaviour {
 		Gizmos.DrawWireSphere (transform.position, 2f);
 	}*/
 
-	private IEnumerator MoveState()
+	protected override IEnumerator MoveState()
 	{
 		while (state == State.Moving)
 		{
@@ -105,19 +100,6 @@ public class LungingEnemy : MonoBehaviour {
 		anim.SetTrigger ("Attack");
 		body.moveSpeed = 10f;
 		body.move (dir.normalized);
-	}
-
-	private bool isPlayerNearby()
-	{
-		Collider2D[] cols = Physics2D.OverlapCircleAll (transform.position, 2f);
-		foreach (Collider2D col in cols)
-		{
-			if (col.CompareTag ("Player"))
-			{
-				return true;
-			}
-		}
-		return false;
 	}
 
 	void OnTriggerEnter2D(Collider2D col)

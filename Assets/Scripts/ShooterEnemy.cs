@@ -1,13 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ShooterEnemy : MonoBehaviour {
-
-	public Transform player;
-	public EntityPhysics body;
-	public Animator anim;
-
-	private float DEFAULT_SPEED;
+public class ShooterEnemy : Enemy {
+	
 	private string DEFAULT_STATE;
 
 	private enum State {
@@ -24,7 +19,6 @@ public class ShooterEnemy : MonoBehaviour {
 
 	void Start()
 	{
-		DEFAULT_SPEED = body.moveSpeed;
 		StartCoroutine ("MoveState");
 	}
 
@@ -38,7 +32,7 @@ public class ShooterEnemy : MonoBehaviour {
 		Gizmos.DrawWireSphere (transform.position, 2f);
 	}*/
 
-	private IEnumerator MoveState()
+	protected override IEnumerator MoveState()
 	{
 		while (state == State.Moving)
 		{
@@ -102,19 +96,6 @@ public class ShooterEnemy : MonoBehaviour {
 		Projectile p = o.GetComponent<Projectile> ();
 		UnityEngine.Assertions.Assert.IsNotNull (p);
 		p.Init (transform.position, dir);
-	}
-
-	private bool isPlayerNearby()
-	{
-		Collider2D[] cols = Physics2D.OverlapCircleAll (transform.position, 4f);
-		foreach (Collider2D col in cols)
-		{
-			if (col.CompareTag ("Player"))
-			{
-				return true;
-			}
-		}
-		return false;
 	}
 
 	void OnTriggerEnter2D(Collider2D col)
