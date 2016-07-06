@@ -8,6 +8,8 @@ public class EntityPhysics : MonoBehaviour {
 	public SpriteRenderer sr;
 	public float moveSpeed;
 
+	//public float hitDisabled;
+
 	void Awake()
 	{
 		rb2d = this.GetComponent<Rigidbody2D> ();
@@ -15,9 +17,16 @@ public class EntityPhysics : MonoBehaviour {
 		rb2d.freezeRotation = true;
 	}
 
-	public void move(Vector2 dir)
+	public void Move(Vector2 dir)
 	{
 		rb2d.velocity = (dir * moveSpeed);
+	}
+
+	public void HitDisable()
+	{
+		rb2d.velocity = (new Vector2(
+			Random.Range(-5, 6), 
+			Random.Range(-5, 6)));
 	}
 
 	void Update()

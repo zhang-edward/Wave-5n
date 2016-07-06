@@ -5,7 +5,7 @@ public class FollowerEnemy : Enemy {
 
 	// Update is called once per frame
 	void Update () {
-		if (isPlayerNearby ())
+		if (PlayerInRange ())
 		{
 		}
 		else
@@ -17,9 +17,10 @@ public class FollowerEnemy : Enemy {
 
 	protected override IEnumerator MoveState()
 	{
+		Debug.Log ("MoveState: Enter");
 		while (true)
 		{
-			body.move ((player.position - transform.position).normalized);
+			body.Move ((player.position - transform.position).normalized);
 			yield return null;
 		}
 	}

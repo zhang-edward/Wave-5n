@@ -10,6 +10,8 @@ public class Player : MonoBehaviour
 	public SpriteRenderer sr;
 	public Animator anim;
 
+	private int health;
+
 	public bool killBox = false;
 
 	void Start()
@@ -22,7 +24,7 @@ public class Player : MonoBehaviour
 		killBox = true;
 		body.moveSpeed = 10;
 		//sr.color = new Color (1, 0, 0);
-		input.mouseMovement = false;
+		input.isInputEnabled = false;
 		anim.SetBool ("Attacking", true);
 		Invoke ("ResetPrimaryAbility", 0.3f);
 	}
@@ -32,7 +34,7 @@ public class Player : MonoBehaviour
 		killBox = false;
 		body.moveSpeed = DEFAULT_SPEED;
 		//sr.color = new Color (1, 1, 1);
-		input.mouseMovement = true;
+		input.isInputEnabled = true;
 		anim.SetBool ("Attacking", false);
 	}
 
@@ -45,7 +47,12 @@ public class Player : MonoBehaviour
 		if (col.CompareTag("Enemy"))
 		{
 			if (killBox)
-				col.gameObject.SetActive (false);
+			{
+				Enemy e = col.gameObject.GetComponentInChildren<Enemy> ();
+				if (!e.hitDisabled)
+					e.hitDisable ();
+			}
+				//col.gameObject.SetActive (false);
 		}
 	}
 }

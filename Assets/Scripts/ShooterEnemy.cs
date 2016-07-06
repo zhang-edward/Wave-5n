@@ -2,8 +2,6 @@
 using System.Collections;
 
 public class ShooterEnemy : Enemy {
-	
-	private string DEFAULT_STATE;
 
 	private enum State {
 		Moving,
@@ -34,25 +32,27 @@ public class ShooterEnemy : Enemy {
 
 	protected override IEnumerator MoveState()
 	{
-		while (state == State.Moving)
+		state = State.Moving;
+		while (true)
 		{
+			//Debug.Log ("hello world");
 			Vector3 target = (Vector2)(player.position)
 				+ new Vector2(Random.Range(-3,4), Random.Range(-3,4));		// add a random offset;
 
 			while (Vector3.Distance(transform.position, target) > 0.1f)
 			{
 				anim.SetBool ("Moving", true);
-				body.move ((target - transform.position).normalized);
+				//Debug.Log ("Hello");
+				body.Move ((target - transform.position).normalized);
 
-				if (isPlayerNearby() && canAttack)
+				if (PlayerInRange() && canAttack)
 				{
-					state = State.Attacking;
 					StartCoroutine ("AttackState");
 					yield break;
 				}
 				yield return null;
 			}
-			body.move (Vector2.zero);
+			body.Move (Vector2.zero);
 			anim.SetBool ("Moving", false);
 			yield return new WaitForSeconds (Random.Range(1, 3));
 		}
@@ -60,8 +60,9 @@ public class ShooterEnemy : Enemy {
 
 	private IEnumerator AttackState()
 	{
-		UnityEngine.Assertions.Assert.IsTrue (state == State.Attacking);
+		//UnityEngine.Assertions.Assert.IsTrue (state == State.Attacking);
 		//Debug.Log ("attacking: enter");
+		state = State.Attacking;
 		canAttack = false;	
 
 		// Charge up before attack
@@ -84,7 +85,7 @@ public class ShooterEnemy : Enemy {
 	private void charge(out Vector3 dir)
 	{
 		anim.SetTrigger ("Charge");
-		body.move (Vector2.zero);
+		body.Move (Vector2.zero);
 		dir = (Vector2)(player.position - transform.position) // freeze moving direction
 			+ new Vector2(Random.value, Random.value);		// add a random offset
 	}
@@ -100,9 +101,5 @@ public class ShooterEnemy : Enemy {
 
 	void OnTriggerEnter2D(Collider2D col)
 	{
-		if (col.CompareTag("Player"))
-		{
-			
-		}
 	}
 }
