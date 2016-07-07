@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public class MapGenerator {
 
-	private class Cell
+	public class Cell
 	{
 		public int x;
 		public int y;
@@ -11,6 +11,10 @@ public class MapGenerator {
 		{
 			this.x = x;
 			this.y = y;
+		}
+		public override string ToString ()
+		{
+			return "" + x + ", " + y;
 		}
 	}
 
@@ -26,12 +30,50 @@ public class MapGenerator {
 	/// <param name="minPercent">The minimum area of that the largest area should have</param>
 	public int[,] Overlay(int[,] arr, int id, int overlayOnTo, float prob, int noiseReductionReps, bool contiguous = true, float minPercent = 0.5f)
 	{
+		int area = arr.GetLength (0) * arr.GetLength (1);
+
 		if (contiguous)
 		{
-			int[,] overlay = new int[arr.GetLength(0), arr.GetLength(1)];
-			overlay = SimpleOverlay (overlay, id, overlayOnTo, prob, noiseReductionReps);
+			// do a simple overlay
+			int[,] testArr = new int[arr.GetLength (0), arr.GetLength (1)];
+			for(int x = 0; x < arr.GetLength(1); x ++)
+				for(int y = 0; y < arr.GetLength(0); y ++)
+					testArr[y, x] = arr[y, x];
+
+
+			testArr = SimpleOverlay (testArr, id, overlayOnTo, prob, noiseReductionReps);
+
+			// check a random contiguous area
+			Cell c = GetRandomCellWithId (testArr, id);
+			List<Cell> contiguousArea = GetContiguousCells (testArr, id, c.x, c.y);
+
+			int i = 0;
+
+			// if contiguous area is smaller than expected
+			while (contiguousArea.Count < area * minPercent)
+			{
+				testArr = new int[arr.GetLength (0), arr.GetLength (1)];
+				for(int x = 0; x < arr.GetLength(1); x ++)
+					for(int y = 0; y < arr.GetLength(0); y ++)
+						testArr[y, x] = arr[y, x];
+				testArr = SimpleOverlay (testArr, id, overlayOnTo, prob, noiseReductionReps);
+
+				// check a random contiguous area
+				c = GetRandomCellWithId (testArr, id);
+				contiguousArea = GetContiguousCells (testArr, id, c.x, c.y);
+
+				// DEBUG
+				i++;
+				if (i > 100)
+				{
+					Debug.LogError ("Unexpected behavior in Overlay");
+					break;
+				}
+			}
+			Debug.Log (i);
+			arr = SetCells (arr, contiguousArea, id);
 		}
-		return null;
+		return arr;
 	}
 
 	public int[,] SimpleOverlay(int[,] arr, int id, int overlayOnTo, float prob, int noiseReductionReps)
@@ -158,21 +200,21 @@ public class MapGenerator {
 	}
 
 	/// <summary>
-	/// Counts contiguous cells of the same value 'check' (see CountRecursively below).
+	/// Gets a list of contiguous cells of the same value 'check' (see CountRecursively below).
 	/// </summary>
 	/// <returns>The contiguous cells.</returns>
 	/// <param name="arr">Arr.</param>
 	/// <param name="check">Check.</param>
 	/// <param name="x">The x coordinate.</param>
 	/// <param name="y">The y coordinate.</param>
-	public int CountContiguousCells(int[,] arr, int check, int x, int y)
+	public List<Cell> GetContiguousCells(int[,] arr, int check, int x, int y)
 	{
 		bool[,] visited = new bool[arr.GetLength (0), arr.GetLength (1)];
-		return CountRecursively (arr, visited, x, y, check, 0);
+		return CountRecursively (arr, visited, x, y, check, new List<Cell>());
 	}
 
 	/// <summary>
-	/// Counts the number of cells in the array 'arr' with the value 'check', recursively.
+	/// Gets the cells in the array 'arr' with the value 'check', recursively.
 	/// </summary>
 	/// <returns>The number of cells.</returns>
 	/// <param name="arr">The original array to count.</param>
@@ -180,24 +222,24 @@ public class MapGenerator {
 	/// <param name="x">The x coordinate.</param>
 	/// <param name="y">The y coordinate.</param>
 	/// <param name="check">The number to check.</param>
-	/// <param name="count">The count to add to upon additional loops.</param>
-	private int CountRecursively(int[,] arr, bool[,] visited, int x, int y, int check, int count)
+	/// <param name="cells">The list of cells to add to upon additional loops.</param>
+	private List<Cell> CountRecursively(int[,] arr, bool[,] visited, int x, int y, int check, List<Cell> cells)
 	{
 		if (!InBounds (arr, x, y) || visited [y, x])
-			return count;
+			return cells;
 		else
 		{
 			visited [y, x] = true;
 			if (arr [y, x] == check)
 			{
-				count += 1;
-				count = CountRecursively (arr, visited, x + 1, y, check, count);
-				count = CountRecursively (arr, visited, x - 1, y, check, count);
-				count = CountRecursively (arr, visited, x, y + 1, check, count);
-				count = CountRecursively (arr, visited, x, y - 1, check, count);
+				cells.Add (new Cell (x, y));
+				cells = CountRecursively (arr, visited, x + 1, y, check, cells);
+				cells = CountRecursively (arr, visited, x - 1, y, check, cells);
+				cells = CountRecursively (arr, visited, x, y + 1, check, cells);
+				cells = CountRecursively (arr, visited, x, y - 1, check, cells);
 //				Debug.Log (count);
 			}
-			return count;
+			return cells;
 		}
 	}
 
@@ -205,5 +247,15 @@ public class MapGenerator {
 	{
 		return (x >= 0 && x < arr.GetLength (1)) &&
 			(y >= 0 && y < arr.GetLength (0));
+	}
+
+	private int[,] SetCells(int[,] arr, List<Cell> cells, int id)
+	{
+		foreach (Cell c in cells)
+		{
+			arr [c.y, c.x] = id;
+//			Debug.Log (c);
+		}
+		return arr;
 	}
 }
