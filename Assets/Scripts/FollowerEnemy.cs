@@ -17,11 +17,16 @@ public class FollowerEnemy : Enemy {
 
 	protected override IEnumerator MoveState()
 	{
-		Debug.Log ("MoveState: Enter");
+//		Debug.Log ("MoveState: Enter");
 		while (true)
 		{
 			body.Move ((player.position - transform.position).normalized);
 			yield return null;
 		}
+	}
+
+	protected override void ResetVars ()
+	{
+		body.moveSpeed = DEFAULT_SPEED;
 	}
 }

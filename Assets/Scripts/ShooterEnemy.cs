@@ -8,21 +8,18 @@ public class ShooterEnemy : Enemy {
 		Attacking
 	}
 	private State state;
-	public bool canAttack = true;
+	public float attackTimer;
 
 	public GameObject projectile;
 
-	//private bool killBox = false;
-
-
-	void Start()
-	{
-		StartCoroutine ("MoveState");
-	}
+	public float chargeTime = 0.5f;
+	public float attackTime = 0.2f;
+	public float cooldownTime = 1.0f;
 
 	// Update is called once per frame
 	void Update () {
-
+		if (attackTimer > 0)
+			attackTimer -= Time.deltaTime;
 	}
 
 	/*void OnDrawGizmosSelected()
@@ -45,7 +42,7 @@ public class ShooterEnemy : Enemy {
 				//Debug.Log ("Hello");
 				body.Move ((target - transform.position).normalized);
 
-				if (PlayerInRange() && canAttack)
+				if (PlayerInRange() && attackTimer <= 0)
 				{
 					StartCoroutine ("AttackState");
 					yield break;
@@ -63,26 +60,27 @@ public class ShooterEnemy : Enemy {
 		//UnityEngine.Assertions.Assert.IsTrue (state == State.Attacking);
 		//Debug.Log ("attacking: enter");
 		state = State.Attacking;
-		canAttack = false;	
+		attackTimer = cooldownTime;	
 
 		// Charge up before attack
 		Vector3 dir;
-		charge(out dir);
-		yield return new WaitForSeconds (0.5f);
+		Charge(out dir);
+		yield return new WaitForSeconds (chargeTime);
 
 		// Shoot
-		shoot(dir.normalized);
-		yield return new WaitForSeconds (0.2f);
+		Shoot(dir.normalized);
+		yield return new WaitForSeconds (attackTime);
 
 		state = State.Moving;
 		StartCoroutine ("MoveState");
-
-		// attack cooldown
-		yield return new WaitForSeconds (1.0f);
-		canAttack = true;
 	}
 
-	private void charge(out Vector3 dir)
+	protected override void ResetVars ()
+	{
+		body.moveSpeed = DEFAULT_SPEED;
+	}
+
+	private void Charge(out Vector3 dir)
 	{
 		anim.SetTrigger ("Charge");
 		body.Move (Vector2.zero);
@@ -90,7 +88,7 @@ public class ShooterEnemy : Enemy {
 			+ new Vector2(Random.value, Random.value);		// add a random offset
 	}
 
-	private void shoot(Vector2 dir)
+	private void Shoot(Vector2 dir)
 	{
 		anim.SetTrigger ("Attack");
 		GameObject o = Instantiate (projectile);

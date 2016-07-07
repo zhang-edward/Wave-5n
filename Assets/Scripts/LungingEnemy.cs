@@ -8,7 +8,7 @@ public class LungingEnemy : Enemy {
 		Attacking
 	}
 	private State state;
-	private bool canAttack = true;
+	private float attackTimer;
 
 	private bool attacking = false;
 
@@ -17,15 +17,10 @@ public class LungingEnemy : Enemy {
 	public float cooldownTime = 1.0f;
 	public float lungeSpeed = 10.0f;
 
-	void Start()
-	{
-		DEFAULT_SPEED = body.moveSpeed;
-		StartCoroutine ("MoveState");
-	}
-
 	// Update is called once per frame
 	void Update () {
-		
+		if (attackTimer > 0)
+			attackTimer -= Time.deltaTime;
 	}
 
 	/*void OnDrawGizmosSelected()
@@ -35,6 +30,7 @@ public class LungingEnemy : Enemy {
 
 	protected override IEnumerator MoveState()
 	{
+		UnityEngine.Assertions.Assert.IsTrue (body.moveSpeed == DEFAULT_SPEED);
 		state = State.Moving;
 		while (true)
 		{
@@ -46,7 +42,7 @@ public class LungingEnemy : Enemy {
 				anim.SetBool ("Moving", true);
 				body.Move ((target - transform.position).normalized);
 
-				if (PlayerInRange() && canAttack)
+				if (PlayerInRange() && attackTimer <= 0)
 				{
 					StartCoroutine ("AttackState");
 					yield break;
@@ -64,7 +60,7 @@ public class LungingEnemy : Enemy {
 		//UnityEngine.Assertions.Assert.IsTrue (state == State.Attacking);
 		//Debug.Log ("attacking: enter");
 		state = State.Attacking;
-		canAttack = false;	
+		attackTimer = cooldownTime;	
 
 		// Charge up before attack
 		Vector3 dir;
@@ -82,10 +78,11 @@ public class LungingEnemy : Enemy {
 		yield return new WaitForSeconds (0.3f);
 
 		StartCoroutine ("MoveState");
+	}
 
-		// attack cooldown
-		yield return new WaitForSeconds (cooldownTime);
-		canAttack = true;
+	protected override void ResetVars()
+	{
+		body.moveSpeed = DEFAULT_SPEED;
 	}
 
 	private void Charge(out Vector3 dir)

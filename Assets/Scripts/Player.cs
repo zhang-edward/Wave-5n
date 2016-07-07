@@ -5,25 +5,38 @@ public class Player : MonoBehaviour
 {
 	private float DEFAULT_SPEED;
 
+	public SpriteRenderer sr;
 	public PlayerInput input;
 	public EntityPhysics body;
-	public SpriteRenderer sr;
 	public Animator anim;
 
-	private int health;
+	private int health = 10;
+	private int damage = 1;
 
 	public bool killBox = false;
+
+	private float primaryAbilityCooldown;
+	public float cooldownTime;
 
 	void Start()
 	{
 		DEFAULT_SPEED = body.moveSpeed;
 	}
 
+	public void HitDisable(Vector2 dir, int damage)
+	{
+		body.HitDisable (dir);
+		sr.color = Color.red;
+	}
+
 	public void PrimaryAbility()
 	{
+		// if cooldown has not finished
+		if (primaryAbilityCooldown > 0)
+			return;
+		
 		killBox = true;
 		body.moveSpeed = 10;
-		//sr.color = new Color (1, 0, 0);
 		input.isInputEnabled = false;
 		anim.SetBool ("Attacking", true);
 		Invoke ("ResetPrimaryAbility", 0.3f);
@@ -33,13 +46,14 @@ public class Player : MonoBehaviour
 	{
 		killBox = false;
 		body.moveSpeed = DEFAULT_SPEED;
-		//sr.color = new Color (1, 1, 1);
 		input.isInputEnabled = true;
 		anim.SetBool ("Attacking", false);
 	}
 
 	void Update()
 	{
+		if (primaryAbilityCooldown > 0)
+			primaryAbilityCooldown -= Time.deltaTime;
 	}
 
 	void OnTriggerStay2D(Collider2D col)
@@ -50,7 +64,7 @@ public class Player : MonoBehaviour
 			{
 				Enemy e = col.gameObject.GetComponentInChildren<Enemy> ();
 				if (!e.hitDisabled)
-					e.hitDisable ();
+					e.HitDisable (body.velocity, damage);
 			}
 				//col.gameObject.SetActive (false);
 		}
