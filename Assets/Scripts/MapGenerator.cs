@@ -46,6 +46,68 @@ public class MapGenerator
 		terrainObjIdMap = caGenerator.SimpleOverlay (terrainIdMap, terrainObjIdMap, 4, 0, 0.15f, 0);
 		terrainObjIdMap = caGenerator.SimpleOverlay (terrainIdMap, terrainObjIdMap, 5, 0, 0.05f, 0);
 		terrainObjIdMap = caGenerator.SimpleOverlay (terrainIdMap, terrainObjIdMap, 6, 0, 0.05f, 0);
+	
+/*		terrainIdMap = new int[,] {
+			{0, 0, 0, 0, 0},
+			{0, 1, 1, 1, 0},
+			{0, 1, 1, 1, 0},
+			{0, 1, 1, 1, 0},
+			{0, 0, 0, 0, 0}
+		};*/
+	}
+
+	public void Reset()
+	{
+		for (int x = 0; x < size; x++)
+		{
+			for (int y = 0; y < size; y++)
+			{
+				terrainIdMap [y, x] = 0;
+				terrainObjIdMap [y, x] = 0;
+			}
+		}
+	}
+
+
+	/* ============== Terrain ID Map Tweaking ================= */
+
+	// See http://www.saltgames.com/article/awareTiles/
+	public void TweakEdges()
+	{
+		for (int x = 0; x < size; x++)
+		{
+			for (int y = 0; y < size; y++)
+			{
+				if (Terrain[y, x] == 1)
+				{
+					int sum = SumNeighbors (x, y);
+					if (sum > 0)
+						terrainIdMap [y, x] = sum;
+					//Debug.Log(SumNeighbors(x, y));
+				}
+			}
+		}
+	}
+
+	private int SumNeighbors(int x, int y)
+	{
+		int sum = 0;
+		if (inBounds(x, y + 1) && Terrain [y + 1, x] == 0)
+			sum += 1;
+		if (inBounds(x + 1, y) && Terrain [y, x + 1] == 0)
+			sum += 2;
+		if (inBounds(x, y - 1) && Terrain [y - 1, x] == 0)
+			sum += 4;
+		if (inBounds(x - 1, y) && Terrain [y, x - 1] == 0)
+			sum += 8;
+
+		return sum + 1;
+	}
+
+	private bool inBounds(int x, int y)
+	{
+		return (x >= 0 && x < size) &&
+			(y >= 0 && y < size);
 	}
 }
 

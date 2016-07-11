@@ -34,6 +34,9 @@ public class Map : MonoBehaviour
 
 	public const int size = 10;
 
+	private const int EDGE_TILE = 2;
+	private const int CORNER_TILE = 3;
+
 
 	void Awake()
 	{
@@ -43,13 +46,32 @@ public class Map : MonoBehaviour
 
 	void GenerateMap()
 	{
+		mapGenerator.Reset ();
 		mapGenerator.GenerateMap ();
+		mapGenerator.TweakEdges ();
 		ClearTerrainObjects ();
 		for (int x = 0; x < size; x ++)
 		{
 			for (int y = 0; y < size; y ++)
 			{
-				terrainSpriteMap[y, x].sprite = terrainSprites [mapGenerator.Terrain [y, x]];
+				int terrainId = mapGenerator.Terrain [y, x];
+				// if terrainId > 1, the tile is an edge or corner piece
+				if (terrainId > 1)
+				{
+					terrainSpriteMap [y, x].transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+					terrainSpriteMap [y, x].flipX = false;		// reset any changes that evaluateEdgeId may have made
+					terrainSpriteMap [y, x].flipY = false;		// (same as above)
+
+
+					Debug.Log (x + ", " + y + ": " + terrainId);
+					int id = EvaluateEdgeId (terrainId, ref terrainSpriteMap [y, x]);
+					terrainSpriteMap [y, x].sprite = terrainSprites [id];
+				}
+				else
+				{
+//					Debug.Log (terrainId);
+					terrainSpriteMap [y, x].sprite = terrainSprites [terrainId];
+				}
 
 				if (mapGenerator.TerrainObjects[y, x] > 0)
 				{
@@ -83,6 +105,40 @@ public class Map : MonoBehaviour
 	{
 		foreach (GameObject o in terrainObjects)
 			Destroy (o);
+		terrainObjects.Clear ();
+	}
+
+	// See http://www.saltgames.com/article/awareTiles/
+	private int EvaluateEdgeId(int id, ref SpriteRenderer sr)
+	{
+		id--;
+		int returnId;
+		if (id % 3 == 0)
+			returnId = CORNER_TILE;
+		else
+			returnId = EDGE_TILE;
+
+		if (id == 3 || id == 2 || id == 6)
+			sr.flipX = true;
+		if (id == 3 || id == 9)
+			sr.flipY = true;
+		if (id == 1)
+			sr.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 270));
+		if (id == 4)
+			sr.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90));
+		
+/*		UnityEngine.Assertions.Assert.IsTrue (
+			id == 1 ||
+			id == 3 ||
+			id == 2 ||
+			id == 6 ||
+			id == 4 ||
+			id == 12 ||
+			id == 8 ||
+			id == 9
+		);
+*/
+		return returnId;
 	}
 
 	void Update()

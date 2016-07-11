@@ -73,7 +73,7 @@ public class CAGenerator {
 					break;
 				}
 			}
-			Debug.Log (i);
+//			Debug.Log (i);
 			arr = SetCells (arr, contiguousArea, id);
 		}
 		return arr;
@@ -217,7 +217,7 @@ public class CAGenerator {
 			i++;
 			if (i > 1000)
 			{
-				Debug.LogError("GetRandomCellWithId took too long (1000+ tries)");
+				//Debug.LogError("GetRandomCellWithId took too long (1000+ tries)");
 				break;
 			}
 		}
