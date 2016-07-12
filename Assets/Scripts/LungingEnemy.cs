@@ -83,6 +83,7 @@ public class LungingEnemy : Enemy {
 	protected override void ResetVars()
 	{
 		body.moveSpeed = DEFAULT_SPEED;
+		attacking = false;
 	}
 
 	private void Charge(out Vector3 dir)
@@ -109,7 +110,7 @@ public class LungingEnemy : Enemy {
 			if (attacking)
 			{
 				Player player = col.GetComponentInChildren<Player>();
-				Debug.Log ("Killbox");
+				player.Damage (1);
 			}
 		}
 	}

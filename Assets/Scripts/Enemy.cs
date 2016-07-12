@@ -43,11 +43,12 @@ public abstract class Enemy : MonoBehaviour {
 			StartCoroutine (HitDisableState ());
 		else
 		{
+			ResetVars ();
 			anim.enabled = false;
 			sr.sprite = deathSprite;
 			sr.color = new Color (1, 1, 1, 0.8f);
 			transform.parent.gameObject.layer = LayerMask.NameToLayer ("NoCollide");
-			transform.parent.rotation = Quaternion.Euler (new Vector3 (0, 0, Random.Range (0, 360)));
+			transform.parent.rotation = Quaternion.Euler (new Vector3 (0, 0, Random.Range (0, 90)));
 			SpawnDeathProps ();
 			//transform.rotation = Quaternion.Euler (new Vector3 (0, 0, Random.Range (0, 360)));
 		}

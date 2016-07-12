@@ -21,6 +21,9 @@ public class Player : MonoBehaviour
 	public delegate void EnemyDamaged (float strength);
 	public event EnemyDamaged OnEnemyDamaged;
 
+	public delegate void PlayerDamaged (int damage);
+	public event PlayerDamaged OnPlayerDamaged;
+
 	public GameObject hitEffect;
 
 	void Start()
@@ -79,6 +82,13 @@ public class Player : MonoBehaviour
 				}
 			}
 		}
+	}
+
+	public void Damage(int damage)
+	{
+		health -= damage;
+		// TODO: check if player is dead
+		OnPlayerDamaged(damage);
 	}
 }
 
