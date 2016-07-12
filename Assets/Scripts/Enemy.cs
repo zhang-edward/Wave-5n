@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public abstract class Enemy : MonoBehaviour {
+public abstract class Enemy : MonoBehaviour, IDamageable {
 
 	protected string DEFAULT_STATE = "MoveState";
+	protected int DEFAULT_LAYER;
 	protected float DEFAULT_SPEED;
 
 	public SpriteRenderer sr;
@@ -21,23 +22,27 @@ public abstract class Enemy : MonoBehaviour {
 
 	public int health;
 
+	void Awake()
+	{
+		DEFAULT_LAYER = body.gameObject.layer;
+	}
 
 	void Start()
 	{
 		DEFAULT_SPEED = body.moveSpeed;
-		StartCoroutine ("MoveState");
 	}
 
-	void Update()
+	public void Init(Vector3 spawnLocation)
 	{
+		StartCoroutine (SpawnState(spawnLocation));
 	}
 
-	public void HitDisable(Vector2 dir, int damage)
+	public void Damage(int amt)
 	{
 		// Stop all states
 		StopAllCoroutines ();
-		body.HitDisable (dir);
-		health -= damage;
+		body.HitDisable ();
+		health -= amt;
 
 		if (health > 0)
 			StartCoroutine (HitDisableState ());
@@ -47,11 +52,17 @@ public abstract class Enemy : MonoBehaviour {
 			anim.enabled = false;
 			sr.sprite = deathSprite;
 			sr.color = new Color (1, 1, 1, 0.8f);
-			transform.parent.gameObject.layer = LayerMask.NameToLayer ("NoCollide");
+			sr.sortingLayerName = "TerrainObjects";
+			transform.parent.gameObject.layer = LayerMask.NameToLayer ("NoCollideSelf");
 			transform.parent.rotation = Quaternion.Euler (new Vector3 (0, 0, Random.Range (0, 90)));
 			SpawnDeathProps ();
 			//transform.rotation = Quaternion.Euler (new Vector3 (0, 0, Random.Range (0, 360)));
 		}
+	}
+
+	public void Heal (int amt)
+	{
+		health += amt;
 	}
 
 	private IEnumerator HitDisableState()
@@ -99,4 +110,17 @@ public abstract class Enemy : MonoBehaviour {
 
 	protected abstract void ResetVars();
 	protected abstract IEnumerator MoveState();
+	protected virtual IEnumerator SpawnState(Vector3 target)
+	{
+		body.gameObject.layer = LayerMask.NameToLayer ("EnemySpawnLayer");
+		anim.SetBool ("Moving", true);
+		while (Vector3.Distance(transform.position, target) > 0.1f)
+		{
+			body.Move ((target - transform.position).normalized);
+			yield return null;
+		}
+		body.gameObject.layer = DEFAULT_LAYER;
+		StartCoroutine (DEFAULT_STATE);
+		//Debug.Log ("Done");
+	}
 }

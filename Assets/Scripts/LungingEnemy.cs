@@ -34,11 +34,25 @@ public class LungingEnemy : Enemy {
 		state = State.Moving;
 		while (true)
 		{
-			Vector3 target = (Vector2)(player.position)
-				+ new Vector2(Random.Range(-1,2), Random.Range(-1,2));		// add a random offset;
+			Vector3 target = (Vector2)(player.position);
+				//+ new Vector2(Random.Range(-1,2), Random.Range(-1,2));		// add a random offset;
 
+			Vector3 oldPos = Vector3.zero;	// track transform velocity to check if stuck on a wall
+			float t = 0;
 			while (Vector3.Distance(transform.position, target) > 0.1f)
 			{
+				// Check if stuck on a wall
+				Vector3 velocity = (transform.position - oldPos) / Time.deltaTime;
+				if (velocity.magnitude < Mathf.Epsilon)
+				{
+					t += Time.deltaTime;
+					if (t > 0.05f)
+						break;
+				}
+				else
+					t = 0;
+				oldPos = transform.position;
+					
 				anim.SetBool ("Moving", true);
 				body.Move ((target - transform.position).normalized);
 
@@ -82,12 +96,14 @@ public class LungingEnemy : Enemy {
 
 	protected override void ResetVars()
 	{
+		body.gameObject.layer = DEFAULT_LAYER;
 		body.moveSpeed = DEFAULT_SPEED;
 		attacking = false;
 	}
 
 	private void Charge(out Vector3 dir)
 	{
+		//anim.ResetTrigger ("Charge");
 		anim.SetTrigger ("Charge");
 		body.Move (Vector2.zero);
 		dir = (Vector2)(player.position - transform.position); // freeze moving direction

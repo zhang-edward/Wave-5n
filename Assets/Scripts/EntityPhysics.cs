@@ -29,7 +29,7 @@ public class EntityPhysics : MonoBehaviour {
 		rb2d.velocity = (dir * moveSpeed);
 	}
 
-	public void HitDisable(Vector2 dir)
+	public void HitDisable()
 	{
 		/*Vector3 dirAsVector3 = (Vector3)dir;
 		Vector3 perpendicularVector = Vector3.Cross (Vector3.forward, dirAsVector3);

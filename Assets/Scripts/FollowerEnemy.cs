@@ -26,6 +26,7 @@ public class FollowerEnemy : Enemy {
 
 	protected override void ResetVars ()
 	{
+		body.gameObject.layer = DEFAULT_LAYER;
 		body.moveSpeed = DEFAULT_SPEED;
 	}
 }

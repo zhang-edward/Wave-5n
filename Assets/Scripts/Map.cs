@@ -10,7 +10,12 @@ public class Map : MonoBehaviour {
 	public GameObject borderPrefab;
 
 	private SpriteRenderer[,] terrainSpriteMap = new SpriteRenderer[size, size];
+	private List<Vector2> openCells = new List<Vector2> ();
 	private List<GameObject> terrainObjects = new List<GameObject>();
+
+	public List<Vector2> OpenCells {
+		get { return openCells; }
+	}
 
 	public const int size = 10;
 
@@ -36,7 +41,10 @@ public class Map : MonoBehaviour {
 			{
 				int id = 0;
 				if (terrainMap.GetPixel (x, y).r == 1)
+				{
 					id = 1;
+					openCells.Add (new Vector2 (x, y));
+				}
 				terrain [y, x] = id;
 				colliders [y, x] = (int)collidersMap.GetPixel (x, y).a;
 				if (Random.value < objectsMap.GetPixel(x, y).a)

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IDamageable
 {
 	private float DEFAULT_SPEED;
 
@@ -31,10 +31,19 @@ public class Player : MonoBehaviour
 		DEFAULT_SPEED = body.moveSpeed;
 	}
 
-	public void HitDisable(Vector2 dir, int damage)
+	public void Damage(int amt)
 	{
-		body.HitDisable (dir);
-		sr.color = Color.red;
+		body.HitDisable ();
+		StartCoroutine (FlashRed ());
+
+		health -= amt;
+		// TODO: check if player is dead
+		OnPlayerDamaged(damage);
+	}
+
+	public void Heal(int amt)
+	{
+		health += amt;
 	}
 
 	public void PrimaryAbility()
@@ -74,7 +83,7 @@ public class Player : MonoBehaviour
 				Enemy e = col.gameObject.GetComponentInChildren<Enemy> ();
 				if (!e.hitDisabled && e.health > 0)
 				{
-					e.HitDisable (body.Rb2d.velocity, damage);
+					e.Damage (damage);
 					Instantiate (hitEffect, 
 						Vector3.Lerp (transform.position, e.transform.position, 0.5f), 
 						Quaternion.identity);
@@ -84,11 +93,16 @@ public class Player : MonoBehaviour
 		}
 	}
 
-	public void Damage(int damage)
+	public IEnumerator FlashRed()
 	{
-		health -= damage;
-		// TODO: check if player is dead
-		OnPlayerDamaged(damage);
+		sr.color = Color.red;
+		float t = 0;
+		while (sr.color != Color.white)
+		{
+			sr.color = Color.Lerp (Color.red, Color.white, t);
+			t += Time.deltaTime;
+			yield return null;
+		}
 	}
 }
 

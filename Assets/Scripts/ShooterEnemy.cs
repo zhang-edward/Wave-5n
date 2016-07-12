@@ -29,17 +29,30 @@ public class ShooterEnemy : Enemy {
 
 	protected override IEnumerator MoveState()
 	{
+		UnityEngine.Assertions.Assert.IsTrue (body.moveSpeed == DEFAULT_SPEED);
 		state = State.Moving;
 		while (true)
 		{
-			//Debug.Log ("hello world");
-			Vector3 target = (Vector2)(player.position)
-				+ new Vector2(Random.Range(-3,4), Random.Range(-3,4));		// add a random offset;
+			Vector3 target = (Vector2)(player.position);
+				//+ new Vector2(Random.Range(-3,4), Random.Range(-3,4));		// add a random offset;
 
+			Vector3 oldPos = Vector3.zero;	// track transform velocity to check if stuck on a wall
+			float t = 0;
 			while (Vector3.Distance(transform.position, target) > 0.1f)
 			{
+				// Check if stuck on a wall
+				Vector3 velocity = (transform.position - oldPos) / Time.deltaTime;
+				if (velocity.magnitude < Mathf.Epsilon)
+				{
+					t += Time.deltaTime;
+					if (t > 0.05f)
+						break;
+				}
+				else
+					t = 0;
+				oldPos = transform.position;
+
 				anim.SetBool ("Moving", true);
-				//Debug.Log ("Hello");
 				body.Move ((target - transform.position).normalized);
 
 				if (PlayerInRange() && attackTimer <= 0)
@@ -51,7 +64,7 @@ public class ShooterEnemy : Enemy {
 			}
 			body.Move (Vector2.zero);
 			anim.SetBool ("Moving", false);
-			yield return new WaitForSeconds (Random.Range(1, 3));
+			yield return new WaitForSeconds (1.0f);
 		}
 	}
 
@@ -77,6 +90,7 @@ public class ShooterEnemy : Enemy {
 
 	protected override void ResetVars ()
 	{
+		body.gameObject.layer = DEFAULT_LAYER;
 		body.moveSpeed = DEFAULT_SPEED;
 	}
 
@@ -94,7 +108,7 @@ public class ShooterEnemy : Enemy {
 		GameObject o = Instantiate (projectile);
 		Projectile p = o.GetComponent<Projectile> ();
 		UnityEngine.Assertions.Assert.IsNotNull (p);
-		p.Init (transform.position, dir);
+		p.Init (transform.position, dir, 5, "Player", 1);
 	}
 
 	void OnTriggerEnter2D(Collider2D col)
