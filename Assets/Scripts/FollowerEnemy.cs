@@ -10,7 +10,6 @@ public class FollowerEnemy : Enemy {
 		}
 		else
 		{
-			
 		}
 
 	}

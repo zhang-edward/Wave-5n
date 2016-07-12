@@ -18,6 +18,11 @@ public class Player : MonoBehaviour
 	private float primaryAbilityCooldown;
 	public float cooldownTime;
 
+	public delegate void EnemyDamaged (float strength);
+	public event EnemyDamaged OnEnemyDamaged;
+
+	public GameObject hitEffect;
+
 	void Start()
 	{
 		DEFAULT_SPEED = body.moveSpeed;
@@ -35,6 +40,7 @@ public class Player : MonoBehaviour
 		if (primaryAbilityCooldown > 0)
 			return;
 		
+		primaryAbilityCooldown = cooldownTime;
 		killBox = true;
 		body.moveSpeed = 10;
 		input.isInputEnabled = false;
@@ -63,10 +69,15 @@ public class Player : MonoBehaviour
 			if (killBox)
 			{
 				Enemy e = col.gameObject.GetComponentInChildren<Enemy> ();
-				if (!e.hitDisabled)
-					e.HitDisable (body.velocity, damage);
+				if (!e.hitDisabled && e.health > 0)
+				{
+					e.HitDisable (body.Rb2d.velocity, damage);
+					Instantiate (hitEffect, 
+						Vector3.Lerp (transform.position, e.transform.position, 0.5f), 
+						Quaternion.identity);
+					OnEnemyDamaged (damage);
+				}
 			}
-				//col.gameObject.SetActive (false);
 		}
 	}
 }

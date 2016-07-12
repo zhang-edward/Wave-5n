@@ -7,9 +7,9 @@ public class EntityPhysics : MonoBehaviour {
 	private Rigidbody2D rb2d;
 	public SpriteRenderer sr;
 
-	public Vector2 velocity {
+	public Rigidbody2D Rb2d {
 		get {
-			return rb2d.velocity;
+			return rb2d;
 		}
 	}
 

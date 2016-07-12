@@ -4,6 +4,7 @@ using System.Collections;
 public abstract class Enemy : MonoBehaviour {
 
 	protected string DEFAULT_STATE = "MoveState";
+	protected float DEFAULT_SPEED;
 
 	public SpriteRenderer sr;
 	public Transform player;
@@ -12,10 +13,14 @@ public abstract class Enemy : MonoBehaviour {
 
 	public bool hitDisabled = false;
 
-	protected float DEFAULT_SPEED;
 	public float playerDetectionRange = 2f;
 
+	public Sprite deathSprite;
+	public Sprite[] deathProps;
+	public GameObject deathPropPrefab;
+
 	public int health;
+
 
 	void Start()
 	{
@@ -33,7 +38,19 @@ public abstract class Enemy : MonoBehaviour {
 		StopAllCoroutines ();
 		body.HitDisable (dir);
 		health -= damage;
-		StartCoroutine (HitDisableState ());
+
+		if (health > 0)
+			StartCoroutine (HitDisableState ());
+		else
+		{
+			anim.enabled = false;
+			sr.sprite = deathSprite;
+			sr.color = new Color (1, 1, 1, 0.8f);
+			transform.parent.gameObject.layer = LayerMask.NameToLayer ("NoCollide");
+			transform.parent.rotation = Quaternion.Euler (new Vector3 (0, 0, Random.Range (0, 360)));
+			SpawnDeathProps ();
+			//transform.rotation = Quaternion.Euler (new Vector3 (0, 0, Random.Range (0, 360)));
+		}
 	}
 
 	private IEnumerator HitDisableState()
@@ -64,6 +81,19 @@ public abstract class Enemy : MonoBehaviour {
 			}
 		}
 		return false;
+	}
+
+	// implement object pooling
+	private void SpawnDeathProps()
+	{
+		foreach(Sprite sprite in deathProps)
+		{
+			GameObject o = Instantiate (deathPropPrefab, transform.position, Quaternion.identity) as GameObject;
+			o.transform.SetParent (this.transform);
+			o.GetComponent<SpriteRenderer> ().sprite = sprite;
+			o.GetComponent<Rigidbody2D> ().AddForce (new Vector2 (Random.value, Random.value));
+			o.GetComponent<Rigidbody2D> ().AddTorque (Random.Range(-8f, 8f));
+		}
 	}
 
 	protected abstract void ResetVars();

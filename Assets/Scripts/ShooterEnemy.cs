@@ -84,8 +84,8 @@ public class ShooterEnemy : Enemy {
 	{
 		anim.SetTrigger ("Charge");
 		body.Move (Vector2.zero);
-		dir = (Vector2)(player.position - transform.position) // freeze moving direction
-			+ new Vector2(Random.value, Random.value);		// add a random offset
+		dir = (Vector2)(player.position - transform.position); // freeze moving direction
+			//+ new Vector2(Random.value, Random.value);		// add a random offset
 	}
 
 	private void Shoot(Vector2 dir)
