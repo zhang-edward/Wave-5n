@@ -12,6 +12,12 @@ public class Projectile : MonoBehaviour
 	void Awake()
 	{
 		rb2d = this.GetComponent<Rigidbody2D> ();
+		Invoke ("DestroySelf", 5.0f);
+	}
+
+	public void DestroySelf()
+	{
+		Destroy (gameObject);
 	}
 
 	public void Init(Vector3 pos, Vector2 dir, int speed, string target, int damage)

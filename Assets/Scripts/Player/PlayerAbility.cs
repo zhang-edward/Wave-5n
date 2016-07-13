@@ -3,11 +3,17 @@ using System.Collections;
 
 public abstract class PlayerAbility : MonoBehaviour {
 
+	public Sprite icon;
+
 	protected Player player;
 	protected EntityPhysics body;
 	protected Animator anim;
 
 	protected float abilityCooldown;
+
+	public float AbilityCooldown {
+		get {return abilityCooldown;}
+	}
 	public float cooldownTime;
 
 	/// <summary>

@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour {
 	{
 		Vector3 randOpenCell = (Vector3)map.OpenCells [Random.Range (0, map.OpenCells.Count)];
 		GameObject o = Instantiate (enemyPrefabs [Random.Range (0, enemyPrefabs.Length)]);
+		o.transform.SetParent (transform);
 		if (Random.value < 0.5f)
 		{
 			o.transform.position = new Vector3 (Random.Range (0, 10), Map.size + 2);
