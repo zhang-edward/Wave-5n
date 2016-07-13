@@ -6,14 +6,16 @@ public class GameManager : MonoBehaviour {
 	public Player player;
 	public Map map;
 
-	private List<Enemy> enemies;
+	private List<Enemy> enemies = new List<Enemy>();
 	public GameObject[] enemyPrefabs;
 
 	void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.Space))
+		if (NumAliveEnemies() < 5)
 		{
-			SpawnEnemy ();
+			int numEnemies = Random.Range (5, 25);
+			for (int i = 0; i < numEnemies; i++)
+				SpawnEnemy ();
 		}
 	}
 
@@ -35,5 +37,16 @@ public class GameManager : MonoBehaviour {
 		e.Init (randOpenCell);
 		e.player = player.transform;
 		enemies.Add (e);
+	}
+
+	private int NumAliveEnemies()
+	{
+		int count = 0;
+		foreach(Enemy e in enemies)
+		{
+			if (e.health > 0)
+				count++;
+		}
+		return count;
 	}
 }

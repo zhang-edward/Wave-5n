@@ -10,10 +10,19 @@ public class CameraControl : MonoBehaviour {
 
 	void Awake()
 	{
+		cam.orthographicSize = 5;
+		float pos = Map.size / 2 - 0.5f;
+		transform.position = new Vector2 (pos, pos);
+
 		float height = cam.orthographicSize * 2.0f;
 		float width = height * Screen.width / Screen.height;
 		screenOverlay.transform.localScale = new Vector3 (width, height, 1);
 		screenOverlay.color = new Color (1, 1, 1, 0);
+	}
+
+	void Update()
+	{
+		transform.position = player.transform.position;
 	}
 
 	void OnEnable()

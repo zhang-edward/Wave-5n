@@ -5,13 +5,6 @@ public class FollowerEnemy : Enemy {
 
 	// Update is called once per frame
 	void Update () {
-		if (PlayerInRange ())
-		{
-		}
-		else
-		{
-		}
-
 	}
 
 	protected override IEnumerator MoveState()
@@ -28,5 +21,15 @@ public class FollowerEnemy : Enemy {
 	{
 		body.gameObject.layer = DEFAULT_LAYER;
 		body.moveSpeed = DEFAULT_SPEED;
+	}
+
+	void OnTriggerEnter2D(Collider2D col)
+	{
+		if (col.CompareTag("Player"))
+		{
+			Player player = col.GetComponentInChildren<Player>();
+			if (!player.killBox && health > 0 && !hitDisabled)
+				player.Damage (1);
+		}
 	}
 }

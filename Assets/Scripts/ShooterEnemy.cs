@@ -22,6 +22,12 @@ public class ShooterEnemy : Enemy {
 			attackTimer -= Time.deltaTime;
 	}
 
+	public override void Damage (int amt)
+	{
+		base.Damage (amt);
+		attackTimer += 0.5f;
+	}
+
 	/*void OnDrawGizmosSelected()
 	{
 		Gizmos.DrawWireSphere (transform.position, 2f);
@@ -33,8 +39,8 @@ public class ShooterEnemy : Enemy {
 		state = State.Moving;
 		while (true)
 		{
-			Vector3 target = (Vector2)(player.position);
-				//+ new Vector2(Random.Range(-3,4), Random.Range(-3,4));		// add a random offset;
+			Vector3 target = (Vector2)(player.position)
+				+ new Vector2(Random.Range(-3,4), Random.Range(-3,4));		// add a random offset;
 
 			Vector3 oldPos = Vector3.zero;	// track transform velocity to check if stuck on a wall
 			float t = 0;

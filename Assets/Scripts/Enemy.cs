@@ -37,11 +37,11 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 		StartCoroutine (SpawnState(spawnLocation));
 	}
 
-	public void Damage(int amt)
+	public virtual void Damage(int amt)
 	{
 		// Stop all states
 		StopAllCoroutines ();
-		body.HitDisable ();
+		body.AddRandomImpulse ();
 		health -= amt;
 
 		if (health > 0)
@@ -56,11 +56,12 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 			transform.parent.gameObject.layer = LayerMask.NameToLayer ("NoCollideSelf");
 			transform.parent.rotation = Quaternion.Euler (new Vector3 (0, 0, Random.Range (0, 90)));
 			SpawnDeathProps ();
+			StartCoroutine (FadeAway ());
 			//transform.rotation = Quaternion.Euler (new Vector3 (0, 0, Random.Range (0, 360)));
 		}
 	}
 
-	public void Heal (int amt)
+	public virtual void Heal (int amt)
 	{
 		health += amt;
 	}
@@ -95,6 +96,19 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 		return false;
 	}
 
+	protected Player GetPlayerInRange()
+	{
+		Collider2D[] cols = Physics2D.OverlapCircleAll (transform.position, playerDetectionRange);
+		foreach (Collider2D col in cols)
+		{
+			if (col.CompareTag ("Player"))
+			{
+				return col.GetComponentInChildren<Player>();
+			}
+		}
+		return null;
+	}
+
 	// implement object pooling
 	private void SpawnDeathProps()
 	{
@@ -122,5 +136,16 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 		body.gameObject.layer = DEFAULT_LAYER;
 		StartCoroutine (DEFAULT_STATE);
 		//Debug.Log ("Done");
+	}
+
+	private IEnumerator FadeAway()
+	{
+		yield return new WaitForSeconds (10.0f);
+		while (sr.color.a > 0)
+		{
+			sr.color = new Color (1, 1, 1, sr.color.a - 0.01f);
+			yield return null;
+		}
+		sr.color = new Color (1, 1, 1, 0);
 	}
 }

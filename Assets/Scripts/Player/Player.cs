@@ -3,37 +3,46 @@ using System.Collections;
 
 public class Player : MonoBehaviour, IDamageable
 {
-	private float DEFAULT_SPEED;
-
-	public SpriteRenderer sr;
-	public PlayerInput input;
-	public EntityPhysics body;
-	public Animator anim;
-
-	private int health = 10;
-	private int damage = 1;
-
-	public bool killBox = false;
-
-	private float primaryAbilityCooldown;
-	public float cooldownTime;
-
 	public delegate void EnemyDamaged (float strength);
 	public event EnemyDamaged OnEnemyDamaged;
 
 	public delegate void PlayerDamaged (int damage);
 	public event PlayerDamaged OnPlayerDamaged;
 
+	public float DEFAULT_SPEED;
+
+	public SpriteRenderer sr;
+	public PlayerInput input;
+	public EntityPhysics body;
+	public Animator anim;
+
+	public PlayerAbility ability;
+
+	private int health = 10;
+	private int damage = 1;
+
+	public bool killBox = false;
+	public bool isInvincible = false;
+
+	private float primaryAbilityCooldown;
+	public float cooldownTime;
+
+	public float damagedCooldownTime = 1.0f;
+
 	public GameObject hitEffect;
 
 	void Start()
 	{
 		DEFAULT_SPEED = body.moveSpeed;
+		ability.Init (this, body, anim);
 	}
 
 	public void Damage(int amt)
 	{
-		body.HitDisable ();
+		if (isInvincible)
+			return;
+		
+		body.AddRandomImpulse ();
 		StartCoroutine (FlashRed ());
 
 		health -= amt;
@@ -46,7 +55,7 @@ public class Player : MonoBehaviour, IDamageable
 		health += amt;
 	}
 
-	public void PrimaryAbility()
+	/*public void PrimaryAbility()
 	{
 		// if cooldown has not finished
 		if (primaryAbilityCooldown > 0)
@@ -66,13 +75,7 @@ public class Player : MonoBehaviour, IDamageable
 		body.moveSpeed = DEFAULT_SPEED;
 		input.isInputEnabled = true;
 		anim.SetBool ("Attacking", false);
-	}
-
-	void Update()
-	{
-		if (primaryAbilityCooldown > 0)
-			primaryAbilityCooldown -= Time.deltaTime;
-	}
+	}*/
 
 	void OnTriggerStay2D(Collider2D col)
 	{
@@ -95,6 +98,7 @@ public class Player : MonoBehaviour, IDamageable
 
 	public IEnumerator FlashRed()
 	{
+		isInvincible = true;
 		sr.color = Color.red;
 		float t = 0;
 		while (sr.color != Color.white)
@@ -103,6 +107,7 @@ public class Player : MonoBehaviour, IDamageable
 			t += Time.deltaTime;
 			yield return null;
 		}
+		isInvincible = false;
 	}
 }
 

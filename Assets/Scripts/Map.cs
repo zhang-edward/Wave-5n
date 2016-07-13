@@ -17,7 +17,7 @@ public class Map : MonoBehaviour {
 		get { return openCells; }
 	}
 
-	public const int size = 10;
+	public const int size = 20;
 
 	private const int EDGE_TILE = 2;
 	private const int CORNER_TILE = 3;
