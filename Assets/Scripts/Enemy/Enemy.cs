@@ -49,15 +49,15 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 		else
 		{
 			ResetVars ();
-			anim.enabled = false;
+/*			anim.enabled = false;
 			sr.sprite = deathSprite;
 			sr.color = new Color (1, 1, 1, 0.8f);
 			sr.sortingLayerName = "TerrainObjects";
 			transform.parent.gameObject.layer = LayerMask.NameToLayer ("NoCollideSelf");
-			transform.parent.rotation = Quaternion.Euler (new Vector3 (0, 0, Random.Range (0, 90)));
+			transform.parent.rotation = Quaternion.Euler (new Vector3 (0, 0, Random.Range (0, 90))); */
 			SpawnDeathProps ();
-			StartCoroutine (FadeAway ());
-			//transform.rotation = Quaternion.Euler (new Vector3 (0, 0, Random.Range (0, 360)));
+			transform.parent.gameObject.SetActive (false);
+			//StartCoroutine (FadeAway ());
 		}
 	}
 
@@ -112,13 +112,17 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 	// implement object pooling
 	private void SpawnDeathProps()
 	{
-		foreach(Sprite sprite in deathProps)
+		foreach (Sprite sprite in deathProps)
 		{
 			GameObject o = Instantiate (deathPropPrefab, transform.position, Quaternion.identity) as GameObject;
-			o.transform.SetParent (this.transform);
+			//o.transform.SetParent (this.transform);
+			o.transform.rotation = Quaternion.Euler (new Vector3 (0, 0, Random.Range (0, 90)));
 			o.GetComponent<SpriteRenderer> ().sprite = sprite;
-			o.GetComponent<Rigidbody2D> ().AddForce (new Vector2 (Random.value, Random.value));
-			o.GetComponent<Rigidbody2D> ().AddTorque (Random.Range(-8f, 8f));
+			o.GetComponent<Rigidbody2D> ().AddTorque (Random.Range (-50f, 50f));
+			o.GetComponent<Rigidbody2D> ().AddForce (new Vector2(
+				Random.value - 0.5f,
+				Random.value - 0.5f),
+				ForceMode2D.Impulse);
 		}
 	}
 
@@ -138,7 +142,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 		//Debug.Log ("Done");
 	}
 
-	private IEnumerator FadeAway()
+/*	private IEnumerator FadeAway()
 	{
 		yield return new WaitForSeconds (10.0f);
 		while (sr.color.a > 0)
@@ -147,5 +151,5 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 			yield return null;
 		}
 		sr.color = new Color (1, 1, 1, 0);
-	}
+	}*/
 }
