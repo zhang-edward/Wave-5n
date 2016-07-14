@@ -29,10 +29,12 @@ public class Player : MonoBehaviour, IDamageable
 
 	public float damagedCooldownTime = 1.0f;
 
-	public GameObject hitEffect;
+	public ObjectPooler effectPool;
+	public Sprite hitEffect;
 
 	void Start()
 	{
+		effectPool = ObjectPooler.GetObjectPooler ("Effect");
 		DEFAULT_SPEED = body.moveSpeed;
 		ability.Init (this, body, anim);
 	}
@@ -87,9 +89,16 @@ public class Player : MonoBehaviour, IDamageable
 				if (!e.hitDisabled && e.health > 0)
 				{
 					e.Damage (damage);
-					Instantiate (hitEffect, 
+					/*Instantiate (hitEffect, 
 						Vector3.Lerp (transform.position, e.transform.position, 0.5f), 
-						Quaternion.identity);
+						Quaternion.identity);*/
+					effectPool.GetPooledObject().GetComponent<Effect>().Init(
+						Quaternion.Euler(new Vector3(0, 0, Random.Range(0, 360f))),
+						Vector3.Lerp (transform.position, e.transform.position, 0.5f), 
+						hitEffect,
+						true,
+						0);
+					
 					OnEnemyDamaged (damage);
 				}
 			}

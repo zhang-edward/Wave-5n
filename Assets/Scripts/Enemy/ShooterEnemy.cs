@@ -11,6 +11,7 @@ public class ShooterEnemy : Enemy {
 	public float attackTimer;
 
 	public GameObject projectile;
+	public ObjectPooler projectilePool;
 
 	public float chargeTime = 0.5f;
 	public float attackTime = 0.2f;
@@ -111,9 +112,9 @@ public class ShooterEnemy : Enemy {
 	private void Shoot(Vector2 dir)
 	{
 		anim.SetTrigger ("Attack");
-		GameObject o = Instantiate (projectile);
-		Projectile p = o.GetComponent<Projectile> ();
+		Projectile p = projectilePool.GetPooledObject ().GetComponent<Projectile> ();
 		UnityEngine.Assertions.Assert.IsNotNull (p);
+		p.gameObject.SetActive (true);
 		p.Init (transform.position, dir, 5, "Player", 1);
 	}
 

@@ -39,7 +39,7 @@ public class CameraControl : MonoBehaviour {
 
 	private void OnEnemyDamaged(float strength)
 	{
-		StartShake (0.01f, strength * 0.1f);
+		StartShake (0.05f, strength * 0.1f);
 	}
 
 	private void OnPlayerDamaged(int damage)
@@ -57,8 +57,8 @@ public class CameraControl : MonoBehaviour {
 		while (time > 0)
 		{
 			time -= Time.deltaTime;
-			float randX = Random.Range (-1f, 1f) * magnitude;
-			float randY = Random.Range (-1f, 1f) * magnitude;
+			float randX = Random.Range (-1, 1) * magnitude;
+			float randY = Random.Range (-1, 1) * magnitude;
 
 			cam.transform.localPosition = new Vector3(randX, randY, -10);
 			yield return null;

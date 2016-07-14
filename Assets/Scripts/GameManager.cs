@@ -9,11 +9,18 @@ public class GameManager : MonoBehaviour {
 	private List<Enemy> enemies = new List<Enemy>();
 	public GameObject[] enemyPrefabs;
 
+	private ObjectPooler projectilePool;
+
+	void Start()
+	{
+		projectilePool = ObjectPooler.GetObjectPooler ("Projectile");
+	}
+
 	void Update()
 	{
 		if (NumAliveEnemies() < 5)
 		{
-			int numEnemies = Random.Range (5, 25);
+			int numEnemies = Random.Range (5, 15);
 			for (int i = 0; i < numEnemies; i++)
 				SpawnEnemy ();
 		}
@@ -35,6 +42,13 @@ public class GameManager : MonoBehaviour {
 		}
 
 		Enemy e = o.GetComponentInChildren<Enemy> ();
+
+		if (e is ShooterEnemy)
+		{
+			ShooterEnemy shooterEnemy = e as ShooterEnemy;
+			shooterEnemy.projectilePool = projectilePool;
+		}
+
 		e.Init (randOpenCell);
 		e.player = player.transform;
 		enemies.Add (e);
