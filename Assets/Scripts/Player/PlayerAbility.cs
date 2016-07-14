@@ -9,6 +9,8 @@ public abstract class PlayerAbility : MonoBehaviour {
 	protected EntityPhysics body;
 	protected Animator anim;
 
+	public RuntimeAnimatorController animatorController;
+
 	protected float abilityCooldown;
 
 	public float AbilityCooldown {

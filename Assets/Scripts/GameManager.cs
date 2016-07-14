@@ -43,12 +43,6 @@ public class GameManager : MonoBehaviour {
 
 		Enemy e = o.GetComponentInChildren<Enemy> ();
 
-		if (e is ShooterEnemy)
-		{
-			ShooterEnemy shooterEnemy = e as ShooterEnemy;
-			shooterEnemy.projectilePool = projectilePool;
-		}
-
 		e.Init (randOpenCell);
 		e.player = player.transform;
 		enemies.Add (e);

@@ -7,33 +7,29 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 	protected int DEFAULT_LAYER;
 	protected float DEFAULT_SPEED;
 
+	[Header("Entity Base Properties")]
 	public SpriteRenderer sr;
 	public Transform player;
 	public EntityPhysics body;
 	public Animator anim;
 
-	public bool hitDisabled = false;
+	public bool hitDisabled{ get; private set; }
 
+	[Header("Enemy Properties")]
 	public float playerDetectionRange = 2f;
 
+	[Header("Death Props")]
 	public Sprite deathSprite;
 	public Sprite[] deathProps;
-	public GameObject deathPropPrefab;
+	private ObjectPooler deathPropPool;
 
 	public int health;
 
-	void Awake()
+	public virtual void Init(Vector3 spawnLocation)
 	{
 		DEFAULT_LAYER = body.gameObject.layer;
-	}
-
-	void Start()
-	{
+		deathPropPool = ObjectPooler.GetObjectPooler ("DeathProp");
 		DEFAULT_SPEED = body.moveSpeed;
-	}
-
-	public void Init(Vector3 spawnLocation)
-	{
 		StartCoroutine (SpawnState(spawnLocation));
 	}
 
@@ -114,10 +110,13 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 	{
 		foreach (Sprite sprite in deathProps)
 		{
-			GameObject o = Instantiate (deathPropPrefab, transform.position, Quaternion.identity) as GameObject;
+			//GameObject o = Instantiate (deathPropPrefab, transform.position, Quaternion.identity) as GameObject;
 			//o.transform.SetParent (this.transform);
-			o.transform.rotation = Quaternion.Euler (new Vector3 (0, 0, Random.Range (0, 90)));
-			o.GetComponent<SpriteRenderer> ().sprite = sprite;
+			GameObject o = deathPropPool.GetPooledObject();
+			o.GetComponent<TempObject> ().Init (
+				Quaternion.Euler(new Vector3(0, 0, 360f)),
+				this.transform.position,
+				sprite);
 			o.GetComponent<Rigidbody2D> ().AddTorque (Random.Range (-50f, 50f));
 			o.GetComponent<Rigidbody2D> ().AddForce (new Vector2(
 				Random.value - 0.5f,

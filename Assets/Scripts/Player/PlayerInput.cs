@@ -46,6 +46,10 @@ public class PlayerInput : MonoBehaviour {
 			if (Vector2.Distance (mousePosition, transform.position) < 0.1f)
 				movementDir *= 0;
 #endif
+			if (Input.GetMouseButton(0))
+			{
+				player.ability.AbilityHoldDown ();
+			}
 			if (Input.GetMouseButtonUp (0))
 			{
 				player.ability.Ability ();

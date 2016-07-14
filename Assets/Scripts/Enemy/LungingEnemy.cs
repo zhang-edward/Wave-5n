@@ -12,6 +12,7 @@ public class LungingEnemy : Enemy {
 
 	private bool attacking = false;
 
+	[Header("LungingEnemy Properties")]
 	public float chargeTime = 0.5f;
 	public float attackTime = 0.2f;
 	public float cooldownTime = 1.0f;

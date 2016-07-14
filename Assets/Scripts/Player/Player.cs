@@ -92,7 +92,7 @@ public class Player : MonoBehaviour, IDamageable
 					/*Instantiate (hitEffect, 
 						Vector3.Lerp (transform.position, e.transform.position, 0.5f), 
 						Quaternion.identity);*/
-					effectPool.GetPooledObject().GetComponent<Effect>().Init(
+					effectPool.GetPooledObject().GetComponent<TempObject>().Init(
 						Quaternion.Euler(new Vector3(0, 0, Random.Range(0, 360f))),
 						Vector3.Lerp (transform.position, e.transform.position, 0.5f), 
 						hitEffect,
@@ -103,6 +103,11 @@ public class Player : MonoBehaviour, IDamageable
 				}
 			}
 		}
+	}
+
+	public void TriggerOnEnemyDamagedEvent(int damage)
+	{
+		OnEnemyDamaged (damage);
 	}
 
 	public IEnumerator FlashRed()

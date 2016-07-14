@@ -79,7 +79,7 @@ namespace Unused
 		{
 			// get an array of only -1s and 0s
 			int[,] template = new int[size, size];
-			IntArrayUtil.CopyArray (Terrain, template);
+			Int2DArrayUtil.CopyArray (Terrain, template);
 
 			for (int x = 0; x < size; x++)
 			{
@@ -101,7 +101,7 @@ namespace Unused
 					}
 					else if (template[y, x] == -1)
 					{
-						if (IntArrayUtil.HasNeighbor (template, x, y, 0))
+						if (Int2DArrayUtil.HasNeighbor (template, x, y, 0))
 							terrainIdMap [y, x] = Map.BORDER_TILE;
 					}
 				}
@@ -112,13 +112,13 @@ namespace Unused
 		private int SumNeighbors(int[,] arr, int x, int y, int id)
 		{
 			int sum = 0;
-			if (IntArrayUtil.InBounds(arr, x, y + 1) && arr [y + 1, x] == id)
+			if (Int2DArrayUtil.IsInBounds(arr, x, y + 1) && arr [y + 1, x] == id)
 				sum += 1;
-			if (IntArrayUtil.InBounds(arr, x + 1, y) && arr [y, x + 1] == id)
+			if (Int2DArrayUtil.IsInBounds(arr, x + 1, y) && arr [y, x + 1] == id)
 				sum += 2;
-			if (IntArrayUtil.InBounds(arr, x, y - 1) && arr [y - 1, x] == id)
+			if (Int2DArrayUtil.IsInBounds(arr, x, y - 1) && arr [y - 1, x] == id)
 				sum += 4;
-			if (IntArrayUtil.InBounds(arr, x - 1, y) && arr [y, x - 1] == id)
+			if (Int2DArrayUtil.IsInBounds(arr, x - 1, y) && arr [y, x - 1] == id)
 				sum += 8;
 
 			return sum;

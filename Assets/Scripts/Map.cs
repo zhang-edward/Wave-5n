@@ -55,7 +55,7 @@ public class Map : MonoBehaviour {
 		}
 
 		int[,] temp = new int[size, size];
-		IntArrayUtil.CopyArray (terrain, temp);
+		Int2DArrayUtil.CopyArray (terrain, temp);
 		for (int x = 0; x < size; x++)
 		{
 			for (int y = 0; y < size; y++)
@@ -168,13 +168,13 @@ public class Map : MonoBehaviour {
 	private int SumNeighbors(int[,] arr, int x, int y, int id)
 	{
 		int sum = 0;
-		if (IntArrayUtil.InBounds(arr, x, y + 1) && arr [y + 1, x] == id)
+		if (Int2DArrayUtil.IsInBounds(arr, x, y + 1) && arr [y + 1, x] == id)
 			sum += 1;
-		if (IntArrayUtil.InBounds(arr, x + 1, y) && arr [y, x + 1] == id)
+		if (Int2DArrayUtil.IsInBounds(arr, x + 1, y) && arr [y, x + 1] == id)
 			sum += 2;
-		if (IntArrayUtil.InBounds(arr, x, y - 1) && arr [y - 1, x] == id)
+		if (Int2DArrayUtil.IsInBounds(arr, x, y - 1) && arr [y - 1, x] == id)
 			sum += 4;
-		if (IntArrayUtil.InBounds(arr, x - 1, y) && arr [y, x - 1] == id)
+		if (Int2DArrayUtil.IsInBounds(arr, x - 1, y) && arr [y, x - 1] == id)
 			sum += 8;
 
 		return sum + 1;

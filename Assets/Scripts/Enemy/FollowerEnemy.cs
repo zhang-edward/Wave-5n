@@ -3,10 +3,6 @@ using System.Collections;
 
 public class FollowerEnemy : Enemy {
 
-	// Update is called once per frame
-	void Update () {
-	}
-
 	protected override IEnumerator MoveState()
 	{
 //		Debug.Log ("MoveState: Enter");

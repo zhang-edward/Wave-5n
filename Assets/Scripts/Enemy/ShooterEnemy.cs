@@ -8,14 +8,24 @@ public class ShooterEnemy : Enemy {
 		Attacking
 	}
 	private State state;
+
+
+	[Header("ShooterEnemy Properties")]
 	public float attackTimer;
 
-	public GameObject projectile;
-	public ObjectPooler projectilePool;
+	private ObjectPooler projectilePool;
+	public Sprite projectileSprite;
 
+	public float projectileSpeed = 5;
 	public float chargeTime = 0.5f;
 	public float attackTime = 0.2f;
 	public float cooldownTime = 1.0f;
+
+	public override void Init(Vector3 spawnLocation)
+	{
+		base.Init (spawnLocation);
+		projectilePool = ObjectPooler.GetObjectPooler ("Projectile");
+	}
 
 	// Update is called once per frame
 	void Update () {
@@ -114,8 +124,7 @@ public class ShooterEnemy : Enemy {
 		anim.SetTrigger ("Attack");
 		Projectile p = projectilePool.GetPooledObject ().GetComponent<Projectile> ();
 		UnityEngine.Assertions.Assert.IsNotNull (p);
-		p.gameObject.SetActive (true);
-		p.Init (transform.position, dir, 5, "Player", 1);
+		p.Init (transform.position, dir, projectileSprite, "Player", projectileSpeed, 1);
 	}
 
 	void OnTriggerEnter2D(Collider2D col)
