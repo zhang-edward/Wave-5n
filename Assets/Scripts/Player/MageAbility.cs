@@ -30,7 +30,7 @@ public class MageAbility : PlayerAbility {
 			return;
 		anim.SetTrigger ("Charge");
 
-		body.moveSpeed = 0.5f;
+		body.moveSpeed = 0.3f;
 	}
 
 	public override void ResetAbility()

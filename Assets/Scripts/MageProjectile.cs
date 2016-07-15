@@ -23,7 +23,7 @@ public class MageProjectile : Projectile
 		//Debug.Log (col.tag);
 		if (col.CompareTag(target) && !outsideMapBounds)
 		{
-			Debug.Log (col.gameObject);
+//			Debug.Log (col.gameObject);
 			Collider2D[] cols = Physics2D.OverlapCircleAll (transform.position, 1.5f);
 			foreach (Collider2D colChild in cols)
 			{
@@ -35,6 +35,7 @@ public class MageProjectile : Projectile
 				}
 			}
 			gameObject.SetActive (false);
+			OnCollide ();
 		}
 		else if (col.CompareTag("MapBorder"))
 		{

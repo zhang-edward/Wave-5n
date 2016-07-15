@@ -6,24 +6,22 @@ public class SimpleAnimationPlayer : MonoBehaviour {
 	public SpriteRenderer sr;
 	public SimpleAnimation anim;
 
-	private float secondsPerFrame;
 	private int frameIndex;
 
 	public bool isPlaying;
 	public bool looping;
 
-	public void Init()
+	public void Start()
 	{
-		sr = GetComponent<SpriteRenderer>();
-		secondsPerFrame = 1.0f / anim.fps;
+		//sr = GetComponent<SpriteRenderer>();
+		//secondsPerFrame = 1.0f / anim.fps;
 		frameIndex = 0;
 		sr.sprite = anim.frames [0];
 	}
 
-	public void Play(SimpleAnimation anim)
+	public void Play()
 	{
-		this.anim = anim;
-		//Debug.Log (anim.frames.Length);
+		Reset ();
 		StartCoroutine("PlayAnim");
 	}
 
@@ -47,7 +45,7 @@ public class SimpleAnimationPlayer : MonoBehaviour {
 				if (frameIndex >= anim.frames.Length)
 					frameIndex = 0;
 			}
-			yield return new WaitForSeconds(secondsPerFrame);
+			yield return new WaitForSeconds(anim.SecondsPerFrame);
 		}
 		isPlaying = false;
 		yield return null;

@@ -6,6 +6,7 @@ using System.Collections;
 /// </summary>
 public class TempObject : MonoBehaviour {
 
+	public float targetAlpha = 1;
 	public bool isSelfDeactivating = false;
 	public float fadeInTime = 0;
 	public float lifeTime = 0;
@@ -60,11 +61,11 @@ public class TempObject : MonoBehaviour {
 		{
 			t += Time.deltaTime;
 			sr.color = Color.Lerp(new Color(1, 1, 1, 0), 
-				new Color(1, 1, 1, 1),
+				new Color(1, 1, 1, targetAlpha),
 				t / fadeInTime);
 			yield return null;
 		}
-		sr.color = new Color (1, 1, 1, 1);
+		sr.color = new Color (1, 1, 1, targetAlpha);
 		if (isSelfDeactivating)
 		{
 			yield return new WaitForSeconds (lifeTime);
