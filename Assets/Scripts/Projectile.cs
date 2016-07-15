@@ -40,6 +40,12 @@ public class Projectile : MonoBehaviour
 		Invoke ("DestroySelf", 5.0f);
 	}
 
+	void OnDisable()
+	{
+		// prevent the invoke from continuing after this object has been disabled already
+		CancelInvoke ();
+	}
+
 	protected virtual void OnTriggerEnter2D(Collider2D col)
 	{
 		if (col.CompareTag(target))

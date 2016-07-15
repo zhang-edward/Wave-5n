@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SimpleAnimPlayer : MonoBehaviour {
+public class SimpleAnimationPlayer : MonoBehaviour {
 
 	public SpriteRenderer sr;
 	public SimpleAnimation anim;

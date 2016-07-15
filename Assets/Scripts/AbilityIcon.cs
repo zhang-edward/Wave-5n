@@ -6,7 +6,8 @@ public class AbilityIcon : MonoBehaviour {
 
 	private Image image;
 	public RectTransform cooldownMask;
-	public PlayerAbility playerAbility;
+	public Player player;
+	private PlayerAbility playerAbility;
 
 	void Awake()
 	{
@@ -15,6 +16,7 @@ public class AbilityIcon : MonoBehaviour {
 
 	void Start()
 	{
+		playerAbility = player.ability;
 		image.sprite = playerAbility.icon;
 	}
 

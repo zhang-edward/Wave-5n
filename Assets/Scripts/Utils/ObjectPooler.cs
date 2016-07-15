@@ -5,6 +5,7 @@ public class ObjectPooler : MonoBehaviour {
 
 	public static List<ObjectPooler> objectPoolers = new List<ObjectPooler>();
 
+	public bool isGlobal = true;
 	public string poolType;
 	public GameObject pooledObject;
 	public int poolAmount = 10;
@@ -13,6 +14,12 @@ public class ObjectPooler : MonoBehaviour {
 	private List<GameObject> pooledObjects; 
 
 	void Awake()
+	{
+		if (isGlobal)
+			AddSelfToGlobalList ();
+	}
+
+	private void AddSelfToGlobalList()
 	{
 		foreach (ObjectPooler pooler in objectPoolers)
 		{
@@ -23,6 +30,7 @@ public class ObjectPooler : MonoBehaviour {
 			}
 		}
 		objectPoolers.Add (this);
+
 	}
 
 	void Start()

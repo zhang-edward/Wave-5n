@@ -3,13 +3,8 @@ using System.Collections;
 
 public class MageAbility : PlayerAbility {
 
-	private ObjectPooler projectilePool;
+	public ObjectPooler projectilePool;
 	public Sprite projectileSprite;
-
-	void Start()
-	{
-		projectilePool = ObjectPooler.GetObjectPooler ("Projectile");
-	}
 
 	public override void Ability()
 	{
@@ -19,9 +14,11 @@ public class MageAbility : PlayerAbility {
 
 		abilityCooldown = cooldownTime;
 
+		Player player = this.GetComponentInParent<Player> ();
+
 		GameObject o = projectilePool.GetPooledObject ();
-		Projectile p = o.GetComponent<Projectile> ();
-		p.Init (transform.position, body.Rb2d.velocity, projectileSprite, "Enemy", 5f, 1);
+		MageProjectile p = o.GetComponent<MageProjectile> ();
+		p.Init (transform.position, body.Rb2d.velocity, projectileSprite, "Enemy", player, 5f, 1);
 
 		anim.SetTrigger ("Attack");
 		Invoke ("ResetAbility", 0.5f);

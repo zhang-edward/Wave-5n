@@ -37,6 +37,7 @@ public class Player : MonoBehaviour, IDamageable
 		effectPool = ObjectPooler.GetObjectPooler ("Effect");
 		DEFAULT_SPEED = body.moveSpeed;
 		ability.Init (this, body, anim);
+		anim.runtimeAnimatorController = ability.animatorController;
 	}
 
 	public void Damage(int amt)
