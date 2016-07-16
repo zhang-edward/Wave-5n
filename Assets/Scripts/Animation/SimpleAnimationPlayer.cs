@@ -16,11 +16,12 @@ public class SimpleAnimationPlayer : MonoBehaviour {
 		//sr = GetComponent<SpriteRenderer>();
 		//secondsPerFrame = 1.0f / anim.fps;
 		frameIndex = 0;
-		sr.sprite = anim.frames [0];
+		//sr.sprite = anim.frames [0];
 	}
 
 	public void Play()
 	{
+		UnityEngine.Assertions.Assert.IsNotNull (anim);
 		Reset ();
 		StartCoroutine("PlayAnim");
 	}
@@ -29,6 +30,7 @@ public class SimpleAnimationPlayer : MonoBehaviour {
 	{
 		//Debug.Log ("Reset:" + anim.frames.Length);
 		frameIndex = 0;
+		Debug.Log (anim.frames.Length);
 		sr.sprite = anim.frames[0];
 	}
 
