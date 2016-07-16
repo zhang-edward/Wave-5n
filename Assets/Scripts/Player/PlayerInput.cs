@@ -54,6 +54,7 @@ public class PlayerInput : MonoBehaviour {
 			{
 				player.ability.Ability ();
 			}
+			player.dir = movementDir;
 			player.body.Move (movementDir.normalized);
 		}
 	}

@@ -9,18 +9,26 @@ public class Player : MonoBehaviour, IDamageable
 	public delegate void PlayerDamaged (int damage);
 	public event PlayerDamaged OnPlayerDamaged;
 
+	[HideInInspector]
 	public float DEFAULT_SPEED;
 
+	[Header("Entity Base Values")]
 	public SpriteRenderer sr;
 	public PlayerInput input;
 	public EntityPhysics body;
 	public Animator anim;
 
+	[Header("Player Ability")]
 	public PlayerAbility ability;
+
+	[Header("Player direction")]
+	public Vector2 dir;
+	public Transform dirIndicator;
 
 	private int health = 10;
 	private int damage = 1;
 
+	[Header("Stats")]
 	public bool killBox = false;
 	public bool isInvincible = false;
 
@@ -56,6 +64,12 @@ public class Player : MonoBehaviour, IDamageable
 	public void Heal(int amt)
 	{
 		health += amt;
+	}
+
+	void Update()
+	{
+		float angle = Mathf.Atan2 (dir.y, dir.x) * Mathf.Rad2Deg;
+		dirIndicator.rotation = Quaternion.Euler (new Vector3 (0, 0, angle));
 	}
 
 	/*public void PrimaryAbility()
@@ -100,7 +114,7 @@ public class Player : MonoBehaviour, IDamageable
 						true,
 						0);
 					
-					OnEnemyDamaged (damage);
+					TriggerOnEnemyDamagedEvent(damage);
 				}
 			}
 		}

@@ -80,7 +80,7 @@ public class Projectile : MonoBehaviour
 				true
 			);
 		}
-		else if (onCollideAnim != null)
+		else if (onCollideAnim.frames.Length > 0)
 		{
 			TempObject effect = effectPool.GetPooledObject ().GetComponent<TempObject>();
 			SimpleAnimationPlayer animPlayer = effect.GetComponent<SimpleAnimationPlayer> ();

@@ -28,9 +28,7 @@ public class SimpleAnimationPlayer : MonoBehaviour {
 
 	public void Reset()
 	{
-		//Debug.Log ("Reset:" + anim.frames.Length);
 		frameIndex = 0;
-		Debug.Log (anim.frames.Length);
 		sr.sprite = anim.frames[0];
 	}
 

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class GameManager : MonoBehaviour {
+public class EnemyManager : MonoBehaviour {
 
 	public Player player;
 	public Map map;
@@ -9,11 +9,8 @@ public class GameManager : MonoBehaviour {
 	private List<Enemy> enemies = new List<Enemy>();
 	public GameObject[] enemyPrefabs;
 
-	private ObjectPooler projectilePool;
-
 	void Start()
 	{
-		projectilePool = ObjectPooler.GetObjectPooler ("Projectile");
 	}
 
 	void Update()
@@ -33,11 +30,11 @@ public class GameManager : MonoBehaviour {
 		o.transform.SetParent (transform);
 		if (Random.value < 0.5f)
 		{
-			o.transform.position = new Vector3 (Random.Range (0, 10), Map.size + 2);
+			o.transform.position = new Vector3 (Random.Range (0, 10), Map.size + 4);
 		}
 		else
 		{
-			o.transform.position = new Vector3 (Random.Range (0, 10), -2);
+			o.transform.position = new Vector3 (Random.Range (0, 10), -4);
 
 		}
 

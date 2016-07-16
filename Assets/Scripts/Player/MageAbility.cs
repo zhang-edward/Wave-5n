@@ -18,7 +18,7 @@ public class MageAbility : PlayerAbility {
 
 		GameObject o = projectilePool.GetPooledObject ();
 		MageProjectile p = o.GetComponent<MageProjectile> ();
-		p.Init (transform.position, body.Rb2d.velocity, projectileSprite, "Enemy", player, 5f, 1);
+		p.Init (transform.position, player.dir, projectileSprite, "Enemy", player, 5f, 1);
 
 		anim.SetTrigger ("Attack");
 		Invoke ("ResetAbility", 0.5f);

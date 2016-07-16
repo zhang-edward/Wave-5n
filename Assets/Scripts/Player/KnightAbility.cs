@@ -36,7 +36,7 @@ public class KnightAbility : PlayerAbility {
 		TempObject effect = rushEffect.GetComponent<TempObject> ();
 		SimpleAnimationPlayer animPlayer = rushEffect.GetComponent<SimpleAnimationPlayer> ();
 
-		Vector2 dir = player.body.Rb2d.velocity;
+		Vector2 dir = player.dir;
 		float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
 		effect.Init (
 			Quaternion.Euler(new Vector3(0, 0, angle)),
