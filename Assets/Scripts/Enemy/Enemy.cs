@@ -45,12 +45,6 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 		else
 		{
 			ResetVars ();
-/*			anim.enabled = false;
-			sr.sprite = deathSprite;
-			sr.color = new Color (1, 1, 1, 0.8f);
-			sr.sortingLayerName = "TerrainObjects";
-			transform.parent.gameObject.layer = LayerMask.NameToLayer ("NoCollideSelf");
-			transform.parent.rotation = Quaternion.Euler (new Vector3 (0, 0, Random.Range (0, 90))); */
 			SpawnDeathProps ();
 			transform.parent.gameObject.SetActive (false);
 			//StartCoroutine (FadeAway ());

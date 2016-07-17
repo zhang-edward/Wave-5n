@@ -15,18 +15,19 @@ public class ObjectPooler : MonoBehaviour {
 
 	void Awake()
 	{
+
 		if (isGlobal)
 			AddSelfToGlobalList ();
 	}
 
 	private void AddSelfToGlobalList()
 	{
-		foreach (ObjectPooler pooler in objectPoolers)
+		for (int i = 0; i < objectPoolers.Count; i ++)
 		{
-			if (pooler.poolType == this.poolType)
+			if (objectPoolers[i].poolType == this.poolType)
 			{
-				Debug.LogError ("Duplicate objectPooler detected");
-				Destroy (this.gameObject);
+				objectPoolers [i] = this;
+				return;
 			}
 		}
 		objectPoolers.Add (this);

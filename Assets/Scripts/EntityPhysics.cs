@@ -42,9 +42,9 @@ public class EntityPhysics : MonoBehaviour {
 
 	void Update()
 	{
-		if (rb2d.velocity.x < -0.5f)
+		if (rb2d.velocity.x < -0.1f)
 			sr.flipX = true;
-		else if (rb2d.velocity.x > 0.5f)
+		else if (rb2d.velocity.x > 0.1f)
 			sr.flipX = false;
 	}
 }

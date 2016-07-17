@@ -4,6 +4,10 @@ using System.Collections;
 public class KnightAbility : PlayerAbility {
 
 	public GameObject rushEffect;
+	public Sprite hitEffect;
+
+	public bool killBox = false;
+	public int damage = 1;
 
 	public override void Ability()
 	{
@@ -12,7 +16,7 @@ public class KnightAbility : PlayerAbility {
 			return;
 		PlayEffect ();
 		abilityCooldown = cooldownTime;
-		player.killBox = true;
+		killBox = true;
 		body.moveSpeed = 7;
 		player.input.isInputEnabled = false;
 		anim.SetBool ("Attacking", true);
@@ -25,7 +29,7 @@ public class KnightAbility : PlayerAbility {
 	public override void ResetAbility()
 	{
 		rushEffect.GetComponent<TempObject> ().Deactivate ();
-		player.killBox = false;
+		killBox = false;
 		body.moveSpeed = player.DEFAULT_SPEED;
 		player.input.isInputEnabled = true;
 		anim.SetBool ("Attacking", false);
@@ -47,5 +51,31 @@ public class KnightAbility : PlayerAbility {
 
 		animPlayer.Play ();
 
+	}
+
+	void OnTriggerStay2D(Collider2D col)
+	{
+		if (col.CompareTag("Enemy"))
+		{
+			if (killBox)
+			{
+				Enemy e = col.gameObject.GetComponentInChildren<Enemy> ();
+				if (!e.hitDisabled && e.health > 0)
+				{
+					e.Damage (damage);
+					/*Instantiate (hitEffect, 
+						Vector3.Lerp (transform.position, e.transform.position, 0.5f), 
+						Quaternion.identity);*/
+					player.effectPool.GetPooledObject().GetComponent<TempObject>().Init(
+						Quaternion.Euler(new Vector3(0, 0, Random.Range(0, 360f))),
+						Vector3.Lerp (transform.position, e.transform.position, 0.5f), 
+						hitEffect,
+						true,
+						0);
+
+					player.TriggerOnEnemyDamagedEvent(damage);
+				}
+			}
+		}
 	}
 }

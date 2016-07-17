@@ -4,6 +4,7 @@ using System.Collections;
 public abstract class PlayerAbility : MonoBehaviour {
 
 	public Sprite icon;
+	public string className;
 
 	protected Player player;
 	protected EntityPhysics body;
@@ -31,7 +32,7 @@ public abstract class PlayerAbility : MonoBehaviour {
 	/// </summary>
 	public abstract void ResetAbility ();
 
-	public void Init(Player player, EntityPhysics body, Animator anim)
+	public virtual void Init(Player player, EntityPhysics body, Animator anim)
 	{
 		this.player = player;
 		this.body = body;

@@ -24,7 +24,7 @@ public class FollowerEnemy : Enemy {
 		if (col.CompareTag("Player"))
 		{
 			Player player = col.GetComponentInChildren<Player>();
-			if (!player.killBox && health > 0 && !hitDisabled)
+			if (health > 0 && !hitDisabled)
 				player.Damage (1);
 		}
 	}

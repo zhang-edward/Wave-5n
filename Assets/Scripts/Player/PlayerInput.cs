@@ -8,8 +8,8 @@ public class PlayerInput : MonoBehaviour {
 	private float timeInputHeldDown;
 
 	public bool isInputEnabled = true;	
-
-	private Vector2 calibratedAccelerometer;
+	private Vector3 calibratedAccelerometer;
+	private Vector3 accel = Input.acceleration;
 
 	void Start()
 	{
@@ -18,7 +18,7 @@ public class PlayerInput : MonoBehaviour {
 
 	private void CalibrateAccelerometer()
 	{
-		calibratedAccelerometer = (Vector2)Input.acceleration;
+		calibratedAccelerometer = Input.acceleration;
 		//calibratedAccelerometer = new Vector2(0, -0.f);
 		//Debug.Log (calibratedAccelerometer);
 
@@ -34,10 +34,10 @@ public class PlayerInput : MonoBehaviour {
 		{
 #if UNITY_ANDROID
 			// get accelerometer input
-			Vector2 accel = (Vector2)Input.acceleration - calibratedAccelerometer;
+			accel = (Vector2)Vector3.Lerp(accel, Input.acceleration - calibratedAccelerometer, 2.0f * Time.deltaTime);
 
-			float x = Mathf.Abs(accel.x) < 0.01f ? 0 : accel.x;
-			float y = Mathf.Abs(accel.y) < 0.01f ? 0 : accel.y;
+			float x = Mathf.Abs(accel.x) < 0.005f ? 0 : accel.x;
+			float y = Mathf.Abs(accel.y) < 0.005f ? 0 : accel.y;
 			movementDir = new Vector2(x, y);
 #else
 			Vector3 mousePosition = Camera.main.ScreenToWorldPoint (Input.mousePosition);

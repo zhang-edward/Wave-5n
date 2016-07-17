@@ -3,6 +3,9 @@ using System.Collections;
 
 public class Player : MonoBehaviour, IDamageable
 {
+	public delegate void PlayerInitialized();
+	public event PlayerInitialized OnPlayerInitialized;
+
 	public delegate void EnemyDamaged (float strength);
 	public event EnemyDamaged OnEnemyDamaged;
 
@@ -19,112 +22,78 @@ public class Player : MonoBehaviour, IDamageable
 	public Animator anim;
 
 	[Header("Player Ability")]
+	public PlayerAbility[] abilities;
 	public PlayerAbility ability;
 
 	[Header("Player direction")]
 	public Vector2 dir;
-	public Transform dirIndicator;
-
-	private int health = 10;
-	private int damage = 1;
 
 	[Header("Stats")]
-	public bool killBox = false;
+	public int maxHealth = 10;
+	private int health = 10;
 	public bool isInvincible = false;
-
-	private float primaryAbilityCooldown;
-	public float cooldownTime;
 
 	public float damagedCooldownTime = 1.0f;
 
+	[HideInInspector]
 	public ObjectPooler effectPool;
-	public Sprite hitEffect;
 
 	void Start()
 	{
 		effectPool = ObjectPooler.GetObjectPooler ("Effect");
 		DEFAULT_SPEED = body.moveSpeed;
-		ability.Init (this, body, anim);
-		anim.runtimeAnimatorController = ability.animatorController;
-	}
-
-	public void Damage(int amt)
-	{
-		if (isInvincible)
-			return;
-		
-		body.AddRandomImpulse ();
-		StartCoroutine (FlashRed ());
-
-		health -= amt;
-		// TODO: check if player is dead
-		OnPlayerDamaged(damage);
-	}
-
-	public void Heal(int amt)
-	{
-		health += amt;
-	}
-
-	void Update()
-	{
-		float angle = Mathf.Atan2 (dir.y, dir.x) * Mathf.Rad2Deg;
-		dirIndicator.rotation = Quaternion.Euler (new Vector3 (0, 0, angle));
-	}
-
-	/*public void PrimaryAbility()
-	{
-		// if cooldown has not finished
-		if (primaryAbilityCooldown > 0)
-			return;
-		
-		primaryAbilityCooldown = cooldownTime;
-		killBox = true;
-		body.moveSpeed = 10;
 		input.isInputEnabled = false;
-		anim.SetBool ("Attacking", true);
-		Invoke ("ResetPrimaryAbility", 0.3f);
 	}
 
-	private void ResetPrimaryAbility()
+	public void Init(string name)
 	{
-		killBox = false;
-		body.moveSpeed = DEFAULT_SPEED;
-		input.isInputEnabled = true;
-		anim.SetBool ("Attacking", false);
-	}*/
+		ability = GetAbilityWithName (name);
+		anim.runtimeAnimatorController = ability.animatorController;
+		ability.Init (this, body, anim);
+		OnPlayerInitialized ();
+		StartCoroutine (SpawnState ());
+	}
 
-	void OnTriggerStay2D(Collider2D col)
+	private PlayerAbility GetAbilityWithName(string name)
 	{
-		if (col.CompareTag("Enemy"))
+		PlayerAbility answer = null;
+		foreach (PlayerAbility playerAbility in abilities)
 		{
-			if (killBox)
-			{
-				Enemy e = col.gameObject.GetComponentInChildren<Enemy> ();
-				if (!e.hitDisabled && e.health > 0)
-				{
-					e.Damage (damage);
-					/*Instantiate (hitEffect, 
-						Vector3.Lerp (transform.position, e.transform.position, 0.5f), 
-						Quaternion.identity);*/
-					effectPool.GetPooledObject().GetComponent<TempObject>().Init(
-						Quaternion.Euler(new Vector3(0, 0, Random.Range(0, 360f))),
-						Vector3.Lerp (transform.position, e.transform.position, 0.5f), 
-						hitEffect,
-						true,
-						0);
-					
-					TriggerOnEnemyDamagedEvent(damage);
-				}
-			}
+			if (playerAbility.className.Equals (name))
+				answer = playerAbility;
+			else
+				playerAbility.gameObject.SetActive (false);
 		}
+		if (answer == null)
+			Debug.LogError ("Cannot find specified class name: " + name);
+		return answer;
 	}
 
+	private IEnumerator SpawnState()
+	{
+		// Make sure the player animator has a state named "Spawn"
+		UnityEngine.Assertions.Assert.IsTrue(anim.HasState(0, Animator.StringToHash("Spawn")));
+		anim.CrossFade ("Spawn", 0f);
+
+		yield return new WaitForEndOfFrame ();		// wait for the animation state to update before continuing
+		while (anim.GetCurrentAnimatorStateInfo (0).IsName ("Spawn"))
+			yield return null;
+		
+		input.isInputEnabled = true;
+	}
+
+	/// <summary>
+	/// Triggers the on enemy damaged event.
+	/// </summary>
+	/// <param name="damage">Damage.</param>
 	public void TriggerOnEnemyDamagedEvent(int damage)
 	{
 		OnEnemyDamaged (damage);
 	}
 
+	/// <summary>
+	/// Flashes red. Used when the player is damaged by an enemy.
+	/// </summary>
 	public IEnumerator FlashRed()
 	{
 		isInvincible = true;
@@ -137,6 +106,35 @@ public class Player : MonoBehaviour, IDamageable
 			yield return null;
 		}
 		isInvincible = false;
+	}
+
+
+	/// <summary>
+	/// Damage by the specified amt.
+	/// </summary>
+	/// <param name="amt">Amount to deduct from health.</param>
+	public void Damage(int amt)
+	{
+		if (isInvincible)
+			return;
+
+		body.AddRandomImpulse ();
+		StartCoroutine (FlashRed ());
+
+		health -= amt;
+		// TODO: check if player is dead
+		OnPlayerDamaged(amt);
+	}
+
+	/// <summary>
+	/// Heal the specified amt.
+	/// </summary>
+	/// <param name="amt">Amount to add to health.</param>
+	public void Heal(int amt)
+	{
+		health += amt;
+		if (health >= maxHealth)
+			health = maxHealth;
 	}
 }
 

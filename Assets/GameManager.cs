@@ -1,12 +1,15 @@
 ﻿using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class GameManager : MonoBehaviour {
 
 	public static GameManager instance;
-	public string SelectedHero = "";
+	public string selectedHero = "";
 	public GameObject player;
+
+	private bool didInitializeGameScene = false;
 
 	void Awake()
 	{
@@ -17,12 +20,26 @@ public class GameManager : MonoBehaviour {
 		DontDestroyOnLoad (this);
 	}
 
-	public void GoToGameScene()
+	void Update()
 	{
-		StartCoroutine (LoadGameSceneAsync());
+		if (SceneManager.GetActiveScene ().name == "Game" && !didInitializeGameScene)
+		{
+			InitGameScene ();	
+		}
 	}
 
-	public IEnumerator LoadGameSceneAsync()
+	public void GoToGameScene()
+	{
+		StartCoroutine (LoadGameScene());
+	}
+
+	public void GoToMenuScene()
+	{
+		SceneManager.LoadScene ("Menu");
+		ObjectPooler.objectPoolers.Clear ();
+	}
+
+	public IEnumerator LoadGameScene()
 	{
 		AsyncOperation async = SceneManager.LoadSceneAsync ("Game");
 		Debug.Log ("Loading scene");
@@ -30,7 +47,24 @@ public class GameManager : MonoBehaviour {
 		{
 			yield return null;
 		}
+		InitGameScene ();
 		Debug.Log ("Scene loaded");
+	}
+
+	private void InitGameScene()
+	{
 		player = GameObject.Find ("/Game/Player");
+		Player playerScript = player.GetComponentInChildren<Player> ();
+
+		Assert.IsFalse (selectedHero.Equals (""));		// will throw an error if this script tries to
+														// initialize the player without a selected hero
+		playerScript.Init (selectedHero);
+
+		didInitializeGameScene = true;
+	}
+
+	public void SelectHero(string name)
+	{
+		selectedHero = name;
 	}
 }
