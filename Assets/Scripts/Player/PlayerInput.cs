@@ -34,7 +34,7 @@ public class PlayerInput : MonoBehaviour {
 		{
 #if UNITY_ANDROID
 			// get accelerometer input
-			accel = (Vector2)Vector3.Lerp(accel, Input.acceleration - calibratedAccelerometer, 2.0f * Time.deltaTime);
+			accel = (Vector2)Vector3.Lerp(accel, Input.acceleration - calibratedAccelerometer, 10f * Time.deltaTime);
 
 			float x = Mathf.Abs(accel.x) < 0.005f ? 0 : accel.x;
 			float y = Mathf.Abs(accel.y) < 0.005f ? 0 : accel.y;

@@ -6,7 +6,7 @@ public class MageAbility : PlayerAbility {
 	public ObjectPooler projectilePool;
 	public Sprite projectileSprite;
 
-	public Transform dirIndicator;
+	//public Transform dirIndicator;
 
 	//private Vector3 shootPoint;
 
@@ -33,12 +33,18 @@ public class MageAbility : PlayerAbility {
 
 		abilityCooldown = cooldownTime;
 
-		Player player = this.GetComponentInParent<Player> ();
-
 		GameObject o = projectilePool.GetPooledObject ();
 		MageProjectile p = o.GetComponent<MageProjectile> ();
 
-		p.Init (transform.position, player.dir, projectileSprite, "Enemy", player, 5f, 1);
+		// use auto targeter
+		Vector3 dir;
+		if (player.targetedEnemy != null)
+			dir = player.targetedEnemy.position - transform.position;
+		else
+			dir = player.dir;
+		player.StopAutoTarget();
+		
+		p.Init (transform.position, dir, projectileSprite, "Enemy", player, 5f, 1);
 		anim.SetBool ("Charge", false);
 		anim.SetTrigger ("Attack");
 		Invoke ("ResetAbility", 0.5f);
@@ -51,17 +57,19 @@ public class MageAbility : PlayerAbility {
 		anim.SetBool ("Charge", true);
 		body.moveSpeed = 0.3f;
 
-		dirIndicator.gameObject.SetActive (true);
-		float angle = Mathf.Atan2 (player.dir.y, player.dir.x) * Mathf.Rad2Deg;
-		Quaternion rot = Quaternion.Euler (0, 0, angle);
-		dirIndicator.rotation = rot;
+		player.StartAutoTarget ();
+
+		//dirIndicator.gameObject.SetActive (true);
+		//float angle = Mathf.Atan2 (player.dir.y, player.dir.x) * Mathf.Rad2Deg;
+		//Quaternion rot = Quaternion.Euler (0, 0, angle);
+		//dirIndicator.rotation = rot;
 		//dirIndicator.localPosition = shootPoint;
 		//dirIndicator.rotation = Quaternion.Lerp (dirIndicator.rotation, rot, 0.1f);
 	}
 
 	public override void ResetAbility()
 	{
-		dirIndicator.gameObject.SetActive (false);
+		//dirIndicator.gameObject.SetActive (false);
 		body.moveSpeed = player.DEFAULT_SPEED;
 		//anim.ResetTrigger ("Charge");
 		anim.SetTrigger ("Move");

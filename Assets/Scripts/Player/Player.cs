@@ -35,8 +35,15 @@ public class Player : MonoBehaviour, IDamageable
 
 	public float damagedCooldownTime = 1.0f;
 
+	[Header("AutoTargeter Object")]
+	public Transform autoTargetReticle;
+	[HideInInspector]
+	public bool autoTargetEnabled = false;
+
 	[HideInInspector]
 	public ObjectPooler effectPool;
+	[HideInInspector]
+	public Transform targetedEnemy;
 
 	void Start()
 	{
@@ -54,6 +61,11 @@ public class Player : MonoBehaviour, IDamageable
 		StartCoroutine (SpawnState ());
 	}
 
+	/// <summary>
+	/// Used for initialization
+	/// </summary>
+	/// <returns>The ability with name.</returns>
+	/// <param name="name">Name.</param>
 	private PlayerAbility GetAbilityWithName(string name)
 	{
 		PlayerAbility answer = null;
@@ -69,6 +81,10 @@ public class Player : MonoBehaviour, IDamageable
 		return answer;
 	}
 
+	/// <summary>
+	/// Runs this coroutine at the start of the game
+	/// </summary>
+	/// <returns>The state.</returns>
 	private IEnumerator SpawnState()
 	{
 		// Make sure the player animator has a state named "Spawn"
@@ -135,6 +151,44 @@ public class Player : MonoBehaviour, IDamageable
 		health += amt;
 		if (health >= maxHealth)
 			health = maxHealth;
+	}
+
+	void Update()
+	{
+		if (autoTargetEnabled)
+		{
+			AutoTarget ();
+			if (targetedEnemy != null)
+				autoTargetReticle.position = targetedEnemy.position;
+		}
+	}
+
+	public void AutoTarget()
+	{
+		RaycastHit2D[] raycastHits = Physics2D.RaycastAll (transform.position, dir, 8f);
+		Debug.DrawRay (transform.position, dir.normalized * 8f, Color.white);
+		foreach (RaycastHit2D raycastHit in raycastHits)
+		{
+			Collider2D col = raycastHit.collider;
+			if (col.CompareTag("Enemy"))
+			{
+				targetedEnemy = col.transform;
+			}
+		}
+	}
+
+	public void StartAutoTarget()
+	{
+		autoTargetEnabled = true;
+		autoTargetReticle.gameObject.SetActive (true);
+	}
+
+	public void StopAutoTarget()
+	{
+		autoTargetEnabled = false;
+		targetedEnemy = null;
+		autoTargetReticle.position = new Vector3 (-1, -1, -1);
+		autoTargetReticle.gameObject.SetActive (false);
 	}
 }
 

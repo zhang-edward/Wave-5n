@@ -22,7 +22,15 @@ public class CameraControl : MonoBehaviour {
 
 	void Update()
 	{
-		transform.position = player.transform.position;
+		if (player.targetedEnemy == null)
+		{
+			transform.position = Vector3.Lerp (transform.position, player.transform.position, Time.deltaTime * 8f);
+		}
+		else
+		{
+			Vector3 dest = Vector3.Lerp (player.transform.position, player.targetedEnemy.position, 0.5f);
+			transform.position = Vector3.Lerp (transform.position, dest, Time.deltaTime * 3f);
+		}
 	}
 
 	void OnEnable()

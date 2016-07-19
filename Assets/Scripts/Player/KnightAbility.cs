@@ -17,6 +17,11 @@ public class KnightAbility : PlayerAbility {
 		PlayEffect ();
 		abilityCooldown = cooldownTime;
 		killBox = true;
+		// use auto targeter direction
+		if (player.targetedEnemy != null)
+			body.Move (player.targetedEnemy.position - transform.position);
+		player.StopAutoTarget ();
+
 		body.moveSpeed = 7;
 		player.input.isInputEnabled = false;
 		anim.SetBool ("Attacking", true);
@@ -24,7 +29,9 @@ public class KnightAbility : PlayerAbility {
 	}
 
 	public override void AbilityHoldDown ()
-	{}
+	{
+		player.StartAutoTarget ();
+	}
 
 	public override void ResetAbility()
 	{
