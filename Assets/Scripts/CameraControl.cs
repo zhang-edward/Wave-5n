@@ -28,7 +28,7 @@ public class CameraControl : MonoBehaviour {
 		}
 		else
 		{
-			Vector3 dest = Vector3.Lerp (player.transform.position, player.targetedEnemy.position, 0.5f);
+			Vector3 dest = Vector3.Lerp (player.transform.position, player.targetedEnemy.position, 0.3f);
 			transform.position = Vector3.Lerp (transform.position, dest, Time.deltaTime * 3f);
 		}
 	}

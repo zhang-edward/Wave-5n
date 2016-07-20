@@ -15,22 +15,18 @@ public class KnightAbility : PlayerAbility {
 		if (abilityCooldown > 0)
 			return;
 		PlayEffect ();
+		player.input.isInputEnabled = false;
+
 		abilityCooldown = cooldownTime;
 		killBox = true;
-		// use auto targeter direction
-		if (player.targetedEnemy != null)
-			body.Move (player.targetedEnemy.position - transform.position);
-		player.StopAutoTarget ();
-
 		body.moveSpeed = 7;
-		player.input.isInputEnabled = false;
+		player.isInvincible = true;
 		anim.SetBool ("Attacking", true);
-		Invoke ("ResetAbility", 0.8f);
+		Invoke ("ResetAbility", 0.6f);
 	}
 
 	public override void AbilityHoldDown ()
 	{
-		player.StartAutoTarget ();
 	}
 
 	public override void ResetAbility()
@@ -38,6 +34,8 @@ public class KnightAbility : PlayerAbility {
 		rushEffect.GetComponent<TempObject> ().Deactivate ();
 		killBox = false;
 		body.moveSpeed = player.DEFAULT_SPEED;
+
+		player.isInvincible = false;
 		player.input.isInputEnabled = true;
 		anim.SetBool ("Attacking", false);
 	}
@@ -67,7 +65,7 @@ public class KnightAbility : PlayerAbility {
 			if (killBox)
 			{
 				Enemy e = col.gameObject.GetComponentInChildren<Enemy> ();
-				if (!e.hitDisabled && e.health > 0)
+				if (!e.invincible && e.health > 0)
 				{
 					e.Damage (damage);
 					/*Instantiate (hitEffect, 

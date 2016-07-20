@@ -42,7 +42,6 @@ public class Player : MonoBehaviour, IDamageable
 
 	[HideInInspector]
 	public ObjectPooler effectPool;
-	[HideInInspector]
 	public Transform targetedEnemy;
 
 	void Start()
@@ -165,7 +164,7 @@ public class Player : MonoBehaviour, IDamageable
 
 	public void AutoTarget()
 	{
-		RaycastHit2D[] raycastHits = Physics2D.RaycastAll (transform.position, dir, 8f);
+		RaycastHit2D[] raycastHits = Physics2D.CircleCastAll (transform.position, 1f, dir, 8f);
 		Debug.DrawRay (transform.position, dir.normalized * 8f, Color.white);
 		foreach (RaycastHit2D raycastHit in raycastHits)
 		{

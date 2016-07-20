@@ -17,9 +17,11 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 
 	[Header("Enemy Properties")]
 	public float playerDetectionRange = 2f;
+	public bool canBeDisabledOnHit = true;
+	public bool invincible = false;
 
 	[Header("Death Props")]
-	public Sprite deathSprite;
+	//public Sprite deathSprite;
 	public Sprite[] deathProps;
 	private ObjectPooler deathPropPool;
 
@@ -35,13 +37,21 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 
 	public virtual void Damage(int amt)
 	{
+		if (invincible)
+			return;
 		// Stop all states
-		StopAllCoroutines ();
 		body.AddRandomImpulse ();
 		health -= amt;
 
 		if (health > 0)
-			StartCoroutine (HitDisableState ());
+		{
+			if (canBeDisabledOnHit)
+			{
+				StopAllCoroutines ();
+				StartCoroutine (HitDisableState ());
+			}
+			StartCoroutine (FlashRed ());
+		}
 		else
 		{
 			ResetVars ();
@@ -59,10 +69,8 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 	private IEnumerator HitDisableState()
 	{
 		hitDisabled = true;
-		sr.color = Color.red;
 		//Debug.Log ("Stopped all Coroutines");
 		yield return new WaitForSeconds (0.2f);
-		sr.color = Color.white;
 		hitDisabled = false;
 
 		UnityEngine.Assertions.Assert.IsTrue(anim.HasState(0, Animator.StringToHash("default")));
@@ -71,6 +79,15 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 		ResetVars ();
 		StartCoroutine (DEFAULT_STATE);
 		yield return null;
+	}
+
+	private IEnumerator FlashRed()
+	{
+		sr.color = Color.red;
+		invincible = true;
+		yield return new WaitForSeconds (0.2f);
+		sr.color = Color.white;
+		invincible = false;
 	}
 
 	protected bool PlayerInRange()

@@ -47,7 +47,7 @@ public class MageAbility : PlayerAbility {
 		p.Init (transform.position, dir, projectileSprite, "Enemy", player, 5f, 1);
 		anim.SetBool ("Charge", false);
 		anim.SetTrigger ("Attack");
-		Invoke ("ResetAbility", 0.5f);
+		Invoke ("ResetAbility", 0.2f);
 	}
 
 	public override void AbilityHoldDown ()
