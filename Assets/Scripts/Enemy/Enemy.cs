@@ -40,7 +40,6 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 		if (invincible)
 			return;
 		// Stop all states
-		body.AddRandomImpulse ();
 		health -= amt;
 
 		if (health > 0)
@@ -68,6 +67,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 
 	private IEnumerator HitDisableState()
 	{
+		body.AddRandomImpulse ();
 		hitDisabled = true;
 		//Debug.Log ("Stopped all Coroutines");
 		yield return new WaitForSeconds (0.2f);
@@ -90,7 +90,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 		invincible = false;
 	}
 
-	protected bool PlayerInRange()
+	protected virtual bool PlayerInRange()
 	{
 		Collider2D[] cols = Physics2D.OverlapCircleAll (transform.position, playerDetectionRange);
 		foreach (Collider2D col in cols)
@@ -116,7 +116,6 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 		return null;
 	}
 
-	// implement object pooling
 	private void SpawnDeathProps()
 	{
 		foreach (Sprite sprite in deathProps)

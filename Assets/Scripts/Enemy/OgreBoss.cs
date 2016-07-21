@@ -87,6 +87,19 @@ public class OgreBoss : Enemy {
 		}
 	}
 
+	protected override bool PlayerInRange()
+	{
+		Collider2D[] cols = Physics2D.OverlapCircleAll (transform.position + hitboxOffset, playerDetectionRange);
+		foreach (Collider2D col in cols)
+		{
+			if (col.CompareTag ("Player"))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
 /*	void OnDrawGizmosSelected()
 	{
 		Gizmos.DrawWireSphere (transform.position + hitboxOffset, 1f);
@@ -106,8 +119,11 @@ public class OgreBoss : Enemy {
 
 		// Attack animation
 		anim.SetTrigger ("Attack");
+		body.Move (Vector2.zero);
 		yield return new WaitForSeconds (0.3f);	// wait for the animation to reach the attacking part
 		OnClubHitGround();
+		body.Move (Vector2.zero);
+
 
 		yield return new WaitForSeconds (attackTime);
 

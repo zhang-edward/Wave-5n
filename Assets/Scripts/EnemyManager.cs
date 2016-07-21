@@ -15,6 +15,7 @@ public class EnemyManager : MonoBehaviour {
 
 	void Start()
 	{
+		bossSpawn = map.bossSpawn.GetComponent<BossSpawn> ();
 	}
 
 	void Update()

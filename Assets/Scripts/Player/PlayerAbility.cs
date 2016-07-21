@@ -10,6 +10,9 @@ public abstract class PlayerAbility : MonoBehaviour {
 	protected EntityPhysics body;
 	protected Animator anim;
 
+	public int maxHealth;
+	public Sprite[] deathProps;
+
 	public RuntimeAnimatorController animatorController;
 
 	protected float abilityCooldown;
@@ -37,6 +40,7 @@ public abstract class PlayerAbility : MonoBehaviour {
 		this.player = player;
 		this.body = body;
 		this.anim = anim;
+		player.maxHealth = maxHealth;
 	}
 
 	void Update()

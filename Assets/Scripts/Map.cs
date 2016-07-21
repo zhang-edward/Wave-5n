@@ -7,7 +7,10 @@ public class Map : MonoBehaviour {
 	public GameObject terrainPrefab;
 	public Sprite[] terrainSprites;
 	public GameObject[] terrainObjectPrefabs;
+	public GameObject bossSpawnPrefab;
 	public GameObject borderPrefab;
+
+	public GameObject bossSpawn;
 
 	private SpriteRenderer[,] terrainSpriteMap = new SpriteRenderer[size, size];
 	private List<Vector2> openCells = new List<Vector2> ();
@@ -23,6 +26,7 @@ public class Map : MonoBehaviour {
 	private const int CORNER_TILE = 3;
 
 	public Texture2D terrainMap, collidersMap, objectsMap;
+	public Vector3 bossSpawnPosition;
 	public int[,] terrain = new int[size, size];
 	public int[,] colliders = new int[size, size];
 
@@ -39,6 +43,7 @@ public class Map : MonoBehaviour {
 		{
 			for (int y = 0; y < size; y ++)
 			{
+				// process terrainMap
 				int id = 0;
 				if (terrainMap.GetPixel (x, y).r == 1)
 				{
@@ -46,10 +51,12 @@ public class Map : MonoBehaviour {
 					openCells.Add (new Vector2 (x, y));
 				}
 				terrain [y, x] = id;
+				// process collidersMap
 				colliders [y, x] = (int)collidersMap.GetPixel (x, y).a;
+				// process objectsMap
 				if (Random.value < objectsMap.GetPixel(x, y).a)
 				{
-					SpawnRandomObject (x, y);
+					CreateRandomObject (x, y);
 				}
 			}
 		}
@@ -70,7 +77,7 @@ public class Map : MonoBehaviour {
 		}
 	}
 
-	private void SpawnRandomObject(int x, int y)
+	private void CreateRandomObject(int x, int y)
 	{
 		GameObject obj = Instantiate (terrainObjectPrefabs[Random.Range(0, terrainObjectPrefabs.Length)]);
 		obj.transform.SetParent (this.transform);
@@ -78,8 +85,18 @@ public class Map : MonoBehaviour {
 		terrainObjects.Add (obj);
 	}
 
+	private void CreateBossSpawn()
+	{
+		GameObject obj = Instantiate (bossSpawn);
+		obj.transform.SetParent (this.transform);
+		obj.transform.position = bossSpawnPosition;
+		terrainObjects.Add (obj);
+		bossSpawn = obj;
+	}
+
 	public void InitMap()
 	{
+		CreateBossSpawn ();
 		for (int x = 0; x < size; x++)
 		{
 			for (int y = 0; y < size; y++)

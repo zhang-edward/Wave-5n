@@ -19,10 +19,11 @@ public class KnightAbility : PlayerAbility {
 
 		abilityCooldown = cooldownTime;
 		killBox = true;
-		body.moveSpeed = 7;
+		body.moveSpeed = 8;
+		body.Move(player.dir);
 		player.isInvincible = true;
 		anim.SetBool ("Attacking", true);
-		Invoke ("ResetAbility", 0.6f);
+		Invoke ("ResetAbility", 0.5f);
 	}
 
 	public override void AbilityHoldDown ()

@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour {
 	public string selectedHero = "";
 	public GameObject player;
 
+	public ScoreManager scoreManager;
+
 	private bool didInitializeGameScene = false;
 
 	void Awake()

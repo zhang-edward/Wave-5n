@@ -12,6 +12,12 @@ public class Player : MonoBehaviour, IDamageable
 	public delegate void PlayerDamaged (int damage);
 	public event PlayerDamaged OnPlayerDamaged;
 
+	public delegate void PlayerHealed (int amt);
+	public event PlayerHealed OnPlayerHealed;
+
+	public delegate void PlayerDied();
+	public event PlayerDied OnPlayerDied;
+
 	[HideInInspector]
 	public float DEFAULT_SPEED;
 
@@ -30,7 +36,7 @@ public class Player : MonoBehaviour, IDamageable
 
 	[Header("Stats")]
 	public int maxHealth = 10;
-	private int health = 10;
+	public int health { get; private set; }
 	public bool isInvincible = false;
 
 	public float damagedCooldownTime = 1.0f;
@@ -41,11 +47,13 @@ public class Player : MonoBehaviour, IDamageable
 	public bool autoTargetEnabled = false;
 
 	[HideInInspector]
+	public ObjectPooler deathPropPool;
 	public ObjectPooler effectPool;
 	public Transform targetedEnemy;
 
 	void Start()
 	{
+		deathPropPool = ObjectPooler.GetObjectPooler ("DeathProp");
 		effectPool = ObjectPooler.GetObjectPooler ("Effect");
 		DEFAULT_SPEED = body.moveSpeed;
 		input.isInputEnabled = false;
@@ -56,6 +64,7 @@ public class Player : MonoBehaviour, IDamageable
 		ability = GetAbilityWithName (name);
 		anim.runtimeAnimatorController = ability.animatorController;
 		ability.Init (this, body, anim);
+		health = maxHealth;
 		OnPlayerInitialized ();
 		StartCoroutine (SpawnState ());
 	}
@@ -138,6 +147,12 @@ public class Player : MonoBehaviour, IDamageable
 
 		health -= amt;
 		// TODO: check if player is dead
+		if (health <= 0)
+		{
+			//OnPlayerDied ();
+			SpawnDeathProps ();
+			transform.parent.gameObject.SetActive (false);
+		}
 		OnPlayerDamaged(amt);
 	}
 
@@ -150,6 +165,7 @@ public class Player : MonoBehaviour, IDamageable
 		health += amt;
 		if (health >= maxHealth)
 			health = maxHealth;
+		OnPlayerHealed (amt);
 	}
 
 	void Update()
@@ -188,6 +204,25 @@ public class Player : MonoBehaviour, IDamageable
 		targetedEnemy = null;
 		autoTargetReticle.position = new Vector3 (-1, -1, -1);
 		autoTargetReticle.gameObject.SetActive (false);
+	}
+
+	private void SpawnDeathProps()
+	{
+		foreach (Sprite sprite in ability.deathProps)
+		{
+			//GameObject o = Instantiate (deathPropPrefab, transform.position, Quaternion.identity) as GameObject;
+			//o.transform.SetParent (this.transform);
+			GameObject o = deathPropPool.GetPooledObject();
+			o.GetComponent<TempObject> ().Init (
+				Quaternion.Euler(new Vector3(0, 0, 360f)),
+				this.transform.position,
+				sprite);
+			o.GetComponent<Rigidbody2D> ().AddTorque (Random.Range (-50f, 50f));
+			o.GetComponent<Rigidbody2D> ().AddForce (new Vector2(
+				Random.value - 0.5f,
+				Random.value - 0.5f),
+				ForceMode2D.Impulse);
+		}
 	}
 }
 

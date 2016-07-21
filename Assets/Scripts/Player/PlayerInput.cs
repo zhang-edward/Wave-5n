@@ -8,12 +8,19 @@ public class PlayerInput : MonoBehaviour {
 	private float timeInputHeldDown;
 
 	public bool isInputEnabled = true;	
+
+	public SwipeInputHandler swipeInputHandler;
 	private Vector3 calibratedAccelerometer;
-	private Vector3 accel = Input.acceleration;
+	private Vector3 accel;
+	public float tiltSensitivity = 10f;
 
 	void Start()
 	{
-		CalibrateAccelerometer ();
+#if UNITY_ANDROID
+		Invoke("CalibrateAccelerometer", 0.5f);
+		swipeInputHandler.enabled = true;
+		swipeInputHandler.OnSwipe += HandleSwipe;
+#endif
 	}
 
 	private void CalibrateAccelerometer()
@@ -36,26 +43,40 @@ public class PlayerInput : MonoBehaviour {
 			// get accelerometer input
 			accel = (Vector2)Vector3.Lerp(accel, Input.acceleration - calibratedAccelerometer, 10f * Time.deltaTime);
 
-			float x = Mathf.Abs(accel.x) < 0.005f ? 0 : accel.x;
-			float y = Mathf.Abs(accel.y) < 0.005f ? 0 : accel.y;
-			movementDir = new Vector2(x, y);
+			float x = Mathf.Abs(accel.x) < 0.01f ? 0 : accel.x;
+			float y = Mathf.Abs(accel.y) < 0.01f ? 0 : accel.y;
+			movementDir = new Vector2(x, y) * tiltSensitivity;
+			movementDir = Vector2.ClampMagnitude(movementDir, Mathf.Sqrt(2));
 #else
-			Vector3 mousePosition = Camera.main.ScreenToWorldPoint (Input.mousePosition);
+			/*Vector3 mousePosition = Camera.main.ScreenToWorldPoint (Input.mousePosition);
 
 			movementDir = (mousePosition - transform.position);
 			if (Vector2.Distance (mousePosition, transform.position) < 0.1f)
-				movementDir *= 0;
+				movementDir *= 0;*/
+			movementDir = new Vector3(Input.GetAxisRaw("Horizontal"),
+				Input.GetAxisRaw("Vertical"), 0);
 #endif
-			if (Input.GetMouseButton(0))
-			{
-				player.ability.AbilityHoldDown ();
-			}
-			if (Input.GetMouseButtonUp (0))
-			{
-				player.ability.Ability ();
-			}
-			player.dir = movementDir;
-			player.body.Move (movementDir.normalized);
+			player.body.Move (movementDir);
 		}
+	}
+
+	public void HandleAbilityInput()
+	{
+		if (Input.GetMouseButton(0))
+		{
+			Vector3 mousePos = Camera.main.ScreenToWorldPoint (Input.mousePosition);
+			player.dir = ((Vector2)(mousePos - transform.position)).normalized;
+			player.ability.AbilityHoldDown ();
+		}
+		if (Input.GetMouseButtonUp (0))
+		{
+			player.ability.Ability ();
+		}
+	}
+
+	public void HandleSwipe(Vector2 dir)
+	{
+		player.dir = dir.normalized;
+		player.ability.Ability ();
 	}
 }

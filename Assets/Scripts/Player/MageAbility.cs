@@ -37,17 +37,18 @@ public class MageAbility : PlayerAbility {
 		MageProjectile p = o.GetComponent<MageProjectile> ();
 
 		// use auto targeter
-		Vector3 dir;
+/*		Vector3 dir;
 		if (player.targetedEnemy != null)
 			dir = player.targetedEnemy.position - transform.position;
 		else
 			dir = player.dir;
-		player.StopAutoTarget();
+		player.StopAutoTarget();*/
+		Vector3 dir = player.dir;
 		
 		p.Init (transform.position, dir, projectileSprite, "Enemy", player, 5f, 1);
 		anim.SetBool ("Charge", false);
 		anim.SetTrigger ("Attack");
-		Invoke ("ResetAbility", 0.2f);
+		Invoke ("ResetAbility", 0.5f);
 	}
 
 	public override void AbilityHoldDown ()
@@ -57,7 +58,7 @@ public class MageAbility : PlayerAbility {
 		anim.SetBool ("Charge", true);
 		body.moveSpeed = 0.3f;
 
-		player.StartAutoTarget ();
+		//player.StartAutoTarget ();
 
 		//dirIndicator.gameObject.SetActive (true);
 		//float angle = Mathf.Atan2 (player.dir.y, player.dir.x) * Mathf.Rad2Deg;
