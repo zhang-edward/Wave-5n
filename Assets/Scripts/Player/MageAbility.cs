@@ -57,15 +57,6 @@ public class MageAbility : PlayerAbility {
 			return;
 		anim.SetBool ("Charge", true);
 		body.moveSpeed = 0.3f;
-
-		//player.StartAutoTarget ();
-
-		//dirIndicator.gameObject.SetActive (true);
-		//float angle = Mathf.Atan2 (player.dir.y, player.dir.x) * Mathf.Rad2Deg;
-		//Quaternion rot = Quaternion.Euler (0, 0, angle);
-		//dirIndicator.rotation = rot;
-		//dirIndicator.localPosition = shootPoint;
-		//dirIndicator.rotation = Quaternion.Lerp (dirIndicator.rotation, rot, 0.1f);
 	}
 
 	public override void ResetAbility()

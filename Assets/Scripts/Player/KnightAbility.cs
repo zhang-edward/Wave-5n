@@ -27,8 +27,7 @@ public class KnightAbility : PlayerAbility {
 	}
 
 	public override void AbilityHoldDown ()
-	{
-	}
+	{}
 
 	public override void ResetAbility()
 	{

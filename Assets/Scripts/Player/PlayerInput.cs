@@ -9,7 +9,7 @@ public class PlayerInput : MonoBehaviour {
 
 	public bool isInputEnabled = true;	
 
-	public SwipeInputHandler swipeInputHandler;
+	public TouchInputHandler touchInputHandler;
 	private Vector3 calibratedAccelerometer;
 	private Vector3 accel;
 	public float tiltSensitivity = 10f;
@@ -18,8 +18,9 @@ public class PlayerInput : MonoBehaviour {
 	{
 #if UNITY_ANDROID
 		Invoke("CalibrateAccelerometer", 0.5f);
-		swipeInputHandler.enabled = true;
-		swipeInputHandler.OnSwipe += HandleSwipe;
+		touchInputHandler.enabled = true;
+		touchInputHandler.OnSwipe += HandleSwipe;
+		touchInputHandler.OnTapHold += HandleTapHold;
 #endif
 	}
 
@@ -33,10 +34,7 @@ public class PlayerInput : MonoBehaviour {
 
 	void Update()
 	{
-		/*float vx = Input.GetAxisRaw ("Horizontal");
-		float vy = Input.GetAxisRaw ("Vertical");*/
 		Vector2 movementDir;
-
 		if (isInputEnabled)
 		{
 #if UNITY_ANDROID
@@ -57,10 +55,17 @@ public class PlayerInput : MonoBehaviour {
 				Input.GetAxisRaw("Vertical"), 0);
 #endif
 			player.body.Move (movementDir);
+
+			// Get mouse or touch input
+#if UNITY_ANDROID
+			touchInputHandler.ListenForTouchInput();
+#else
+			HandleMouseInput();
+#endif
 		}
 	}
 
-	public void HandleAbilityInput()
+	public void HandleMouseInput()
 	{
 		if (Input.GetMouseButton(0))
 		{
@@ -78,5 +83,10 @@ public class PlayerInput : MonoBehaviour {
 	{
 		player.dir = dir.normalized;
 		player.ability.Ability ();
+	}
+
+	public void HandleTapHold()
+	{
+		player.ability.AbilityHoldDown ();
 	}
 }
