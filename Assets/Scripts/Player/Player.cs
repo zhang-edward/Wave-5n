@@ -28,8 +28,8 @@ public class Player : MonoBehaviour, IDamageable
 	public Animator anim;
 
 	[Header("Player Ability")]
-	public PlayerAbility[] abilities;
-	public PlayerAbility ability;
+	public PlayerHero[] heroes;
+	public PlayerHero hero;
 
 	[Header("Player direction")]
 	public Vector2 dir;
@@ -61,9 +61,9 @@ public class Player : MonoBehaviour, IDamageable
 
 	public void Init(string name)
 	{
-		ability = GetAbilityWithName (name);
-		anim.runtimeAnimatorController = ability.animatorController;
-		ability.Init (this, body, anim);
+		hero = GetAbilityWithName (name);
+		anim.runtimeAnimatorController = hero.animatorController;
+		hero.Init (this, body, anim);
 		health = maxHealth;
 		OnPlayerInitialized ();
 		StartCoroutine (SpawnState ());
@@ -74,12 +74,12 @@ public class Player : MonoBehaviour, IDamageable
 	/// </summary>
 	/// <returns>The ability with name.</returns>
 	/// <param name="name">Name.</param>
-	private PlayerAbility GetAbilityWithName(string name)
+	private PlayerHero GetAbilityWithName(string name)
 	{
-		PlayerAbility answer = null;
-		foreach (PlayerAbility playerAbility in abilities)
+		PlayerHero answer = null;
+		foreach (PlayerHero playerAbility in heroes)
 		{
-			if (playerAbility.className.Equals (name))
+			if (playerAbility.heroName.Equals (name))
 				answer = playerAbility;
 			else
 				playerAbility.gameObject.SetActive (false);
@@ -208,7 +208,7 @@ public class Player : MonoBehaviour, IDamageable
 
 	private void SpawnDeathProps()
 	{
-		foreach (Sprite sprite in ability.deathProps)
+		foreach (Sprite sprite in hero.deathProps)
 		{
 			//GameObject o = Instantiate (deathPropPrefab, transform.position, Quaternion.identity) as GameObject;
 			//o.transform.SetParent (this.transform);

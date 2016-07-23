@@ -16,6 +16,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 	public bool hitDisabled{ get; private set; }
 
 	[Header("Enemy Properties")]
+	public bool isBoss = false;
 	public float playerDetectionRange = 2f;
 	public bool canBeDisabledOnHit = true;
 	public bool invincible = false;
@@ -25,7 +26,8 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 	public Sprite[] deathProps;
 	private ObjectPooler deathPropPool;
 
-	public int health;
+	public int maxHealth;
+	public int health { get; private set; }
 
 	public virtual void Init(Vector3 spawnLocation)
 	{

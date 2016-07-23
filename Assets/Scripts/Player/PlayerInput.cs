@@ -21,8 +21,11 @@ public class PlayerInput : MonoBehaviour {
 		touchInputHandler.enabled = true;
 		touchInputHandler.OnSwipe += HandleSwipe;
 		touchInputHandler.OnTapHold += HandleTapHold;
+		touchInputHandler.OnTapRelease += HandleTapRelease;
 #endif
 	}
+
+
 
 	private void CalibrateAccelerometer()
 	{
@@ -71,22 +74,35 @@ public class PlayerInput : MonoBehaviour {
 		{
 			Vector3 mousePos = Camera.main.ScreenToWorldPoint (Input.mousePosition);
 			player.dir = ((Vector2)(mousePos - transform.position)).normalized;
-			player.ability.AbilityHoldDown ();
+			player.hero.AbilityHoldDown ();
 		}
 		if (Input.GetMouseButtonUp (0))
 		{
-			player.ability.Ability ();
+			player.hero.Ability ();
 		}
 	}
 
-	public void HandleSwipe(Vector2 dir)
+	private void HandleSwipe(Vector2 dir)
 	{
-		player.dir = dir.normalized;
-		player.ability.Ability ();
+		if (player.hero.inputType == PlayerHero.InputType.Swipe)
+		{
+			player.dir = dir.normalized;
+			player.hero.Ability ();
+		}
 	}
 
-	public void HandleTapHold()
+	private void HandleTapHold(Vector3 pos)
 	{
-		player.ability.AbilityHoldDown ();
+		player.dir = pos - transform.position;
+		player.hero.AbilityHoldDown ();
+	}
+
+	private void HandleTapRelease (Vector3 pos)
+	{
+		if (player.hero.inputType == PlayerHero.InputType.Tap)
+		{
+			player.dir = pos - transform.position;
+			player.hero.Ability ();
+		}
 	}
 }

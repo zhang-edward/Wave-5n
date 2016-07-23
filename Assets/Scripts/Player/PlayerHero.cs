@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public abstract class PlayerAbility : MonoBehaviour {
+public abstract class PlayerHero : MonoBehaviour {
 
-	public Sprite icon;
-	public string className;
+	public Sprite primaryAbilityIcon;
+	public string heroName;
 
 	protected Player player;
 	protected EntityPhysics body;
@@ -16,20 +16,27 @@ public abstract class PlayerAbility : MonoBehaviour {
 	public RuntimeAnimatorController animatorController;
 
 	protected float abilityCooldown;
-
 	public float AbilityCooldown {
 		get {return abilityCooldown;}
 	}
 	public float cooldownTime;
 
+	public enum InputType {
+		Tap,
+		Swipe
+	}
+	public InputType inputType;
+
 	/// <summary>
-	/// Performs an ability on click
+	/// Performs an ability on swipe
 	/// </summary>
-	public abstract void Ability ();
+	public virtual void Ability ()
+	{}
 	/// <summary>
 	/// Performs an action on button held down
 	/// </summary>
-	public abstract void AbilityHoldDown();
+	public virtual void AbilityHoldDown()
+	{}
 	/// <summary>
 	/// Resets the ability.
 	/// </summary>

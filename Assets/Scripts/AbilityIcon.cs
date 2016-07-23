@@ -12,7 +12,7 @@ namespace UI
 		public Player player;
 
 		private bool playerWasInitialized = false;
-		private PlayerAbility playerAbility;
+		private PlayerHero playerAbility;
 
 		void Awake()
 		{
@@ -28,8 +28,8 @@ namespace UI
 		void Init()
 		{
 			playerWasInitialized = true;
-			playerAbility = player.ability;
-			image.sprite = playerAbility.icon;
+			playerAbility = player.hero;
+			image.sprite = playerAbility.primaryAbilityIcon;
 		}
 
 		void LateUpdate()

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MageAbility : PlayerAbility {
+public class MageHero : PlayerHero {
 
 	public ObjectPooler projectilePool;
 	public Sprite projectileSprite;

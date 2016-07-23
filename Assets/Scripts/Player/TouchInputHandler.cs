@@ -18,8 +18,11 @@ public class TouchInputHandler : MonoBehaviour {
 	public delegate void Swipe(Vector2 dir);
 	public event Swipe OnSwipe;
 
-	public delegate void TapHold();
+	public delegate void TapHold(Vector3 pos);
 	public event TapHold OnTapHold;
+
+	public delegate void TapRelease(Vector3 pos);
+	public event TapRelease OnTapRelease;
 
 
 	// Update is called once per frame
@@ -42,7 +45,7 @@ public class TouchInputHandler : MonoBehaviour {
 			else
 			{
 				if (OnTapHold != null)
-					OnTapHold ();
+					OnTapHold (Camera.main.ScreenToWorldPoint(touch.position));
 			}
 
 			// if touch began
@@ -62,7 +65,7 @@ public class TouchInputHandler : MonoBehaviour {
 
 				//Debug.Log ("swipe time: " + swipeTime + "\n" + 
 				//          "swipe dist: " + swipeDist);
-
+				OnTapRelease(Camera.main.ScreenToWorldPoint(touch.position));
 				couldBeSwipe = swipeTime < maxSwipeTime && swipeDist > minSwipeDist;
 				if (couldBeSwipe)
 				{

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class KnightAbility : PlayerAbility {
+public class KnightHero : PlayerHero {
 
 	public GameObject rushEffect;
 	public Sprite hitEffect;
@@ -47,11 +47,14 @@ public class KnightAbility : PlayerAbility {
 
 		Vector2 dir = player.dir;
 		float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+		TempObjectInfo info = new TempObjectInfo ();
+		info.isSelfDeactivating = false;
+		info.targetColor = new Color (1, 1, 1, 0.5f);
 		effect.Init (
 			Quaternion.Euler(new Vector3(0, 0, angle)),
 			transform.position,
 			animPlayer.anim.frames[0],
-			false
+			info
 		);
 
 		animPlayer.Play ();

@@ -6,11 +6,12 @@ using System.Collections;
 /// </summary>
 public class TempObject : MonoBehaviour {
 
-	public float targetAlpha = 1;
+	/*public float targetAlpha = 1;
 	public bool isSelfDeactivating = false;
 	public float fadeInTime = 0;
 	public float lifeTime = 0;
-	public float fadeOutTime = 0.1f;
+	public float fadeOutTime = 0.1f;*/
+	public TempObjectInfo info = new TempObjectInfo();
 
 	private SpriteRenderer sr;
 	void Awake () {
@@ -30,10 +31,10 @@ public class TempObject : MonoBehaviour {
 		transform.rotation = rotation;
 		transform.position = position;
 		sr.sprite = sprite;
-		this.isSelfDeactivating = isSelfDeactivating;
-		this.fadeInTime = fadeInTime;
-		this.lifeTime = lifeTime;
-		this.fadeOutTime = fadeOutTime;
+		info.isSelfDeactivating = isSelfDeactivating;
+		info.fadeInTime = fadeInTime;
+		info.lifeTime = lifeTime;
+		info.fadeOutTime = fadeOutTime;
 		StartCoroutine (FadeIn());
 	}
 
@@ -53,22 +54,44 @@ public class TempObject : MonoBehaviour {
 		StartCoroutine (FadeIn());
 	}
 
+	/// <summary>
+	/// Init the specified rotation, position and sprite, with <see cref="isSelfDeactivating/>, <see cref="fadeInTime/>,
+	/// <see cref="lifetime"/>, and <see cref="fadeOutTime/> set to their default values set in the Inspector
+	/// </summary>
+	/// <param name="rotation">Rotation.</param>
+	/// <param name="position">Position.</param>
+	/// <param name="sprite">Sprite.</param>
+	public void Init(Quaternion rotation, Vector3 position, Sprite sprite, TempObjectInfo tempObjectInfo)
+	{
+		gameObject.SetActive (true);
+		transform.rotation = rotation;
+		transform.position = position;
+		sr.sprite = sprite;
+		this.info = tempObjectInfo;
+		StartCoroutine (FadeIn());
+	}
+
 	private IEnumerator FadeIn()
 	{
-		sr.color = new Color (1, 1, 1, 0);
-		float t = 0;
-		while (t < fadeInTime)
+		// get the initial color, but set at alpha = 0
+		Color initialColor = new Color (info.targetColor.r, 
+			                     info.targetColor.b,
+			                     info.targetColor.g,
+			                     0);
+		sr.color = initialColor;
+		float t = 0;	// used for lerp
+		while (t < info.fadeInTime)
 		{
 			t += Time.deltaTime;
-			sr.color = Color.Lerp(new Color(1, 1, 1, 0), 
-				new Color(1, 1, 1, targetAlpha),
-				t / fadeInTime);
+			sr.color = Color.Lerp(initialColor, 
+				info.targetColor,
+				t / info.fadeInTime);
 			yield return null;
 		}
-		sr.color = new Color (1, 1, 1, targetAlpha);
-		if (isSelfDeactivating)
+		sr.color = info.targetColor;
+		if (info.isSelfDeactivating)
 		{
-			yield return new WaitForSeconds (lifeTime);
+			yield return new WaitForSeconds (info.lifeTime);
 			StartCoroutine (FadeOut ());
 		}
 	}
@@ -76,13 +99,17 @@ public class TempObject : MonoBehaviour {
 	private IEnumerator FadeOut()
 	{
 		Color initialColor = sr.color;
+		Color finalColor = new Color (info.targetColor.r,
+			                   info.targetColor.b,
+			                   info.targetColor.g,
+			                   0);
 		float t = 0;
-		while (t < fadeOutTime)
+		while (t < info.fadeOutTime)
 		{
 			t += Time.deltaTime;
 			sr.color = Color.Lerp(initialColor, 
-				new Color(1, 1, 1, 0),
-				t / fadeOutTime);
+				finalColor,
+				t / info.fadeOutTime);
 			yield return null;
 		}
 		gameObject.SetActive (false);

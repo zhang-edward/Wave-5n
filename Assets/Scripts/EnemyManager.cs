@@ -6,6 +6,8 @@ public class EnemyManager : MonoBehaviour {
 	public Player player;
 	public Map map;
 
+	public ObjectPooler enemyHealthBarPool;
+
 	private List<Enemy> enemies = new List<Enemy>();
 	public GameObject[] enemyPrefabs;
 	public GameObject[] bossPrefabs;
@@ -46,6 +48,8 @@ public class EnemyManager : MonoBehaviour {
 			o.transform.position = new Vector3 (Random.Range (0, 10), -4);
 
 		Enemy e = o.GetComponentInChildren<Enemy> ();
+		//EnemyHealthBar healthBar = enemyHealthBarPool.GetPooledObject ().GetComponent<EnemyHealthBar>();
+		//healthBar.enemy = e;
 
 		e.Init (randOpenCell);
 		e.player = player.transform;
