@@ -34,7 +34,7 @@ public class EnemyHealthBar : MonoBehaviour {
 		slider.value = enemy.health;
 		SetFillAreaColor ();
 		if (movesWithEnemy)
-			rect.anchoredPosition = enemy.transform.position + new Vector3(0, 0.5f);
+			rect.anchoredPosition = enemy.transform.position + enemy.healthBarOffset;
 		if (!enemy.gameObject.activeInHierarchy)
 			gameObject.SetActive (false);
 	}

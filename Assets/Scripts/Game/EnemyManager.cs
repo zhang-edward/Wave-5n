@@ -13,7 +13,7 @@ public class EnemyManager : MonoBehaviour {
 
 	public EnemyHealthBar bossHealthBar;
 	private BossSpawn bossSpawn;
-	private float bossTimer = 10f;
+	private float bossTimer = 0f;
 
 	void Start()
 	{

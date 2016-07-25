@@ -32,6 +32,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 	[Header("Enemy Stats")]
 	public int maxHealth;
 	public int health { get; private set; }
+	public Vector3 healthBarOffset;
 
 	public virtual void Init(Vector3 spawnLocation)
 	{

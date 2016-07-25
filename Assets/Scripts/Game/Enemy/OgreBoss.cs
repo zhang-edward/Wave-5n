@@ -41,10 +41,10 @@ public class OgreBoss : Enemy {
 			hitboxOffset = new Vector3 (clubHitboxOffset.x, clubHitboxOffset.y);
 	}
 		
-	/*void OnDrawGizmosSelected()
+	void OnDrawGizmosSelected()
 	{
-		Gizmos.DrawWireSphere (transform.position, 2f);
-	}*/
+		Gizmos.DrawWireSphere (transform.position + clubHitboxOffset, 2f);
+	}
 
 	protected override IEnumerator MoveState()
 	{

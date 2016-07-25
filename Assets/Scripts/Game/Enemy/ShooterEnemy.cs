@@ -15,6 +15,7 @@ public class ShooterEnemy : Enemy {
 
 	private ObjectPooler projectilePool;
 	public Sprite projectileSprite;
+	public Transform shootPoint;
 
 	public float projectileSpeed = 5;
 	public float chargeTime = 0.5f;
@@ -124,7 +125,7 @@ public class ShooterEnemy : Enemy {
 		anim.SetTrigger ("Attack");
 		Projectile p = projectilePool.GetPooledObject ().GetComponent<Projectile> ();
 		UnityEngine.Assertions.Assert.IsNotNull (p);
-		p.Init (transform.position, dir, projectileSprite, "Player", projectileSpeed, 1);
+		p.Init (shootPoint.position, dir, projectileSprite, "Player", projectileSpeed, 1);
 	}
 
 	void OnTriggerEnter2D(Collider2D col)

@@ -4,6 +4,7 @@ using System.Collections;
 public class SortingLayerControl : MonoBehaviour {
 
 	public bool updating = false;
+	public bool isPivotInMiddle = true;
 	SpriteRenderer sr;
 
 	// Use this for initialization
@@ -14,17 +15,25 @@ public class SortingLayerControl : MonoBehaviour {
 	void Start() 
 	{
 		if (updating)
-			StartCoroutine ("SetSortingOrder");
+			StartCoroutine (SetSortingOrderRepeating());
 		else
-			sr.sortingOrder = (int)(transform.position.y * -100);
+			SetSortingOrder ();
 	}
 
-	private IEnumerator SetSortingOrder()
+	private IEnumerator SetSortingOrderRepeating()
 	{
 		while (true)
 		{
-			sr.sortingOrder = (int)(transform.position.y * -100);
+			SetSortingOrder ();
 			yield return null;
 		}
+	}
+
+	private void SetSortingOrder()
+	{
+		float offset = 0;
+		if (isPivotInMiddle)
+			offset = sr.bounds.size.y / 2;
+		sr.sortingOrder = (int)((transform.position.y - offset) * -100);
 	}
 }
