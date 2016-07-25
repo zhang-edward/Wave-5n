@@ -4,7 +4,7 @@ using System.Collections;
 
 namespace UI
 {
-	public class HealthIndicator : MonoBehaviour
+	public class UIHeart : MonoBehaviour
 	{
 		public bool empty { get; private set; }
 

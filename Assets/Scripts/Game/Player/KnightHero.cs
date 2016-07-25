@@ -3,11 +3,12 @@ using System.Collections;
 
 public class KnightHero : PlayerHero {
 
+	[Header("Class-Specific")]
 	public GameObject rushEffect;
 	public Sprite hitEffect;
 
-	public bool killBox = false;
-	public int damage = 1;
+	private bool killBox = false;
+	//public int damage = 1;
 
 	public override void Ability()
 	{

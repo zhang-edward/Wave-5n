@@ -3,6 +3,7 @@ using System.Collections;
 
 public class MageHero : PlayerHero {
 
+	[Header("Class-Specific")]
 	public ObjectPooler projectilePool;
 	public Sprite projectileSprite;
 
@@ -45,7 +46,7 @@ public class MageHero : PlayerHero {
 		player.StopAutoTarget();*/
 		Vector3 dir = player.dir;
 		
-		p.Init (transform.position, dir, projectileSprite, "Enemy", player, 5f, 1);
+		p.Init (transform.position, dir, projectileSprite, "Enemy", player, 5f, damage);
 		anim.SetBool ("Charge", false);
 		anim.SetTrigger ("Attack");
 		Invoke ("ResetAbility", 0.5f);

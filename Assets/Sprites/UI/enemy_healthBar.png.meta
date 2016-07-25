@@ -1,11 +1,12 @@
 fileFormatVersion: 2
 guid: e0f83cc24914848e994e8a7eeef73dea
-timeCreated: 1469132591
+timeCreated: 1469472327
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
     21300000: enemy_healthBar_0
     21300002: enemy_healthBar_1
+    21300004: enemy_healthBar_2
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -66,13 +67,24 @@ TextureImporter:
     - name: enemy_healthBar_1
       rect:
         serializedVersion: 2
-        x: 18
-        y: 10
-        width: 12
-        height: 3
+        x: 16
+        y: 0
+        width: 16
+        height: 16
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: enemy_healthBar_2
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 0
+        width: 48
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 3, y: 3, z: 3, w: 3}
       outline: []
     outline: []
   spritePackingTag: 

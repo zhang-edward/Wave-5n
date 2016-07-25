@@ -12,10 +12,10 @@ public class OgreBoss : Enemy {
 
 	private bool attacking = false;
 
+	[Header("OgreBoss Properties")]
 	public Vector3 clubHitboxOffset;
 	private Vector3 hitboxOffset;
 
-	[Header("OgreBoss Properties")]
 	public float chargeTime = 0.5f;
 	public float attackTime = 0.2f;
 	public float cooldownTime = 1.0f;
@@ -144,19 +144,6 @@ public class OgreBoss : Enemy {
 		body.gameObject.layer = DEFAULT_LAYER;
 		body.moveSpeed = DEFAULT_SPEED;
 		attacking = false;
-	}
-
-	protected override IEnumerator SpawnState (Vector3 target)
-	{
-		body.transform.position = target;
-		UnityEngine.Assertions.Assert.IsTrue(anim.HasState(0, Animator.StringToHash("Spawn")));
-		anim.CrossFade ("Spawn", 0f);
-
-		yield return new WaitForEndOfFrame ();		// wait for the animation state to update before continuing
-		while (anim.GetCurrentAnimatorStateInfo (0).IsName ("Spawn"))
-			yield return null;
-
-		StartCoroutine (DEFAULT_STATE);
 	}
 
 	private void OnClubHitGround()

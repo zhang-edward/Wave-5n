@@ -4,24 +4,27 @@ using Utils;
 
 public class Map : MonoBehaviour {
 
-	public GameObject terrainPrefab;
+/*	public GameObject terrainPrefab;
 	public Sprite[] terrainSprites;
 	public GameObject[] terrainObjectPrefabs;
 	public GameObject bossSpawnPrefab;
-	public GameObject borderPrefab;
+	public GameObject borderPrefab;*/
+	public GameObject terrainPrefab;
+	public MapInfo info;
 
 	public GameObject bossSpawn;
 
 	private SpriteRenderer[,] terrainSpriteMap = new SpriteRenderer[size, size];
-	private List<Vector2> openCells = new List<Vector2> ();
 	private List<GameObject> terrainObjects = new List<GameObject>();
 
+	private List<Vector2> openCells = new List<Vector2> ();	// for use in EnemyManager
 	public List<Vector2> OpenCells {
 		get { return openCells; }
 	}
 
 	public const int size = 20;
 
+	// ids
 	private const int EDGE_TILE = 2;
 	private const int CORNER_TILE = 3;
 
@@ -30,7 +33,7 @@ public class Map : MonoBehaviour {
 	public int[,] terrain = new int[size, size];
 	public int[,] colliders = new int[size, size];
 
-	void Awake()
+	void Start()
 	{
 		GetMaps ();
 		InitSpriteMap ();
@@ -48,7 +51,7 @@ public class Map : MonoBehaviour {
 				if (terrainMap.GetPixel (x, y).r == 1)
 				{
 					id = 1;
-					openCells.Add (new Vector2 (x, y));
+					openCells.Add (new Vector2 (x, y));	// add to a list of empty cells
 				}
 				terrain [y, x] = id;
 				// process collidersMap
@@ -79,7 +82,8 @@ public class Map : MonoBehaviour {
 
 	private void CreateRandomObject(int x, int y)
 	{
-		GameObject obj = Instantiate (terrainObjectPrefabs[Random.Range(0, terrainObjectPrefabs.Length)]);
+		// get a random object
+		GameObject obj = Instantiate (info.terrainObjectPrefabs[Random.Range(0, info.terrainObjectPrefabs.Length)]);
 		obj.transform.SetParent (this.transform);
 		obj.transform.position = new Vector2 (x, y);
 		terrainObjects.Add (obj);
@@ -87,7 +91,7 @@ public class Map : MonoBehaviour {
 
 	private void CreateBossSpawn()
 	{
-		GameObject obj = Instantiate (bossSpawn);
+		GameObject obj = Instantiate (info.bossSpawnPrefab);
 		obj.transform.SetParent (this.transform);
 		obj.transform.position = bossSpawnPosition;
 		terrainObjects.Add (obj);
@@ -101,27 +105,28 @@ public class Map : MonoBehaviour {
 		{
 			for (int y = 0; y < size; y++)
 			{
+				// get terrain id
 				int id = terrain [y, x];
 				SpriteRenderer sr = terrainSpriteMap [y, x];
-
+				// reset some variables
 				sr.flipX = false;
 				sr.flipY = false;
 				sr.transform.rotation = Quaternion.identity;
-
+				// process id
 				if (id <= 1)
 				{
-					sr.sprite = terrainSprites [terrain [y, x]];
+					// get sprites
+					sr.sprite = info.terrainSprites [terrain [y, x]];
 					if (colliders[y, x] == 1)
 					{
-						GameObject o = Instantiate (borderPrefab);
+						GameObject o = Instantiate (info.borderPrefab);
 						o.transform.SetParent (this.transform);
 						o.transform.position = new Vector2 (x, y);
 					}
 				}
+				// if id > 1, the terrain is an edge or corner tile
 				else
-				{
-					sr.sprite = terrainSprites [EvaluateEdgeId (id, ref sr)];
-				}
+					sr.sprite = info.terrainSprites [EvaluateEdgeId (id, ref sr)];
 			}
 		}
 	}

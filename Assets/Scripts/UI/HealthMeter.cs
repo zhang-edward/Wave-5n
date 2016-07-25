@@ -6,7 +6,7 @@ namespace UI
 	public class HealthMeter : MonoBehaviour {
 
 		public Player player;
-		public HealthIndicator[] healthIndicators;
+		public UIHeart[] healthIndicators;
 		public GameObject healthIndicatorPrefab;
 
 		void Start()
@@ -18,18 +18,18 @@ namespace UI
 
 		public void Init () 
 		{
-			healthIndicators = new HealthIndicator[player.maxHealth];
+			healthIndicators = new UIHeart[player.maxHealth];
 			for(int i = 0; i < player.maxHealth; i ++)
 			{
 				GameObject obj = Instantiate (healthIndicatorPrefab);
 				obj.transform.SetParent (this.transform, false);
-				healthIndicators [i] = obj.GetComponent<HealthIndicator> ();
+				healthIndicators [i] = obj.GetComponent<UIHeart> ();
 			}
 		}
 
 		public void UpdateHealthMeter(int amt)
 		{
-			foreach (HealthIndicator indicator in healthIndicators)
+			foreach (UIHeart indicator in healthIndicators)
 				indicator.SetEmpty();
 			for (int i = 0; i < player.health; i ++)
 			{

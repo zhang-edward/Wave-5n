@@ -11,6 +11,8 @@ public abstract class PlayerHero : MonoBehaviour {
 	protected Animator anim;
 
 	public int maxHealth;
+	public int damage;
+
 	public Sprite[] deathProps;
 
 	public RuntimeAnimatorController animatorController;

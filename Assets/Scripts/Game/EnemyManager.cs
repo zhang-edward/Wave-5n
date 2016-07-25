@@ -9,10 +9,10 @@ public class EnemyManager : MonoBehaviour {
 	public ObjectPooler enemyHealthBarPool;
 
 	private List<Enemy> enemies = new List<Enemy>();
-	public GameObject[] enemyPrefabs;
-	public GameObject[] bossPrefabs;
+	public EnemyManagerInfo info;
 
-	public BossSpawn bossSpawn;
+	public EnemyHealthBar bossHealthBar;
+	private BossSpawn bossSpawn;
 	private float bossTimer = 10f;
 
 	void Start()
@@ -40,7 +40,7 @@ public class EnemyManager : MonoBehaviour {
 	public void SpawnEnemy()
 	{
 		Vector3 randOpenCell = (Vector3)map.OpenCells [Random.Range (0, map.OpenCells.Count)];
-		GameObject o = Instantiate (enemyPrefabs [Random.Range (0, enemyPrefabs.Length)]);
+		GameObject o = Instantiate (info.enemyPrefabs [Random.Range (0, info.enemyPrefabs.Length)]);
 		o.transform.SetParent (transform);
 		if (Random.value < 0.5f)
 			o.transform.position = new Vector3 (Random.Range (0, 10), Map.size + 4);
@@ -48,8 +48,9 @@ public class EnemyManager : MonoBehaviour {
 			o.transform.position = new Vector3 (Random.Range (0, 10), -4);
 
 		Enemy e = o.GetComponentInChildren<Enemy> ();
-		//EnemyHealthBar healthBar = enemyHealthBarPool.GetPooledObject ().GetComponent<EnemyHealthBar>();
-		//healthBar.enemy = e;
+		EnemyHealthBar healthBar = enemyHealthBarPool.GetPooledObject ().GetComponent<EnemyHealthBar>();
+		healthBar.Init (e);
+		healthBar.player = player;
 
 		e.Init (randOpenCell);
 		e.player = player.transform;
@@ -59,11 +60,12 @@ public class EnemyManager : MonoBehaviour {
 	public void SpawnBoss()
 	{
 		bossSpawn.PlayAnimation ();
-		GameObject o = Instantiate (bossPrefabs [Random.Range (0, bossPrefabs.Length)]);
+		GameObject o = Instantiate (info.bossPrefabs [Random.Range (0, info.bossPrefabs.Length)]);
 		o.transform.SetParent (transform);
 		Enemy e = o.GetComponentInChildren<Enemy> ();
 		e.Init (bossSpawn.transform.position);
 		e.player = player.transform;
+		bossHealthBar.Init (e);
 		//enemies.Add (e);
 	}
 
