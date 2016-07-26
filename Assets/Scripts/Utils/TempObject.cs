@@ -35,6 +35,7 @@ public class TempObject : MonoBehaviour {
 		info.fadeInTime = fadeInTime;
 		info.lifeTime = lifeTime;
 		info.fadeOutTime = fadeOutTime;
+		info.targetColor = new Color (1, 1, 1, 1);
 		StartCoroutine (FadeIn());
 	}
 

@@ -52,7 +52,7 @@ public abstract class PlayerHero : MonoBehaviour {
 		player.maxHealth = maxHealth;
 	}
 
-	void Update()
+	protected virtual void Update()
 	{
 		if (abilityCooldown > 0)
 			abilityCooldown -= Time.deltaTime;
