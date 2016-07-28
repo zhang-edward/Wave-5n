@@ -6,6 +6,9 @@ public class MageProjectile : Projectile
 	private Player player;
 	private bool outsideMapBounds;
 
+	[Header("Audio")]
+	public AudioClip onExplodeSound;
+
 	public void Init(Vector3 pos, Vector2 dir, Sprite sprite, string target, Player player, float speed = 4, int damage = 1)
 	{
 		base.Init (pos, dir, sprite, target, speed, damage);
@@ -23,6 +26,7 @@ public class MageProjectile : Projectile
 		//Debug.Log (col.tag);
 		if (col.CompareTag(target) && !outsideMapBounds)
 		{
+			SoundManager.instance.RandomizeSFX (onExplodeSound);
 //			Debug.Log (col.gameObject);
 			Collider2D[] cols = Physics2D.OverlapCircleAll (transform.position, 1.5f);
 			foreach (Collider2D colChild in cols)

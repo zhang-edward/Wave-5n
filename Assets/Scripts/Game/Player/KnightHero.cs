@@ -8,7 +8,10 @@ public class KnightHero : PlayerHero {
 	public Sprite hitEffect;
 
 	private bool killBox = false;
-	//public int damage = 1;
+
+	[Header("Audio")]
+	public AudioClip rushSound;
+	public AudioClip[] hitSounds;
 
 	public override void Ability()
 	{
@@ -24,6 +27,7 @@ public class KnightHero : PlayerHero {
 		body.Move(player.dir);
 		player.isInvincible = true;
 		anim.SetBool ("Attacking", true);
+		SoundManager.instance.RandomizeSFX (rushSound);
 		Invoke ("ResetAbility", 0.5f);
 	}
 
@@ -82,6 +86,7 @@ public class KnightHero : PlayerHero {
 						true,
 						0);
 
+					SoundManager.instance.RandomizeSFX (hitSounds[Random.Range(0, hitSounds.Length)]);
 					player.TriggerOnEnemyDamagedEvent(damage);
 				}
 			}

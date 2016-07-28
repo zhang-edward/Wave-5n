@@ -22,6 +22,9 @@ public class ShooterEnemy : Enemy {
 	public float attackTime = 0.2f;
 	public float cooldownTime = 1.0f;
 
+	[Header("Audio")]
+	public AudioClip shootSound;
+
 	public override void Init(Vector3 spawnLocation)
 	{
 		base.Init (spawnLocation);
@@ -126,6 +129,7 @@ public class ShooterEnemy : Enemy {
 		Projectile p = projectilePool.GetPooledObject ().GetComponent<Projectile> ();
 		UnityEngine.Assertions.Assert.IsNotNull (p);
 		p.Init (shootPoint.position, dir, projectileSprite, "Player", projectileSpeed, 1);
+		SoundManager.instance.RandomizeSFX (shootSound);
 	}
 
 	void OnTriggerEnter2D(Collider2D col)

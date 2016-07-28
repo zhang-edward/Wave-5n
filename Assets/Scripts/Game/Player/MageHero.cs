@@ -7,6 +7,8 @@ public class MageHero : PlayerHero {
 	public ObjectPooler projectilePool;
 	public Sprite projectileSprite;
 
+	[Header("Audio")]
+	public AudioClip shootSound;
 	//public Transform dirIndicator;
 
 	//private Vector3 shootPoint;
@@ -31,6 +33,7 @@ public class MageHero : PlayerHero {
 		// if cooldown has not finished
 		if (abilityCooldown > 0)
 			return;
+		SoundManager.instance.RandomizeSFX (shootSound);
 
 		abilityCooldown = cooldownTime;
 

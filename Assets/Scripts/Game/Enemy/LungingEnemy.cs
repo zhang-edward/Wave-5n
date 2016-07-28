@@ -18,6 +18,9 @@ public class LungingEnemy : Enemy {
 	public float cooldownTime = 1.0f;
 	public float lungeSpeed = 10.0f;
 
+	[Header("Audio")]
+	public AudioClip swingSound;
+
 	// Update is called once per frame
 	void Update () {
 		if (attackTimer > 0)
@@ -120,6 +123,7 @@ public class LungingEnemy : Enemy {
 		attacking = true;
 
 		anim.SetTrigger ("Attack");
+		SoundManager.instance.RandomizeSFX (swingSound);
 
 		body.moveSpeed = lungeSpeed;
 		body.Move (dir.normalized);

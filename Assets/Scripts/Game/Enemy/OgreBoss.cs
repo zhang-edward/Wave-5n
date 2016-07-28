@@ -25,6 +25,9 @@ public class OgreBoss : Enemy {
 	public SimpleAnimation dustAnim;
 	private ObjectPooler effectPool;
 
+	[Header("Audio")]
+	public AudioClip[] clubSmashSounds;
+
 	void Start()
 	{
 		effectPool = ObjectPooler.GetObjectPooler ("Effect");
@@ -148,6 +151,7 @@ public class OgreBoss : Enemy {
 
 	private void OnClubHitGround()
 	{
+		SoundManager.instance.RandomizeSFX (clubSmashSounds [Random.Range (0, clubSmashSounds.Length)]);
 		Collider2D[] cols = Physics2D.OverlapCircleAll (hitboxOffset + transform.position, 1f);
 		foreach (Collider2D col in cols)
 		{
