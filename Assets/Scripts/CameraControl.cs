@@ -11,8 +11,7 @@ public class CameraControl : MonoBehaviour {
 	void Awake()
 	{
 		cam.orthographicSize = 5;
-		float pos = Map.size / 2 - 0.5f;
-		transform.position = new Vector2 (pos, pos);
+		transform.position = player.transform.position;
 
 		float height = cam.orthographicSize * 2.0f;
 		float width = height * Screen.width / Screen.height;

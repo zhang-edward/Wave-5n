@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 
 public class EnemyManager : MonoBehaviour {
+
+	private const float DIFFICULTY_CURVE = 3.5f;
 
 	public Player player;
 	public Map map;
@@ -13,27 +16,34 @@ public class EnemyManager : MonoBehaviour {
 
 	public EnemyHealthBar bossHealthBar;
 	private BossSpawn bossSpawn;
-	private float bossTimer = 0f;
+	private int waveNumber = 0;
 
 	void Start()
 	{
 		bossSpawn = map.bossSpawn.GetComponent<BossSpawn> ();
+		player.OnPlayerInitialized += InitSpawnEnemies;
 	}
 
-	void Update()
+	private void InitSpawnEnemies()
 	{
-		if (NumAliveEnemies() < 5)
+		StartCoroutine (StartSpawningEnemies ());
+	}
+
+	private IEnumerator StartSpawningEnemies()
+	{
+		while (true)
 		{
-			int numEnemies = Random.Range (5, 15);
-			for (int i = 0; i < numEnemies; i++)
-				SpawnEnemy ();
-		}
-		if (bossTimer > 0)
-			bossTimer -= Time.deltaTime;
-		else
-		{
-			SpawnBoss ();
-			bossTimer = 100f;
+			if (NumAliveEnemies() < 3)
+			{
+				waveNumber++;
+				int numToSpawn = Mathf.RoundToInt (DIFFICULTY_CURVE * Mathf.Log (waveNumber) + 5);
+				for (int i = 0; i < numToSpawn; i++)
+					SpawnEnemy ();
+				// every 5 waves, spawn a boss
+				if (waveNumber % 5 == 0)
+					SpawnBoss ();
+			}
+			yield return null;
 		}
 	}
 

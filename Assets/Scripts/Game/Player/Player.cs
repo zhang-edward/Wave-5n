@@ -65,6 +65,8 @@ public class Player : MonoBehaviour, IDamageable
 		anim.runtimeAnimatorController = hero.animatorController;
 		hero.Init (this, body, anim);
 		health = maxHealth;
+
+		UnityEngine.Assertions.Assert.IsNotNull (OnPlayerInitialized);	// simple assertion check
 		OnPlayerInitialized ();
 		StartCoroutine (SpawnState ());
 	}

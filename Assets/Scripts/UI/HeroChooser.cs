@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class ChooseHeroScript : MonoBehaviour {
+public class HeroChooser : MonoBehaviour {
 
 	public string hero;
 	private Button button;
@@ -20,6 +20,6 @@ public class ChooseHeroScript : MonoBehaviour {
 	private void OnClick()
 	{
 		GameManager.instance.SelectHero (hero);
-		GameManager.instance.GoToGameScene ();
+		GameManager.instance.StartGameMode ();
 	}
 }

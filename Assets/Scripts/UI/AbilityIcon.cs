@@ -17,6 +17,10 @@ namespace UI
 		void Awake()
 		{
 			image = GetComponent<Image> ();
+		}
+
+		void OnEnabled()
+		{
 			player.OnPlayerInitialized += Init;
 		}
 
