@@ -47,7 +47,7 @@ public class PlayerInput : MonoBehaviour {
 			float x = Mathf.Abs(accel.x) < 0.01f ? 0 : accel.x;
 			float y = Mathf.Abs(accel.y) < 0.01f ? 0 : accel.y;
 			movementDir = new Vector2(x, y) * tiltSensitivity;
-			movementDir = Vector2.ClampMagnitude(movementDir, Mathf.Sqrt(2));
+			movementDir = Vector2.ClampMagnitude(movementDir, 2);
 #else
 			/*Vector3 mousePosition = Camera.main.ScreenToWorldPoint (Input.mousePosition);
 

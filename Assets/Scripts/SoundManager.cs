@@ -11,6 +11,9 @@ public class SoundManager : MonoBehaviour {
 	private float lowPitchRange = 0.95f;
 	private float highPitchRange = 1.05f;
 
+	// temp! store in mapinfo later
+	public AudioClip musicLoop;
+
 	void Awake()
 	{
 		// make this a singleton
@@ -18,11 +21,15 @@ public class SoundManager : MonoBehaviour {
 			instance = this;
 		else if (instance != this)
 			Destroy (this.gameObject);
-		DontDestroyOnLoad (this);
-
+		
 		ui = GetComponent<AudioSource> ();
 		music = GameObject.Find ("Music").GetComponent<AudioSource> ();
 		sfx = GameObject.Find ("SFX").GetComponent<AudioSource> ();
+	}
+
+	void Start()
+	{
+		PlayMusicLoop (musicLoop);
 	}
 
 	public void RandomizeSFX(AudioClip clip)
@@ -42,5 +49,25 @@ public class SoundManager : MonoBehaviour {
 	{
 		ui.clip = clip;
 		ui.Play ();
+	}
+
+	public void PlayMusicLoop(AudioClip clip, AudioClip intro = null)
+	{
+		StartCoroutine (MusicLoop (clip, intro));
+	}
+
+	private IEnumerator MusicLoop(AudioClip clip, AudioClip intro = null)
+	{
+		if (intro != null)
+		{
+			music.clip = intro;
+			music.Play ();
+		}
+		while (music.isPlaying)
+			yield return null;
+		music.loop = true;
+		music.clip = clip;
+		music.Play ();
+
 	}
 }

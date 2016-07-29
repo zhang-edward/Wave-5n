@@ -11,16 +11,24 @@ public class NinjaHero : PlayerHero {
 	public bool smokeScreened = false;
 	//public int damage = 1;
 
-	protected override void Update()
+	public override void Init(Player player, EntityPhysics body, Animator anim)
 	{
-		base.Update ();
-		//anim.SetBool ("SmokeScreened", smokeScreened);
-		if (Vector3.Distance (transform.position, smokeBomb.transform.position) < smokeBombRange &&
-			smokeBomb.gameObject.activeInHierarchy)
-			smokeScreened = true;
-		else
-			smokeScreened = false;
-		player.isInvincible = smokeScreened;
+		base.Init (player, body, anim);
+		StartCoroutine (UpdateProperties());
+	}
+
+	private IEnumerator UpdateProperties()
+	{
+		while (true)
+		{
+			if (Vector3.Distance (transform.position, smokeBomb.transform.position) < smokeBombRange &&
+				smokeBomb.gameObject.activeInHierarchy)
+				smokeScreened = true;
+			else
+				smokeScreened = false;
+			player.isInvincible = smokeScreened;
+			yield return null;
+		}
 	}
 
 	public override void Ability()

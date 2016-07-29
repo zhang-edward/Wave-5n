@@ -28,6 +28,12 @@ public class GameManager : MonoBehaviour {
 		{
 			InitGameScene ();	
 		}
+
+		if (Input.GetKeyDown (KeyCode.R))
+		{
+			SceneManager.LoadScene (SceneManager.GetActiveScene ().name);
+			didInitializeGameScene = false;
+		}
 	}
 
 	public void GoToGameScene()
