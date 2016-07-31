@@ -183,4 +183,9 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 	{
 		health += amt;
 	}
+
+	void OnDisable()
+	{
+		Destroy (gameObject, 1.0f);
+	}
 }

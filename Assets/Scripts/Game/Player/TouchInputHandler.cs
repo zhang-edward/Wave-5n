@@ -65,7 +65,6 @@ public class TouchInputHandler : MonoBehaviour {
 
 				//Debug.Log ("swipe time: " + swipeTime + "\n" + 
 				//          "swipe dist: " + swipeDist);
-				OnTapRelease(Camera.main.ScreenToWorldPoint(touch.position));
 				couldBeSwipe = swipeTime < maxSwipeTime && swipeDist > minSwipeDist;
 				if (couldBeSwipe)
 				{
@@ -73,6 +72,9 @@ public class TouchInputHandler : MonoBehaviour {
 					couldBeSwipe = false;
 					OnSwipe (swipeDir);
 				}
+				else
+					OnTapRelease(Camera.main.ScreenToWorldPoint(touch.position));
+				
 				break;
 			}
 		}

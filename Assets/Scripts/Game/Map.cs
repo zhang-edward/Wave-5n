@@ -100,6 +100,7 @@ public class Map : MonoBehaviour {
 
 	public void InitMap()
 	{
+		SoundManager.instance.PlayMusicLoop (info.musicLoop, info.musicIntro);
 		CreateBossSpawn ();
 		for (int x = 0; x < size; x++)
 		{
@@ -202,4 +203,15 @@ public class Map : MonoBehaviour {
 		return sum + 1;
 	}
 
+	public bool WithinOpenCells(Vector3 pos)
+	{
+		Vector3 roundedPos = new Vector3 (Mathf.RoundToInt (pos.x),
+			                     Mathf.RoundToInt (pos.y),
+			                     Mathf.RoundToInt (pos.z));
+		if (openCells.Contains(roundedPos))
+		{
+			return true;
+		}
+		return false;
+	}
 }

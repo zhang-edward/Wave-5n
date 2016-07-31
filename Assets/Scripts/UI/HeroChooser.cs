@@ -20,6 +20,6 @@ public class HeroChooser : MonoBehaviour {
 	private void OnClick()
 	{
 		GameManager.instance.SelectHero (hero);
-		GameManager.instance.StartGameMode ();
+		GameManager.instance.GoToGameScene ();
 	}
 }

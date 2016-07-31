@@ -11,6 +11,8 @@ public class SoundManager : MonoBehaviour {
 	private float lowPitchRange = 0.95f;
 	private float highPitchRange = 1.05f;
 
+	public float musicVolume;
+
 	// temp! store in mapinfo later
 	public AudioClip musicLoop;
 
@@ -45,6 +47,16 @@ public class SoundManager : MonoBehaviour {
 		sfx.Play ();
 	}
 
+	/// <summary>
+	/// Plays a sound and also lowers the volume of the background music while the clip is playing
+	/// </summary>
+	/// <param name="clip">Clip.</param>
+	public void PlayImportantSound(AudioClip clip)
+	{
+		sfx.clip = clip;
+		StartCoroutine (ImportantSound ());
+	}
+
 	public void PlayUISound(AudioClip clip)
 	{
 		ui.clip = clip;
@@ -68,6 +80,32 @@ public class SoundManager : MonoBehaviour {
 		music.loop = true;
 		music.clip = clip;
 		music.Play ();
+	}
 
+	private IEnumerator ImportantSound()
+	{
+		StartCoroutine(MusicFadeOut (0.1f));
+		sfx.Play ();
+		while (sfx.isPlaying)
+			yield return null;
+		StartCoroutine (MusicFadeIn (musicVolume));
+	}
+
+	private IEnumerator MusicFadeIn(float targetVolume)
+	{
+		while (music.volume < targetVolume)
+		{
+			music.volume += 0.1f;
+			yield return null;
+		}
+	}
+
+	private IEnumerator MusicFadeOut(float targetVolume)
+	{
+		while (music.volume > targetVolume)
+		{
+			music.volume -= 0.1f;
+			yield return null;
+		}
 	}
 }

@@ -6,68 +6,84 @@ public class MageHero : PlayerHero {
 	[Header("Class-Specific")]
 	public ObjectPooler projectilePool;
 	public Sprite projectileSprite;
+	public Map map;
 
 	[Header("Audio")]
 	public AudioClip shootSound;
-	//public Transform dirIndicator;
-
-	//private Vector3 shootPoint;
+	public AudioClip teleportOutSound;
+	public AudioClip teleportInSound;
 
 	public override void Init(Player player, EntityPhysics body, Animator anim)
 	{
+		abilityCooldowns = new float[2];
 		base.Init (player, body, anim);
 	}
 
-/*	private IEnumerator SetShootPoint()
+	public override void HandleSwipe (Vector2 dir)
 	{
-		while (true)
-		{
-			shootPoint = new Vector3 (0.35f * Mathf.Sign (player.dir.x), 0.3f);
-//			Debug.Log (shootPoint);
-			yield return null;
-		}
-	}*/
+		base.HandleSwipe (dir);
+		ShootFireball (dir);
+	}
 
-	public override void Ability()
+	public override void HandleTapRelease()
+	{
+		StartTeleport ();
+	}
+
+	private void ShootFireball(Vector2 dir)
 	{
 		// if cooldown has not finished
-		if (abilityCooldown > 0)
+		if (abilityCooldowns[0] > 0)
 			return;
+		ResetCooldown (0);
+
 		SoundManager.instance.RandomizeSFX (shootSound);
-
-		abilityCooldown = cooldownTime;
-
 		GameObject o = projectilePool.GetPooledObject ();
-		MageProjectile p = o.GetComponent<MageProjectile> ();
+		PlayerProjectile p = o.GetComponent<PlayerProjectile> ();
+		body.Move (dir);
+		body.Rb2d.velocity = -dir * 3f;
 
-		// use auto targeter
-/*		Vector3 dir;
-		if (player.targetedEnemy != null)
-			dir = player.targetedEnemy.position - transform.position;
-		else
-			dir = player.dir;
-		player.StopAutoTarget();*/
-		Vector3 dir = player.dir;
-		
-		p.Init (transform.position, dir, projectileSprite, "Enemy", player, 5f, damage);
-		anim.SetBool ("Charge", false);
+		p.Init (transform.position, dir, projectileSprite, "Enemy", player, map, 5f, damage);
 		anim.SetTrigger ("Attack");
 		Invoke ("ResetAbility", 0.5f);
 	}
 
-	public override void AbilityHoldDown ()
+	private void StartTeleport()
 	{
-		if (abilityCooldown > 0)
-			return;
-		anim.SetBool ("Charge", true);
-		body.moveSpeed = 0.3f;
+		if (map.WithinOpenCells(player.transform.position + (Vector3)player.dir) &&
+			abilityCooldowns[1] <= 0)
+			StartCoroutine (Teleport ());
 	}
 
-	public override void ResetAbility()
+	public override void HandleHoldDown ()
+	{
+	}
+
+	public void ResetAbility()
 	{
 		//dirIndicator.gameObject.SetActive (false);
 		body.moveSpeed = player.DEFAULT_SPEED;
 		//anim.ResetTrigger ("Charge");
 		anim.SetTrigger ("Move");
+	}
+
+	private IEnumerator Teleport()
+	{
+		ResetCooldown (1);
+		anim.SetTrigger ("TeleOut");
+		SoundManager.instance.RandomizeSFX (teleportOutSound);
+		player.isInvincible = true;
+		player.input.isInputEnabled = false;
+		yield return new WaitForEndOfFrame ();		// wait for the animation state to update before continuing
+		while (anim.GetCurrentAnimatorStateInfo (0).IsName ("TeleportOut"))
+			yield return null;
+		player.transform.parent.position = (Vector3)player.dir + player.transform.parent.position;
+
+		SoundManager.instance.RandomizeSFX (teleportInSound);
+		yield return new WaitForEndOfFrame ();		// wait for the animation state to update before continuing
+		while (anim.GetCurrentAnimatorStateInfo (0).IsName ("TeleportIn"))
+			yield return null;
+		player.isInvincible = false;
+		player.input.isInputEnabled = true;
 	}
 }

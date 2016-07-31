@@ -18,6 +18,9 @@ public class EnemyManager : MonoBehaviour {
 	private BossSpawn bossSpawn;
 	private int waveNumber = 0;
 
+	public delegate void EnemyWaveSpawned (int waveNumber);
+	public event EnemyWaveSpawned OnEnemyWaveSpawned;
+
 	void Start()
 	{
 		bossSpawn = map.bossSpawn.GetComponent<BossSpawn> ();
@@ -42,6 +45,10 @@ public class EnemyManager : MonoBehaviour {
 				// every 5 waves, spawn a boss
 				if (waveNumber % 5 == 0)
 					SpawnBoss ();
+				if (OnEnemyWaveSpawned != null)
+					OnEnemyWaveSpawned (waveNumber);
+
+				Debug.Log ("Number of enemies in this wave: " + numToSpawn);
 			}
 			yield return null;
 		}

@@ -31,22 +31,18 @@ public class NinjaHero : PlayerHero {
 		}
 	}
 
-	public override void Ability()
+	public override void HandleTapRelease()
 	{
 		// if cooldown has not finished
-		if (abilityCooldown > 0)
+		if (abilityCooldowns[0] > 0)
 			return;
-		abilityCooldown = cooldownTime;
+		abilityCooldowns[0] = cooldownTime[0];
 		smokeBomb.Init (transform.position);
 		Invoke ("ResetAbility", 5f);
 	}
 
-	public override void AbilityHoldDown ()
+	public override void HandleHoldDown ()
 	{}
-
-	public override void ResetAbility()
-	{
-	}
 
 	void OnTriggerStay2D(Collider2D col)
 	{

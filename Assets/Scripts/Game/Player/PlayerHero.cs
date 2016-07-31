@@ -3,7 +3,8 @@ using System.Collections;
 
 public abstract class PlayerHero : MonoBehaviour {
 
-	public Sprite primaryAbilityIcon;
+	[Header("Player Hero Properties")]
+	public Sprite[] icons;
 	public string heroName;
 
 	protected Player player;
@@ -17,11 +18,17 @@ public abstract class PlayerHero : MonoBehaviour {
 
 	public RuntimeAnimatorController animatorController;
 
-	protected float abilityCooldown;
-	public float AbilityCooldown {
-		get {return abilityCooldown;}
+	protected float[] abilityCooldowns;
+	public float[] AbilityCooldowns {
+		get {return abilityCooldowns;}
 	}
-	public float cooldownTime;
+	public float[] cooldownTime;
+	public int NumAbilities{
+		get {return abilityCooldowns.Length;}
+	}
+
+	[Header("Hero Audio")]
+	public AudioClip spawnSound;
 
 	public enum InputType {
 		Tap,
@@ -32,20 +39,20 @@ public abstract class PlayerHero : MonoBehaviour {
 	/// <summary>
 	/// Performs an ability on swipe
 	/// </summary>
-	public virtual void Ability ()
+	public virtual void HandleTapRelease ()
 	{}
 	/// <summary>
 	/// Performs an action on button held down
 	/// </summary>
-	public virtual void AbilityHoldDown()
+	public virtual void HandleHoldDown()
 	{}
-	/// <summary>
-	/// Resets the ability.
-	/// </summary>
-	public abstract void ResetAbility ();
+
+	public virtual void HandleSwipe(Vector2 dir)
+	{}
 
 	public virtual void Init(Player player, EntityPhysics body, Animator anim)
 	{
+		SoundManager.instance.PlaySingle (spawnSound);
 		this.player = player;
 		this.body = body;
 		this.anim = anim;
@@ -54,7 +61,17 @@ public abstract class PlayerHero : MonoBehaviour {
 
 	protected virtual void Update()
 	{
-		if (abilityCooldown > 0)
-			abilityCooldown -= Time.deltaTime;
+		if (abilityCooldowns != null)
+		{
+			for (int i = 0; i < abilityCooldowns.Length; i++)
+			{
+				abilityCooldowns [i] -= Time.deltaTime;
+			}
+		}
+	}
+
+	protected void ResetCooldown(int index)
+	{
+		abilityCooldowns [index] = cooldownTime [index];
 	}
 }

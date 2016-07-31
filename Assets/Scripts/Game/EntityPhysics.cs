@@ -20,13 +20,17 @@ public class EntityPhysics : MonoBehaviour {
 	void Awake()
 	{
 		rb2d = this.GetComponent<Rigidbody2D> ();
-		rb2d.drag = 1;
+		//rb2d.drag = 1;
 		rb2d.freezeRotation = true;
 	}
 
 	public void Move(Vector2 dir)
 	{
 		rb2d.velocity = (dir * moveSpeed);
+		if (rb2d.velocity.x < -0.1f)
+			sr.flipX = true;
+		else if (rb2d.velocity.x > 0.1f)
+			sr.flipX = false;
 	}
 
 	public void AddRandomImpulse()
@@ -42,9 +46,6 @@ public class EntityPhysics : MonoBehaviour {
 
 	void Update()
 	{
-		if (rb2d.velocity.x < -0.1f)
-			sr.flipX = true;
-		else if (rb2d.velocity.x > 0.1f)
-			sr.flipX = false;
+
 	}
 }

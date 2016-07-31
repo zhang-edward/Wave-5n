@@ -7,5 +7,8 @@ public class MapInfo : MonoBehaviour
 	public GameObject[] terrainObjectPrefabs;
 	public GameObject bossSpawnPrefab;
 	public GameObject borderPrefab;
+	[Header("Music")]
+	public AudioClip musicLoop;
+	public AudioClip musicIntro;
 }
 

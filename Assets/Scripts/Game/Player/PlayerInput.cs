@@ -57,7 +57,7 @@ public class PlayerInput : MonoBehaviour {
 			movementDir = new Vector3(Input.GetAxisRaw("Horizontal"),
 				Input.GetAxisRaw("Vertical"), 0);
 #endif
-			player.body.Move (movementDir);
+			//player.body.Move (movementDir);
 
 			// Get mouse or touch input
 #if UNITY_ANDROID
@@ -73,36 +73,36 @@ public class PlayerInput : MonoBehaviour {
 		if (Input.GetMouseButton(0))
 		{
 			Vector3 mousePos = Camera.main.ScreenToWorldPoint (Input.mousePosition);
-			player.dir = ((Vector2)(mousePos - transform.position)).normalized;
-			player.hero.AbilityHoldDown ();
+			player.dir = ((Vector2)(mousePos - transform.position));
+			player.hero.HandleHoldDown ();
 		}
 		if (Input.GetMouseButtonUp (0))
 		{
-			player.hero.Ability ();
+			player.hero.HandleTapRelease ();
+		}
+		if (Input.GetMouseButtonDown(1))
+		{
+			Vector3 mousePos = Camera.main.ScreenToWorldPoint (Input.mousePosition);
+			Vector2 dir = ((Vector2)(mousePos - transform.position)).normalized;
+			player.hero.HandleSwipe (dir);
 		}
 	}
 
 	private void HandleSwipe(Vector2 dir)
 	{
-		if (player.hero.inputType == PlayerHero.InputType.Swipe)
-		{
-			player.dir = dir.normalized;
-			player.hero.Ability ();
-		}
+/*			player.dir = dir.normalized;*/
+		player.hero.HandleSwipe (dir.normalized);
 	}
 
 	private void HandleTapHold(Vector3 pos)
 	{
 		player.dir = pos - transform.position;
-		player.hero.AbilityHoldDown ();
+		player.hero.HandleHoldDown ();
 	}
 
 	private void HandleTapRelease (Vector3 pos)
 	{
-		if (player.hero.inputType == PlayerHero.InputType.Tap)
-		{
-			player.dir = pos - transform.position;
-			player.hero.Ability ();
-		}
+		player.dir = pos - transform.position;
+		player.hero.HandleTapRelease ();
 	}
 }

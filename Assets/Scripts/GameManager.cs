@@ -22,12 +22,20 @@ public class GameManager : MonoBehaviour {
 		DontDestroyOnLoad (this);
 	}
 
+	void Start()
+	{
+		if (SceneManager.GetActiveScene ().name == "Game")
+		{
+			InitGameScene ();
+		}
+	}
+
 	void Update()
 	{
-		if (SceneManager.GetActiveScene ().name == "Game" && !didInitializeGameScene)
+/*		if (SceneManager.GetActiveScene ().name == "Game" && !didInitializeGameScene)
 		{
 			InitGameScene ();	
-		}
+		}*/
 
 		if (Input.GetKeyDown (KeyCode.R))
 		{
@@ -38,7 +46,9 @@ public class GameManager : MonoBehaviour {
 
 	public void GoToGameScene()
 	{
+		didInitializeGameScene = false;
 		StartCoroutine (LoadGameScene());
+		ObjectPooler.objectPoolers.Clear ();
 	}
 
 	public void GoToMenuScene()
@@ -62,6 +72,7 @@ public class GameManager : MonoBehaviour {
 	private void InitGameScene()
 	{
 		player = GameObject.Find ("/Game/Player");
+		Assert.IsNotNull (player);
 		Player playerScript = player.GetComponentInChildren<Player> ();
 
 		Assert.IsFalse (selectedHero.Equals (""));		// will throw an error if this script tries to

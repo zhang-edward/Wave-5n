@@ -32,7 +32,7 @@ public class Player : MonoBehaviour, IDamageable
 	public PlayerHero hero;
 
 	[Header("Player direction")]
-	public Vector2 dir;
+	public Vector2 dir;		// player's facing direction and movement direction
 
 	[Header("Stats")]
 	public int maxHealth = 10;
@@ -46,9 +46,14 @@ public class Player : MonoBehaviour, IDamageable
 	[HideInInspector]
 	public bool autoTargetEnabled = false;
 
+	[Header("Audio")]
+	public AudioClip hurtSound;
+
 	[HideInInspector]
 	public ObjectPooler deathPropPool;
+	[HideInInspector]
 	public ObjectPooler effectPool;
+	[HideInInspector]
 	public Transform targetedEnemy;
 
 	void Start()
@@ -151,10 +156,13 @@ public class Player : MonoBehaviour, IDamageable
 		// TODO: check if player is dead
 		if (health <= 0)
 		{
-			//OnPlayerDied ();
+			UnityEngine.Assertions.Assert.IsNotNull (OnPlayerDied);
+			OnPlayerDied ();
 			SpawnDeathProps ();
 			transform.parent.gameObject.SetActive (false);
 		}
+		else
+			SoundManager.instance.RandomizeSFX (hurtSound);
 		OnPlayerDamaged(amt);
 	}
 

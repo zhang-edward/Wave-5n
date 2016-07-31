@@ -1,24 +1,34 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MageProjectile : Projectile
+public class PlayerProjectile : Projectile
 {
 	private Player player;
 	private bool outsideMapBounds;
+	public Map map;
 
 	[Header("Audio")]
 	public AudioClip onExplodeSound;
 
-	public void Init(Vector3 pos, Vector2 dir, Sprite sprite, string target, Player player, float speed = 4, int damage = 1)
+	public void Init(Vector3 pos, Vector2 dir, Sprite sprite, string target, Player player, Map map, float speed = 4, int damage = 1)
 	{
 		base.Init (pos, dir, sprite, target, speed, damage);
 		outsideMapBounds = false;
 		this.player = player;
+		this.map = map;
 	}
 
 	void OnDrawGizmosSelected()
 	{
 		Gizmos.DrawWireSphere (transform.position, 1.5f);
+	}
+
+	void Update()
+	{
+		if (!map.WithinOpenCells (transform.position))
+		{
+			outsideMapBounds = true;
+		}
 	}
 
 	protected override void OnTriggerEnter2D (Collider2D col)
@@ -40,10 +50,6 @@ public class MageProjectile : Projectile
 			}
 			gameObject.SetActive (false);
 			OnCollide ();
-		}
-		else if (col.CompareTag("MapBorder"))
-		{
-			outsideMapBounds = true;	
 		}
 	}
 }
