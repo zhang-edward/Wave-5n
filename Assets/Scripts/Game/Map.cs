@@ -33,7 +33,7 @@ public class Map : MonoBehaviour {
 	public int[,] terrain = new int[size, size];
 	public int[,] colliders = new int[size, size];
 
-	void Start()
+	public void GenerateMap()
 	{
 		GetMaps ();
 		InitSpriteMap ();

@@ -34,7 +34,7 @@ public abstract class PlayerHero : MonoBehaviour {
 		Tap,
 		Swipe
 	}
-	public InputType inputType;
+	//public InputType inputType;
 
 	/// <summary>
 	/// Performs an ability on swipe

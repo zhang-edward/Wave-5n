@@ -15,9 +15,16 @@ public class ObjectPooler : MonoBehaviour {
 
 	void Awake()
 	{
-
 		if (isGlobal)
 			AddSelfToGlobalList ();
+		pooledObjects = new List<GameObject> ();
+		for (int i = 0; i < poolAmount; i ++)
+		{
+			GameObject obj = Instantiate (pooledObject, new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
+			obj.transform.SetParent (this.transform);
+			obj.SetActive (false);
+			pooledObjects.Add (obj);
+		}
 	}
 
 	private void AddSelfToGlobalList()
@@ -32,18 +39,6 @@ public class ObjectPooler : MonoBehaviour {
 		}
 		objectPoolers.Add (this);
 
-	}
-
-	void Start()
-	{
-		pooledObjects = new List<GameObject> ();
-		for (int i = 0; i < poolAmount; i ++)
-		{
-			GameObject obj = Instantiate (pooledObject, new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
-			obj.transform.SetParent (this.transform);
-			obj.SetActive (false);
-			pooledObjects.Add (obj);
-		}
 	}
 
 	public GameObject GetPooledObject()

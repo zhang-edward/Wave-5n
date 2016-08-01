@@ -8,10 +8,11 @@ public class GameManager : MonoBehaviour {
 	public static GameManager instance;
 	public string selectedHero = "";
 	public GameObject player;
+	private Map map;
 
 	public ScoreManager scoreManager;
 
-	private bool didInitializeGameScene = false;
+	//private bool didInitializeGameScene = false;
 
 	void Awake()
 	{
@@ -40,13 +41,13 @@ public class GameManager : MonoBehaviour {
 		if (Input.GetKeyDown (KeyCode.R))
 		{
 			SceneManager.LoadScene (SceneManager.GetActiveScene ().name);
-			didInitializeGameScene = false;
+			//didInitializeGameScene = false;
 		}
 	}
 
 	public void GoToGameScene()
 	{
-		didInitializeGameScene = false;
+		//didInitializeGameScene = false;
 		StartCoroutine (LoadGameScene());
 		ObjectPooler.objectPoolers.Clear ();
 	}
@@ -71,6 +72,8 @@ public class GameManager : MonoBehaviour {
 
 	private void InitGameScene()
 	{
+		map = GameObject.Find ("/Game/Map").GetComponent<Map>();
+		map.GenerateMap ();
 		player = GameObject.Find ("/Game/Player");
 		Assert.IsNotNull (player);
 		Player playerScript = player.GetComponentInChildren<Player> ();
@@ -79,7 +82,7 @@ public class GameManager : MonoBehaviour {
 														// initialize the player without a selected hero
 		playerScript.Init (selectedHero);
 
-		didInitializeGameScene = true;
+		//didInitializeGameScene = true;
 	}
 
 	public void SelectHero(string name)

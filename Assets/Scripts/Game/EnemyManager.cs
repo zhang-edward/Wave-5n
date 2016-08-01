@@ -21,14 +21,24 @@ public class EnemyManager : MonoBehaviour {
 	public delegate void EnemyWaveSpawned (int waveNumber);
 	public event EnemyWaveSpawned OnEnemyWaveSpawned;
 
-	void Start()
+	void Awake()
 	{
-		bossSpawn = map.bossSpawn.GetComponent<BossSpawn> ();
-		player.OnPlayerInitialized += InitSpawnEnemies;
+		OnEnabled ();
 	}
 
-	private void InitSpawnEnemies()
+	void OnEnabled()
 	{
+		player.OnPlayerInitialized += Init;
+	}
+
+	void OnDisbled()
+	{
+		player.OnPlayerInitialized -= Init;
+	}
+
+	private void Init()
+	{
+		bossSpawn = map.bossSpawn.GetComponent<BossSpawn> ();
 		StartCoroutine (StartSpawningEnemies ());
 	}
 
@@ -39,9 +49,16 @@ public class EnemyManager : MonoBehaviour {
 			if (NumAliveEnemies() < 3)
 			{
 				waveNumber++;
+				// Number of enemies spawning curve (used desmos.com for the graph)
 				int numToSpawn = Mathf.RoundToInt (DIFFICULTY_CURVE * Mathf.Log (waveNumber) + 5);
+				GameObject[] prefabPool;
+				if (waveNumber <= 5)
+					prefabPool = info.enemyPrefabs1;
+				else
+					prefabPool = info.enemyPrefabs2;
+
 				for (int i = 0; i < numToSpawn; i++)
-					SpawnEnemy ();
+					SpawnEnemy (prefabPool);
 				// every 5 waves, spawn a boss
 				if (waveNumber % 5 == 0)
 					SpawnBoss ();
@@ -54,10 +71,10 @@ public class EnemyManager : MonoBehaviour {
 		}
 	}
 
-	public void SpawnEnemy()
+	public void SpawnEnemy(GameObject[] prefabPool)
 	{
 		Vector3 randOpenCell = (Vector3)map.OpenCells [Random.Range (0, map.OpenCells.Count)];
-		GameObject o = Instantiate (info.enemyPrefabs [Random.Range (0, info.enemyPrefabs.Length)]);
+		GameObject o = Instantiate (prefabPool [Random.Range (0, prefabPool.Length)]);
 		o.transform.SetParent (transform);
 		if (Random.value < 0.5f)
 			o.transform.position = new Vector3 (Random.Range (0, 10), Map.size + 4);
@@ -69,7 +86,7 @@ public class EnemyManager : MonoBehaviour {
 		healthBar.Init (e);
 		healthBar.player = player;
 
-		e.Init (randOpenCell);
+		e.Init (randOpenCell, map);
 		e.player = player.transform;
 		enemies.Add (e);
 	}
@@ -80,7 +97,7 @@ public class EnemyManager : MonoBehaviour {
 		GameObject o = Instantiate (info.bossPrefabs [Random.Range (0, info.bossPrefabs.Length)]);
 		o.transform.SetParent (transform);
 		Enemy e = o.GetComponentInChildren<Enemy> ();
-		e.Init (bossSpawn.transform.position);
+		e.Init (bossSpawn.transform.position, map);
 		e.player = player.transform;
 		bossHealthBar.Init (e);
 		//enemies.Add (e);
