@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class RestartButton : MonoBehaviour {
+public class GoToGameSceneButton : MonoBehaviour {
 
 	private Button button;
 

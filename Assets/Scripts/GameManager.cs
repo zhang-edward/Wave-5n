@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviour {
 
 	void Update()
 	{
-/*		if (SceneManager.GetActiveScene ().name == "Game" && !didInitializeGameScene)
+		/*if (SceneManager.GetActiveScene ().name == "Game" && !didInitializeGameScene)
 		{
 			InitGameScene ();	
 		}*/

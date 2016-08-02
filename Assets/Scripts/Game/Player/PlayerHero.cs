@@ -3,6 +3,9 @@ using System.Collections;
 
 public abstract class PlayerHero : MonoBehaviour {
 
+	public const string KNIGHT = "knight";
+	public const string MAGE = "mage";
+
 	[Header("Player Hero Properties")]
 	public Sprite[] icons;
 	public string heroName;
@@ -47,7 +50,7 @@ public abstract class PlayerHero : MonoBehaviour {
 	public virtual void HandleHoldDown()
 	{}
 
-	public virtual void HandleSwipe(Vector2 dir)
+	public virtual void HandleSwipe()
 	{}
 
 	public virtual void Init(Player player, EntityPhysics body, Animator anim)
@@ -65,7 +68,8 @@ public abstract class PlayerHero : MonoBehaviour {
 		{
 			for (int i = 0; i < abilityCooldowns.Length; i++)
 			{
-				abilityCooldowns [i] -= Time.deltaTime;
+				if (abilityCooldowns[i] > 0)
+					abilityCooldowns [i] -= Time.deltaTime;
 			}
 		}
 	}

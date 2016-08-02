@@ -8,12 +8,12 @@ public class TouchInputHandler : MonoBehaviour {
 
 	private Vector2 startPos;
 	private bool couldBeSwipe;
-	private float minSwipeDist = 2.0f;
+	private float minSwipeDist = 1.5f;
 	private float maxSwipeTime = 0.3f;
 
 	private bool couldBeTap;
 	private float maxTapDist = 1.0f;
-	private float maxTapTime = 0.5f;
+	//private float maxTapTime = 0.5f;
 
 	public delegate void Swipe(Vector2 dir);
 	public event Swipe OnSwipe;

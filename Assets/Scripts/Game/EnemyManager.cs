@@ -23,10 +23,9 @@ public class EnemyManager : MonoBehaviour {
 
 	void Awake()
 	{
-		OnEnabled ();
 	}
 
-	void OnEnabled()
+	void OnEnable()
 	{
 		player.OnPlayerInitialized += Init;
 	}

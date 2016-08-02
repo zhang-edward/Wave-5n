@@ -2,24 +2,38 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class HeroChooser : MonoBehaviour {
-
-	public string hero;
-	private Button button;
+public class HeroChooser : MonoBehaviour
+{
+	public ScrollViewSnap heroIconsView;
+	public HeroInfoPanel infoPanel;
+	public Button playButton;
 
 	void Awake()
 	{
-		button = GetComponent<Button> ();
 	}
 
-	void Start()
+	// Use this for initialization
+	void Start ()
 	{
-		button.onClick.AddListener(OnClick);
+		UpdateHeroInfoPanel ();
 	}
 
-	private void OnClick()
+	void OnEnable()
 	{
-		GameManager.instance.SelectHero (hero);
-		GameManager.instance.GoToGameScene ();
+		heroIconsView.OnEndDrag += UpdateHeroInfoPanel;
+	}
+
+	void OnDisabled()
+	{
+		heroIconsView.OnEndDrag -= UpdateHeroInfoPanel;
+	}
+
+	private void UpdateHeroInfoPanel()
+	{
+		string hero = heroIconsView.SelectedContent.GetComponent<HeroInfoIcon> ().heroName;
+		infoPanel.selectedHeroName = hero;
+		infoPanel.DisplayHeroInfo ();
+		GameManager.instance.selectedHero = hero;
 	}
 }
+

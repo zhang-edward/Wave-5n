@@ -11,10 +11,9 @@ namespace UI
 
 		void Awake()
 		{
-			OnEnabled ();
 		}
 
-		void OnEnabled()
+		void OnEnable()
 		{
 			player.OnPlayerDamaged += UpdateHealthMeter;
 			player.OnPlayerHealed += UpdateHealthMeter;

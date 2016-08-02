@@ -1,12 +1,11 @@
 fileFormatVersion: 2
-guid: 99903c83721f04ef285bf19589530c33
-timeCreated: 1470165614
+guid: 36aafdf02e1104da68de3d5599bb8bed
+timeCreated: 1470165173
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: UI_buttons_large_0
-    21300002: UI_buttons_large_1
-    21300004: UI_buttons_large_2
+    21300000: UI_buttons_huge_0
+    21300002: UI_buttons_huge_1
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -53,28 +52,36 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     sprites:
-    - name: UI_buttons_large_2
+    - name: UI_buttons_huge_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 80
-        width: 32
-        height: 16
+        y: 32
+        width: 48
+        height: 32
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-    - name: UI_buttons_large_0
+      outline:
+      - - {x: -24, y: 16}
+        - {x: -24, y: -16}
+        - {x: 24, y: -16}
+        - {x: 24, y: 16}
+    - name: UI_buttons_huge_1
       rect:
         serializedVersion: 2
-        x: 32
-        y: 80
-        width: 32
-        height: 16
+        x: 48
+        y: 32
+        width: 48
+        height: 32
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
+      outline:
+      - - {x: -24, y: -16}
+        - {x: 24, y: -16}
+        - {x: 24, y: 14}
+        - {x: -24, y: 14}
     outline: []
   spritePackingTag: 
   userData: 

@@ -25,22 +25,22 @@ public class KnightHero : PlayerHero {
 	{
 		abilityCooldowns = new float[2];
 		base.Init (player, body, anim);
+		heroName = PlayerHero.KNIGHT;
 	}
 
 	// Dash attack
-	public override void HandleSwipe(Vector2 dir)
+	public override void HandleSwipe()
 	{
 		// if cooldown has not finished
 		if (abilityCooldowns[0] > 0)
 			return;
 		ResetCooldown (0);
-		
-		player.dir = dir;
+
 		PlayRushEffect ();
 		player.input.isInputEnabled = false;
 		killBox = true;
 		body.moveSpeed = 8;
-		body.Move(dir);
+		body.Move(player.dir.normalized);
 		player.isInvincible = true;
 		anim.SetBool ("Attacking", true);
 		SoundManager.instance.RandomizeSFX (rushSound);

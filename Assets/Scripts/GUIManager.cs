@@ -12,10 +12,9 @@ public class GUIManager : MonoBehaviour {
 
 	void Awake()
 	{
-		OnEnabled ();
 	}
 
-	void OnEnabled()
+	void OnEnable()
 	{
 		player.OnPlayerDied += GameOverUI;
 		enemyManager.OnEnemyWaveSpawned += ShowEnemyWaveText;

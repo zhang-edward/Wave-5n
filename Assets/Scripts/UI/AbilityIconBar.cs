@@ -16,10 +16,9 @@ namespace UI
 
 		void Awake()
 		{
-			OnEnabled ();
 		}
 
-		void OnEnabled()
+		void OnEnable()
 		{
 			player.OnPlayerInitialized += Init;
 		}
@@ -34,7 +33,7 @@ namespace UI
 			playerWasInitialized = true;
 			playerHero = player.hero;
 			abilityIcons = new AbilityIcon[playerHero.NumAbilities];
-			Debug.Log (abilityIcons.Length);
+			//Debug.Log ("There are " + abilityIcons.Length + " player abilities");
 			for (int i = 0; i < playerHero.NumAbilities; i ++)
 			{
 				GameObject o = Instantiate (iconPrefab);

@@ -83,15 +83,15 @@ public class PlayerInput : MonoBehaviour {
 		if (Input.GetMouseButtonDown(1))
 		{
 			Vector3 mousePos = Camera.main.ScreenToWorldPoint (Input.mousePosition);
-			Vector2 dir = ((Vector2)(mousePos - transform.position)).normalized;
-			player.hero.HandleSwipe (dir);
+			player.dir = ((Vector2)(mousePos - transform.position));
+			player.hero.HandleSwipe ();
 		}
 	}
 
 	private void HandleSwipe(Vector2 dir)
 	{
-/*			player.dir = dir.normalized;*/
-		player.hero.HandleSwipe (dir.normalized);
+		player.dir = dir;
+		player.hero.HandleSwipe ();
 	}
 
 	private void HandleTapHold(Vector3 pos)

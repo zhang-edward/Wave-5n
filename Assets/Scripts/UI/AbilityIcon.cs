@@ -9,6 +9,8 @@ public class AbilityIcon : MonoBehaviour
 
 	public void SetCoolDown(float percent)
 	{
+		if (percent < 0)
+			return;
 		cooldownMask.sizeDelta = new Vector2 (16, percent * 16);
 	}
 }
