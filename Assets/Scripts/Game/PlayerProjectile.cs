@@ -10,16 +10,20 @@ public class PlayerProjectile : Projectile
 	[Header("Audio")]
 	public AudioClip onHitSound;
 
-	public void Awake()
+	void Awake()
 	{
 		anim = GetComponent<SimpleAnimationPlayer> ();
+		rb2d = this.GetComponent<Rigidbody2D> ();
+		sr = this.GetComponent<SpriteRenderer> ();
+		box = this.GetComponent<BoxCollider2D> ();
 	}
 
 	public void Init(Vector3 pos, Vector2 dir, Sprite sprite, string target, Player player, float speed = 4, int damage = 1)
 	{
 		base.Init (pos, dir, sprite, target, speed, damage);
-		anim.Play ();
 		this.player = player;
+		anim.looping = true;
+		anim.Play ();
 	}
 
 	void OnDrawGizmosSelected()

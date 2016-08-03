@@ -166,7 +166,7 @@ public class Map : MonoBehaviour {
 			float randOffset = Random.Range (bgPropsBufferMin, bgPropsBufferMax);
 			GameObject o = Instantiate(info.bgProps[Random.Range(0, info.bgProps.Length)]);
 			o.transform.position = new Vector3 (-randOffset,
-				Random.Range (0, Map.size + bgPropsBufferMin));
+				Random.Range (0, Map.size + bgPropsBufferMax));
 			o.transform.SetParent (bgFolder);
 		}
 		for (int i = 0; i < bgPropsDensity; i ++)
@@ -174,14 +174,14 @@ public class Map : MonoBehaviour {
 			float randOffset = Random.Range (bgPropsBufferMin, bgPropsBufferMax);
 			GameObject o = Instantiate(info.bgProps[Random.Range(0, info.bgProps.Length)]);
 			o.transform.position = new Vector3 (Map.size + randOffset,
-				Random.Range (0, Map.size + bgPropsBufferMin));
+				Random.Range (0, Map.size + bgPropsBufferMax));
 			o.transform.SetParent (bgFolder);
 		}
 		for (int i = 0; i < bgPropsDensity; i ++)
 		{
 			float randOffset = Random.Range (bgPropsBufferMin, bgPropsBufferMax);
 			GameObject o = Instantiate(info.bgProps[Random.Range(0, info.bgProps.Length)]);
-			o.transform.position = new Vector3 (Random.Range (0, Map.size + bgPropsBufferMin),
+			o.transform.position = new Vector3 (Random.Range (0, Map.size + bgPropsBufferMax),
 				-randOffset);
 			o.transform.SetParent (bgFolder);
 		}
@@ -189,7 +189,7 @@ public class Map : MonoBehaviour {
 		{
 			float randOffset = Random.Range (bgPropsBufferMin, bgPropsBufferMax);
 			GameObject o = Instantiate(info.bgProps[Random.Range(0, info.bgProps.Length)]);
-			o.transform.position = new Vector3 (Random.Range(0, Map.size + bgPropsBufferMin),
+			o.transform.position = new Vector3 (Random.Range(0, Map.size + bgPropsBufferMax),
 				Map.size + randOffset);
 			o.transform.SetParent (bgFolder);
 		}

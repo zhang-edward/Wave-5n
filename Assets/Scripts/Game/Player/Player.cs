@@ -37,7 +37,8 @@ public class Player : MonoBehaviour, IDamageable
 	[Header("Stats")]
 	public int maxHealth = 10;
 	public int health { get; private set; }
-	public bool isInvincible = false;
+	private bool hitDisabled = false;			// true when the player has been damaged
+	public bool isInvincible = false;			// property that can be set by other abilities
 
 	public float damagedCooldownTime = 1.0f;
 
@@ -71,8 +72,8 @@ public class Player : MonoBehaviour, IDamageable
 		hero.Init (this, body, anim);
 		health = maxHealth;
 
-		UnityEngine.Assertions.Assert.IsNotNull (OnPlayerInitialized);	// simple assertion check
-		OnPlayerInitialized ();
+		if (OnPlayerInitialized != null)
+			OnPlayerInitialized ();
 		StartCoroutine (SpawnState ());
 	}
 
@@ -127,7 +128,7 @@ public class Player : MonoBehaviour, IDamageable
 	/// </summary>
 	public IEnumerator FlashRed()
 	{
-		isInvincible = true;
+		hitDisabled = true;
 		sr.color = Color.red;
 		float t = 0;
 		while (sr.color != Color.white)
@@ -136,7 +137,7 @@ public class Player : MonoBehaviour, IDamageable
 			t += Time.deltaTime;
 			yield return null;
 		}
-		isInvincible = false;
+		hitDisabled = false;
 	}
 
 
@@ -146,7 +147,7 @@ public class Player : MonoBehaviour, IDamageable
 	/// <param name="amt">Amount to deduct from health.</param>
 	public void Damage(int amt)
 	{
-		if (isInvincible)
+		if (hitDisabled || isInvincible)
 			return;
 
 		body.AddRandomImpulse ();

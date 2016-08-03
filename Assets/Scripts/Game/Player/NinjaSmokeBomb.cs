@@ -38,7 +38,11 @@ public class NinjaSmokeBomb : MonoBehaviour
 		for (int i = 0; i < 2; i++)
 			Invoke("SpawnSmoke", 0.3f);
 		TempObject smokeBomb = effectsPool.GetPooledObject ().GetComponent<TempObject> ();
-		TempObjectInfo info = new TempObjectInfo (true, 0f, 0f, smokeBombEffect.TimeLength, new Color (1, 1, 1, 0.7f));
+		TempObjectInfo info = new TempObjectInfo (true,
+			0f,
+			smokeBombEffect.TimeLength * 0.9f,
+			smokeBombEffect.TimeLength * 0.1f,
+			new Color (1, 1, 1, 0.7f));
 		SimpleAnimationPlayer animPlayer = smokeBomb.GetComponent<SimpleAnimationPlayer> ();
 		animPlayer.anim = smokeBombEffect;
 		smokeBomb.Init(

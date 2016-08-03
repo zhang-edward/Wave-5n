@@ -9,6 +9,7 @@ public class MageHero : PlayerHero {
 	public Sprite projectileSprite;
 	public Sprite hitEffect;
 	public SimpleAnimation fireEffectAnimation;
+	public SimpleAnimation fireballAnim;
 	public Map map;
 
 	[Header("Audio")]
@@ -126,11 +127,14 @@ public class MageHero : PlayerHero {
 		SoundManager.instance.RandomizeSFX (shootSound);
 		GameObject o = projectilePool.GetPooledObject ();
 		PlayerProjectile p = o.GetComponent<PlayerProjectile> ();
+		SimpleAnimationPlayer pAnim = o.GetComponent<SimpleAnimationPlayer> ();
+		pAnim.anim = fireballAnim;
 		body.Move (dir);
 		body.Rb2d.velocity = dir * -2f;
 
 		p.Init (transform.position, dir, projectileSprite, "Enemy", player, 3f, damage);
-		anim.SetTrigger ("Attack");
+		anim.SetBool ("Attack", true);
+		Debug.Log ("hello");
 		Invoke ("ResetAbility", 0.5f);
 	}
 
@@ -186,7 +190,7 @@ public class MageHero : PlayerHero {
 						Quaternion.identity);*/
 			player.effectPool.GetPooledObject().GetComponent<TempObject>().Init(
 				Quaternion.Euler(new Vector3(0, 0, Random.Range(0, 360f))),
-				Vector3.Lerp (transform.position, e.transform.position, 0.5f), 
+				transform.position, 
 				hitEffect,
 				true,
 				0);
