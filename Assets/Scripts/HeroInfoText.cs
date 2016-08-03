@@ -7,10 +7,7 @@ public class HeroInfoText : MonoBehaviour {
 	public Text textBox;
 	public string defaultText;
 	public string text;		// text to display in the text box
-
-	void Awake () 
-	{
-	}
+	public AudioClip scrollingTextSound;
 
 	void OnEnable()
 	{
@@ -29,12 +26,22 @@ public class HeroInfoText : MonoBehaviour {
 		StartCoroutine(AnimateText());
 	}
 
+	public void Update()
+	{
+		if (Input.GetMouseButtonDown(0))
+		{
+			StopAllCoroutines ();
+			textBox.text = text;
+		}
+	}
+
 	IEnumerator AnimateText()
 	{
 		for (int i = 0; i < CountNonMarkupCharacters(text) + 1; i++)
 		{
 			textBox.text = ParseRichTextForTypewriter(i, text);
-			yield return new WaitForSeconds(.02f);
+			SoundManager.instance.PlaySingle (scrollingTextSound);
+			yield return new WaitForSeconds(.05f);
 		}
 	}
 

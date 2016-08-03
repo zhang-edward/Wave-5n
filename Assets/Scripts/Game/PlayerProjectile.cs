@@ -5,13 +5,20 @@ using System.Collections;
 public class PlayerProjectile : Projectile
 {
 	private Player player;
+	private SimpleAnimationPlayer anim;
 
 	[Header("Audio")]
 	public AudioClip onHitSound;
 
+	public void Awake()
+	{
+		anim = GetComponent<SimpleAnimationPlayer> ();
+	}
+
 	public void Init(Vector3 pos, Vector2 dir, Sprite sprite, string target, Player player, float speed = 4, int damage = 1)
 	{
 		base.Init (pos, dir, sprite, target, speed, damage);
+		anim.Play ();
 		this.player = player;
 	}
 

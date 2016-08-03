@@ -5,6 +5,7 @@ public class MapInfo : MonoBehaviour
 {
 	public Sprite[] terrainSprites;
 	public GameObject[] terrainObjectPrefabs;
+	public GameObject[] bgProps;
 	public GameObject bossSpawnPrefab;
 	public GameObject borderPrefab;
 	[Header("Music")]
