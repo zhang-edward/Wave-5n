@@ -9,7 +9,11 @@ namespace UI
 		public UIHeart[] healthIndicators;
 		public GameObject healthIndicatorPrefab;
 
-		void OnEnabled()
+		void Awake()
+		{
+		}
+
+		void OnEnable()
 		{
 			player.OnPlayerDamaged += UpdateHealthMeter;
 			player.OnPlayerHealed += UpdateHealthMeter;
@@ -19,7 +23,6 @@ namespace UI
 		public void Init () 
 		{
 			healthIndicators = new UIHeart[player.maxHealth];
-			Debug.Log (player.maxHealth);
 			for(int i = 0; i < player.maxHealth; i ++)
 			{
 				GameObject obj = Instantiate (healthIndicatorPrefab);

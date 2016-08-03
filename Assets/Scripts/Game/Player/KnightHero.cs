@@ -5,36 +5,71 @@ public class KnightHero : PlayerHero {
 
 	[Header("Class-Specific")]
 	public GameObject rushEffect;
+	public GameObject areaAttackEffect;
 	public Sprite hitEffect;
+	public float areaAttackRange = 2.0f;
 
 	private bool killBox = false;
 
 	[Header("Audio")]
 	public AudioClip rushSound;
 	public AudioClip[] hitSounds;
+	public AudioClip areaAttackSound;
 
-	public override void Ability()
+	public void OnDrawGizmosSelected()
+	{
+		Gizmos.DrawWireSphere (transform.position, 1f);
+	}
+
+	public override void Init (Player player, EntityPhysics body, Animator anim)
+	{
+		abilityCooldowns = new float[2];
+		base.Init (player, body, anim);
+		heroName = PlayerHero.KNIGHT;
+	}
+
+	// Dash attack
+	public override void HandleSwipe()
 	{
 		// if cooldown has not finished
-		if (abilityCooldown > 0)
+		if (abilityCooldowns[0] > 0)
 			return;
-		PlayEffect ();
-		player.input.isInputEnabled = false;
+		ResetCooldown (0);
 
-		abilityCooldown = cooldownTime;
+		PlayRushEffect ();
+		player.input.isInputEnabled = false;
 		killBox = true;
 		body.moveSpeed = 8;
-		body.Move(player.dir);
+		body.Move(player.dir.normalized);
 		player.isInvincible = true;
 		anim.SetBool ("Attacking", true);
 		SoundManager.instance.RandomizeSFX (rushSound);
-		Invoke ("ResetAbility", 0.5f);
+		Invoke ("ResetDashAbility", 0.5f);
 	}
 
-	public override void AbilityHoldDown ()
-	{}
+	// Area attack
+	public override void HandleTapRelease ()
+	{
+		if (abilityCooldowns [1] > 0)
+			return;
+		ResetCooldown (1);
+		anim.SetTrigger ("AreaAttack");
+		PlayAreaAttackEffect ();
 
-	public override void ResetAbility()
+		body.Move (Vector2.zero);
+		Collider2D[] cols = Physics2D.OverlapCircleAll (transform.position, areaAttackRange);
+		foreach (Collider2D col in cols)
+		{
+			if (col.CompareTag("Enemy"))
+			{
+				Enemy e = col.gameObject.GetComponentInChildren<Enemy> ();
+				DamageEnemy (e);
+			}
+		}
+		Invoke ("ResetAreaAttackAbility", 0.5f);
+	}
+
+	public void ResetDashAbility()
 	{
 		rushEffect.GetComponent<TempObject> ().Deactivate ();
 		killBox = false;
@@ -45,7 +80,12 @@ public class KnightHero : PlayerHero {
 		anim.SetBool ("Attacking", false);
 	}
 
-	private void PlayEffect()
+	public void ResetAreaAttackAbility()
+	{
+		anim.SetBool ("AreaAttack", false);
+	}
+
+	private void PlayRushEffect()
 	{
 		TempObject effect = rushEffect.GetComponent<TempObject> ();
 		SimpleAnimationPlayer animPlayer = rushEffect.GetComponent<SimpleAnimationPlayer> ();
@@ -61,35 +101,56 @@ public class KnightHero : PlayerHero {
 			animPlayer.anim.frames[0],
 			info
 		);
-
 		animPlayer.Play ();
+	}
 
+	private void PlayAreaAttackEffect()
+	{
+		TempObject effect = areaAttackEffect.GetComponent<TempObject> ();
+		SimpleAnimationPlayer animPlayer = areaAttackEffect.GetComponent<SimpleAnimationPlayer> ();
+
+		TempObjectInfo info = new TempObjectInfo ();
+		info.isSelfDeactivating = true;
+		info.lifeTime = animPlayer.anim.TimeLength;
+		info.targetColor = new Color (1, 1, 1, 1f);
+		effect.Init (
+			Quaternion.identity,
+			transform.position,
+			animPlayer.anim.frames[0],
+			info
+		);
+		animPlayer.Play ();
 	}
 
 	void OnTriggerStay2D(Collider2D col)
 	{
-		if (col.CompareTag("Enemy"))
+		if (killBox)
 		{
-			if (killBox)
+			if (col.CompareTag("Enemy"))
 			{
 				Enemy e = col.gameObject.GetComponentInChildren<Enemy> ();
-				if (!e.invincible && e.health > 0)
-				{
-					e.Damage (damage);
-					/*Instantiate (hitEffect, 
+				DamageEnemy (e);
+			}
+		}
+	}
+
+	private void DamageEnemy(Enemy e)
+	{
+		if (!e.invincible && e.health > 0)
+		{
+			e.Damage (damage);
+			/*Instantiate (hitEffect, 
 						Vector3.Lerp (transform.position, e.transform.position, 0.5f), 
 						Quaternion.identity);*/
-					player.effectPool.GetPooledObject().GetComponent<TempObject>().Init(
-						Quaternion.Euler(new Vector3(0, 0, Random.Range(0, 360f))),
-						Vector3.Lerp (transform.position, e.transform.position, 0.5f), 
-						hitEffect,
-						true,
-						0);
+			player.effectPool.GetPooledObject().GetComponent<TempObject>().Init(
+				Quaternion.Euler(new Vector3(0, 0, Random.Range(0, 360f))),
+				Vector3.Lerp (transform.position, e.transform.position, 0.5f), 
+				hitEffect,
+				true,
+				0);
 
-					SoundManager.instance.RandomizeSFX (hitSounds[Random.Range(0, hitSounds.Length)]);
-					player.TriggerOnEnemyDamagedEvent(damage);
-				}
-			}
+			SoundManager.instance.RandomizeSFX (hitSounds[Random.Range(0, hitSounds.Length)]);
+			player.TriggerOnEnemyDamagedEvent(damage);
 		}
 	}
 }

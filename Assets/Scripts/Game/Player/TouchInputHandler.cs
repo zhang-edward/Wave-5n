@@ -8,12 +8,12 @@ public class TouchInputHandler : MonoBehaviour {
 
 	private Vector2 startPos;
 	private bool couldBeSwipe;
-	private float minSwipeDist = 2.0f;
+	private float minSwipeDist = 1.5f;
 	private float maxSwipeTime = 0.3f;
 
 	private bool couldBeTap;
 	private float maxTapDist = 1.0f;
-	private float maxTapTime = 0.5f;
+	//private float maxTapTime = 0.5f;
 
 	public delegate void Swipe(Vector2 dir);
 	public event Swipe OnSwipe;
@@ -65,7 +65,6 @@ public class TouchInputHandler : MonoBehaviour {
 
 				//Debug.Log ("swipe time: " + swipeTime + "\n" + 
 				//          "swipe dist: " + swipeDist);
-				OnTapRelease(Camera.main.ScreenToWorldPoint(touch.position));
 				couldBeSwipe = swipeTime < maxSwipeTime && swipeDist > minSwipeDist;
 				if (couldBeSwipe)
 				{
@@ -73,6 +72,9 @@ public class TouchInputHandler : MonoBehaviour {
 					couldBeSwipe = false;
 					OnSwipe (swipeDir);
 				}
+				else
+					OnTapRelease(Camera.main.ScreenToWorldPoint(touch.position));
+				
 				break;
 			}
 		}

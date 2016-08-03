@@ -12,6 +12,8 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 	public Transform player;
 	public EntityPhysics body;
 	public Animator anim;
+	[HideInInspector]
+	public Map map;		// used only for walk-in spawners
 
 	public bool hitDisabled{ get; private set; }
 
@@ -34,8 +36,9 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 	public int health { get; private set; }
 	public Vector3 healthBarOffset;
 
-	public virtual void Init(Vector3 spawnLocation)
+	public virtual void Init(Vector3 spawnLocation, Map map)
 	{
+		this.map = map;
 		health = maxHealth;
 		DEFAULT_LAYER = body.gameObject.layer;
 		deathPropPool = ObjectPooler.GetObjectPooler ("DeathProp");
@@ -62,6 +65,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 		while (Vector3.Distance(transform.position, target) > 0.1f)
 		{
 			body.Move ((target - transform.position).normalized);
+			CheckIfWithinMapBounds ();
 			yield return null;
 		}
 		body.gameObject.layer = DEFAULT_LAYER;
@@ -153,6 +157,15 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 		}
 	}
 
+	// makes this enemy untouchable if outside map bounds (still needs to walk in bounds on spawn)
+	public void CheckIfWithinMapBounds()
+	{
+		if (!map.WithinOpenCells (transform.position))
+			invincible = true;
+		else
+			invincible = false;
+	}
+
 	// ===== IDamageable methods ===== //
 	public virtual void Damage(int amt)
 	{
@@ -182,5 +195,10 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 	public virtual void Heal (int amt)
 	{
 		health += amt;
+	}
+
+	void OnDisable()
+	{
+		Destroy (gameObject, 1.0f);
 	}
 }

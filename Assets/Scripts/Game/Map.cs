@@ -23,6 +23,9 @@ public class Map : MonoBehaviour {
 	}
 
 	public const int size = 20;
+	public float bgPropsBufferMin = 2;
+	public float bgPropsBufferMax = 8;
+	public int bgPropsDensity = 25;
 
 	// ids
 	private const int EDGE_TILE = 2;
@@ -33,14 +36,21 @@ public class Map : MonoBehaviour {
 	public int[,] terrain = new int[size, size];
 	public int[,] colliders = new int[size, size];
 
-	void Start()
+	[Header("Folders")]
+
+	public Transform terrainFolder;
+	public Transform collidersFolder;
+	public Transform objectsFolder;
+	public Transform bgFolder;
+
+	public void GenerateMap()
 	{
-		GetMaps ();
+		GetIntegerMaps ();
 		InitSpriteMap ();
-		InitMap ();
+		CreateMap ();
 	}
 
-	private void GetMaps()
+	private void GetIntegerMaps()
 	{
 		for (int x = 0; x < size; x ++)
 		{
@@ -84,7 +94,7 @@ public class Map : MonoBehaviour {
 	{
 		// get a random object
 		GameObject obj = Instantiate (info.terrainObjectPrefabs[Random.Range(0, info.terrainObjectPrefabs.Length)]);
-		obj.transform.SetParent (this.transform);
+		obj.transform.SetParent (objectsFolder);
 		obj.transform.position = new Vector2 (x, y);
 		terrainObjects.Add (obj);
 	}
@@ -92,14 +102,15 @@ public class Map : MonoBehaviour {
 	private void CreateBossSpawn()
 	{
 		GameObject obj = Instantiate (info.bossSpawnPrefab);
-		obj.transform.SetParent (this.transform);
+		obj.transform.SetParent (objectsFolder);
 		obj.transform.position = bossSpawnPosition;
 		terrainObjects.Add (obj);
 		bossSpawn = obj;
 	}
 
-	public void InitMap()
+	public void CreateMap()
 	{
+		SoundManager.instance.PlayMusicLoop (info.musicLoop, info.musicIntro);
 		CreateBossSpawn ();
 		for (int x = 0; x < size; x++)
 		{
@@ -120,7 +131,7 @@ public class Map : MonoBehaviour {
 					if (colliders[y, x] == 1)
 					{
 						GameObject o = Instantiate (info.borderPrefab);
-						o.transform.SetParent (this.transform);
+						o.transform.SetParent (collidersFolder);
 						o.transform.position = new Vector2 (x, y);
 					}
 				}
@@ -133,17 +144,54 @@ public class Map : MonoBehaviour {
 
 	private void InitSpriteMap()
 	{
+		SpawnBGProps ();
 		for (int x = 0; x < size; x++)
 		{
 			for (int y = 0; y < size; y++)
 			{
 				GameObject o = Instantiate (terrainPrefab);
-				o.transform.SetParent (this.transform);
+				o.transform.SetParent (terrainFolder);
 				o.transform.position = new Vector2 (x, y);
 
 				SpriteRenderer sr = o.GetComponent<SpriteRenderer> ();
 				terrainSpriteMap [y, x] = sr;
 			}
+		}
+	}
+
+	private void SpawnBGProps()
+	{
+		for (int i = 0; i < bgPropsDensity; i ++)
+		{
+			float randOffset = Random.Range (bgPropsBufferMin, bgPropsBufferMax);
+			GameObject o = Instantiate(info.bgProps[Random.Range(0, info.bgProps.Length)]);
+			o.transform.position = new Vector3 (-randOffset,
+				Random.Range (0, Map.size + bgPropsBufferMax));
+			o.transform.SetParent (bgFolder);
+		}
+		for (int i = 0; i < bgPropsDensity; i ++)
+		{
+			float randOffset = Random.Range (bgPropsBufferMin, bgPropsBufferMax);
+			GameObject o = Instantiate(info.bgProps[Random.Range(0, info.bgProps.Length)]);
+			o.transform.position = new Vector3 (Map.size + randOffset,
+				Random.Range (0, Map.size + bgPropsBufferMax));
+			o.transform.SetParent (bgFolder);
+		}
+		for (int i = 0; i < bgPropsDensity; i ++)
+		{
+			float randOffset = Random.Range (bgPropsBufferMin, bgPropsBufferMax);
+			GameObject o = Instantiate(info.bgProps[Random.Range(0, info.bgProps.Length)]);
+			o.transform.position = new Vector3 (Random.Range (0, Map.size + bgPropsBufferMax),
+				-randOffset);
+			o.transform.SetParent (bgFolder);
+		}
+		for (int i = 0; i < bgPropsDensity; i ++)
+		{
+			float randOffset = Random.Range (bgPropsBufferMin, bgPropsBufferMax);
+			GameObject o = Instantiate(info.bgProps[Random.Range(0, info.bgProps.Length)]);
+			o.transform.position = new Vector3 (Random.Range(0, Map.size + bgPropsBufferMax),
+				Map.size + randOffset);
+			o.transform.SetParent (bgFolder);
 		}
 	}
 
@@ -202,4 +250,15 @@ public class Map : MonoBehaviour {
 		return sum + 1;
 	}
 
+	public bool WithinOpenCells(Vector3 pos)
+	{
+		Vector3 roundedPos = new Vector3 (Mathf.RoundToInt (pos.x),
+			                     Mathf.RoundToInt (pos.y),
+			                     Mathf.RoundToInt (pos.z));
+		if (openCells.Contains(roundedPos))
+		{
+			return true;
+		}
+		return false;
+	}
 }

@@ -25,9 +25,9 @@ public class ShooterEnemy : Enemy {
 	[Header("Audio")]
 	public AudioClip shootSound;
 
-	public override void Init(Vector3 spawnLocation)
+	public override void Init(Vector3 spawnLocation, Map map)
 	{
-		base.Init (spawnLocation);
+		base.Init (spawnLocation, map);
 		projectilePool = ObjectPooler.GetObjectPooler ("Projectile");
 	}
 

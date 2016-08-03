@@ -19,7 +19,7 @@ public class FollowerEnemy : Enemy {
 		body.moveSpeed = DEFAULT_SPEED;
 	}
 
-	void OnTriggerEnter2D(Collider2D col)
+	void OnTriggerStay2D(Collider2D col)
 	{
 		if (col.CompareTag("Player"))
 		{

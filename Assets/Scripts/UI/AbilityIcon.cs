@@ -2,46 +2,16 @@
 using UnityEngine.UI;
 using System.Collections;
 
-namespace UI
+public class AbilityIcon : MonoBehaviour
 {
-	public class AbilityIcon : MonoBehaviour {
+	public Image image;
+	public RectTransform cooldownMask;
 
-		private Image image;
-		public RectTransform cooldownMask;
-
-		public Player player;
-
-		private bool playerWasInitialized = false;
-		private PlayerHero playerAbility;
-
-		void Awake()
-		{
-			image = GetComponent<Image> ();
-		}
-
-		void OnEnabled()
-		{
-			player.OnPlayerInitialized += Init;
-		}
-
-		void OnDisabled()
-		{
-			player.OnPlayerInitialized -= Init;
-		}
-
-		void Init()
-		{
-			playerWasInitialized = true;
-			playerAbility = player.hero;
-			image.sprite = playerAbility.primaryAbilityIcon;
-		}
-
-		void LateUpdate()
-		{
-			if (!playerWasInitialized)
-				return;
-			float percentCooldown = (playerAbility.AbilityCooldown / playerAbility.cooldownTime);
-			cooldownMask.sizeDelta = new Vector2 (16, percentCooldown * 16);
-		}
+	public void SetCoolDown(float percent)
+	{
+		if (percent < 0)
+			return;
+		cooldownMask.sizeDelta = new Vector2 (16, percent * 16);
 	}
 }
+
