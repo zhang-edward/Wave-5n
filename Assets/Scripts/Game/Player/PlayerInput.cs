@@ -10,7 +10,7 @@ public class PlayerInput : MonoBehaviour {
 	public bool isInputEnabled = true;	
 
 	public TouchInputHandler touchInputHandler;
-	private Vector3 calibratedAccelerometer;
+	//private Vector3 calibratedAccelerometer;
 	private Vector3 accel;
 	public float tiltSensitivity = 10f;
 
@@ -29,7 +29,7 @@ public class PlayerInput : MonoBehaviour {
 
 	private void CalibrateAccelerometer()
 	{
-		calibratedAccelerometer = Input.acceleration;
+		//calibratedAccelerometer = Input.acceleration;
 		//calibratedAccelerometer = new Vector2(0, -0.f);
 		//Debug.Log (calibratedAccelerometer);
 
@@ -42,7 +42,7 @@ public class PlayerInput : MonoBehaviour {
 		{
 #if UNITY_ANDROID
 			// get accelerometer input
-			accel = (Vector2)Vector3.Lerp(accel, Input.acceleration - calibratedAccelerometer, 10f * Time.deltaTime);
+			//accel = (Vector2)Vector3.Lerp(accel, Input.acceleration - calibratedAccelerometer, 10f * Time.deltaTime);
 
 			float x = Mathf.Abs(accel.x) < 0.01f ? 0 : accel.x;
 			float y = Mathf.Abs(accel.y) < 0.01f ? 0 : accel.y;

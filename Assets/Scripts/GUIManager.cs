@@ -18,11 +18,15 @@ public class GUIManager : MonoBehaviour {
 	{
 		player.OnPlayerDied += GameOverUI;
 		enemyManager.OnEnemyWaveSpawned += ShowEnemyWaveText;
+		enemyManager.OnBossIncoming += ShowBossIncomingText;
 	}
 
 	void OnDisabled()
 	{
 		player.OnPlayerDied -= GameOverUI;
+		enemyManager.OnEnemyWaveSpawned -= ShowEnemyWaveText;
+		enemyManager.OnBossIncoming -= ShowBossIncomingText;
+
 	}
 
 	private void GameOverUI()
@@ -39,6 +43,12 @@ public class GUIManager : MonoBehaviour {
 
 	private void ShowEnemyWaveText(int waveNumber)
 	{
-		enemyWaveText.Init (waveNumber);
+		enemyWaveText.DisplayWaveNumber (waveNumber);
+	}
+
+	private void ShowBossIncomingText()
+	{
+//		Debug.Log ("yo");
+		enemyWaveText.DisplayBossIncoming ();
 	}
 }

@@ -38,6 +38,9 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 	public int health { get; private set; }
 	public Vector3 healthBarOffset;
 
+	public delegate void EnemyDied();
+	public event EnemyDied OnEnemyDied;
+
 	public virtual void Init(Vector3 spawnLocation, Map map)
 	{
 		this.map = map;
@@ -239,6 +242,8 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 
 	void OnDisable()
 	{
+		if (OnEnemyDied != null)
+			OnEnemyDied ();
 		Destroy (gameObject, 1.0f);
 	}
 }

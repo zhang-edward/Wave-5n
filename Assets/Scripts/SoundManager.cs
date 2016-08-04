@@ -84,10 +84,9 @@ public class SoundManager : MonoBehaviour {
 
 	private IEnumerator ImportantSound()
 	{
-		StartCoroutine(MusicFadeOut (0.1f));
+		StartCoroutine(MusicFadeOut (0.5f));
 		sfx.Play ();
-		while (sfx.isPlaying)
-			yield return null;
+		yield return new WaitForSeconds (sfx.clip.length + 1);
 		StartCoroutine (MusicFadeIn (musicVolume));
 	}
 
@@ -95,7 +94,7 @@ public class SoundManager : MonoBehaviour {
 	{
 		while (music.volume < targetVolume)
 		{
-			music.volume += 0.1f;
+			music.volume += 0.05f;
 			yield return null;
 		}
 	}
@@ -104,7 +103,7 @@ public class SoundManager : MonoBehaviour {
 	{
 		while (music.volume > targetVolume)
 		{
-			music.volume -= 0.1f;
+			music.volume -= 0.05f;
 			yield return null;
 		}
 	}

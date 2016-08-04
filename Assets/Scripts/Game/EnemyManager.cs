@@ -7,6 +7,7 @@ public class EnemyManager : MonoBehaviour {
 	private const float DIFFICULTY_CURVE = 3.5f;
 
 	public Player player;
+	public int enemiesKilled { get; private set; }
 	public Map map;
 
 	public ObjectPooler enemyHealthBarPool;
@@ -16,14 +17,17 @@ public class EnemyManager : MonoBehaviour {
 
 	public EnemyHealthBar bossHealthBar;
 	private BossSpawn bossSpawn;
+	public int bossWave = 2;
+	public float bossSpawnDelay = 3f;
+	public int onBossDifficultyScaleBack = 3;	// subtract this from difficultyCurve on a boss wave
+
 	private int waveNumber = 0;
+	private int difficultyCurve = 0;	// number to determine the number of enemies to spawn
 
 	public delegate void EnemyWaveSpawned (int waveNumber);
 	public event EnemyWaveSpawned OnEnemyWaveSpawned;
-
-	void Awake()
-	{
-	}
+	public delegate void BossIncoming();
+	public event BossIncoming OnBossIncoming;
 
 	void OnEnable()
 	{
@@ -45,24 +49,44 @@ public class EnemyManager : MonoBehaviour {
 	{
 		while (true)
 		{
-			if (NumAliveEnemies() < 3)
+			if (NumAliveEnemies() <= 0)
 			{
 				waveNumber++;
+				difficultyCurve++;
+
+				// every 'bossWave' waves, spawn a boss
+				if (waveNumber % bossWave == 0)
+				{
+					difficultyCurve -= onBossDifficultyScaleBack;
+					if (difficultyCurve <= 0)
+						difficultyCurve = 1;
+					Invoke ("StartBossIncoming", 2.0f);
+				}
+				if (OnEnemyWaveSpawned != null)
+				{
+					OnEnemyWaveSpawned (waveNumber);
+				}
+
 				// Number of enemies spawning curve (used desmos.com for the graph)
-				int numToSpawn = Mathf.RoundToInt (DIFFICULTY_CURVE * Mathf.Log (waveNumber) + 5);
-				GameObject[] prefabPool;
+				int numToSpawn = Mathf.RoundToInt (DIFFICULTY_CURVE * Mathf.Log (difficultyCurve) + 5);
+				List<GameObject> prefabPool = new List<GameObject>();
 				if (waveNumber <= 5)
+				{
 					prefabPool = info.enemyPrefabs1;
+				}
+				else if (5 < waveNumber && waveNumber <= 10)
+				{
+					prefabPool.AddRange (info.enemyPrefabs1);
+					prefabPool.AddRange (info.enemyPrefabs2);
+				}
 				else
+				{
 					prefabPool = info.enemyPrefabs2;
+				}
 
 				for (int i = 0; i < numToSpawn; i++)
 					SpawnEnemy (prefabPool);
-				// every 5 waves, spawn a boss
-				if (waveNumber % 5 == 0)
-					SpawnBoss ();
-				if (OnEnemyWaveSpawned != null)
-					OnEnemyWaveSpawned (waveNumber);
+				
 
 				Debug.Log ("Number of enemies in this wave: " + numToSpawn);
 			}
@@ -70,10 +94,16 @@ public class EnemyManager : MonoBehaviour {
 		}
 	}
 
-	public void SpawnEnemy(GameObject[] prefabPool)
+	private void StartBossIncoming()
+	{
+		OnBossIncoming ();
+		Invoke ("SpawnBoss", bossSpawnDelay);
+	}
+
+	public void SpawnEnemy(List<GameObject> prefabPool)
 	{
 		Vector3 randOpenCell = (Vector3)map.OpenCells [Random.Range (0, map.OpenCells.Count)];
-		GameObject o = Instantiate (prefabPool [Random.Range (0, prefabPool.Length)]);
+		GameObject o = Instantiate (prefabPool [Random.Range (0, prefabPool.Count)]);
 		o.transform.SetParent (transform);
 		if (Random.value < 0.5f)
 			o.transform.position = new Vector3 (Random.Range (0, 10), Map.size + 4);
@@ -93,13 +123,13 @@ public class EnemyManager : MonoBehaviour {
 	public void SpawnBoss()
 	{
 		bossSpawn.PlayAnimation ();
-		GameObject o = Instantiate (info.bossPrefabs [Random.Range (0, info.bossPrefabs.Length)]);
+		GameObject o = Instantiate (info.bossPrefabs [Random.Range (0, info.bossPrefabs.Count)]);
 		o.transform.SetParent (transform);
 		Enemy e = o.GetComponentInChildren<Enemy> ();
 		e.Init (bossSpawn.transform.position, map);
 		e.player = player.transform;
 		bossHealthBar.Init (e);
-		//enemies.Add (e);
+		enemies.Add (e);
 	}
 
 	private int NumAliveEnemies()
@@ -111,5 +141,10 @@ public class EnemyManager : MonoBehaviour {
 				count++;
 		}
 		return count;
+	}
+
+	private void IncrementEnemiesKilled()
+	{
+		enemiesKilled++;	
 	}
 }

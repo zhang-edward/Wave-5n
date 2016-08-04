@@ -13,7 +13,9 @@ public class NinjaHero : PlayerHero {
 	public SimpleAnimation ninjaStarAnim;
 
 	[Header("Audio")]
+	public AudioClip[] hitSounds;
 	public AudioClip shootSound;
+	public AudioClip dashOutSound;
 	public AudioClip slashSound;
 
 	//public int damage = 1;
@@ -50,7 +52,7 @@ public class NinjaHero : PlayerHero {
 		SoundManager.instance.RandomizeSFX (shootSound);
 		// Animation
 		anim.SetBool ("Attack", true);
-
+		// Player properties
 		PlayerProjectile ninjaStar = projectilePool.GetPooledObject ().GetComponent<PlayerProjectile>();
 		Vector2 dir = player.dir.normalized;
 		ninjaStar.Init (transform.position, dir, player);
@@ -71,28 +73,30 @@ public class NinjaHero : PlayerHero {
 	{
 		player.isInvincible = true;
 		player.input.isInputEnabled = false;
-
+		// Sound
+		SoundManager.instance.RandomizeSFX(dashOutSound);
+		// Animation
 		anim.SetTrigger ("DashOut");
 		yield return new WaitForEndOfFrame ();		// wait for the animation state to update before continuing
 		while (anim.GetCurrentAnimatorStateInfo (0).IsName ("DashOut"))
 			yield return null;
 
-		//Vector3 testDestination = (Vector3)player.dir.normalized * dashDistance 
-		//	+ player.transform.parent.position;
+		// Sound
+		SoundManager.instance.RandomizeSFX(slashSound);
+		// (Animation plays automatically)
+		// Player properties
 		float distance = GetDashDistanceClamped (transform.position, player.dir.normalized);
 		Vector3 dest = (Vector3)player.dir.normalized * distance 
 			+ player.transform.parent.position;
-		
-		body.Move (player.dir.normalized);		
-		player.isInvincible = false;
 		DashCircleCast (transform.position, dest);
 		player.transform.parent.position = dest;
-
+		body.Move (player.dir.normalized);		
+		player.isInvincible = false;
+		// Do area attack at the end
 		AreaAttack ();
 		yield return new WaitForEndOfFrame ();		// wait for the animation state to update before continuing
 		while (anim.GetCurrentAnimatorStateInfo (0).IsName ("DashIn"))
 			yield return null;
-
 		player.input.isInputEnabled = true;
 	}
 
@@ -134,6 +138,7 @@ public class NinjaHero : PlayerHero {
 	{
 		if (!e.invincible && e.health > 0)
 		{
+			SoundManager.instance.PlaySingle (hitSounds [Random.Range (0, hitSounds.Length)]);
 			e.Damage (damage);
 			TempObject o = player.effectPool.GetPooledObject ().GetComponent<TempObject> ();
 			SimpleAnimationPlayer anim = o.GetComponent<SimpleAnimationPlayer> ();

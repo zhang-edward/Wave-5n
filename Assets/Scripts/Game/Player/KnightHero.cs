@@ -35,15 +35,19 @@ public class KnightHero : PlayerHero {
 		if (abilityCooldowns[0] > 0)
 			return;
 		ResetCooldown (0);
-
+		// Sound
+		SoundManager.instance.RandomizeSFX (rushSound);
+		// Animation
+		anim.SetBool ("Attacking", true);
+		// Effects
 		PlayRushEffect ();
+		// Player properties
 		player.input.isInputEnabled = false;
 		killBox = true;
-		body.moveSpeed = 8;
+		body.moveSpeed = 10;
 		body.Move(player.dir.normalized);
 		player.isInvincible = true;
-		anim.SetBool ("Attacking", true);
-		SoundManager.instance.RandomizeSFX (rushSound);
+		// reset ability
 		Invoke ("ResetDashAbility", 0.5f);
 	}
 
@@ -53,9 +57,14 @@ public class KnightHero : PlayerHero {
 		if (abilityCooldowns [1] > 0)
 			return;
 		ResetCooldown (1);
+		// Sound
+		SoundManager.instance.RandomizeSFX (areaAttackSound);
+		// Animation
 		anim.SetTrigger ("AreaAttack");
+		// Effects
 		PlayAreaAttackEffect ();
-
+		// Properties
+		player.isInvincible = true;
 		body.Move (Vector2.zero);
 		Collider2D[] cols = Physics2D.OverlapCircleAll (transform.position, areaAttackRange);
 		foreach (Collider2D col in cols)
@@ -66,6 +75,7 @@ public class KnightHero : PlayerHero {
 				DamageEnemy (e);
 			}
 		}
+		// Reset Ability
 		Invoke ("ResetAreaAttackAbility", 0.5f);
 	}
 
@@ -83,6 +93,7 @@ public class KnightHero : PlayerHero {
 	public void ResetAreaAttackAbility()
 	{
 		anim.SetBool ("AreaAttack", false);
+		player.isInvincible = false;
 	}
 
 	private void PlayRushEffect()

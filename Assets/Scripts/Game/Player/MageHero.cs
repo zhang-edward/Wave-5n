@@ -61,7 +61,7 @@ public class MageHero : PlayerHero {
 
 		// recoil
 		body.Move (dir);	// set the sprites flipX to the correct direction
-		body.Rb2d.velocity = dir * -2f;
+		body.Rb2d.velocity = dir * -4f;
 
 		// Reset the ability
 		Invoke ("ResetShootFireball", 0.5f);
@@ -132,12 +132,12 @@ public class MageHero : PlayerHero {
 			e.Damage (damage);
 			player.effectPool.GetPooledObject ().GetComponent<TempObject> ().Init (
 				Quaternion.Euler (new Vector3 (0, 0, Random.Range (0, 360f))),
-				transform.position, 
+				e.transform.position, 
 				hitEffect,
 				true,
 				0,
 				0.2f,
-				0.4f);
+				1.0f);
 
 			player.TriggerOnEnemyDamagedEvent(damage);
 		}

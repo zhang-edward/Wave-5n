@@ -29,6 +29,10 @@ public class GameManager : MonoBehaviour {
 		{
 			InitGameScene ();
 		}
+#if UNITY_ANDROID
+		Application.targetFrameRate = 30;
+#endif
+
 	}
 
 	void Update()
@@ -48,12 +52,14 @@ public class GameManager : MonoBehaviour {
 	public void GoToGameScene()
 	{
 		//didInitializeGameScene = false;
+		Time.timeScale = 1;
 		StartCoroutine (LoadGameScene());
 		ObjectPooler.objectPoolers.Clear ();
 	}
 
 	public void GoToMenuScene()
 	{
+		Time.timeScale = 1;
 		SceneManager.LoadScene ("Menu");
 		ObjectPooler.objectPoolers.Clear ();
 	}
