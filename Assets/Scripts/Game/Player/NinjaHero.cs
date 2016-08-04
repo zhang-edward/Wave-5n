@@ -4,11 +4,17 @@ using System.Collections;
 public class NinjaHero : PlayerHero {
 
 	[Header("Class-Specific")]
-	public NinjaSmokeBomb smokeBomb;
+	public RuntimeObjectPooler projectilePool;
+	public GameObject projectilePrefab;
 	public int smokeBombRange = 2;
-	public SimpleAnimation hitEffect;
 	public float dashDistance = 4;
-	public Map map;
+
+	public SimpleAnimation hitEffect;
+	public SimpleAnimation ninjaStarAnim;
+
+	[Header("Audio")]
+	public AudioClip shootSound;
+	public AudioClip slashSound;
 
 	//public int damage = 1;
 
@@ -16,20 +22,8 @@ public class NinjaHero : PlayerHero {
 	{
 		abilityCooldowns = new float[2];
 		base.Init (player, body, anim);
-		StartCoroutine (UpdateProperties());
-	}
-
-	private IEnumerator UpdateProperties()
-	{
-		while (true)
-		{
-			if (Vector3.Distance (transform.position, smokeBomb.transform.position) < smokeBombRange &&
-				smokeBomb.gameObject.activeInHierarchy)
-				player.isInvincible = true;
-			else
-				player.isInvincible = false;
-			yield return null;
-		}
+		heroName = PlayerHero.NINJA;
+		projectilePool.SetPooledObject(projectilePrefab);
 	}
 
 	public override void HandleSwipe ()
@@ -42,24 +36,40 @@ public class NinjaHero : PlayerHero {
 
 	public override void HandleTapRelease()
 	{
+		//smokeBomb.Init (transform.position);
+		ShootNinjaStar();
+	}
+
+	private void ShootNinjaStar()
+	{
 		// if cooldown has not finished
 		if (abilityCooldowns[1] > 0)
 			return;
 		ResetCooldown (1);
-		smokeBomb.Init (transform.position);
-		Invoke ("ResetAbility", 5f);
+		// Sound
+		SoundManager.instance.RandomizeSFX (shootSound);
+		// Animation
+		anim.SetBool ("Attack", true);
+
+		PlayerProjectile ninjaStar = projectilePool.GetPooledObject ().GetComponent<PlayerProjectile>();
+		Vector2 dir = player.dir.normalized;
+		ninjaStar.Init (transform.position, dir, player);
+		// set direction
+		body.Move (dir);
+		body.Rb2d.velocity = Vector2.zero;
+
+		Invoke ("ResetAbility", 0.5f);
 	}
 
-
-
-	void OnDrawGizmos()
+	public void ResetAbility()
 	{
-		//Gizmos.DrawRay (transform.position, player.dir.normalized * dashDistance);
-
+		body.moveSpeed = player.DEFAULT_SPEED;
+		anim.SetBool("Attack", false);
 	}
 
 	private IEnumerator DashAttack()
 	{
+		player.isInvincible = true;
 		player.input.isInputEnabled = false;
 
 		anim.SetTrigger ("DashOut");
@@ -67,13 +77,14 @@ public class NinjaHero : PlayerHero {
 		while (anim.GetCurrentAnimatorStateInfo (0).IsName ("DashOut"))
 			yield return null;
 
-		Vector3 testDestination = (Vector3)player.dir.normalized * dashDistance 
-			+ player.transform.parent.position;
+		//Vector3 testDestination = (Vector3)player.dir.normalized * dashDistance 
+		//	+ player.transform.parent.position;
 		float distance = GetDashDistanceClamped (transform.position, player.dir.normalized);
 		Vector3 dest = (Vector3)player.dir.normalized * distance 
 			+ player.transform.parent.position;
 		
-		body.Move (player.dir.normalized);
+		body.Move (player.dir.normalized);		
+		player.isInvincible = false;
 		DashCircleCast (transform.position, dest);
 		player.transform.parent.position = dest;
 

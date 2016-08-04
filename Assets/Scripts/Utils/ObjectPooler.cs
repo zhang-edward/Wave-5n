@@ -11,7 +11,7 @@ public class ObjectPooler : MonoBehaviour {
 	public int poolAmount = 10;
 	public bool willGrow = true;
 
-	private List<GameObject> pooledObjects; 
+	protected List<GameObject> pooledObjects; 
 
 	void Awake()
 	{

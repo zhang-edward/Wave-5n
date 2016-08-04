@@ -37,6 +37,26 @@ public class NinjaSmokeBomb : MonoBehaviour
 		cooldown = lifetime;
 		for (int i = 0; i < 2; i++)
 			Invoke("SpawnSmoke", 0.3f);
+		SmokeEffect ();
+
+		AreaEffect ();
+	}
+
+	private void AreaEffect()
+	{
+		Collider2D[] cols = Physics2D.OverlapCircleAll (transform.position, 1.5f);
+		foreach (Collider2D col in cols)
+		{
+			if (col.CompareTag("Enemy"))
+			{
+				Enemy e = col.gameObject.GetComponentInChildren<Enemy> ();
+				e.Confuse (2.0f);
+			}
+		}
+	}
+
+	private void SmokeEffect()
+	{
 		TempObject smokeBomb = effectsPool.GetPooledObject ().GetComponent<TempObject> ();
 		TempObjectInfo info = new TempObjectInfo (true,
 			0f,

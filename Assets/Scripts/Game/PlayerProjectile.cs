@@ -7,6 +7,13 @@ public class PlayerProjectile : Projectile
 	private Player player;
 	private SimpleAnimationPlayer anim;
 
+	// SET IN INSPECTOR!
+	public float setSpeed;
+	public int setDamage;
+	public bool areaAttack;				// whether this should effect an area upon impact
+	public float areaAttackRadius;		// the radius of the area attack, if enabled
+	public bool disabledOnImpact = true;		// whether the projectile is disabled on impact
+
 	[Header("Audio")]
 	public AudioClip onHitSound;
 
@@ -18,9 +25,9 @@ public class PlayerProjectile : Projectile
 		box = this.GetComponent<BoxCollider2D> ();
 	}
 
-	public void Init(Vector3 pos, Vector2 dir, Sprite sprite, string target, Player player, float speed = 4, int damage = 1)
+	public void Init(Vector3 pos, Vector2 dir, Player player)
 	{
-		base.Init (pos, dir, sprite, target, speed, damage);
+		base.Init (pos, dir, anim.anim.frames[0], target, setSpeed, setDamage);
 		this.player = player;
 		anim.looping = true;
 		anim.Play ();
@@ -37,19 +44,32 @@ public class PlayerProjectile : Projectile
 		if (col.CompareTag(target))
 		{
 			SoundManager.instance.RandomizeSFX (onHitSound);
-//			Debug.Log (col.gameObject);
-			Collider2D[] cols = Physics2D.OverlapCircleAll (transform.position, 1.5f);
-			foreach (Collider2D colChild in cols)
+			if (areaAttack)
+				AreaAttack ();
+			else
 			{
-				if (colChild.CompareTag(target))
-				{
-					IDamageable damageableTarget = colChild.GetComponentInChildren<IDamageable> ();
-					damageableTarget.Damage (damage);
-					player.TriggerOnEnemyDamagedEvent (damage);
-				}
+				IDamageable damageableTarget = col.GetComponentInChildren<IDamageable> ();
+				damageableTarget.Damage (damage);
+				player.TriggerOnEnemyDamagedEvent (damage);
 			}
-			gameObject.SetActive (false);
 			OnCollide ();
+			if (disabledOnImpact)
+				gameObject.SetActive (false);
+			
+		}
+	}
+
+	private void AreaAttack()
+	{
+		Collider2D[] cols = Physics2D.OverlapCircleAll (transform.position, 1.5f);
+		foreach (Collider2D colChild in cols)
+		{
+			if (colChild.CompareTag(target))
+			{
+				IDamageable damageableTarget = colChild.GetComponentInChildren<IDamageable> ();
+				damageableTarget.Damage (damage);
+				player.TriggerOnEnemyDamagedEvent (damage);
+			}
 		}
 	}
 }

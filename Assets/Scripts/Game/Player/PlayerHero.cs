@@ -5,6 +5,7 @@ public abstract class PlayerHero : MonoBehaviour {
 
 	public const string KNIGHT = "knight";
 	public const string MAGE = "mage";
+	public const string NINJA = "ninja";
 
 	[Header("Player Hero Properties")]
 	public Sprite[] icons;

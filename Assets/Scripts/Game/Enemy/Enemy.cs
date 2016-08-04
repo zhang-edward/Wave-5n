@@ -16,11 +16,13 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 	public Map map;		// used only for walk-in spawners
 
 	public bool hitDisabled{ get; private set; }
+	public bool confused { get; private set; }
 
 	[Header("Enemy Properties")]
 	public bool isBoss = false;
 	public float playerDetectionRange = 2f;
 	public bool canBeDisabledOnHit = true;
+	public bool canBeConfused = true;
 	public bool invincible = false;
 
 	[Header("Spawn Properties")]
@@ -129,6 +131,36 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 		yield return null;
 	}
 
+	// Confuse
+	private IEnumerator ConfusedState(float time)
+	{
+		confused = true;
+		body.moveSpeed = 0;
+
+		TempObject tempObj = ObjectPooler.GetObjectPooler ("Effect").GetPooledObject ().GetComponent<TempObject> ();
+		SimpleAnimationPlayer animPlayer = tempObj.GetComponent<SimpleAnimationPlayer> ();
+		animPlayer.anim = StatusEffectContainer.instance.confusedEffect;
+		animPlayer.looping = true;
+		tempObj.Init (Quaternion.identity,
+			transform.position + healthBarOffset,
+			animPlayer.anim.frames [0],
+			true,
+			0f,
+			animPlayer.anim.TimeLength,
+			0f);
+		animPlayer.Play ();
+
+		yield return new WaitForSeconds (time);
+		confused = false;
+
+		UnityEngine.Assertions.Assert.IsTrue(anim.HasState(0, Animator.StringToHash("default")));
+		anim.CrossFade ("default", 0f);
+
+		ResetVars ();
+		StartCoroutine (DEFAULT_STATE);
+		yield return null;
+	}
+
 	private IEnumerator FlashRed()
 	{
 		sr.color = Color.red;
@@ -164,6 +196,14 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 			invincible = true;
 		else
 			invincible = false;
+	}
+
+	public void Confuse(float time)
+	{
+		if (!canBeConfused)
+			return;
+		StopAllCoroutines ();
+		StartCoroutine(ConfusedState (time));
 	}
 
 	// ===== IDamageable methods ===== //
