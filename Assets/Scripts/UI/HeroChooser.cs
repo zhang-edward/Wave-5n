@@ -6,7 +6,7 @@ public class HeroChooser : MonoBehaviour
 {
 	public ScrollViewSnap heroIconsView;
 	public HeroInfoPanel infoPanel;
-	public Button playButton;
+	public ScoreDisplay scoreDisplay;
 
 	void Awake()
 	{
@@ -33,6 +33,7 @@ public class HeroChooser : MonoBehaviour
 		string hero = heroIconsView.SelectedContent.GetComponent<HeroInfoIcon> ().heroName;
 		infoPanel.selectedHeroName = hero;
 		infoPanel.DisplayHeroInfo ();
+		scoreDisplay.DisplayScores (hero);
 		GameManager.instance.selectedHero = hero;
 	}
 }

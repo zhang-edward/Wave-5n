@@ -60,7 +60,7 @@ public class EnemyManager : MonoBehaviour {
 					difficultyCurve -= onBossDifficultyScaleBack;
 					if (difficultyCurve <= 0)
 						difficultyCurve = 1;
-					Invoke ("StartBossIncoming", 2.0f);
+					Invoke ("StartBossIncoming", 5.0f);
 				}
 				if (OnEnemyWaveSpawned != null)
 				{

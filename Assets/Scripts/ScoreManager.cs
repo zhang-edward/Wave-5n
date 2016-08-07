@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class ScoreManager : MonoBehaviour {
 
+	[System.Serializable]
 	public class Score {
 		public int enemiesDefeated;
 		public int wavesSurvived;

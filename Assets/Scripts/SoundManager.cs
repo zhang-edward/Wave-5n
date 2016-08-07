@@ -33,10 +33,16 @@ public class SoundManager : MonoBehaviour {
 		sfx.PlayOneShot(clip);
 	}
 
-	public void PlaySingle(AudioClip clip)
+	public void PlayInterrupt(AudioClip clip)
 	{
 		sfx.clip = clip;
 		sfx.Play ();
+	}
+
+	public void PlaySingle(AudioClip clip)
+	{
+		sfx.pitch = 1.0f;
+		sfx.PlayOneShot(clip);
 	}
 
 	/// <summary>

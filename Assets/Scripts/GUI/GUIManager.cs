@@ -57,12 +57,13 @@ public class GUIManager : MonoBehaviour {
 
 	private void ShowEnemyWaveText(int waveNumber)
 	{
-		enemyWaveText.DisplayWaveNumber (waveNumber);
+		if (waveNumber > 1)
+			enemyWaveText.DisplayWaveComplete ();
+		enemyWaveText.DisplayWaveNumberAfterDelay (waveNumber);
 	}
 
 	private void ShowBossIncomingText()
 	{
-//		Debug.Log ("yo");
 		enemyWaveText.DisplayBossIncoming ();
 	}
-}
+} 
