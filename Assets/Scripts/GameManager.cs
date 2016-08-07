@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour {
 		else if (instance != this)
 			Destroy (this.gameObject);
 		DontDestroyOnLoad (this);
+		SaveLoad.Load ();
 	}
 
 	void Start()
@@ -87,12 +88,18 @@ public class GameManager : MonoBehaviour {
 		Assert.IsFalse (selectedHero.Equals (""));		// will throw an error if this script tries to
 														// initialize the player without a selected hero
 		playerScript.Init (selectedHero);
-
+		SoundManager.instance.PlayMusicLoop (map.info.musicLoop, map.info.musicIntro);
 		//didInitializeGameScene = true;
 	}
 
 	public void SelectHero(string name)
 	{
 		selectedHero = name;
+	}
+
+	public void UpdateScores(int enemiesKilled, int wavesSurvived)
+	{
+		scoreManager.SubmitScore (selectedHero, new ScoreManager.Score (enemiesKilled, wavesSurvived));
+		SaveLoad.Save ();
 	}
 }

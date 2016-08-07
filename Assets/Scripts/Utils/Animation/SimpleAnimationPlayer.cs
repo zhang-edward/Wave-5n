@@ -8,6 +8,7 @@ public class SimpleAnimationPlayer : MonoBehaviour {
 
 	private int frameIndex;
 
+	public bool playOnStart = false;
 	public bool isPlaying;
 	public bool looping;
 
@@ -16,6 +17,8 @@ public class SimpleAnimationPlayer : MonoBehaviour {
 		//sr = GetComponent<SpriteRenderer>();
 		//secondsPerFrame = 1.0f / anim.fps;
 		frameIndex = 0;
+		if (playOnStart)
+			Play ();
 		//sr.sprite = anim.frames [0];
 	}
 
@@ -30,6 +33,7 @@ public class SimpleAnimationPlayer : MonoBehaviour {
 	{
 		frameIndex = 0;
 		sr.sprite = anim.frames[0];
+		StopAllCoroutines ();
 	}
 
 	private IEnumerator PlayAnim()

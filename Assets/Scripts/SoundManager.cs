@@ -13,9 +13,6 @@ public class SoundManager : MonoBehaviour {
 
 	public float musicVolume;
 
-	// temp! store in mapinfo later
-	public AudioClip musicLoop;
-
 	void Awake()
 	{
 		// make this a singleton
@@ -27,11 +24,6 @@ public class SoundManager : MonoBehaviour {
 		ui = GetComponent<AudioSource> ();
 		music = GameObject.Find ("Music").GetComponent<AudioSource> ();
 		sfx = GameObject.Find ("SFX").GetComponent<AudioSource> ();
-	}
-
-	void Start()
-	{
-		PlayMusicLoop (musicLoop);
 	}
 
 	public void RandomizeSFX(AudioClip clip)

@@ -27,6 +27,7 @@ public class OgreBoss : Enemy {
 
 	[Header("Audio")]
 	public AudioClip[] clubSmashSounds;
+	public AudioClip spawnSound;
 
 	void Start()
 	{
@@ -88,6 +89,12 @@ public class OgreBoss : Enemy {
 			anim.SetBool ("Moving", false);
 			yield return new WaitForSeconds (1.0f);
 		}
+	}
+
+	protected override IEnumerator AnimateIn (Vector3 target)
+	{
+		SoundManager.instance.PlaySingle (spawnSound);
+		return base.AnimateIn (target);
 	}
 
 	protected override bool PlayerInRange()

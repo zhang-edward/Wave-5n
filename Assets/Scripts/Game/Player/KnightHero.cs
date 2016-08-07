@@ -64,6 +64,7 @@ public class KnightHero : PlayerHero {
 		// Effects
 		PlayAreaAttackEffect ();
 		// Properties
+		player.input.isInputEnabled = false;
 		player.isInvincible = true;
 		body.Move (Vector2.zero);
 		Collider2D[] cols = Physics2D.OverlapCircleAll (transform.position, areaAttackRange);
@@ -93,6 +94,7 @@ public class KnightHero : PlayerHero {
 	public void ResetAreaAttackAbility()
 	{
 		anim.SetBool ("AreaAttack", false);
+		player.input.isInputEnabled = true;
 		player.isInvincible = false;
 	}
 

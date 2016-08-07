@@ -3,10 +3,18 @@ using System.Collections;
 
 public class GUIManager : MonoBehaviour {
 
+	// hud
+	[Header("GUI")]
 	public GameObject gameUI;
-	public GameObject gameOverUI;
 	public EnemyWaveText enemyWaveText;
 
+	// game over panel
+	[Header("Game Over Panel")]
+	public GameObject gameOverUI;
+	// score report in game over panel
+	public ScoreReport scorePanel;
+
+	[Header("Data")]
 	public EnemyManager enemyManager;
 	public Player player;
 
@@ -39,6 +47,12 @@ public class GUIManager : MonoBehaviour {
 		gameUI.SetActive (false);
 		gameOverUI.GetComponent<Animator> ().SetTrigger ("In");
 		gameOverUI.SetActive (true);
+		Invoke("ReportScore", 0.5f);	
+	}
+
+	private void ReportScore()
+	{
+		scorePanel.ReportScore (enemyManager.enemiesKilled, enemyManager.waveNumber - 1);
 	}
 
 	private void ShowEnemyWaveText(int waveNumber)

@@ -1,13 +1,11 @@
 fileFormatVersion: 2
-guid: 99903c83721f04ef285bf19589530c33
-timeCreated: 1470454022
+guid: 6f5fb201ad1514d94bca9cd598ccd8a5
+timeCreated: 1470464364
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: UI_buttons_large_0
-    21300002: UI_buttons_large_1
-    21300004: UI_buttons_large_2
-    21300006: UI_buttons_large_3
+    21300000: UI_buttons_squareLarge_0
+    21300002: UI_buttons_squareLarge_1
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -54,50 +52,36 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     sprites:
-    - name: UI_buttons_large_2
+    - name: UI_buttons_squareLarge_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 64
+        y: 0
         width: 32
-        height: 16
+        height: 32
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 2, y: 3, z: 2, w: 2}
-      outline: []
-    - name: UI_buttons_large_0
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 80
-        width: 32
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-    - name: UI_buttons_large_1
+      outline:
+      - - {x: -16, y: 16}
+        - {x: -16, y: -16}
+        - {x: 16, y: -16}
+        - {x: 16, y: 16}
+    - name: UI_buttons_squareLarge_1
       rect:
         serializedVersion: 2
         x: 32
-        y: 80
+        y: 0
         width: 32
-        height: 16
+        height: 32
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-    - name: UI_buttons_large_3
-      rect:
-        serializedVersion: 2
-        x: 32
-        y: 64
-        width: 32
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 2, y: 2, z: 2, w: 3}
-      outline: []
+      outline:
+      - - {x: -16, y: 16}
+        - {x: -16, y: -16}
+        - {x: 16, y: -16}
+        - {x: 16, y: 16}
     outline: []
   spritePackingTag: 
   userData: 

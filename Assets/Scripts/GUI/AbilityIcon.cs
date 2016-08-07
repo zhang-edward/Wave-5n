@@ -7,7 +7,7 @@ public class AbilityIcon : MonoBehaviour
 	public Image image;
 	public RectTransform cooldownMask;
 
-	public void SetCoolDown(float percent)
+	public void SetCooldown(float percent)
 	{
 		if (percent < 0)
 			return;

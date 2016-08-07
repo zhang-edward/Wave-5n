@@ -5,13 +5,19 @@ using System.Collections;
 public class EnemyWaveText : MonoBehaviour {
 
 	public Text text;
+	public Color defaultColor;
 	public AudioClip warningSound;
+
+	void Start()
+	{
+		defaultColor = text.color;
+	}
 
 	public void DisplayWaveNumber (int waveNumber)
 	{
 		text.text = "Wave " + waveNumber;
 		gameObject.SetActive (true);
-		StartCoroutine (FadeAway (Color.white));
+		StartCoroutine (FadeAway (defaultColor));
 	}
 
 	public void DisplayBossIncoming()

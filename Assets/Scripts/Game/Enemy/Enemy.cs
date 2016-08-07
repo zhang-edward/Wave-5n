@@ -123,9 +123,10 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 		body.AddRandomImpulse ();
 		hitDisabled = true;
 		//Debug.Log ("Stopped all Coroutines");
-		yield return new WaitForSeconds (0.2f);
+		yield return new WaitForSeconds (0.05f);
 		hitDisabled = false;
 
+		yield return new WaitForSeconds (0.2f);
 		UnityEngine.Assertions.Assert.IsTrue(anim.HasState(0, Animator.StringToHash("default")));
 		anim.CrossFade ("default", 0f);
 

@@ -21,7 +21,7 @@ public class EnemyManager : MonoBehaviour {
 	public float bossSpawnDelay = 3f;
 	public int onBossDifficultyScaleBack = 3;	// subtract this from difficultyCurve on a boss wave
 
-	private int waveNumber = 0;
+	public int waveNumber { get; private set; }
 	private int difficultyCurve = 0;	// number to determine the number of enemies to spawn
 
 	public delegate void EnemyWaveSpawned (int waveNumber);
@@ -118,6 +118,7 @@ public class EnemyManager : MonoBehaviour {
 		e.Init (randOpenCell, map);
 		e.player = player.transform;
 		enemies.Add (e);
+		e.OnEnemyDied += IncrementEnemiesKilled;
 	}
 
 	public void SpawnBoss()
@@ -135,8 +136,13 @@ public class EnemyManager : MonoBehaviour {
 	private int NumAliveEnemies()
 	{
 		int count = 0;
-		foreach(Enemy e in enemies)
+		for (int i = enemies.Count - 1; i >= 0; i --)
 		{
+			Enemy e = enemies [i];
+			// simultaneously clean list
+			if (e == null)
+				enemies.Remove (e);
+			// count alive enemies
 			if (e.health > 0)
 				count++;
 		}
