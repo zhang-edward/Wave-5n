@@ -67,6 +67,7 @@ public class GameManager : MonoBehaviour {
 		{
 			yield return null;
 		}
+		// On finished scene loading
 		switch (scene)
 		{
 			case("Game"):

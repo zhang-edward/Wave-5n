@@ -23,7 +23,7 @@ public class EnemyWaveText : MonoBehaviour {
 	public void DisplayWaveComplete()
 	{
 		waveCompleteParticles.gameObject.SetActive (true);
-		SoundManager.instance.PlaySingle (victorySound);
+		SoundManager.instance.PlayUISound (victorySound);
 		StartCoroutine (FadeAway (Color.yellow, "Wave Complete"));
 	}
 

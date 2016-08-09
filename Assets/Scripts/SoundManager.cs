@@ -24,6 +24,8 @@ public class SoundManager : MonoBehaviour {
 		ui = GetComponent<AudioSource> ();
 		music = GameObject.Find ("Music").GetComponent<AudioSource> ();
 		sfx = GameObject.Find ("SFX").GetComponent<AudioSource> ();
+
+		music.volume = musicVolume;
 	}
 
 	public void RandomizeSFX(AudioClip clip)
@@ -63,13 +65,18 @@ public class SoundManager : MonoBehaviour {
 
 	public void PlayMusicLoop(AudioClip clip, AudioClip intro = null)
 	{
+		Debug.Log ("Playing new music loop: " + clip);
 		StartCoroutine (MusicLoop (clip, intro));
 	}
 
 	private IEnumerator MusicLoop(AudioClip clip, AudioClip intro = null)
 	{
+		// resets any previous music clip
+		music.Stop ();
+		// play the intro
 		if (intro != null)
 		{
+			music.loop = false;
 			music.clip = intro;
 			music.Play ();
 		}

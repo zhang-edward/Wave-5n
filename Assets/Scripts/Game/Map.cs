@@ -45,6 +45,7 @@ public class Map : MonoBehaviour {
 
 	public void GenerateMap()
 	{
+		info.gameObject.SetActive (true);
 		GetIntegerMaps ();
 		InitSpriteMap ();
 		CreateMap ();
