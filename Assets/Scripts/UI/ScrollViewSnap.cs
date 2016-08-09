@@ -23,9 +23,24 @@ public class ScrollViewSnap : MonoBehaviour {
 	{
 		distances = new float[content.Length];
 		EvaluateDistances ();
+		InitContent ();
+
 		/*contentDistance = Mathf.Abs (
 			content [1].GetComponent<RectTransform> ().anchoredPosition.x -
 			content [0].GetComponent<RectTransform> ().anchoredPosition.x);*/
+	}
+
+	private void InitContent()
+	{
+		for (int i = 0; i < content.Length; i ++)
+		{
+			GameObject contentItem = content [i];
+			ScrollViewSnapContent scrollViewContent = contentItem.GetComponent<ScrollViewSnapContent> ();
+			if (scrollViewContent != null)
+			{
+				scrollViewContent.index = i;
+			}
+		}
 	}
 
 	void Update()
@@ -40,19 +55,24 @@ public class ScrollViewSnap : MonoBehaviour {
 				selectedContentIndex = i;
 			}
 		}
-//		Debug.Log("SELECTED CONTENT INDEX: " + selectedContentIndex);
-
-		if (!dragging)
-		{
-			LerpToContent (selectedContentIndex * -contentDistance);
-		}
 	}
 
-	private void LerpToContent(float position)
+	private void StartLerpToContent()
 	{
-		float newX = Mathf.Lerp (panel.anchoredPosition.x, position, Time.deltaTime * 20f);
-		Vector2 newPosition = new Vector2 (newX, panel.anchoredPosition.y);
-		panel.anchoredPosition = newPosition;
+		StopAllCoroutines ();
+		StartCoroutine (LerpToContent ());
+	}
+
+	private IEnumerator LerpToContent()
+	{
+		float dest = selectedContentIndex * -contentDistance;
+		while (Mathf.Abs(panel.anchoredPosition.x - dest) > 0.05f)
+		{
+			float newX = Mathf.Lerp (panel.anchoredPosition.x, dest, Time.deltaTime * 20f);
+			Vector2 newPosition = new Vector2 (newX, panel.anchoredPosition.y);
+			panel.anchoredPosition = newPosition;
+			yield return null;
+		}
 	}
 
 	private void EvaluateDistances()
@@ -74,5 +94,12 @@ public class ScrollViewSnap : MonoBehaviour {
 		dragging = false;
 		if (OnEndDrag != null)
 			OnEndDrag();
+		StartLerpToContent ();
+	}
+
+	public void SetSelectedContentIndex(int index)
+	{
+		selectedContentIndex = index;
+		StartLerpToContent ();
 	}
 }

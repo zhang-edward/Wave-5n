@@ -5,12 +5,17 @@ public class Logo : MonoBehaviour {
 
 	public SimpleAnimationPlayer animPlayer;
 
-	void Update()
+	void OnEnable()
 	{
-		if (Input.GetMouseButtonDown(0))
+		StartCoroutine (Shine());
+	}
+
+	private IEnumerator Shine()
+	{
+		while (true)
 		{
-			GetComponent<SpriteRenderer> ().sprite = animPlayer.anim.frames [animPlayer.anim.frames.Length - 1];
-			animPlayer.StopAllCoroutines ();
+			animPlayer.Play ();
+			yield return new WaitForSeconds (3.0f);
 		}
 	}
 }

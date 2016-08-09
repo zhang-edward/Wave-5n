@@ -30,7 +30,7 @@ public class HeroChooser : MonoBehaviour
 
 	private void UpdateHeroInfoPanel()
 	{
-		string hero = heroIconsView.SelectedContent.GetComponent<HeroInfoIcon> ().heroName;
+		string hero = heroIconsView.SelectedContent.GetComponent<ScrollViewSnapContent> ().heroName;
 		infoPanel.selectedHeroName = hero;
 		infoPanel.DisplayHeroInfo ();
 		scoreDisplay.DisplayScores (hero);
