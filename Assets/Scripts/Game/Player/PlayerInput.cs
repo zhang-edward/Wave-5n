@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.EventSystems;
 using System.Collections;
 
 public class PlayerInput : MonoBehaviour {
@@ -70,6 +71,8 @@ public class PlayerInput : MonoBehaviour {
 
 	public void HandleMouseInput()
 	{
+		if (EventSystem.current.IsPointerOverGameObject ())
+			return;
 		if (Input.GetMouseButton(0))
 		{
 			Vector3 mousePos = Camera.main.ScreenToWorldPoint (Input.mousePosition);

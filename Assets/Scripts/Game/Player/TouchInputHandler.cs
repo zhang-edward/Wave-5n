@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.EventSystems;
 using System.Collections;
 
 public class TouchInputHandler : MonoBehaviour {
@@ -30,6 +31,8 @@ public class TouchInputHandler : MonoBehaviour {
 	{
 		if (Input.touchCount > 0)	// user touched the screen
 		{
+			if (EventSystem.current.IsPointerOverGameObject ())
+				return;
 			Touch touch = Input.touches[0];
 
 			// if touch started moving, begin listening for swipe

@@ -50,30 +50,29 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
-	public void GoToGameScene()
+	public void GoToScene(string sceneName)
 	{
 		//didInitializeGameScene = false;
 		Time.timeScale = 1;
-		StartCoroutine (LoadGameScene());
+		StartCoroutine (LoadScene(sceneName));
 		ObjectPooler.objectPoolers.Clear ();
 	}
 
-	public void GoToMenuScene()
+	public IEnumerator LoadScene(string scene)
 	{
-		Time.timeScale = 1;
-		SceneManager.LoadScene ("Menu");
-		ObjectPooler.objectPoolers.Clear ();
-	}
-
-	public IEnumerator LoadGameScene()
-	{
-		AsyncOperation async = SceneManager.LoadSceneAsync ("Game");
+		AsyncOperation async = SceneManager.LoadSceneAsync (scene);
 		Debug.Log ("Loading scene");
+		Assert.IsNotNull (async);
 		while (!async.isDone)
 		{
 			yield return null;
 		}
-		InitGameScene ();
+		switch (scene)
+		{
+			case("Game"):
+				InitGameScene();
+				break;
+		}
 		Debug.Log ("Scene loaded");
 	}
 

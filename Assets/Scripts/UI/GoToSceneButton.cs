@@ -2,8 +2,9 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class DebugBackButton : MonoBehaviour {
+public class GoToSceneButton : MonoBehaviour {
 
+	public string sceneName;
 	private Button button;
 
 	void Awake()
@@ -13,6 +14,6 @@ public class DebugBackButton : MonoBehaviour {
 
 	void Start()
 	{
-		button.onClick.AddListener(() => {GameManager.instance.GoToMenuScene();});
+		button.onClick.AddListener(() => {GameManager.instance.GoToScene(sceneName);});
 	}
 }
