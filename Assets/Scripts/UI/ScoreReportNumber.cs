@@ -27,7 +27,8 @@ public class ScoreReportNumber : MonoBehaviour {
 		{
 			incrementer++;
 			text.text = incrementer.ToString ();
-			yield return new WaitForSeconds (0.01f);
+			SoundManager.instance.PlayUISound (blipSound);
+			yield return new WaitForSeconds (0.03f);
 		}
 		yield return null;
 	}

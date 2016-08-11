@@ -12,6 +12,9 @@ public class MageHero : PlayerHero {
 	public Map map;
 	public GameObject projectilePrefab;
 
+	private bool isInFireSpreadMode = false;
+	public MageFire mageFirePrefab;
+
 	[Header("Audio")]
 	public AudioClip shootSound;
 	public AudioClip teleportOutSound;
@@ -22,10 +25,10 @@ public class MageHero : PlayerHero {
 	private float tapHoldTime;
 	private const float minTapHoldTime = 0.2f;
 
-	public override void Init(Player player, EntityPhysics body, Animator anim)
+	public override void Init(EntityPhysics body, Animator anim)
 	{
 		abilityCooldowns = new float[2];
-		base.Init (player, body, anim);
+		base.Init (body, anim);
 		heroName = PlayerHero.MAGE;
 		projectilePool.SetPooledObject(projectilePrefab);
 	}
@@ -39,7 +42,21 @@ public class MageHero : PlayerHero {
 	{
 		StartTeleport ();
 	}
+
+	public override void SpecialAbility ()
+	{
+		if (specialAbilityCharge < specialAbilityChargeCapacity)
+			return;
+		isInFireSpreadMode = true;
+		Invoke ("ResetSpecialAbility", 10.0f);
+	}
 		
+	private void ResetSpecialAbility()
+	{
+		specialAbilityCharge = 0;
+		isInFireSpreadMode = false;
+	}
+
 	private void ShootFireball()
 	{
 		//chargeTime = 0f;
@@ -102,6 +119,8 @@ public class MageHero : PlayerHero {
 		player.transform.parent.position = (Vector3)player.dir + player.transform.parent.position;
 		// do area attack
 		AreaAttack ();
+		if (isInFireSpreadMode)
+			CreateFire ();
 		// Wait for end of animation
 		yield return new WaitForEndOfFrame ();		// wait for the animation state to update before continuing
 		while (anim.GetCurrentAnimatorStateInfo (0).IsName ("TeleportIn"))
@@ -122,6 +141,11 @@ public class MageHero : PlayerHero {
 				DamageEnemy (e);
 			}
 		}
+	}
+
+	private void CreateFire()
+	{
+		Instantiate (mageFirePrefab, transform.position, Quaternion.identity);
 	}
 
 	// damage an enemy and spawn an effect

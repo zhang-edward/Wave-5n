@@ -14,6 +14,8 @@ public class GoToSceneButton : MonoBehaviour {
 
 	void Start()
 	{
-		button.onClick.AddListener(() => {GameManager.instance.GoToScene(sceneName);});
+		button.onClick.AddListener(() => {
+			GameManager.instance.GoToScene(sceneName);
+		});
 	}
 }

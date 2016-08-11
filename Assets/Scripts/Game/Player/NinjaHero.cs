@@ -12,6 +12,8 @@ public class NinjaHero : PlayerHero {
 	public SimpleAnimation hitEffect;
 	public SimpleAnimation ninjaStarAnim;
 
+	private bool isInFanNinjaStarMode = false;
+
 	[Header("Audio")]
 	public AudioClip[] hitSounds;
 	public AudioClip shootSound;
@@ -20,10 +22,10 @@ public class NinjaHero : PlayerHero {
 
 	//public int damage = 1;
 
-	public override void Init(Player player, EntityPhysics body, Animator anim)
+	public override void Init(EntityPhysics body, Animator anim)
 	{
 		abilityCooldowns = new float[2];
-		base.Init (player, body, anim);
+		base.Init (body, anim);
 		heroName = PlayerHero.NINJA;
 		projectilePool.SetPooledObject(projectilePrefab);
 	}
@@ -42,6 +44,22 @@ public class NinjaHero : PlayerHero {
 		ShootNinjaStar();
 	}
 
+	public override void SpecialAbility ()
+	{
+		if (specialAbilityCharge < specialAbilityChargeCapacity)
+			return;
+		isInFanNinjaStarMode = true;
+		cooldownTime [1] = 0.3f;
+		Invoke ("ResetSpecialAbility", 5.0f);
+	}
+
+	private void ResetSpecialAbility()
+	{
+		specialAbilityCharge = 0;
+		isInFanNinjaStarMode = false;
+		cooldownTime [1] = cooldownTimeNormal [1];
+	}
+
 	private void ShootNinjaStar()
 	{
 		// if cooldown has not finished
@@ -53,14 +71,32 @@ public class NinjaHero : PlayerHero {
 		// Animation
 		anim.SetBool ("Attack", true);
 		// Player properties
-		PlayerProjectile ninjaStar = projectilePool.GetPooledObject ().GetComponent<PlayerProjectile>();
 		Vector2 dir = player.dir.normalized;
-		ninjaStar.Init (transform.position, dir, player);
+		InitNinjaStar (dir);
+		if (isInFanNinjaStarMode)
+			ShootNinjaStarFanPattern ();
 		// set direction
 		body.Move (dir);
 		body.Rb2d.velocity = Vector2.zero;
 
 		Invoke ("ResetAbility", 0.5f);
+	}
+
+	// Special ability
+	private void ShootNinjaStarFanPattern()
+	{
+		Vector2 dir = player.dir.normalized;
+		float angle = Mathf.Atan2 (dir.y, dir.x) * Mathf.Rad2Deg;
+		float fanAngle1 = angle - 15;
+		float fanAngle2 = angle + 15;
+		InitNinjaStar (UtilMethods.DegreeToVector2 (fanAngle1));
+		InitNinjaStar (UtilMethods.DegreeToVector2 (fanAngle2));
+	}
+
+	private void InitNinjaStar(Vector2 dir)
+	{
+		PlayerProjectile ninjaStar = projectilePool.GetPooledObject ().GetComponent<PlayerProjectile>();
+		ninjaStar.Init (transform.position, dir, player);
 	}
 
 	public void ResetAbility()

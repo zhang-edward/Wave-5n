@@ -4,8 +4,13 @@ using System.Collections;
 
 public class AbilityIcon : MonoBehaviour
 {
-	public Image image;
+	public Image image { get; private set; }
 	public RectTransform cooldownMask;
+
+	void Awake()
+	{
+		image = GetComponent<Image> ();
+	}
 
 	public void SetCooldown(float percent)
 	{

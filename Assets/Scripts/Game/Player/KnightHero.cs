@@ -9,6 +9,8 @@ public class KnightHero : PlayerHero {
 	public Sprite hitEffect;
 	public float areaAttackRange = 2.0f;
 
+	public float rushMoveSpeed = 10f;
+	public float rushDuration = 0.5f;
 	private bool killBox = false;
 
 	[Header("Audio")]
@@ -21,10 +23,10 @@ public class KnightHero : PlayerHero {
 		Gizmos.DrawWireSphere (transform.position, 1f);
 	}
 
-	public override void Init (Player player, EntityPhysics body, Animator anim)
+	public override void Init (EntityPhysics body, Animator anim)
 	{
 		abilityCooldowns = new float[2];
-		base.Init (player, body, anim);
+		base.Init (body, anim);
 		heroName = PlayerHero.KNIGHT;
 	}
 
@@ -44,11 +46,11 @@ public class KnightHero : PlayerHero {
 		// Player properties
 		player.input.isInputEnabled = false;
 		killBox = true;
-		body.moveSpeed = 10;
+		body.moveSpeed = rushMoveSpeed;
 		body.Move(player.dir.normalized);
 		player.isInvincible = true;
 		// reset ability
-		Invoke ("ResetDashAbility", 0.5f);
+		Invoke ("ResetRushAbility", rushDuration);
 	}
 
 	// Area attack
@@ -80,7 +82,7 @@ public class KnightHero : PlayerHero {
 		Invoke ("ResetAreaAttackAbility", 0.5f);
 	}
 
-	public void ResetDashAbility()
+	private void ResetRushAbility()
 	{
 		rushEffect.GetComponent<TempObject> ().Deactivate ();
 		killBox = false;
@@ -91,11 +93,31 @@ public class KnightHero : PlayerHero {
 		anim.SetBool ("Attacking", false);
 	}
 
-	public void ResetAreaAttackAbility()
+	private void ResetAreaAttackAbility()
 	{
 		anim.SetBool ("AreaAttack", false);
 		player.input.isInputEnabled = true;
 		player.isInvincible = false;
+	}
+
+	private void ResetSpecialAbility()
+	{
+		specialAbilityCharge = 0;
+		cooldownTime [0] = cooldownTimeNormal [0];
+		cooldownTime [1] = cooldownTimeNormal [1];
+		rushMoveSpeed = 10f;
+		rushDuration = 0.5f;
+	}
+
+	public override void SpecialAbility ()
+	{
+		if (specialAbilityCharge < specialAbilityChargeCapacity)
+			return;
+		cooldownTime [0] = 0.5f;
+		cooldownTime [1] = 2f;
+		rushMoveSpeed = 15;
+		rushDuration = 0.4f;
+		Invoke ("ResetSpecialAbility", 10f);
 	}
 
 	private void PlayRushEffect()
@@ -108,6 +130,7 @@ public class KnightHero : PlayerHero {
 		TempObjectInfo info = new TempObjectInfo ();
 		info.isSelfDeactivating = false;
 		info.targetColor = new Color (1, 1, 1, 0.5f);
+		info.fadeOutTime = 0.1f;
 		effect.Init (
 			Quaternion.Euler(new Vector3(0, 0, angle)),
 			transform.position,

@@ -3,6 +3,7 @@ using System.Collections;
 
 public class CameraControl : MonoBehaviour {
 
+	public static CameraControl instance;
 	public Camera cam;
 	public Player player;
 
@@ -10,6 +11,11 @@ public class CameraControl : MonoBehaviour {
 
 	void Awake()
 	{
+		if (instance == null)
+			instance = this;
+		else if (instance != this)
+			Destroy (this.gameObject);
+
 		cam.orthographicSize = 5;
 		transform.position = player.transform.position;
 
@@ -64,8 +70,10 @@ public class CameraControl : MonoBehaviour {
 		while (time > 0)
 		{
 			time -= Time.deltaTime;
-			float randX = Random.Range (-1, 1) * magnitude;
-			float randY = Random.Range (-1, 1) * magnitude;
+			float randX = UtilMethods.RandSign() * magnitude;
+			float randY = UtilMethods.RandSign() * magnitude;
+
+			Debug.Log (randX + ", " + randY);
 
 			cam.transform.localPosition = new Vector3(randX, randY, -10);
 			yield return null;

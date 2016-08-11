@@ -53,7 +53,6 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 
 	protected abstract void ResetVars();
 	protected abstract IEnumerator MoveState();
-
 	private void Spawn(Vector3 spawnLocation)
 	{
 		if (walkIn)

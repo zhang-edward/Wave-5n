@@ -43,6 +43,12 @@ public class Map : MonoBehaviour {
 	public Transform objectsFolder;
 	public Transform bgFolder;
 
+	public Vector3 CenterPosition {
+		get {
+			return new Vector3 (size / 2, size / 2);
+		}
+	}
+
 	public void GenerateMap()
 	{
 		info.gameObject.SetActive (true);

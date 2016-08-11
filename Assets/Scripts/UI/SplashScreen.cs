@@ -32,6 +32,6 @@ public class SplashScreen : MonoBehaviour {
 			t -= Time.deltaTime;
 			yield return null;
 		}
-		SceneManager.LoadScene ("Menu");
+		SceneManager.LoadScene ("StartScreen");
 	}
 }

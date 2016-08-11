@@ -168,6 +168,7 @@ public class OgreBoss : Enemy {
 				player.Damage (3);
 			}
 		}
+		CameraControl.instance.StartShake (0.3f, 0.05f);
 		ClubHitEffect ();
 	}
 

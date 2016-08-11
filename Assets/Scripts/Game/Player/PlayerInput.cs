@@ -12,7 +12,7 @@ public class PlayerInput : MonoBehaviour {
 
 	public TouchInputHandler touchInputHandler;
 	//private Vector3 calibratedAccelerometer;
-	private Vector3 accel;
+	//private Vector3 accel;
 	public float tiltSensitivity = 10f;
 
 	void Start()
@@ -38,25 +38,25 @@ public class PlayerInput : MonoBehaviour {
 
 	void Update()
 	{
-		Vector2 movementDir;
+		//Vector2 movementDir;
 		if (isInputEnabled)
 		{
 #if UNITY_ANDROID
 			// get accelerometer input
 			//accel = (Vector2)Vector3.Lerp(accel, Input.acceleration - calibratedAccelerometer, 10f * Time.deltaTime);
 
-			float x = Mathf.Abs(accel.x) < 0.01f ? 0 : accel.x;
-			float y = Mathf.Abs(accel.y) < 0.01f ? 0 : accel.y;
-			movementDir = new Vector2(x, y) * tiltSensitivity;
-			movementDir = Vector2.ClampMagnitude(movementDir, 2);
+			//float x = Mathf.Abs(accel.x) < 0.01f ? 0 : accel.x;
+			//float y = Mathf.Abs(accel.y) < 0.01f ? 0 : accel.y;
+			//movementDir = new Vector2(x, y) * tiltSensitivity;
+			//movementDir = Vector2.ClampMagnitude(movementDir, 2);
 #else
 			/*Vector3 mousePosition = Camera.main.ScreenToWorldPoint (Input.mousePosition);
 
 			movementDir = (mousePosition - transform.position);
 			if (Vector2.Distance (mousePosition, transform.position) < 0.1f)
 				movementDir *= 0;*/
-			movementDir = new Vector3(Input.GetAxisRaw("Horizontal"),
-				Input.GetAxisRaw("Vertical"), 0);
+			//movementDir = new Vector3(Input.GetAxisRaw("Horizontal"),
+				//Input.GetAxisRaw("Vertical"), 0);
 #endif
 			//player.body.Move (movementDir);
 

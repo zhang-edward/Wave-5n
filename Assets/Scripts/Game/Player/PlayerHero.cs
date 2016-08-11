@@ -9,8 +9,9 @@ public abstract class PlayerHero : MonoBehaviour {
 
 	[Header("Player Hero Properties")]
 	public Sprite[] icons;
+	public Sprite specialAbilityIcon;
 	public string heroName;
-
+	
 	protected Player player;
 	protected EntityPhysics body;
 	protected Animator anim;
@@ -22,11 +23,20 @@ public abstract class PlayerHero : MonoBehaviour {
 
 	public RuntimeAnimatorController animatorController;
 
+	public int combo = 0;
+
+	public float chargeMultiplier;
+	public float specialAbilityChargeCapacity;
+	public float specialAbilityCharge { get; protected set; }
+
 	protected float[] abilityCooldowns;
 	public float[] AbilityCooldowns {
 		get {return abilityCooldowns;}
 	}
-	public float[] cooldownTime;
+
+	public float[] cooldownTimeNormal;		// the regular cooldown time for each ability. Set in inspector
+	public float[] cooldownTime { get; private set; }			// the cooldown time used for each ability
+
 	public int NumAbilities{
 		get {return abilityCooldowns.Length;}
 	}
@@ -40,6 +50,17 @@ public abstract class PlayerHero : MonoBehaviour {
 	}
 	//public InputType inputType;
 
+	void OnEnable()
+	{
+		player = GetComponentInParent<Player> ();
+		player.OnEnemyDamaged += IncrementSpecialAbilityCharge;
+	}
+
+	void OnDisable()
+	{
+		player.OnEnemyDamaged -= IncrementSpecialAbilityCharge;
+	}
+
 	/// <summary>
 	/// Performs an ability on swipe
 	/// </summary>
@@ -51,15 +72,27 @@ public abstract class PlayerHero : MonoBehaviour {
 	public virtual void HandleHoldDown()
 	{}
 
+	/// <summary>
+	/// Performs an ability on swipe
+	/// </summary>
 	public virtual void HandleSwipe()
 	{}
 
-	public virtual void Init(Player player, EntityPhysics body, Animator anim)
+	/// <summary>
+	/// Specials the ability.
+	/// </summary>
+	public abstract void SpecialAbility();
+
+	public virtual void Init(EntityPhysics body, Animator anim)
 	{
 		SoundManager.instance.PlaySingle (spawnSound);
-		this.player = player;
 		this.body = body;
 		this.anim = anim;
+		cooldownTime = new float[cooldownTimeNormal.Length];
+		for(int i = 0; i < cooldownTime.Length; i ++)
+		{
+			cooldownTime [i] = cooldownTimeNormal [i];
+		}
 		player.maxHealth = maxHealth;
 	}
 
@@ -78,5 +111,14 @@ public abstract class PlayerHero : MonoBehaviour {
 	protected void ResetCooldown(int index)
 	{
 		abilityCooldowns [index] = cooldownTime [index];
+	}
+
+	public void IncrementSpecialAbilityCharge(float amt)
+	{
+		specialAbilityCharge+= amt;
+		if (specialAbilityCharge >= specialAbilityChargeCapacity)
+		{
+			specialAbilityCharge = specialAbilityChargeCapacity;
+		}
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Assertions;
 using UnityEngine.SceneManagement;
 using System.Collections;
@@ -6,6 +7,7 @@ using System.Collections;
 public class GameManager : MonoBehaviour {
 
 	public static GameManager instance;
+	public Image loadingOverlay;
 	public string selectedHero = "";
 	public GameObject player;
 	private Map map;
@@ -60,13 +62,19 @@ public class GameManager : MonoBehaviour {
 
 	public IEnumerator LoadScene(string scene)
 	{
-		AsyncOperation async = SceneManager.LoadSceneAsync (scene);
 		Debug.Log ("Loading scene");
+		StartCoroutine(ActivateLoadingScreen ());
+		while (loadingOverlay.color.a <= 0.95f)
+			yield return null;
+		AsyncOperation async = SceneManager.LoadSceneAsync (scene);
 		Assert.IsNotNull (async);
+
 		while (!async.isDone)
 		{
 			yield return null;
 		}
+		StartCoroutine(DeactivateLoadingScreen ());
+
 		// On finished scene loading
 		switch (scene)
 		{
@@ -101,5 +109,33 @@ public class GameManager : MonoBehaviour {
 	{
 		scoreManager.SubmitScore (selectedHero, new ScoreManager.Score (enemiesKilled, wavesSurvived));
 		SaveLoad.Save ();
+	}
+
+	private IEnumerator ActivateLoadingScreen()
+	{
+		Color initialColor = Color.clear;
+		Color finalColor = Color.black;
+		float t = 0;
+		while (loadingOverlay.color.a < 0.95f)
+		{
+			loadingOverlay.color = Color.Lerp (initialColor, finalColor, t * 4);
+			t += Time.deltaTime;
+			yield return null;
+		}
+		loadingOverlay.color = finalColor;
+	}
+
+	private IEnumerator DeactivateLoadingScreen()
+	{
+		Color initialColor = Color.black;
+		Color finalColor = Color.clear;
+		float t = 0;
+		while (loadingOverlay.color.a > 0.05f)
+		{
+			loadingOverlay.color = Color.Lerp (initialColor, finalColor, t * 8);
+			t += Time.deltaTime;
+			yield return null;
+		}
+		loadingOverlay.color = finalColor;
 	}
 }

@@ -13,6 +13,7 @@ public class EnemyManager : MonoBehaviour {
 	public ObjectPooler enemyHealthBarPool;
 
 	private List<Enemy> enemies = new List<Enemy>();
+	public List<Enemy> Enemies { get; private set; }
 	public EnemyManagerInfo info;
 
 	public EnemyHealthBar bossHealthBar;
@@ -20,6 +21,8 @@ public class EnemyManager : MonoBehaviour {
 	public int bossWave = 2;
 	public float bossSpawnDelay = 3f;
 	public int onBossDifficultyScaleBack = 3;	// subtract this from difficultyCurve on a boss wave
+
+	public GameObject heartPickup;
 
 	public int waveNumber { get; private set; }
 	private int difficultyCurve = 0;	// number to determine the number of enemies to spawn
@@ -61,6 +64,11 @@ public class EnemyManager : MonoBehaviour {
 					if (difficultyCurve <= 0)
 						difficultyCurve = 1;
 					Invoke ("StartBossIncoming", 5.0f);
+				}
+				// if it is the wave after a boss wave (just defeated boss), spawn heart pickup
+				if (waveNumber % bossWave == 1 && waveNumber != 1)
+				{
+					Instantiate (heartPickup, map.CenterPosition, Quaternion.identity);
 				}
 				if (OnEnemyWaveSpawned != null)
 				{

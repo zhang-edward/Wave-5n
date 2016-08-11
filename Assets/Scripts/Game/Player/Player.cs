@@ -47,6 +47,9 @@ public class Player : MonoBehaviour, IDamageable
 	[HideInInspector]
 	public bool autoTargetEnabled = false;
 
+	[Header("Effects")]
+	public ParticleSystem healEffect;
+
 	[Header("Audio")]
 	public AudioClip hurtSound;
 
@@ -69,7 +72,7 @@ public class Player : MonoBehaviour, IDamageable
 	{
 		hero = GetAbilityWithName (name);
 		anim.runtimeAnimatorController = hero.animatorController;
-		hero.Init (this, body, anim);
+		hero.Init (body, anim);
 		health = maxHealth;
 
 		if (OnPlayerInitialized != null)
@@ -176,6 +179,7 @@ public class Player : MonoBehaviour, IDamageable
 		health += amt;
 		if (health >= maxHealth)
 			health = maxHealth;
+		healEffect.Play ();
 		OnPlayerHealed (amt);
 	}
 

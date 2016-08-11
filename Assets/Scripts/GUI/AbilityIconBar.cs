@@ -4,6 +4,7 @@ using System.Collections;
 
 public class AbilityIconBar : MonoBehaviour {
 
+	public SpecialAbilityIcon specialAbilityIcon;
 	private AbilityIcon[] abilityIcons;
 	public GameObject iconPrefab;
 
@@ -39,6 +40,9 @@ public class AbilityIconBar : MonoBehaviour {
 			abilityIcons [i] = o.GetComponent<AbilityIcon> ();
 			abilityIcons [i].image.sprite = playerHero.icons [i];
 		}
+		int centerIndex = playerHero.NumAbilities / 2;
+		specialAbilityIcon.image.sprite = playerHero.specialAbilityIcon;
+		specialAbilityIcon.transform.SetSiblingIndex (centerIndex);
 	}
 
 	void LateUpdate()
@@ -50,5 +54,7 @@ public class AbilityIconBar : MonoBehaviour {
 			float percentCooldown = (playerHero.AbilityCooldowns[i] / playerHero.cooldownTime[i]);
 			abilityIcons [i].SetCooldown (percentCooldown);
 		}
+		float percent = (playerHero.specialAbilityCharge / playerHero.specialAbilityChargeCapacity);
+		specialAbilityIcon.SetCooldown (percent);
 	}
 }
