@@ -9,6 +9,12 @@ public class AdvicePointer : MonoBehaviour {
 	void OnEnable()
 	{
 		scrollView.OnEndDrag += StartAdvicePointer;
+		StartAdvicePointer ();
+	}
+
+	void OnDisable()
+	{
+		scrollView.OnEndDrag -= StartAdvicePointer;
 	}
 
 	private void StartAdvicePointer()
