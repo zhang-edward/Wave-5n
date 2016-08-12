@@ -7,6 +7,7 @@ public class CameraControl : MonoBehaviour {
 	public Camera cam;
 	public Player player;
 
+	public SpriteRenderer screenFlash;
 	public SpriteRenderer screenOverlay;
 
 	void Awake()
@@ -21,6 +22,8 @@ public class CameraControl : MonoBehaviour {
 
 		float height = cam.orthographicSize * 2.0f;
 		float width = height * Screen.width / Screen.height;
+		screenFlash.transform.localScale = new Vector3 (width, height, 1);
+		screenFlash.color = new Color (1, 1, 1, 0);
 		screenOverlay.transform.localScale = new Vector3 (width, height, 1);
 		screenOverlay.color = new Color (1, 1, 1, 0);
 	}
@@ -72,9 +75,7 @@ public class CameraControl : MonoBehaviour {
 			time -= Time.deltaTime;
 			float randX = UtilMethods.RandSign() * magnitude;
 			float randY = UtilMethods.RandSign() * magnitude;
-
-			Debug.Log (randX + ", " + randY);
-
+		
 			cam.transform.localPosition = new Vector3(randX, randY, -10);
 			yield return null;
 		}
@@ -88,13 +89,32 @@ public class CameraControl : MonoBehaviour {
 
 	private IEnumerator FlashColor(Color color)
 	{
-		screenOverlay.color = color;
+		screenFlash.color = color;
 		float t = 0.4f;
 		while (t > 0)
 		{
 			t -= Time.deltaTime;
-			screenOverlay.color = new Color (color.r, color.b, color.g, t);
+			screenFlash.color = new Color (color.r, color.b, color.g, t);
 			yield return null;
 		}
+	}
+
+	public void SetOverlayColor(Color color, float a)
+	{
+		StartCoroutine (FadeOverlayColor (color, a));
+	}
+
+	private IEnumerator FadeOverlayColor(Color color, float a)
+	{
+		screenOverlay.color = new Color(color.r, color.g, color.b, 0);
+		float t = 0f;
+		while (t < 1f)
+		{
+			t += Time.deltaTime;
+			screenOverlay.color = new Color (color.r, color.g, color.b, Mathf.Lerp(screenOverlay.color.a, a, t));
+			yield return null;
+		}
+		screenOverlay.color = new Color(color.r, color.g, color.b, a);
+
 	}
 }

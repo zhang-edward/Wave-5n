@@ -8,6 +8,7 @@ public class KnightHero : PlayerHero {
 	public GameObject areaAttackEffect;
 	public Sprite hitEffect;
 	public float areaAttackRange = 2.0f;
+	private bool activatedSpecialAbility = false;
 
 	public float rushMoveSpeed = 10f;
 	public float rushDuration = 0.5f;
@@ -17,6 +18,8 @@ public class KnightHero : PlayerHero {
 	public AudioClip rushSound;
 	public AudioClip[] hitSounds;
 	public AudioClip areaAttackSound;
+	public AudioClip powerUpSound;
+	public AudioClip powerDownSound;
 
 	public void OnDrawGizmosSelected()
 	{
@@ -102,21 +105,35 @@ public class KnightHero : PlayerHero {
 
 	private void ResetSpecialAbility()
 	{
+		// Sound
+		SoundManager.instance.PlayImportantSound(powerDownSound);
+
+		activatedSpecialAbility = false;
 		specialAbilityCharge = 0;
 		cooldownTime [0] = cooldownTimeNormal [0];
 		cooldownTime [1] = cooldownTimeNormal [1];
 		rushMoveSpeed = 10f;
 		rushDuration = 0.5f;
+
+		CameraControl.instance.StartFlashColor (Color.white);
+		CameraControl.instance.SetOverlayColor (Color.clear, 0);
 	}
 
 	public override void SpecialAbility ()
 	{
-		if (specialAbilityCharge < specialAbilityChargeCapacity)
+		if (specialAbilityCharge < specialAbilityChargeCapacity || activatedSpecialAbility)
 			return;
+		// Sound
+		SoundManager.instance.PlayImportantSound(powerUpSound);
+		// Properties
+		activatedSpecialAbility = true;
 		cooldownTime [0] = 0.5f;
 		cooldownTime [1] = 2f;
 		rushMoveSpeed = 15;
 		rushDuration = 0.4f;
+		CameraControl.instance.StartShake (0.3f, 0.05f);
+		CameraControl.instance.StartFlashColor (Color.white);
+		CameraControl.instance.SetOverlayColor (Color.red, 0.3f);
 		Invoke ("ResetSpecialAbility", 10f);
 	}
 

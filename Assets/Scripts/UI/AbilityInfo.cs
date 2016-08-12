@@ -4,7 +4,7 @@ using System.Collections;
 
 public class AbilityInfo : MonoBehaviour {
 
-	public HeroInfoText heroInfoText;
+	public ScrollingText heroInfoText;
 	public string infoText;
 
 	public void UpdateHeroInfoText(bool isOn)

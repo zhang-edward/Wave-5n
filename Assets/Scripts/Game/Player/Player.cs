@@ -52,6 +52,7 @@ public class Player : MonoBehaviour, IDamageable
 
 	[Header("Audio")]
 	public AudioClip hurtSound;
+	public AudioClip deathSound;
 
 	[HideInInspector]
 	public ObjectPooler deathPropPool;
@@ -157,13 +158,13 @@ public class Player : MonoBehaviour, IDamageable
 		StartCoroutine (FlashRed ());
 
 		health -= amt;
-		// TODO: check if player is dead
 		if (health <= 0)
 		{
 			UnityEngine.Assertions.Assert.IsNotNull (OnPlayerDied);
 			OnPlayerDied ();
 			SpawnDeathProps ();
 			transform.parent.gameObject.SetActive (false);
+			SoundManager.instance.PlayImportantSound (deathSound);
 		}
 		else
 			SoundManager.instance.RandomizeSFX (hurtSound);
@@ -246,6 +247,18 @@ public class Player : MonoBehaviour, IDamageable
 			Time.timeScale = 0;
 		else
 			Time.timeScale = 1;
+	}
+
+	public void StartTempSlowDown(float time)
+	{
+		StartCoroutine (TempSlowDown(time));
+	}
+
+	private IEnumerator TempSlowDown(float time)
+	{
+		Time.timeScale = 0.2f;
+		yield return new WaitForSeconds (time);
+		Time.timeScale = 1f;
 	}
 }
 

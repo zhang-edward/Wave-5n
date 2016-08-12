@@ -11,6 +11,7 @@ public class MageHero : PlayerHero {
 	public Sprite hitEffect;
 	public Map map;
 	public GameObject projectilePrefab;
+	private bool activatedSpecialAbility;
 
 	private bool isInFireSpreadMode = false;
 	public MageFire mageFirePrefab;
@@ -19,6 +20,8 @@ public class MageHero : PlayerHero {
 	public AudioClip shootSound;
 	public AudioClip teleportOutSound;
 	public AudioClip teleportInSound;
+	public AudioClip powerUpSound;
+	public AudioClip powerDownSound;
 
 	//private float chargeTime;
 	//private bool sprayingFire;
@@ -45,16 +48,31 @@ public class MageHero : PlayerHero {
 
 	public override void SpecialAbility ()
 	{
-		if (specialAbilityCharge < specialAbilityChargeCapacity)
+		if (specialAbilityCharge < specialAbilityChargeCapacity || activatedSpecialAbility)
 			return;
+		// Sound
+		SoundManager.instance.PlayImportantSound(powerUpSound);
+		activatedSpecialAbility = true;
 		isInFireSpreadMode = true;
+
+		CameraControl.instance.StartFlashColor (Color.white);
+		CameraControl.instance.SetOverlayColor (new Color(1, 0.2f, 0), 0.2f);
+		CameraControl.instance.StartShake (0.3f, 0.05f);
+
 		Invoke ("ResetSpecialAbility", 10.0f);
 	}
 		
 	private void ResetSpecialAbility()
 	{
+		// Sound
+		SoundManager.instance.PlayImportantSound(powerDownSound);
+
+		activatedSpecialAbility = false;
 		specialAbilityCharge = 0;
 		isInFireSpreadMode = false;
+
+		CameraControl.instance.StartFlashColor (Color.white);
+		CameraControl.instance.SetOverlayColor (Color.clear, 0f);
 	}
 
 	private void ShootFireball()

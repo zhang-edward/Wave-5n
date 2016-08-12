@@ -6,19 +6,22 @@ public class NinjaHero : PlayerHero {
 	[Header("Class-Specific")]
 	public RuntimeObjectPooler projectilePool;
 	public GameObject projectilePrefab;
+	public GameObject specialProjectilePrefab;
 	public int smokeBombRange = 2;
 	public float dashDistance = 4;
 
 	public SimpleAnimation hitEffect;
 	public SimpleAnimation ninjaStarAnim;
 
-	private bool isInFanNinjaStarMode = false;
+	private bool activatedSpecialAbility = false;
 
 	[Header("Audio")]
 	public AudioClip[] hitSounds;
 	public AudioClip shootSound;
 	public AudioClip dashOutSound;
 	public AudioClip slashSound;
+	public AudioClip powerUpSound;
+	public AudioClip powerDownSound;
 
 	//public int damage = 1;
 
@@ -46,18 +49,34 @@ public class NinjaHero : PlayerHero {
 
 	public override void SpecialAbility ()
 	{
-		if (specialAbilityCharge < specialAbilityChargeCapacity)
+		if (specialAbilityCharge < specialAbilityChargeCapacity || activatedSpecialAbility)
 			return;
-		isInFanNinjaStarMode = true;
+		// Sound
+		SoundManager.instance.PlayImportantSound(powerUpSound);
+		// Properties
+		activatedSpecialAbility = true;
+		projectilePool.SetPooledObject (specialProjectilePrefab);
 		cooldownTime [1] = 0.3f;
+
+		// Effects
+		CameraControl.instance.StartShake (0.3f, 0.05f);
+		CameraControl.instance.StartFlashColor (Color.white);
+		CameraControl.instance.SetOverlayColor (Color.red, 0.3f);
 		Invoke ("ResetSpecialAbility", 5.0f);
 	}
 
 	private void ResetSpecialAbility()
 	{
+		// Sound
+		SoundManager.instance.PlayImportantSound(powerDownSound);
+
 		specialAbilityCharge = 0;
-		isInFanNinjaStarMode = false;
+		activatedSpecialAbility = false;
+		projectilePool.SetPooledObject (projectilePrefab);
 		cooldownTime [1] = cooldownTimeNormal [1];
+
+		CameraControl.instance.StartFlashColor (Color.white);
+		CameraControl.instance.SetOverlayColor (Color.clear, 0);
 	}
 
 	private void ShootNinjaStar()
@@ -73,7 +92,7 @@ public class NinjaHero : PlayerHero {
 		// Player properties
 		Vector2 dir = player.dir.normalized;
 		InitNinjaStar (dir);
-		if (isInFanNinjaStarMode)
+		if (activatedSpecialAbility)
 			ShootNinjaStarFanPattern ();
 		// set direction
 		body.Move (dir);

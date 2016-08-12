@@ -13,7 +13,7 @@ public class ScrollViewSnap : MonoBehaviour {
 	}
 
 	private float[] distances;		// the distance of each content item to the center
-	private bool dragging = false;	// whether the user is dragging the scrollview
+	//private bool dragging = false;	// whether the user is dragging the scrollview
 	public int selectedContentIndex { get; private set; }	// index of the content to snap to
 
 	public delegate void EndedDrag ();
@@ -84,14 +84,8 @@ public class ScrollViewSnap : MonoBehaviour {
 		}
 	}
 
-	public void StartDrag()
-	{
-		dragging = true;
-	}
-
 	public void EndDrag()
 	{
-		dragging = false;
 		if (OnEndDrag != null)
 			OnEndDrag();
 		StartLerpToContent ();
@@ -100,6 +94,6 @@ public class ScrollViewSnap : MonoBehaviour {
 	public void SetSelectedContentIndex(int index)
 	{
 		selectedContentIndex = index;
-		StartLerpToContent ();
+		EndDrag ();
 	}
 }
