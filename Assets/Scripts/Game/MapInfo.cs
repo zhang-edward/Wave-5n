@@ -11,5 +11,12 @@ public class MapInfo : MonoBehaviour
 	[Header("Music")]
 	public AudioClip musicLoop;
 	public AudioClip musicIntro;
+
+	public Color bgColor;
+
+	void Awake()
+	{
+		Camera.main.backgroundColor = bgColor;
+	}
 }
 

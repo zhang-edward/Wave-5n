@@ -27,7 +27,7 @@ public class ObjectPooler : MonoBehaviour {
 		}
 	}
 
-	private void AddSelfToGlobalList()
+	protected void AddSelfToGlobalList()
 	{
 		for (int i = 0; i < objectPoolers.Count; i ++)
 		{

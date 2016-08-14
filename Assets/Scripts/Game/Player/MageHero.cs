@@ -32,7 +32,9 @@ public class MageHero : PlayerHero {
 	{
 		abilityCooldowns = new float[2];
 		base.Init (body, anim, player);
+		map = GameObject.Find ("Map").GetComponent<Map>();
 		heroName = PlayerHero.MAGE;
+		projectilePool = ObjectPooler.GetObjectPooler ("PlayerProjectile") as RuntimeObjectPooler;
 		projectilePool.SetPooledObject(projectilePrefab);
 	}
 

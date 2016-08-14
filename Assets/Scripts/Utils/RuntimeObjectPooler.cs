@@ -1,11 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class RuntimeObjectPooler : ObjectPooler
 {
 	void Awake()
 	{
-		
+		if (isGlobal)
+			AddSelfToGlobalList ();
+		pooledObjects = new List<GameObject> ();
 	}
 
 	public void SetPooledObject(GameObject newObj)
