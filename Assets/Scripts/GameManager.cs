@@ -32,6 +32,12 @@ public class GameManager : MonoBehaviour {
 		{
 			InitGameScene ();
 		}
+#if UNITY_EDITOR
+		if (SceneManager.GetActiveScene().name == "TestGame")
+		{
+			InitGameScene();
+		}
+#endif
 #if UNITY_ANDROID
 		Application.targetFrameRate = 30;
 #endif

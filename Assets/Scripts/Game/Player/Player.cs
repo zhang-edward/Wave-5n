@@ -21,6 +21,8 @@ public class Player : MonoBehaviour, IDamageable
 	[HideInInspector]
 	public float DEFAULT_SPEED;
 
+	public PlayerInfoHolder infoHolder;
+
 	[Header("Entity Base Values")]
 	public SpriteRenderer sr;
 	public PlayerInput input;
@@ -28,7 +30,6 @@ public class Player : MonoBehaviour, IDamageable
 	public Animator anim;
 
 	[Header("Player Ability")]
-	public PlayerHero[] heroes;
 	public PlayerHero hero;
 
 	[Header("Player direction")]
@@ -71,9 +72,8 @@ public class Player : MonoBehaviour, IDamageable
 
 	public void Init(string name)
 	{
-		hero = GetAbilityWithName (name);
+		InitPlayerHero (name);
 		anim.runtimeAnimatorController = hero.animatorController;
-		hero.Init (body, anim);
 		health = maxHealth;
 
 		if (OnPlayerInitialized != null)
@@ -81,24 +81,10 @@ public class Player : MonoBehaviour, IDamageable
 		StartCoroutine (SpawnState ());
 	}
 
-	/// <summary>
-	/// Used for initialization
-	/// </summary>
-	/// <returns>The ability with name.</returns>
-	/// <param name="name">Name.</param>
-	private PlayerHero GetAbilityWithName(string name)
+	private void InitPlayerHero(string name)
 	{
-		PlayerHero answer = null;
-		foreach (PlayerHero playerAbility in heroes)
-		{
-			if (playerAbility.heroName.Equals (name))
-				answer = playerAbility;
-			else
-				playerAbility.gameObject.SetActive (false);
-		}
-		if (answer == null)
-			Debug.LogError ("Cannot find specified class name: " + name);
-		return answer;
+		this.hero = infoHolder.InitHero (name);
+		hero.Init (body, anim, this);
 	}
 
 	/// <summary>

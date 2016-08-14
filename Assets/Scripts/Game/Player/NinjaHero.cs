@@ -25,10 +25,10 @@ public class NinjaHero : PlayerHero {
 
 	//public int damage = 1;
 
-	public override void Init(EntityPhysics body, Animator anim)
+	public override void Init(EntityPhysics body, Animator anim, Player player)
 	{
 		abilityCooldowns = new float[2];
-		base.Init (body, anim);
+		base.Init (body, anim, player);
 		heroName = PlayerHero.NINJA;
 		projectilePool.SetPooledObject(projectilePrefab);
 	}

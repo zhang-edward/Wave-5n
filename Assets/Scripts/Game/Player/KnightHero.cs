@@ -26,10 +26,10 @@ public class KnightHero : PlayerHero {
 		Gizmos.DrawWireSphere (transform.position, 1f);
 	}
 
-	public override void Init (EntityPhysics body, Animator anim)
+	public override void Init (EntityPhysics body, Animator anim, Player player)
 	{
 		abilityCooldowns = new float[2];
-		base.Init (body, anim);
+		base.Init (body, anim, player);
 		heroName = PlayerHero.KNIGHT;
 	}
 

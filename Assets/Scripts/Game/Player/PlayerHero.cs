@@ -50,12 +50,6 @@ public abstract class PlayerHero : MonoBehaviour {
 	}
 	//public InputType inputType;
 
-	void OnEnable()
-	{
-		player = GetComponentInParent<Player> ();
-		player.OnEnemyDamaged += IncrementSpecialAbilityCharge;
-	}
-
 	void OnDisable()
 	{
 		player.OnEnemyDamaged -= IncrementSpecialAbilityCharge;
@@ -83,17 +77,19 @@ public abstract class PlayerHero : MonoBehaviour {
 	/// </summary>
 	public abstract void SpecialAbility();
 
-	public virtual void Init(EntityPhysics body, Animator anim)
+	public virtual void Init(EntityPhysics body, Animator anim, Player player)
 	{
 		SoundManager.instance.PlaySingle (spawnSound);
 		this.body = body;
 		this.anim = anim;
+		this.player = player;
 		cooldownTime = new float[cooldownTimeNormal.Length];
 		for(int i = 0; i < cooldownTime.Length; i ++)
 		{
 			cooldownTime [i] = cooldownTimeNormal [i];
 		}
 		player.maxHealth = maxHealth;
+		player.OnEnemyDamaged += IncrementSpecialAbilityCharge;
 	}
 
 	protected virtual void Update()
