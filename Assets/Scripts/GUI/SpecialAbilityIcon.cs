@@ -11,6 +11,8 @@ public class SpecialAbilityIcon : MonoBehaviour
 	public SimpleAnimation holderCooledDownEffect;
 	public Button button;
 	public Player player;
+	public Text chargeMultiplierText;
+	[HideInInspector]
 	public Image image;
 
 	private bool playedCooledDownEffect = false;
@@ -25,6 +27,11 @@ public class SpecialAbilityIcon : MonoBehaviour
 		button.onClick.AddListener (() => {
 			player.hero.SpecialAbility ();
 		});
+	}
+
+	public void SetMultiplierText(float multiplier)
+	{
+		chargeMultiplierText.text = "x" + multiplier;
 	}
 
 	public void SetCooldown(float percent)

@@ -23,9 +23,12 @@ public abstract class PlayerHero : MonoBehaviour {
 
 	public RuntimeAnimatorController animatorController;
 
-	public int combo = 0;
+	public int combo { get; private set; }
+	public float comboTimer { get; private set; }
+	[HideInInspector]
+	public float maxComboTimer = 3.0f;
 
-	public float chargeMultiplier;
+	public float chargeMultiplier = 1;
 	public float specialAbilityChargeCapacity;
 	public float specialAbilityCharge { get; protected set; }
 
@@ -52,6 +55,7 @@ public abstract class PlayerHero : MonoBehaviour {
 
 	void OnDisable()
 	{
+		player.OnEnemyDamaged -= IncrementCombo;
 		player.OnEnemyDamaged -= IncrementSpecialAbilityCharge;
 	}
 
@@ -89,6 +93,7 @@ public abstract class PlayerHero : MonoBehaviour {
 			cooldownTime [i] = cooldownTimeNormal [i];
 		}
 		player.maxHealth = maxHealth;
+		player.OnEnemyDamaged += IncrementCombo;
 		player.OnEnemyDamaged += IncrementSpecialAbilityCharge;
 	}
 
@@ -102,6 +107,15 @@ public abstract class PlayerHero : MonoBehaviour {
 					abilityCooldowns [i] -= Time.deltaTime;
 			}
 		}
+		if (comboTimer > 0)
+		{
+			comboTimer -= Time.deltaTime;
+			if (comboTimer <= 0)
+			{
+				combo = 0;
+				SetChargeMultiplier ();
+			}
+		}
 	}
 
 	protected void ResetCooldown(int index)
@@ -111,10 +125,26 @@ public abstract class PlayerHero : MonoBehaviour {
 
 	public void IncrementSpecialAbilityCharge(float amt)
 	{
-		specialAbilityCharge+= amt;
+		specialAbilityCharge += amt * chargeMultiplier;
 		if (specialAbilityCharge >= specialAbilityChargeCapacity)
 		{
 			specialAbilityCharge = specialAbilityChargeCapacity;
 		}
+	}
+
+	public void IncrementCombo(float amt)
+	{
+		combo++;
+		comboTimer += 1.5f;
+		if (comboTimer > maxComboTimer)
+			comboTimer = maxComboTimer;
+		SetChargeMultiplier ();
+	}
+
+	private void SetChargeMultiplier()
+	{
+		chargeMultiplier = combo * 0.05f + 1;
+		if (chargeMultiplier > 2)
+			chargeMultiplier = 2;
 	}
 }

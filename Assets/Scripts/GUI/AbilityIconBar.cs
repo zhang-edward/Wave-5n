@@ -11,7 +11,7 @@ public class AbilityIconBar : MonoBehaviour {
 	public Player player;
 
 	private bool playerWasInitialized = false;
-	private PlayerHero playerHero;
+	private PlayerHero hero;
 
 	void Awake()
 	{
@@ -30,18 +30,18 @@ public class AbilityIconBar : MonoBehaviour {
 	void Init()
 	{
 		playerWasInitialized = true;
-		playerHero = player.hero;
-		abilityIcons = new AbilityIcon[playerHero.NumAbilities];
+		hero = player.hero;
+		abilityIcons = new AbilityIcon[hero.NumAbilities];
 		//Debug.Log ("There are " + abilityIcons.Length + " player abilities");
-		for (int i = 0; i < playerHero.NumAbilities; i ++)
+		for (int i = 0; i < hero.NumAbilities; i ++)
 		{
 			GameObject o = Instantiate (iconPrefab);
 			o.transform.SetParent (transform, false);
 			abilityIcons [i] = o.GetComponent<AbilityIcon> ();
-			abilityIcons [i].image.sprite = playerHero.icons [i];
+			abilityIcons [i].image.sprite = hero.icons [i];
 		}
-		int centerIndex = playerHero.NumAbilities / 2;
-		specialAbilityIcon.image.sprite = playerHero.specialAbilityIcon;
+		int centerIndex = hero.NumAbilities / 2;
+		specialAbilityIcon.image.sprite = hero.specialAbilityIcon;
 		specialAbilityIcon.transform.SetSiblingIndex (centerIndex);
 	}
 
@@ -49,12 +49,13 @@ public class AbilityIconBar : MonoBehaviour {
 	{
 		if (!playerWasInitialized)
 			return;
-		for (int i = 0; i < playerHero.NumAbilities; i ++)
+		for (int i = 0; i < hero.NumAbilities; i ++)
 		{
-			float percentCooldown = (playerHero.AbilityCooldowns[i] / playerHero.cooldownTime[i]);
+			float percentCooldown = (hero.AbilityCooldowns[i] / hero.cooldownTime[i]);
 			abilityIcons [i].SetCooldown (percentCooldown);
 		}
-		float percent = (playerHero.specialAbilityCharge / playerHero.specialAbilityChargeCapacity);
+		float percent = (hero.specialAbilityCharge / hero.specialAbilityChargeCapacity);
 		specialAbilityIcon.SetCooldown (percent);
+		specialAbilityIcon.SetMultiplierText (hero.chargeMultiplier);
 	}
 }
