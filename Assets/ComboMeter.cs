@@ -10,6 +10,10 @@ public class ComboMeter : MonoBehaviour {
 	public Text text;
 	public Slider slider;
 
+	public ParticleSystem particles;
+
+	private int oldCombo;
+
 	void OnEnable()
 	{
 		player.OnPlayerInitialized += Init;
@@ -25,19 +29,39 @@ public class ComboMeter : MonoBehaviour {
 		hero = player.GetComponentInChildren<PlayerHero> ();
 		slider.maxValue = hero.maxComboTimer;
 		text.gameObject.SetActive (false);
+		slider.gameObject.SetActive (false);
 	}
 
 	void LateUpdate()
 	{
+		
 		if (hero.combo > 0)
 		{
 			text.gameObject.SetActive (true);
+			slider.gameObject.SetActive (true);
 			text.text = "x" + hero.combo;
+			// on combo changed
+			if (hero.combo != oldCombo)
+			{
+				oldCombo = hero.combo;
+				Animate ();
+			}
+			if (hero.combo >= 10)
+			{
+				particles.Play ();
+			}
 		}
 		else
 		{
+			particles.Stop ();
 			text.gameObject.SetActive (false);
+			slider.gameObject.SetActive (false);
 		}
 		slider.value = hero.comboTimer;
+	}
+
+	private void Animate()
+	{
+		text.gameObject.GetComponent<Animator> ().CrossFade ("pop_in", 0);
 	}
 }

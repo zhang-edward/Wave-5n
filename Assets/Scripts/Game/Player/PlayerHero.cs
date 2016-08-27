@@ -93,6 +93,7 @@ public abstract class PlayerHero : MonoBehaviour {
 			cooldownTime [i] = cooldownTimeNormal [i];
 		}
 		player.maxHealth = maxHealth;
+		player.OnPlayerDamaged += ResetCombo;
 		player.OnEnemyDamaged += IncrementCombo;
 		player.OnEnemyDamaged += IncrementSpecialAbilityCharge;
 	}
@@ -112,8 +113,7 @@ public abstract class PlayerHero : MonoBehaviour {
 			comboTimer -= Time.deltaTime;
 			if (comboTimer <= 0)
 			{
-				combo = 0;
-				SetChargeMultiplier ();
+				ResetCombo (0);
 			}
 		}
 	}
@@ -132,12 +132,19 @@ public abstract class PlayerHero : MonoBehaviour {
 		}
 	}
 
-	public void IncrementCombo(float amt)
+	private void IncrementCombo(float amt)
 	{
 		combo++;
 		comboTimer += 1.5f;
 		if (comboTimer > maxComboTimer)
 			comboTimer = maxComboTimer;
+		SetChargeMultiplier ();
+	}
+
+	private void ResetCombo(int amt)
+	{
+		combo = 0;
+		comboTimer = 0;
 		SetChargeMultiplier ();
 	}
 
