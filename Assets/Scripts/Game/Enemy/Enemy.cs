@@ -9,6 +9,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 
 	[Header("Entity Base Properties")]
 	public SpriteRenderer sr;
+	[HideInInspector]
 	public Transform player;
 	public EntityPhysics body;
 	public Animator anim;
@@ -22,7 +23,6 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 	public bool isBoss = false;
 	public float playerDetectionRange = 2f;
 	public bool canBeDisabledOnHit = true;
-	public bool canBeConfused = true;
 	public bool invincible = false;
 
 	[Header("Spawn Properties")]
@@ -85,6 +85,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 
 	protected virtual IEnumerator AnimateIn(Vector3 target)
 	{
+		invincible = true;
 		body.transform.position = target;
 		UnityEngine.Assertions.Assert.IsTrue(anim.HasState(0, Animator.StringToHash("Spawn")));
 		anim.CrossFade ("Spawn", 0f);
@@ -93,6 +94,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 		while (anim.GetCurrentAnimatorStateInfo (0).IsName ("Spawn"))
 			yield return null;
 
+		invincible = false;
 		StartCoroutine (DEFAULT_STATE);
 	}
 
@@ -196,11 +198,16 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 		}
 		else
 		{
-			ResetVars ();
-			SpawnDeathProps ();
-			transform.parent.gameObject.SetActive (false);
-			//StartCoroutine (FadeAway ());
+			Die ();
 		}
+	}
+
+	public virtual void Die()
+	{
+		ResetVars ();
+		SpawnDeathProps ();
+		transform.parent.gameObject.SetActive (false);
+
 	}
 
 	public virtual void Heal (int amt)

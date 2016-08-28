@@ -17,5 +17,11 @@ public class UtilMethods
 	{
 		return RadianToVector2(degree * Mathf.Deg2Rad);
 	}
+
+	public static Vector2 RandomOffsetVector2(Vector3 vec, float offset)
+	{
+		return new Vector3 (Random.Range (-offset, offset),
+			Random.Range (-offset, offset)) + vec;
+	}
 }
 

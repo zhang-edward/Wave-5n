@@ -93,9 +93,10 @@ public class EnemyManager : MonoBehaviour {
 				}
 
 				for (int i = 0; i < numToSpawn; i++)
-					SpawnEnemy (prefabPool);
-				
-
+				{
+					Vector3 randOpenCell = (Vector3)map.OpenCells [Random.Range (0, map.OpenCells.Count)];
+					SpawnEnemy (prefabPool [Random.Range (0, prefabPool.Count)], randOpenCell);
+				}
 				Debug.Log ("Number of enemies in this wave: " + numToSpawn);
 			}
 			yield return null;
@@ -108,10 +109,9 @@ public class EnemyManager : MonoBehaviour {
 		Invoke ("SpawnBoss", bossSpawnDelay);
 	}
 
-	public void SpawnEnemy(List<GameObject> prefabPool)
+	public void SpawnEnemy(GameObject prefab, Vector3 pos)
 	{
-		Vector3 randOpenCell = (Vector3)map.OpenCells [Random.Range (0, map.OpenCells.Count)];
-		GameObject o = Instantiate (prefabPool [Random.Range (0, prefabPool.Count)]);
+		GameObject o = Instantiate (prefab);
 		o.transform.SetParent (transform);
 		if (Random.value < 0.5f)
 			o.transform.position = new Vector3 (Random.Range (0, 10), Map.size + 4);
@@ -123,7 +123,7 @@ public class EnemyManager : MonoBehaviour {
 		healthBar.Init (e);
 		healthBar.player = player;
 
-		e.Init (randOpenCell, map);
+		e.Init (pos, map);
 		e.player = player.transform;
 		enemies.Add (e);
 		e.OnEnemyDied += IncrementEnemiesKilled;
