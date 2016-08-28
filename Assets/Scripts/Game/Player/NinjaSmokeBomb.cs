@@ -50,7 +50,7 @@ public class NinjaSmokeBomb : MonoBehaviour
 			if (col.CompareTag("Enemy"))
 			{
 				Enemy e = col.gameObject.GetComponentInChildren<Enemy> ();
-				e.Confuse (2.0f);
+				//e.Confuse (2.0f);
 			}
 		}
 	}

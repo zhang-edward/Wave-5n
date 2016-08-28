@@ -3,11 +3,6 @@ using System.Collections;
 
 public class LungingEnemy : Enemy {
 
-	private enum State {
-		Moving,
-		Attacking
-	}
-	private State state;
 	private float attackTimer;
 
 	private bool attacking = false;
@@ -40,41 +35,16 @@ public class LungingEnemy : Enemy {
 	protected override IEnumerator MoveState()
 	{
 		UnityEngine.Assertions.Assert.IsTrue (body.moveSpeed == DEFAULT_SPEED);
-		state = State.Moving;
+		moveState = new WalkVicinityState (this);
 		while (true)
 		{
-			Vector3 target = (Vector2)(player.position)
-				+ new Vector2(Random.Range(-1,2), Random.Range(-1,2));		// add a random offset;
-
-			Vector3 oldPos = Vector3.zero;	// track transform velocity to check if stuck on a wall
-			float t = 0;
-			while (Vector3.Distance(transform.position, target) > 0.1f)
+			moveState.UpdateState ();
+			if (PlayerInRange() && attackTimer <= 0)
 			{
-				// Check if stuck on a wall
-				Vector3 velocity = (transform.position - oldPos) / Time.deltaTime;
-				if (velocity.magnitude < Mathf.Epsilon)
-				{
-					t += Time.deltaTime;
-					if (t > 0.05f)
-						break;
-				}
-				else
-					t = 0;
-				oldPos = transform.position;
-					
-				anim.SetBool ("Moving", true);
-				body.Move ((target - transform.position).normalized);
-
-				if (PlayerInRange() && attackTimer <= 0)
-				{
-					StartCoroutine ("AttackState");
-					yield break;
-				}
-				yield return null;
+				StartCoroutine ("AttackState");
+				yield break;
 			}
-			body.Move (Vector2.zero);
-			anim.SetBool ("Moving", false);
-			yield return new WaitForSeconds (1.0f);
+			yield return null;
 		}
 	}
 
@@ -82,7 +52,6 @@ public class LungingEnemy : Enemy {
 	{
 		//UnityEngine.Assertions.Assert.IsTrue (state == State.Attacking);
 		//Debug.Log ("attacking: enter");
-		state = State.Attacking;
 		attackTimer = cooldownTime;	
 
 		// Charge up before attack
@@ -129,8 +98,9 @@ public class LungingEnemy : Enemy {
 		body.Move (dir.normalized);
 	}
 
-	void OnTriggerEnter2D(Collider2D col)
+	protected override void OnTriggerEnter2D(Collider2D col)
 	{
+		base.OnTriggerEnter2D (col);
 		if (col.CompareTag("Player"))
 		{
 			if (attacking)

@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class FollowerEnemy : Enemy {
+public class BouncingEnemy : Enemy {
 
 	public int damage = 1;
 
 	protected override IEnumerator MoveState()
 	{
-		moveState = new FollowState (this);
+		moveState = new BounceState (this);
 		while (true)
 		{
 			moveState.UpdateState ();

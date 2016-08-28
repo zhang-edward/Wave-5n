@@ -38,8 +38,13 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 	public int health { get; private set; }
 	public Vector3 healthBarOffset;
 
+	protected IMoveState moveState;
+
 	public delegate void EnemyDied();
 	public event EnemyDied OnEnemyDied;
+	public delegate void CollideWithMapBorder();
+	public event CollideWithMapBorder OnCollideWithMapBorder;
+
 
 	public virtual void Init(Vector3 spawnLocation, Map map)
 	{
@@ -53,6 +58,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 
 	protected abstract void ResetVars();
 	protected abstract IEnumerator MoveState();
+
 	private void Spawn(Vector3 spawnLocation)
 	{
 		if (walkIn)
@@ -134,36 +140,6 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 		yield return null;
 	}
 
-	// Confuse
-	private IEnumerator ConfusedState(float time)
-	{
-		confused = true;
-		body.moveSpeed = 0;
-
-		TempObject tempObj = ObjectPooler.GetObjectPooler ("Effect").GetPooledObject ().GetComponent<TempObject> ();
-		SimpleAnimationPlayer animPlayer = tempObj.GetComponent<SimpleAnimationPlayer> ();
-		animPlayer.anim = StatusEffectContainer.instance.confusedEffect;
-		animPlayer.looping = true;
-		tempObj.Init (Quaternion.identity,
-			transform.position + healthBarOffset,
-			animPlayer.anim.frames [0],
-			true,
-			0f,
-			animPlayer.anim.TimeLength,
-			0f);
-		animPlayer.Play ();
-
-		yield return new WaitForSeconds (time);
-		confused = false;
-
-		UnityEngine.Assertions.Assert.IsTrue(anim.HasState(0, Animator.StringToHash("default")));
-		anim.CrossFade ("default", 0f);
-
-		ResetVars ();
-		StartCoroutine (DEFAULT_STATE);
-		yield return null;
-	}
-
 	private IEnumerator FlashRed()
 	{
 		sr.color = Color.red;
@@ -199,14 +175,6 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 			invincible = true;
 		else
 			invincible = false;
-	}
-
-	public void Confuse(float time)
-	{
-		if (!canBeConfused)
-			return;
-		StopAllCoroutines ();
-		StartCoroutine(ConfusedState (time));
 	}
 
 	// ===== IDamageable methods ===== //
@@ -245,5 +213,14 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 		if (OnEnemyDied != null)
 			OnEnemyDied ();
 		Destroy (gameObject, 1.0f);
+	}
+
+	protected virtual void OnTriggerEnter2D(Collider2D col)
+	{
+		if (col.CompareTag("MapBorder"))
+		{
+			if (OnCollideWithMapBorder != null)
+				OnCollideWithMapBorder ();
+		}	
 	}
 }
