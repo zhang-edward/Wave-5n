@@ -62,6 +62,8 @@ public class Player : MonoBehaviour, IDamageable
 	[HideInInspector]
 	public Transform targetedEnemy;
 
+	private Wallet wallet;
+
 	void Start()
 	{
 		deathPropPool = ObjectPooler.GetObjectPooler ("DeathProp");
@@ -72,6 +74,7 @@ public class Player : MonoBehaviour, IDamageable
 
 	public void Init(string name)
 	{
+		wallet = GameManager.instance.wallet;
 		InitPlayerHero (name);
 		anim.runtimeAnimatorController = hero.animatorController;
 		health = maxHealth;
@@ -149,6 +152,7 @@ public class Player : MonoBehaviour, IDamageable
 			UnityEngine.Assertions.Assert.IsNotNull (OnPlayerDied);
 			OnPlayerDied ();
 			SpawnDeathProps ();
+			wallet.MergeEarnedMoney ();
 			transform.parent.gameObject.SetActive (false);
 			SoundManager.instance.PlayImportantSound (deathSound);
 		}

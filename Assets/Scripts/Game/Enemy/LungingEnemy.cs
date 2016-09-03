@@ -35,7 +35,7 @@ public class LungingEnemy : Enemy {
 	protected override IEnumerator MoveState()
 	{
 		UnityEngine.Assertions.Assert.IsTrue (body.moveSpeed == DEFAULT_SPEED);
-		moveState = new WalkVicinityState (this);
+		moveState = GetAssignedMoveState ();
 		while (true)
 		{
 			moveState.UpdateState ();

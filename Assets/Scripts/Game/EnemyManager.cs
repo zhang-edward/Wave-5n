@@ -23,12 +23,15 @@ public class EnemyManager : MonoBehaviour {
 	public int onBossDifficultyScaleBack = 3;	// subtract this from difficultyCurve on a boss wave
 
 	public GameObject heartPickup;
+	public GameObject moneyPickup;
 
 	public int waveNumber { get; private set; }
 	private int difficultyCurve = 0;	// number to determine the number of enemies to spawn
 
 	public delegate void EnemyWaveSpawned (int waveNumber);
 	public event EnemyWaveSpawned OnEnemyWaveSpawned;
+	public delegate void EnemyWaveCompleted ();
+	public event EnemyWaveCompleted OnEnemyWaveCompleted;
 	public delegate void BossIncoming();
 	public event BossIncoming OnBossIncoming;
 
@@ -54,53 +57,66 @@ public class EnemyManager : MonoBehaviour {
 		{
 			if (NumAliveEnemies() <= 0)
 			{
+				if (waveNumber >= 1)
+				{
+					OnEnemyWaveCompleted ();
+				}
 				waveNumber++;
 				difficultyCurve++;
-
-				// every 'bossWave' waves, spawn a boss
-				if (waveNumber % bossWave == 0)
-				{
-					difficultyCurve -= onBossDifficultyScaleBack;
-					if (difficultyCurve <= 0)
-						difficultyCurve = 1;
-					Invoke ("StartBossIncoming", 5.0f);
-				}
+				TrySpawnBoss ();
 				// if it is the wave after a boss wave (just defeated boss), spawn heart pickup
 				if (waveNumber % bossWave == 1 && waveNumber != 1)
 				{
 					Instantiate (heartPickup, map.CenterPosition, Quaternion.identity);
 				}
-				if (OnEnemyWaveSpawned != null)
-				{
-					OnEnemyWaveSpawned (waveNumber);
-				}
 
-				// Number of enemies spawning curve (used desmos.com for the graph)
-				int numToSpawn = Mathf.RoundToInt (DIFFICULTY_CURVE * Mathf.Log (difficultyCurve) + 5);
-				List<GameObject> prefabPool = new List<GameObject>();
-				if (waveNumber <= 5)
-				{
-					prefabPool = info.enemyPrefabs1;
-				}
-				else if (5 < waveNumber && waveNumber <= 10)
-				{
-					prefabPool.AddRange (info.enemyPrefabs1);
-					prefabPool.AddRange (info.enemyPrefabs2);
-				}
-				else
-				{
-					prefabPool = info.enemyPrefabs2;
-				}
-
-				for (int i = 0; i < numToSpawn; i++)
-				{
-					Vector3 randOpenCell = (Vector3)map.OpenCells [Random.Range (0, map.OpenCells.Count)];
-					SpawnEnemy (prefabPool [Random.Range (0, prefabPool.Count)], randOpenCell);
-				}
-				Debug.Log ("Number of enemies in this wave: " + numToSpawn);
+				StartNextWave ();
 			}
 			yield return null;
 		}
+	}
+
+	private void TrySpawnBoss()
+	{
+		// every 'bossWave' waves, spawn a boss
+		if (waveNumber % bossWave == 0)
+		{
+			difficultyCurve -= onBossDifficultyScaleBack;
+			if (difficultyCurve <= 0)
+				difficultyCurve = 1;
+			Invoke ("StartBossIncoming", 5.0f);
+		}
+	}
+
+	private void StartNextWave()
+	{
+		if (OnEnemyWaveSpawned != null)
+		{
+			OnEnemyWaveSpawned (waveNumber);
+		}
+		// Number of enemies spawning curve (used desmos.com for the graph)
+		int numToSpawn = Mathf.RoundToInt (DIFFICULTY_CURVE * Mathf.Log (difficultyCurve) + 5);
+		List<GameObject> prefabPool = new List<GameObject>();
+		if (waveNumber <= 5)
+		{
+			prefabPool = info.enemyPrefabs1;
+		}
+		else if (5 < waveNumber && waveNumber <= 10)
+		{
+			prefabPool.AddRange (info.enemyPrefabs1);
+			prefabPool.AddRange (info.enemyPrefabs2);
+		}
+		else
+		{
+			prefabPool = info.enemyPrefabs2;
+		}
+
+		for (int i = 0; i < numToSpawn; i++)
+		{
+			Vector3 randOpenCell = (Vector3)map.OpenCells [Random.Range (0, map.OpenCells.Count)];
+			SpawnEnemy (prefabPool [Random.Range (0, prefabPool.Count)], randOpenCell);
+		}
+		Debug.Log ("Number of enemies in this wave: " + numToSpawn);
 	}
 
 	private void StartBossIncoming()
@@ -124,6 +140,7 @@ public class EnemyManager : MonoBehaviour {
 		healthBar.player = player;
 
 		e.Init (pos, map);
+		e.moneyPickupPrefab = moneyPickup;
 		e.player = player.transform;
 		enemies.Add (e);
 		e.OnEnemyDied += IncrementEnemiesKilled;
@@ -136,6 +153,7 @@ public class EnemyManager : MonoBehaviour {
 		o.transform.SetParent (transform);
 		Enemy e = o.GetComponentInChildren<Enemy> ();
 		e.Init (bossSpawn.transform.position, map);
+		e.moneyPickupPrefab = moneyPickup;
 		e.player = player.transform;
 		bossHealthBar.Init (e);
 		enemies.Add (e);

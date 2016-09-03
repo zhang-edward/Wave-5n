@@ -26,6 +26,7 @@ public class GUIManager : MonoBehaviour {
 	{
 		player.OnPlayerDied += GameOverUI;
 		enemyManager.OnEnemyWaveSpawned += ShowEnemyWaveText;
+		enemyManager.OnEnemyWaveCompleted += OnEnemyWaveCompletedText;
 		enemyManager.OnBossIncoming += ShowBossIncomingText;
 	}
 
@@ -33,6 +34,7 @@ public class GUIManager : MonoBehaviour {
 	{
 		player.OnPlayerDied -= GameOverUI;
 		enemyManager.OnEnemyWaveSpawned -= ShowEnemyWaveText;
+		enemyManager.OnEnemyWaveCompleted -= OnEnemyWaveCompletedText;
 		enemyManager.OnBossIncoming -= ShowBossIncomingText;
 
 	}
@@ -52,14 +54,17 @@ public class GUIManager : MonoBehaviour {
 
 	private void ReportScore()
 	{
-		scorePanel.ReportScore (enemyManager.enemiesKilled, enemyManager.waveNumber - 1);
+		scorePanel.ReportScore (enemyManager.enemiesKilled, enemyManager.waveNumber - 1, player.hero.maxCombo);
 	}
 
 	private void ShowEnemyWaveText(int waveNumber)
 	{
-		if (waveNumber > 1)
-			enemyWaveText.DisplayWaveComplete ();
 		enemyWaveText.DisplayWaveNumberAfterDelay (waveNumber);
+	}
+
+	private void OnEnemyWaveCompletedText()
+	{
+		enemyWaveText.DisplayWaveComplete ();
 	}
 
 	private void ShowBossIncomingText()

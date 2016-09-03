@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class ScoreReportNumber : MonoBehaviour {
+public class IncrementingText : MonoBehaviour {
 
 	public Text text;
 	public int numberToReport;

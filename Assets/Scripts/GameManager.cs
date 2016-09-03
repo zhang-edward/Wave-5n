@@ -3,8 +3,18 @@ using UnityEngine.UI;
 using UnityEngine.Assertions;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using System.Collections.Generic;
+
 
 public class GameManager : MonoBehaviour {
+
+	[System.Serializable]
+	public class SaveGame
+	{
+		public Dictionary<string, ScoreManager.Score> highScores;
+		public Wallet wallet;
+	}
+	public SaveGame saveGame;
 
 	public static GameManager instance;
 	public Image loadingOverlay;
@@ -13,6 +23,7 @@ public class GameManager : MonoBehaviour {
 	private Map map;
 
 	public ScoreManager scoreManager;
+	public Wallet wallet;
 
 	//private bool didInitializeGameScene = false;
 
@@ -108,9 +119,9 @@ public class GameManager : MonoBehaviour {
 		selectedHero = name;
 	}
 
-	public void UpdateScores(int enemiesKilled, int wavesSurvived)
+	public void UpdateScores(int enemiesKilled, int wavesSurvived, int maxCombo)
 	{
-		scoreManager.SubmitScore (selectedHero, new ScoreManager.Score (enemiesKilled, wavesSurvived));
+		scoreManager.SubmitScore (selectedHero, new ScoreManager.Score (enemiesKilled, wavesSurvived, maxCombo));
 		SaveLoad.Save ();
 	}
 
@@ -140,5 +151,17 @@ public class GameManager : MonoBehaviour {
 			yield return null;
 		}
 		loadingOverlay.color = finalColor;
+	}
+
+	public void PrepareSaveFile()
+	{
+		saveGame.highScores = scoreManager.highScores;
+		saveGame.wallet = wallet;
+	}
+
+	public void LoadSaveFile()
+	{
+		scoreManager.highScores = saveGame.highScores;
+		wallet = saveGame.wallet;
 	}
 }

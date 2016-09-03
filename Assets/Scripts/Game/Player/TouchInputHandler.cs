@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Collections;
+using System.Collections.Generic;
 
 public class TouchInputHandler : MonoBehaviour {
 
@@ -31,8 +33,8 @@ public class TouchInputHandler : MonoBehaviour {
 	{
 		if (Input.touchCount > 0)	// user touched the screen
 		{
-			if (EventSystem.current.IsPointerOverGameObject ())
-				return;
+			if (!IsPointerOverUIObject ())
+				return; 
 			Touch touch = Input.touches[0];
 
 			// if touch started moving, begin listening for swipe
@@ -81,5 +83,13 @@ public class TouchInputHandler : MonoBehaviour {
 				break;
 			}
 		}
+	}
+
+	private bool IsPointerOverUIObject() {
+		PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
+		eventDataCurrentPosition.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+		List<RaycastResult> results = new List<RaycastResult>();
+		EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
+		return results.Count > 0;
 	}
 }

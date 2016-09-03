@@ -7,9 +7,11 @@ using System.IO;
 public class SaveLoad
 {
 	public static void Save() {
+		GameManager.instance.PrepareSaveFile ();
+
 		BinaryFormatter bf = new BinaryFormatter();
 		FileStream file = File.Create (Application.persistentDataPath + "/save.gd");
-		bf.Serialize(file, GameManager.instance.scoreManager.highScores);
+		bf.Serialize(file, GameManager.instance.saveGame);
 		file.Close();
 		Debug.Log ("Saved Data");
 	}
@@ -20,6 +22,8 @@ public class SaveLoad
 			FileStream file = File.Open(Application.persistentDataPath + "/save.gd", FileMode.Open);
 			GameManager.instance.scoreManager.highScores = (Dictionary<string, ScoreManager.Score>)bf.Deserialize(file);
 			file.Close();
+
+			GameManager.instance.LoadSaveFile ();
 			Debug.Log ("Loaded Saved Data");
 		}
 	}

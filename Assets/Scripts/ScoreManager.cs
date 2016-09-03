@@ -8,11 +8,13 @@ public class ScoreManager : MonoBehaviour {
 	public class Score {
 		public int enemiesDefeated;
 		public int wavesSurvived;
+		public int maxCombo;
 
-		public Score(int enemiesDefeated, int wavesSurvived)
+		public Score(int enemiesDefeated, int wavesSurvived, int maxCombo)
 		{
 			this.enemiesDefeated = enemiesDefeated;
 			this.wavesSurvived = wavesSurvived;
+			this.maxCombo = maxCombo;
 		}
 
 		public void UpdateScore(Score other)
@@ -21,6 +23,8 @@ public class ScoreManager : MonoBehaviour {
 				this.enemiesDefeated = other.enemiesDefeated;
 			if (other.wavesSurvived > wavesSurvived)
 				this.wavesSurvived = other.wavesSurvived;
+			if (other.maxCombo > maxCombo)
+				this.maxCombo = other.maxCombo;
 		}
 
 		public override string ToString ()

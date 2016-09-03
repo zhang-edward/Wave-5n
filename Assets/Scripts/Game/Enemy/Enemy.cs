@@ -7,6 +7,12 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 	protected int DEFAULT_LAYER;
 	protected float DEFAULT_SPEED;
 
+	public enum MoveMethod {
+		Follow,
+		Bounce,
+		WalkVicinty
+	}
+
 	[Header("Entity Base Properties")]
 	public SpriteRenderer sr;
 	[HideInInspector]
@@ -20,7 +26,6 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 	public bool confused { get; private set; }
 
 	[Header("Enemy Properties")]
-	public bool isBoss = false;
 	public float playerDetectionRange = 2f;
 	public bool canBeDisabledOnHit = true;
 	public bool invincible = false;
@@ -38,7 +43,12 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 	public int health { get; private set; }
 	public Vector3 healthBarOffset;
 
+	[Header("Move State")]
+	public MoveMethod movementMethod;
 	protected IMoveState moveState;
+
+	[HideInInspector]
+	public GameObject moneyPickupPrefab;
 
 	public delegate void EnemyDied();
 	public event EnemyDied OnEnemyDied;
@@ -170,6 +180,13 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 		}
 	}
 
+	private void SpawnMoneyPickup()
+	{
+		int value = Random.Range (0, maxHealth * 5);
+		Instantiate (moneyPickupPrefab, transform.position, Quaternion.identity);
+		moneyPickupPrefab.GetComponent<MoneyPickup> ().value = value;
+	}
+
 	// makes this enemy untouchable if outside map bounds (still needs to walk in bounds on spawn)
 	public void CheckIfWithinMapBounds()
 	{
@@ -184,13 +201,13 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 	{
 		if (invincible)
 			return;
-		// Stop all states
 		health -= amt;
 
 		if (health > 0)
 		{
 			if (canBeDisabledOnHit)
 			{
+				// Stop all states
 				StopAllCoroutines ();
 				StartCoroutine (HitDisableState ());
 			}
@@ -206,6 +223,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 	{
 		ResetVars ();
 		SpawnDeathProps ();
+		SpawnMoneyPickup ();
 		transform.parent.gameObject.SetActive (false);
 
 	}
@@ -229,5 +247,24 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 			if (OnCollideWithMapBorder != null)
 				OnCollideWithMapBorder ();
 		}	
+	}
+
+	/// <summary>
+	/// Gets the IMoveState as specified by <see cref="movementMethod"/>
+	/// </summary>
+	/// <returns>The assigned move state.</returns>
+	protected IMoveState GetAssignedMoveState()
+	{
+		switch (movementMethod)
+		{
+		case MoveMethod.Bounce:
+			return new BounceState (this);
+		case MoveMethod.Follow:
+			return new FollowState (this);
+		case MoveMethod.WalkVicinty:
+			return new WalkVicinityState (this);
+		default:
+			return null;
+		}
 	}
 }

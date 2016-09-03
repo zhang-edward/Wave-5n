@@ -3,14 +3,14 @@ using System.Collections;
 
 public class ScoreReport : MonoBehaviour {
 
-	public ScoreReportNumber enemiesDefeated, wavesSurvived, maxCombo;
+	public IncrementingText enemiesDefeated, wavesSurvived, maxCombo;
 
-	public void ReportScore(int enemiesDefeatedNum, int wavesSurvivedNum)
+	public void ReportScore(int enemiesDefeatedNum, int wavesSurvivedNum, int maxComboNum)
 	{
 		enemiesDefeated.ReportScore (enemiesDefeatedNum);
 		wavesSurvived.ReportScore (wavesSurvivedNum);
-		//maxCombo.ReportScore (maxComboNum);
+		maxCombo.ReportScore (maxComboNum);
 
-		GameManager.instance.UpdateScores (enemiesDefeatedNum, wavesSurvivedNum);
+		GameManager.instance.UpdateScores (enemiesDefeatedNum, wavesSurvivedNum, maxComboNum);
 	}
 }

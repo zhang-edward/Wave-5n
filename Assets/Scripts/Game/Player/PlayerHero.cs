@@ -24,6 +24,7 @@ public abstract class PlayerHero : MonoBehaviour {
 	public RuntimeAnimatorController animatorController;
 
 	public int combo { get; private set; }
+	public int maxCombo { get; private set; }
 	public float comboTimer { get; private set; }
 	[HideInInspector]
 	public float maxComboTimer = 3.0f;
@@ -135,6 +136,8 @@ public abstract class PlayerHero : MonoBehaviour {
 	private void IncrementCombo(float amt)
 	{
 		combo++;
+		if (combo > maxCombo)
+			maxCombo = combo;
 		comboTimer += 1.5f;
 		if (comboTimer > maxComboTimer)
 			comboTimer = maxComboTimer;

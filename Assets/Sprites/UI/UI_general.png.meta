@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 38b31239ac8dc48479a545bcd814b3f3
-timeCreated: 1469066434
+timeCreated: 1472926242
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -72,24 +72,32 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 32
-        y: 176
-        width: 16
-        height: 16
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
+      border: {x: 7, y: 7, z: 7, w: 7}
+      outline:
+      - - {x: -16, y: 16}
+        - {x: -16, y: -16}
+        - {x: 16, y: -16}
+        - {x: 16, y: 16}
     - name: UI_general_1
       rect:
         serializedVersion: 2
-        x: 32
+        x: 64
         y: 160
         width: 32
-        height: 16
+        height: 32
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
+      border: {x: 7, y: 7, z: 7, w: 7}
+      outline:
+      - - {x: -16, y: 16}
+        - {x: -16, y: -16}
+        - {x: 16, y: -16}
+        - {x: 16, y: 16}
     outline: []
   spritePackingTag: 
   userData: 
