@@ -20,7 +20,7 @@ public class SaveLoad
 		if(File.Exists(Application.persistentDataPath + "/save.gd")) {
 			BinaryFormatter bf = new BinaryFormatter();
 			FileStream file = File.Open(Application.persistentDataPath + "/save.gd", FileMode.Open);
-			GameManager.instance.scoreManager.highScores = (Dictionary<string, ScoreManager.Score>)bf.Deserialize(file);
+			GameManager.instance.saveGame = (GameManager.SaveGame)bf.Deserialize(file);
 			file.Close();
 
 			GameManager.instance.LoadSaveFile ();

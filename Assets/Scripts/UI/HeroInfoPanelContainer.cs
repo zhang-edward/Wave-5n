@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class HeroInfoPanel : MonoBehaviour
+public class HeroInfoPanelContainer : MonoBehaviour
 {
 	[System.Serializable]
 	public class HeroInfoPrefab 

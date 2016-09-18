@@ -13,8 +13,14 @@ public class GameManager : MonoBehaviour {
 	{
 		public Dictionary<string, ScoreManager.Score> highScores;
 		public Wallet wallet;
+
+		public SaveGame()
+		{
+			highScores = new Dictionary<string, ScoreManager.Score>();
+			wallet = new Wallet();
+		}
 	}
-	public SaveGame saveGame;
+	public SaveGame saveGame = new SaveGame();
 
 	public static GameManager instance;
 	public Image loadingOverlay;
@@ -157,11 +163,20 @@ public class GameManager : MonoBehaviour {
 	{
 		saveGame.highScores = scoreManager.highScores;
 		saveGame.wallet = wallet;
+		Debug.Log (scoreManager.highScores);
 	}
 
 	public void LoadSaveFile()
 	{
 		scoreManager.highScores = saveGame.highScores;
 		wallet = saveGame.wallet;
+	}
+
+	public void DeleteSaveData()
+	{
+		saveGame = new SaveGame ();
+		LoadSaveFile ();
+		SaveLoad.Save ();
+		Debug.Log (scoreManager.highScores);
 	}
 }
