@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class HealthItem : ShopItem
+public class HealthItem : MonoBehaviour, ShopItem
 {
 	public void OnPurchased(Player player)
 	{

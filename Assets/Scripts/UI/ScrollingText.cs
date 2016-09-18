@@ -40,6 +40,7 @@ public class ScrollingText : MonoBehaviour {
 		for (int i = 0; i < CountNonMarkupCharacters(text) + 1; i++)
 		{
 			textBox.text = ParseRichTextForTypewriter(i, text);
+			// TODO: add own audio source
 			SoundManager.instance.PlaySingle (scrollingTextSound);
 			yield return new WaitForSeconds(.05f);
 		}
@@ -49,7 +50,7 @@ public class ScrollingText : MonoBehaviour {
 	/// Parses the rich text for <see cref="AnimateText"/> so that it does not write out
 	/// rich text markup, but rather handles tags in the text gracefully. For example, with
 	/// the text, "I <color="#0f0">love</color> processing strings!", the method would return:
-	/// i = 1: "I"
+	/// i = 1: "I "
 	/// i = 2: "I <color="#0f0">l</color>"
 	/// i = 3: "I <color="#0f0">lo</color>"
 	/// ... and so on.

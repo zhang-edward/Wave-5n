@@ -5,7 +5,7 @@ using System.Collections;
 public class HeroChooser : MonoBehaviour
 {
 	public ScrollViewSnap heroIconsView;
-	public HeroInfoPanel infoPanel;
+	public HeroInfoPanelContainer infoPanel;
 	public ScoreDisplay scoreDisplay;
 
 	void Awake()
