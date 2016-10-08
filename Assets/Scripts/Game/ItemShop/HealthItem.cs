@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class HealthItem : MonoBehaviour, ShopItem
+public class HealthItem : ShopItem
 {
-	public void OnPurchased(Player player)
+	public override void OnPurchased(Player player)
 	{
 		player.Heal (1);
 	}

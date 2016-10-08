@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 6a2660310893645978c3d980d0a68cc9
-timeCreated: 1472951688
+timeCreated: 1475961519
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -9,6 +9,8 @@ TextureImporter:
     21300004: merchant_2
     21300006: merchant_3
     21300008: merchant_4
+    21300010: merchant_5
+    21300012: merchant_6
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -51,11 +53,14 @@ TextureImporter:
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 16
   alphaIsTransparency: 1
+  spriteTessellationDetail: -1
   textureType: 8
   buildTargetSettings: []
   spriteSheet:
+    serializedVersion: 2
     sprites:
-    - name: merchant_0
+    - serializedVersion: 2
+      name: merchant_0
       rect:
         serializedVersion: 2
         x: 0
@@ -63,17 +68,12 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -3, y: 13}
-        - {x: -16, y: 2}
-        - {x: -16, y: -6}
-        - {x: -14, y: -11}
-        - {x: 14, y: -11}
-        - {x: 14, y: 9}
-        - {x: 5, y: 13}
-    - name: merchant_1
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: merchant_1
       rect:
         serializedVersion: 2
         x: 32
@@ -81,17 +81,12 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -3, y: 13}
-        - {x: -16, y: 2}
-        - {x: -16, y: -6}
-        - {x: -14, y: -11}
-        - {x: 14, y: -11}
-        - {x: 14, y: 9}
-        - {x: 5, y: 13}
-    - name: merchant_2
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: merchant_2
       rect:
         serializedVersion: 2
         x: 64
@@ -99,17 +94,12 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -3, y: 13}
-        - {x: -16, y: 2}
-        - {x: -16, y: -6}
-        - {x: -14, y: -11}
-        - {x: 14, y: -11}
-        - {x: 14, y: 9}
-        - {x: 5, y: 13}
-    - name: merchant_3
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: merchant_3
       rect:
         serializedVersion: 2
         x: 96
@@ -117,33 +107,49 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -3, y: 13}
-        - {x: -16, y: 2}
-        - {x: -16, y: -6}
-        - {x: -14, y: -11}
-        - {x: 14, y: -11}
-        - {x: 14, y: 9}
-        - {x: 5, y: 13}
-    - name: merchant_4
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: merchant_4
       rect:
         serializedVersion: 2
-        x: 128
-        y: 64
+        x: 0
+        y: 0
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -10, y: 12}
-        - {x: -10, y: -9}
-        - {x: -5, y: -11}
-        - {x: 6, y: -11}
-        - {x: 10, y: -6}
-        - {x: 10, y: 12}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: merchant_5
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: merchant_6
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
     outline: []
   spritePackingTag: 
   userData: 

@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ChargeItem : MonoBehaviour, ShopItem
+public class ChargeItem : ShopItem
 {
-	public void OnPurchased(Player player)
+	public override void OnPurchased(Player player)
 	{
 		player.hero.IncrementSpecialAbilityCharge (20);
 	}

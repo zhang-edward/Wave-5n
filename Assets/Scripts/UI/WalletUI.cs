@@ -6,23 +6,43 @@ public class WalletUI : MonoBehaviour
 {
 	public Text text;
 	private Wallet wallet;
-	private int incrementer;
+	private int moneyEarnedCounter;
+	private int moneyCounter;
 
 	void Start()
 	{
 		wallet = GameManager.instance.wallet;
+		StartCoroutine ("UpdateCounters");
+		moneyCounter = wallet.money;
 	}
 
 	void Update()
 	{
-		if (wallet.moneyEarned > 0)
+		
+	}
+
+	private IEnumerator UpdateCounters()
+	{
+		while (true)
 		{
-			if (wallet.moneyEarned > incrementer)
-				incrementer++;
-			text.text = "" + wallet.money + "<color=#FFA702>+" + incrementer + "</color>";
+			// update moneyEarnedCounter
+			if (wallet.moneyEarned > moneyEarnedCounter)
+				moneyEarnedCounter++;
+			else if (wallet.moneyEarned < moneyEarnedCounter)
+				moneyEarnedCounter--;
+			// update moneyCounter
+			if (wallet.money > moneyCounter)
+				moneyCounter++;
+			else if (wallet.money < moneyCounter)
+				moneyCounter--;
+
+			if (wallet.moneyEarned > 0)
+				text.text = "" + moneyCounter + "<color=#FFA702>+" + moneyEarnedCounter + "</color>";
+			else
+				text.text = "" + moneyCounter;
+
+			yield return new WaitForSeconds (0.01f);
 		}
-		else
-			text.text = "" + wallet.money;
 	}
 }
 

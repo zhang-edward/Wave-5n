@@ -1,8 +1,16 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
-public interface ShopItem
+public abstract class ShopItem : MonoBehaviour
 {
-	void OnPurchased(Player player);
+	public int cost;
+	public abstract void OnPurchased (Player player);
+
+	public bool Selected {
+		get {
+			return GetComponent<Toggle> ().isOn;
+		}
+	}
 }
 

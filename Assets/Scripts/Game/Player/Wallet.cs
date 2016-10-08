@@ -15,6 +15,7 @@ public class Wallet
 		}
 		else
 		{
+			moneyEarned = 0;
 			money -= (amt - moneyEarned);
 		}
 	}
