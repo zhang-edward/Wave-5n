@@ -27,6 +27,7 @@ public class EnemyManager : MonoBehaviour {
 
 	public int waveNumber { get; private set; }
 	private int difficultyCurve = 0;	// number to determine the number of enemies to spawn
+	public ShopNPC shopNPC;
 
 	public delegate void EnemyWaveSpawned (int waveNumber);
 	public event EnemyWaveSpawned OnEnemyWaveSpawned;
@@ -68,6 +69,10 @@ public class EnemyManager : MonoBehaviour {
 				if (waveNumber % bossWave == 1 && waveNumber != 1)
 				{
 					Instantiate (heartPickup, map.CenterPosition, Quaternion.identity);
+
+					shopNPC.Appear ();
+					while (shopNPC.gameObject.activeInHierarchy)
+						yield return null;
 				}
 
 				StartNextWave ();

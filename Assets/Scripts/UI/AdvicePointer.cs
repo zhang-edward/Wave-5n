@@ -3,24 +3,26 @@ using System.Collections;
 
 public class AdvicePointer : MonoBehaviour {
 
-	public ScrollViewSnap scrollView;
 	public Animator anim;
+	private float timer = 6f;
 
-	void OnEnable()
+	void Update()
 	{
-		scrollView.OnEndDrag += StartAdvicePointer;
+		timer -= Time.deltaTime;
+		if (Input.GetMouseButtonDown(0))
+		{
+			timer = 10f;
+		}
+		if (timer <= 0)
+		{
+			StartAdvicePointer ();
+			timer = 6f;
+		}
 	}
 
 	private void StartAdvicePointer()
 	{
 		transform.SetAsLastSibling ();
-		StopAllCoroutines ();
-		StartCoroutine(AdvicePointerRoutine());
-	}
-
-	private IEnumerator AdvicePointerRoutine()
-	{
-		yield return new WaitForSeconds (3.0f);
 		anim.SetTrigger ("Animate");
 	}
 }

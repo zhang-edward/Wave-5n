@@ -33,5 +33,16 @@ public class Wallet
 		money += moneyEarned;
 		moneyEarned = 0;
 	}
+
+	// DEBUG
+	public void SetMoneyDebug(int amt)
+	{
+		money = amt;
+	}
+
+	public void SetEarnedMoneyDebug(int amt)
+	{
+		moneyEarned = amt;
+	}
 }
 

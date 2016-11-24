@@ -65,7 +65,7 @@ public class SoundManager : MonoBehaviour {
 
 	public void PlayMusicLoop(AudioClip clip, AudioClip intro = null)
 	{
-		Debug.Log ("Playing new music loop: " + clip);
+//		Debug.Log ("Playing new music loop: " + clip);
 		StartCoroutine (MusicLoop (clip, intro));
 	}
 

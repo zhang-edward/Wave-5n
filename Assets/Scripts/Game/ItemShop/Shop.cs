@@ -5,7 +5,8 @@ using System.Collections.Generic;
 
 public class Shop : MonoBehaviour
 {
-	public Animator animator;
+	public ShopNPC shopNPC;
+	private Animator animator;
 	public Player player;
 	public List<ShopItem> shopItems;
 	public ShopItem selectedItem {
@@ -35,6 +36,7 @@ public class Shop : MonoBehaviour
 		animator.SetTrigger ("Out");
 		// Hard override input for player
 		player.input.enabled = true;
+		shopNPC.Disappear ();
 	}
 
 	public void purchaseSelected()

@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
-public class SimpleAnimationPlayer : MonoBehaviour {
+public class SimpleAnimationPlayerImage : MonoBehaviour {
 
-	public SpriteRenderer sr;
+	public Image image;
 	public SimpleAnimation anim;
 
 	private int frameIndex;
@@ -12,13 +13,9 @@ public class SimpleAnimationPlayer : MonoBehaviour {
 	public bool isPlaying;
 	public bool looping;
 
-	void Awake()
+	public void Start()
 	{
-		sr = GetComponent<SpriteRenderer>();
-	}
-
-	void Start()
-	{
+		//sr = GetComponent<SpriteRenderer>();
 		//secondsPerFrame = 1.0f / anim.fps;
 		frameIndex = 0;
 		if (playOnStart)
@@ -36,7 +33,7 @@ public class SimpleAnimationPlayer : MonoBehaviour {
 	public void Reset()
 	{
 		frameIndex = 0;
-		sr.sprite = anim.frames[0];
+		image.sprite = anim.frames[0];
 		StopAllCoroutines ();
 	}
 
@@ -45,7 +42,7 @@ public class SimpleAnimationPlayer : MonoBehaviour {
 		isPlaying = true;
 		while (frameIndex < anim.frames.Length)
 		{
-			sr.sprite = anim.frames[frameIndex];
+			image.sprite = anim.frames[frameIndex];
 			frameIndex++;
 			// if looping, set animation to beginning and do not stop playing
 			if (looping)

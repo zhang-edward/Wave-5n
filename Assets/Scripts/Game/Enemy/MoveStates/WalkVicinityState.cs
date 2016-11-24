@@ -64,7 +64,7 @@ public class WalkVicinityState : IMoveState
 
 	private void ToWaitState()
 	{
-		Debug.Log ("WaitState");
+//		Debug.Log ("WaitState");
 
 		body.Move (Vector2.zero);
 		anim.SetBool ("Moving", false);

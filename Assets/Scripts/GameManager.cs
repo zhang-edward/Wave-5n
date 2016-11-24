@@ -8,6 +8,9 @@ using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour {
 
+	/// <summary>
+	/// Game data to be loaded and saved.
+	/// </summary>
 	[System.Serializable]
 	public class SaveGame
 	{
@@ -30,6 +33,8 @@ public class GameManager : MonoBehaviour {
 
 	public ScoreManager scoreManager;
 	public Wallet wallet;
+
+	public GameObject debugPanel;
 
 	//private bool didInitializeGameScene = false;
 
@@ -60,16 +65,16 @@ public class GameManager : MonoBehaviour {
 
 	void Update()
 	{
-		/*if (SceneManager.GetActiveScene ().name == "Game" && !didInitializeGameScene)
-		{
-			InitGameScene ();	
-		}*/
-
+#if UNITY_EDITOR
 		if (Input.GetKeyDown (KeyCode.R))
 		{
 			SceneManager.LoadScene (SceneManager.GetActiveScene ().name);
-			//didInitializeGameScene = false;
 		}
+		if (Input.GetKeyDown(KeyCode.BackQuote))
+		{
+			debugPanel.SetActive(!debugPanel.activeInHierarchy);
+		}
+#endif
 	}
 
 	public void GoToScene(string sceneName)
@@ -163,7 +168,6 @@ public class GameManager : MonoBehaviour {
 	{
 		saveGame.highScores = scoreManager.highScores;
 		saveGame.wallet = wallet;
-		Debug.Log (scoreManager.highScores);
 	}
 
 	public void LoadSaveFile()
@@ -177,6 +181,47 @@ public class GameManager : MonoBehaviour {
 		saveGame = new SaveGame ();
 		LoadSaveFile ();
 		SaveLoad.Save ();
-		Debug.Log (scoreManager.highScores);
+	}
+
+
+	// ========================== DEBUG FUNCTIONS ======================
+	public void SetMoneyDebugString(string str)
+	{
+		int i = 0;
+		if (int.TryParse (str, out i))
+			SetMoney (i);
+		else
+			Debug.LogWarning ("Error: not an int");
+	}
+
+	public void SetMoneyEarnedDebugString(string str)
+	{
+		int i = 0;
+		if (int.TryParse (str, out i))
+			SetMoneyEarned (i);
+		else
+			Debug.LogWarning ("Error: not an int");
+	}
+
+	public void SetMoney(int amt) 
+	{
+		wallet.SetMoneyDebug (amt);
+	}
+
+	public void SetMoneyEarned (int amt)
+	{
+		wallet.SetEarnedMoneyDebug(amt);
+	}
+
+	public void KillPlayer()
+	{
+		Player plyr = player.GetComponentInChildren<Player> ();
+		plyr.Damage (plyr.health);
+	}
+
+	public void FullChargeSpecial()
+	{
+		Player plyr = player.GetComponentInChildren<Player> ();
+		plyr.hero.IncrementSpecialAbilityCharge (int.MaxValue);
 	}
 }

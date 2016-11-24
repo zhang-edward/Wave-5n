@@ -147,12 +147,12 @@ public class Player : MonoBehaviour, IDamageable
 		StartCoroutine (FlashRed ());
 
 		health -= amt;
+		// Player Died
 		if (health <= 0)
 		{
 			UnityEngine.Assertions.Assert.IsNotNull (OnPlayerDied);
 			OnPlayerDied ();
 			SpawnDeathProps ();
-			wallet.MergeEarnedMoney ();
 			transform.parent.gameObject.SetActive (false);
 			SoundManager.instance.PlayImportantSound (deathSound);
 		}

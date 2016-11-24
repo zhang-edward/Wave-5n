@@ -48,13 +48,19 @@ public class GUIManager : MonoBehaviour {
 	{
 		gameUI.SetActive (false);
 		gameOverUI.GetComponent<Animator> ().SetTrigger ("In");
+		scorePanel.moneyText.text.text = GameManager.instance.wallet.money.ToString();
+		scorePanel.moneyEarned.text.text = GameManager.instance.wallet.moneyEarned.ToString();
+
 		gameOverUI.SetActive (true);
 		Invoke("ReportScore", 0.5f);	
 	}
 
 	private void ReportScore()
 	{
-		scorePanel.ReportScore (enemyManager.enemiesKilled, enemyManager.waveNumber - 1, player.hero.maxCombo);
+		scorePanel.ReportScore (
+			enemyManager.enemiesKilled, 
+			enemyManager.waveNumber - 1, 
+			player.hero.maxCombo);
 	}
 
 	private void ShowEnemyWaveText(int waveNumber)
