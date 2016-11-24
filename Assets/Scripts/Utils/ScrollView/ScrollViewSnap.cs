@@ -30,16 +30,18 @@ public class ScrollViewSnap : MonoBehaviour {
 			content [0].GetComponent<RectTransform> ().anchoredPosition.x);*/
 	}
 
-	private void InitContent()
+	/// <summary>
+	/// Initialize the content in the scrollView
+	/// </summary>
+	protected virtual void InitContent()
 	{
 		for (int i = 0; i < content.Length; i ++)
 		{
 			GameObject contentItem = content [i];
 			ScrollViewSnapContent scrollViewContent = contentItem.GetComponent<ScrollViewSnapContent> ();
-			if (scrollViewContent != null)
-			{
-				scrollViewContent.index = i;
-			}
+			// make sure that scrollViewContent is a component on each content item
+			UnityEngine.Assertions.Assert.IsNotNull (scrollViewContent);
+			scrollViewContent.index = i;
 		}
 	}
 
@@ -68,9 +70,9 @@ public class ScrollViewSnap : MonoBehaviour {
 		float dest = selectedContentIndex * -contentDistance;
 		while (Mathf.Abs(panel.anchoredPosition.x - dest) > 0.05f)
 		{
+			// set new position
 			float newX = Mathf.Lerp (panel.anchoredPosition.x, dest, Time.deltaTime * 20f);
-			Vector2 newPosition = new Vector2 (newX, panel.anchoredPosition.y);
-			panel.anchoredPosition = newPosition;
+			panel.anchoredPosition = new Vector2 (newX, panel.anchoredPosition.y);
 			yield return null;
 		}
 	}
@@ -79,7 +81,7 @@ public class ScrollViewSnap : MonoBehaviour {
 	{
 		for (int i = 0; i < content.Length; i ++)
 		{
-			distances [i] = Mathf.Abs (center.transform.position.x - content [i].transform.position.x);
+			distances [i] = Mathf.Abs (center.transform.position.x - content[i].transform.position.x);
 //			Debug.Log (content [i].transform.position.x);
 		}
 	}

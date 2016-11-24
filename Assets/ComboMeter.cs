@@ -10,8 +10,6 @@ public class ComboMeter : MonoBehaviour {
 	public Text text;
 	public Slider slider;
 
-	public ParticleSystem particles;
-
 	private int oldCombo;
 
 	void OnEnable()
@@ -46,14 +44,9 @@ public class ComboMeter : MonoBehaviour {
 				oldCombo = hero.combo;
 				Animate ();
 			}
-			if (hero.combo >= 10)
-			{
-				particles.Play ();
-			}
 		}
 		else
 		{
-			particles.Stop ();
 			text.gameObject.SetActive (false);
 			slider.gameObject.SetActive (false);
 		}

@@ -4,7 +4,7 @@ using System.Collections;
 
 public class HeroChooser : MonoBehaviour
 {
-	public ScrollViewSnap heroIconsView;
+	public HeroIconsView heroIconsView;
 	public HeroInfoPanelContainer infoPanel;
 	public ScoreDisplay scoreDisplay;
 
@@ -30,10 +30,14 @@ public class HeroChooser : MonoBehaviour
 
 	private void UpdateHeroInfoPanel()
 	{
-		string hero = heroIconsView.SelectedContent.GetComponent<ScrollViewSnapContent> ().heroName;
+		// get the hero name from the scrollViewSnapContent
+		string hero = heroIconsView.SelectedContent.GetComponent<HeroIcon> ().heroName;
+		// initialize info panel
 		infoPanel.selectedHeroName = hero;
 		infoPanel.DisplayHeroInfo ();
+		// display the scores for the selected hero
 		scoreDisplay.DisplayScores (hero);
+		// select the hero in the GameManager
 		GameManager.instance.selectedHero = hero;
 	}
 }

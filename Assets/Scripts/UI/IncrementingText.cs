@@ -10,6 +10,8 @@ public class IncrementingText : MonoBehaviour {
 	public AudioClip blipSound;
 	public AudioSource audioSrc;
 
+	public bool doneUpdating = true;
+
 	private float pitch;
 
 	void Awake()
@@ -26,6 +28,7 @@ public class IncrementingText : MonoBehaviour {
 
 	private IEnumerator DisplayNumber()
 	{
+		doneUpdating = false;
 		//Debug.Log ("moneyEarned: " + text.text);
 		int incrementer = int.Parse(text.text.ToString());
 		yield return new WaitForSeconds (1.0f);
@@ -41,12 +44,13 @@ public class IncrementingText : MonoBehaviour {
 			}
 			
 			text.text = incrementer.ToString ();
-			pitch = ((float)incrementer / numberToReport) + 1;
+			pitch = ((float)incrementer / numberToReport) + 0.5f;
 			audioSrc.pitch = pitch;
 			audioSrc.clip = blipSound;
 			audioSrc.Play ();
 			yield return new WaitForSeconds (0.03f);
 		}
+		doneUpdating = true;
 		yield return null;
 	}
 

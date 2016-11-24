@@ -1,13 +1,11 @@
 fileFormatVersion: 2
-guid: 114e6944efb3445d09962da39d3e088f
-timeCreated: 1468714391
+guid: 3e592fb1e3ada40fdaa84a4da955e774
+timeCreated: 1479961144
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Ui_0
-    21300002: Ui_1
-    21300004: Ui_2
-    21300006: Ui_3
+    21300000: lock_0
+    21300002: lock_1
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -48,56 +46,40 @@ TextureImporter:
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spritePixelsToUnits: 16
+  spritePixelsToUnits: 32
   alphaIsTransparency: 1
+  spriteTessellationDetail: -1
   textureType: 8
   buildTargetSettings: []
   spriteSheet:
+    serializedVersion: 2
     sprites:
-    - name: Ui_0
+    - serializedVersion: 2
+      name: lock_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 80
-        width: 16
-        height: 16
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Ui_1
-      rect:
-        serializedVersion: 2
-        x: 16
-        y: 80
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-    - name: Ui_2
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: lock_1
       rect:
         serializedVersion: 2
         x: 32
-        y: 80
-        width: 16
-        height: 16
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Ui_3
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 64
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
+      tessellationDetail: 0
     outline: []
   spritePackingTag: 
   userData: 

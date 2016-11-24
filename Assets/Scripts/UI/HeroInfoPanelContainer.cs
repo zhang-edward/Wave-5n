@@ -13,6 +13,7 @@ public class HeroInfoPanelContainer : MonoBehaviour
 
 	public string selectedHeroName;
 	public HeroInfoPrefab[] heroInfoPrefabs;
+	public HeroInfoPrefab lockedInfoPrefab;
 	private GameObject currentHeroInfoPrefab;
 
 	public Text nameField;
@@ -20,6 +21,9 @@ public class HeroInfoPanelContainer : MonoBehaviour
 
 	public HeroInfoPrefab GetSelectedHeroInfo()
 	{
+		if (selectedHeroName.Equals ("LOCKED"))
+			return lockedInfoPrefab;
+		
 		foreach (HeroInfoPrefab infoPrefab in heroInfoPrefabs)
 			if (infoPrefab.heroName.Equals (selectedHeroName))
 				return infoPrefab;
@@ -32,9 +36,12 @@ public class HeroInfoPanelContainer : MonoBehaviour
 
 	public void DisplayHeroInfo()
 	{
+		// display hero name in name field
 		nameField.text = selectedHeroName.ToUpper();
+		// get the current hero info panel and destroy it
 		if (currentHeroInfoPrefab != null)
 			Destroy (currentHeroInfoPrefab.gameObject);
+		// place the new hero info prefab
 		currentHeroInfoPrefab = Instantiate (GetSelectedHeroInfo ().infoPanelPrefab);
 		currentHeroInfoPrefab.transform.SetParent (this.transform, false);
 	}

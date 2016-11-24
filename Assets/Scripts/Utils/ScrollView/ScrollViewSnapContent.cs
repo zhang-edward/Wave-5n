@@ -2,12 +2,12 @@
 using UnityEngine.UI;
 using System.Collections;
 
+[RequireComponent(typeof(Button))]
 public class ScrollViewSnapContent : MonoBehaviour {
 
 	public ScrollViewSnap scrollView;
-	public int index;
+	public int index { get; set; }
 
-	public string heroName;
 	private Button button;
 
 	void Awake()
