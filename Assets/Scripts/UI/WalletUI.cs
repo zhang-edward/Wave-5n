@@ -26,15 +26,21 @@ public class WalletUI : MonoBehaviour
 		while (true)
 		{
 			// update moneyEarnedCounter
-			if (wallet.moneyEarned > moneyEarnedCounter)
-				moneyEarnedCounter++;
-			else if (wallet.moneyEarned < moneyEarnedCounter)
-				moneyEarnedCounter--;
+			if (moneyEarnedCounter != wallet.moneyEarned)
+			{
+				if (Mathf.Abs(wallet.moneyEarned - moneyEarnedCounter) > 50)
+					moneyEarnedCounter = (int)Mathf.Lerp (moneyEarnedCounter, wallet.moneyEarned, 0.1f);
+				else
+					moneyEarnedCounter += ((int)Mathf.Sign (wallet.moneyEarned - moneyEarnedCounter));
+			}
 			// update moneyCounter
-			if (wallet.money > moneyCounter)
-				moneyCounter++;
-			else if (wallet.money < moneyCounter)
-				moneyCounter--;
+			if (moneyCounter != wallet.money)
+			{
+				if (Mathf.Abs(wallet.money - moneyCounter) > 50)
+					moneyCounter = (int)Mathf.Lerp (moneyCounter, wallet.money, 0.1f);
+				else
+					moneyCounter += ((int)Mathf.Sign (wallet.money - moneyCounter));
+			}
 
 			if (wallet.moneyEarned > 0)
 				text.text = "" + moneyCounter + "<color=#FFA702>+" + moneyEarnedCounter + "</color>";

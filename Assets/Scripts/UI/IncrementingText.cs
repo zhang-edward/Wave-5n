@@ -34,9 +34,9 @@ public class IncrementingText : MonoBehaviour {
 		yield return new WaitForSeconds (1.0f);
 		while (incrementer != numberToReport)
 		{
-			if (Mathf.Abs(numberToReport - incrementer) > 10)
+			if (Mathf.Abs(numberToReport - incrementer) > 50)
 			{
-				incrementer = (int)Mathf.Lerp (incrementer, numberToReport, 0.5f);			
+				incrementer = (int)Mathf.Lerp (incrementer, numberToReport, 0.05f);			
 			}
 			else
 			{

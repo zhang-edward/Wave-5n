@@ -65,14 +65,19 @@ public class EnemyManager : MonoBehaviour {
 				waveNumber++;
 				difficultyCurve++;
 				TrySpawnBoss ();
+				// if it is the wave before a boss wave, spawn the shopkeep
+				if (waveNumber % bossWave == bossWave - 1)
+				{
+					// spawn shop npc
+					shopNPC.Appear ();
+					// wait for shopNPC to disappear
+					while (shopNPC.gameObject.activeInHierarchy)
+						yield return null;
+				}
 				// if it is the wave after a boss wave (just defeated boss), spawn heart pickup
 				if (waveNumber % bossWave == 1 && waveNumber != 1)
 				{
 					Instantiate (heartPickup, map.CenterPosition, Quaternion.identity);
-
-					shopNPC.Appear ();
-					while (shopNPC.gameObject.activeInHierarchy)
-						yield return null;
 				}
 
 				StartNextWave ();

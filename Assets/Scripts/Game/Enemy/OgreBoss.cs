@@ -124,7 +124,7 @@ public class OgreBoss : Enemy {
 	private void OnClubHitGround()
 	{
 		SoundManager.instance.RandomizeSFX (clubSmashSounds [Random.Range (0, clubSmashSounds.Length)]);
-		Collider2D[] cols = Physics2D.OverlapCircleAll (hitboxOffset + transform.position, 1f);
+		Collider2D[] cols = Physics2D.OverlapCircleAll (hitboxOffset + transform.position, 2f);
 		foreach (Collider2D col in cols)
 		{
 			if (col.CompareTag("Player"))

@@ -1,11 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public abstract class PlayerHero : MonoBehaviour {
 
-	public const string KNIGHT = "knight";
-	public const string MAGE = "mage";
-	public const string NINJA = "ninja";
+	public static readonly Dictionary<string, string> HERO_TYPES = new Dictionary<string, string> 
+	{
+		{"KNIGHT", "knight"},
+		{"MAGE", "mage"},
+		{"NINJA", "ninja"}
+	};
 
 	[Header("Player Hero Properties")]
 	public Sprite[] icons;

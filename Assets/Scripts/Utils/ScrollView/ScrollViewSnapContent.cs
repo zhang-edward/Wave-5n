@@ -10,7 +10,7 @@ public class ScrollViewSnapContent : MonoBehaviour {
 
 	private Button button;
 
-	void Awake()
+	protected virtual void Awake()
 	{
 		button = GetComponent<Button> ();
 	}

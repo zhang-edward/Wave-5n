@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 
-
 public class GameManager : MonoBehaviour {
 
 	/// <summary>
@@ -15,12 +14,23 @@ public class GameManager : MonoBehaviour {
 	public class SaveGame
 	{
 		public Dictionary<string, ScoreManager.Score> highScores;
+		public bool[] unlockedHeroes;
 		public Wallet wallet;
 
 		public SaveGame()
 		{
+			// default all heroes locked but the first hero (the knight)
+			unlockedHeroes = new bool[PlayerHero.HERO_TYPES.Count];
+			unlockedHeroes[0] = true;
+			// high scores are all 0 by default
 			highScores = new Dictionary<string, ScoreManager.Score>();
+			// wallet money = 0 by default
 			wallet = new Wallet();
+		}
+
+		public void ClearHighScores()
+		{
+			highScores = new Dictionary<string, ScoreManager.Score> ();
 		}
 	}
 	public SaveGame saveGame = new SaveGame();

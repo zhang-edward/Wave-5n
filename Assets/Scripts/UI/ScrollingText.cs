@@ -2,12 +2,19 @@
 using UnityEngine.UI;
 using System.Collections;
 
+[RequireComponent(typeof(AudioSource))]
 public class ScrollingText : MonoBehaviour {
 
 	public Text textBox;
 	public string defaultText;
 	public string text;		// text to display in the text box
-	public AudioClip scrollingTextSound;
+
+	private AudioSource audioSource;
+
+	void Awake()
+	{
+		audioSource = GetComponent<AudioSource> ();
+	}
 
 	void OnEnable()
 	{
@@ -40,8 +47,7 @@ public class ScrollingText : MonoBehaviour {
 		for (int i = 0; i < CountNonMarkupCharacters(text) + 1; i++)
 		{
 			textBox.text = ParseRichTextForTypewriter(i, text);
-			// TODO: add own audio source
-			SoundManager.instance.PlaySingle (scrollingTextSound);
+			audioSource.Play ();
 			yield return new WaitForSeconds(.05f);
 		}
 	}

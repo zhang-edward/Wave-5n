@@ -11,9 +11,9 @@ public class HeroInfoPanelContainer : MonoBehaviour
 		public GameObject infoPanelPrefab;
 	}
 
-	public string selectedHeroName;
+	public string selectedHeroName;				// the name of the selected hero
 	public HeroInfoPrefab[] heroInfoPrefabs;
-	public HeroInfoPrefab lockedInfoPrefab;
+	public GameObject lockedInfoPrefab;
 	private GameObject currentHeroInfoPrefab;
 
 	public Text nameField;
@@ -21,9 +21,6 @@ public class HeroInfoPanelContainer : MonoBehaviour
 
 	public HeroInfoPrefab GetSelectedHeroInfo()
 	{
-		if (selectedHeroName.Equals ("LOCKED"))
-			return lockedInfoPrefab;
-		
 		foreach (HeroInfoPrefab infoPrefab in heroInfoPrefabs)
 			if (infoPrefab.heroName.Equals (selectedHeroName))
 				return infoPrefab;
@@ -44,6 +41,20 @@ public class HeroInfoPanelContainer : MonoBehaviour
 		// place the new hero info prefab
 		currentHeroInfoPrefab = Instantiate (GetSelectedHeroInfo ().infoPanelPrefab);
 		currentHeroInfoPrefab.transform.SetParent (this.transform, false);
+	}
+
+	public void DisplayLockedHero(HeroChooser heroChooser, HeroIcon heroIcon)
+	{
+		// get the current hero info panel and destroy it
+		if (currentHeroInfoPrefab != null)
+			Destroy (currentHeroInfoPrefab.gameObject);
+		// display LOCKED in name field
+		nameField.text = HeroChooser.LOCKED;
+		// display the button to unlock the hero
+		currentHeroInfoPrefab = Instantiate (lockedInfoPrefab);
+		currentHeroInfoPrefab.transform.SetParent (this.transform, false);
+		LockedInfoPanel lockedHero = currentHeroInfoPrefab.GetComponent<LockedInfoPanel> ();
+		lockedHero.Init (heroChooser, heroIcon);
 	}
 }
 

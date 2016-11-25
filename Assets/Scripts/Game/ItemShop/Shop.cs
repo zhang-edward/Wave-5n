@@ -41,8 +41,12 @@ public class Shop : MonoBehaviour
 
 	public void purchaseSelected()
 	{
-		GameManager.instance.wallet.Spend (selectedItem.cost);
-		selectedItem.OnPurchased (player);
+		Wallet wallet = GameManager.instance.wallet;
+		if (wallet.money + wallet.moneyEarned > selectedItem.cost)
+		{
+			wallet.Spend (selectedItem.cost);
+			selectedItem.OnPurchased (player);
+		}
 	}
 }
 

@@ -3,15 +3,14 @@ using System.Collections;
 
 public class HeroIconsView : ScrollViewSnap {
 
-	public bool[] heroLocked;
-
 	protected override void InitContent ()
 	{
 		base.InitContent ();
+		bool[] unlockedHeroes = GameManager.instance.saveGame.unlockedHeroes;
 		for (int i = 0; i < content.Length; i ++)
 		{
 			HeroIcon heroIcon = content [i].GetComponent<HeroIcon> ();
-			heroIcon.locked = heroLocked[i];
+			heroIcon.SetLock(unlockedHeroes[i]);
 		}
 	}
 }

@@ -3,8 +3,20 @@ using System.Collections;
 
 public class ShopNPC : MonoBehaviour
 {
+	private bool activated;		// whether the player can collide with this shopkeeper to see the shop UI
+	private SpriteRenderer sr;
+	
 	public Shop shop;
 	public SimpleAnimationPlayer smokeAnim;
+
+	[Header("Audio")]
+	public AudioClip smokePoof;
+	public AudioClip shopNotification;
+
+	void Awake()
+	{
+		sr = GetComponent<SpriteRenderer> ();
+	}
 
 	public void Appear()
 	{
@@ -19,13 +31,27 @@ public class ShopNPC : MonoBehaviour
 
 	private IEnumerator AppearRoutine()
 	{
-		yield return null;
+		yield return null;	// wait 1 frame for the gameObject.SetActive(true) to be registered
+
+		SoundManager.instance.PlaySingle (smokePoof);
+		sr.color = Color.clear;
 		smokeAnim.Play ();
+		// wait 3 frames for the smoke animation to play
+		float waitTime = smokeAnim.anim.SecondsPerFrame * 3;
+		yield return new WaitForSeconds (waitTime);
+		sr.color = Color.white;
+
+		yield return new WaitForSeconds (1.0f);
+		SoundManager.instance.PlaySingle (shopNotification);
+		activated = true;
 	}
 
 	private IEnumerator DisappearRoutine()
 	{
+		activated = false;
 		yield return new WaitForSeconds (1.0f);
+		SoundManager.instance.PlaySingle (smokePoof);
+		sr.color = Color.clear;
 		smokeAnim.Play ();
 		while (smokeAnim.isPlaying)
 			yield return null;
@@ -34,7 +60,7 @@ public class ShopNPC : MonoBehaviour
 
 	void OnTriggerEnter2D(Collider2D col)
 	{
-		if (col.CompareTag("Player"))
+		if (activated && col.CompareTag("Player"))
 		{
 			shop.AnimateIn ();
 		}

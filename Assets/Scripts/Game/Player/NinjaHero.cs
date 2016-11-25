@@ -29,7 +29,7 @@ public class NinjaHero : PlayerHero {
 	{
 		abilityCooldowns = new float[2];
 		base.Init (body, anim, player);
-		heroName = PlayerHero.NINJA;
+		heroName = PlayerHero.HERO_TYPES ["NINJA"];
 		projectilePool = (RuntimeObjectPooler)ObjectPooler.GetObjectPooler ("PlayerProjectile");
 		projectilePool.SetPooledObject(projectilePrefab);
 	}

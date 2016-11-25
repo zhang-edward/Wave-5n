@@ -1,11 +1,12 @@
 fileFormatVersion: 2
 guid: 6f5fb201ad1514d94bca9cd598ccd8a5
-timeCreated: 1470464364
+timeCreated: 1480010020
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
     21300000: UI_buttons_squareLarge_0
     21300002: UI_buttons_squareLarge_1
+    21300004: UI_buttons_squareLarge_2
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -48,11 +49,14 @@ TextureImporter:
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 16
   alphaIsTransparency: 1
+  spriteTessellationDetail: -1
   textureType: 8
   buildTargetSettings: []
   spriteSheet:
+    serializedVersion: 2
     sprites:
-    - name: UI_buttons_squareLarge_0
+    - serializedVersion: 2
+      name: UI_buttons_squareLarge_0
       rect:
         serializedVersion: 2
         x: 0
@@ -60,14 +64,12 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -16, y: 16}
-        - {x: -16, y: -16}
-        - {x: 16, y: -16}
-        - {x: 16, y: 16}
-    - name: UI_buttons_squareLarge_1
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: UI_buttons_squareLarge_1
       rect:
         serializedVersion: 2
         x: 32
@@ -75,13 +77,23 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -16, y: 16}
-        - {x: -16, y: -16}
-        - {x: 16, y: -16}
-        - {x: 16, y: 16}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: UI_buttons_squareLarge_2
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
     outline: []
   spritePackingTag: 
   userData: 

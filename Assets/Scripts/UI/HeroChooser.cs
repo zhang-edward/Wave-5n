@@ -4,9 +4,12 @@ using System.Collections;
 
 public class HeroChooser : MonoBehaviour
 {
+	public static string LOCKED = "LOCKED";
+
 	public HeroIconsView heroIconsView;
 	public HeroInfoPanelContainer infoPanel;
 	public ScoreDisplay scoreDisplay;
+	public Button playButton;
 
 	void Awake()
 	{
@@ -28,17 +31,26 @@ public class HeroChooser : MonoBehaviour
 		heroIconsView.OnEndDrag -= UpdateHeroInfoPanel;
 	}
 
-	private void UpdateHeroInfoPanel()
+	public void UpdateHeroInfoPanel()
 	{
-		// get the hero name from the scrollViewSnapContent
-		string hero = heroIconsView.SelectedContent.GetComponent<HeroIcon> ().heroName;
-		// initialize info panel
-		infoPanel.selectedHeroName = hero;
-		infoPanel.DisplayHeroInfo ();
-		// display the scores for the selected hero
-		scoreDisplay.DisplayScores (hero);
-		// select the hero in the GameManager
-		GameManager.instance.selectedHero = hero;
+		HeroIcon heroIcon = heroIconsView.SelectedContent.GetComponent<HeroIcon> ();
+		string heroName = "";
+		if (heroIcon.unlocked)
+		{
+			heroName = heroIcon.heroName;
+			GameManager.instance.selectedHero = heroName;	// select the hero in the GameManager
+			playButton.interactable = true;
+			// initialize info panel
+			infoPanel.selectedHeroName = heroName;
+			infoPanel.DisplayHeroInfo ();
+		}
+		else
+		{
+			infoPanel.DisplayLockedHero (this, heroIcon);
+			playButton.interactable = false;
+		}
+		// display the scores for the selected hero (for locked heroes, display 0 for all)
+		scoreDisplay.DisplayScores (heroName);
 	}
 }
 

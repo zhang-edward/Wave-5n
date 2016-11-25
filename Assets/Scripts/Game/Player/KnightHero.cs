@@ -30,7 +30,7 @@ public class KnightHero : PlayerHero {
 	{
 		abilityCooldowns = new float[2];
 		base.Init (body, anim, player);
-		heroName = PlayerHero.KNIGHT;
+		heroName = PlayerHero.HERO_TYPES ["KNIGHT"];
 	}
 
 	// Dash attack
