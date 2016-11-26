@@ -7,6 +7,8 @@ public class CameraControl : MonoBehaviour {
 	public Camera cam;
 	public Player player;
 
+	public Transform focus;
+
 	public SpriteRenderer screenFlash;
 	public SpriteRenderer screenOverlay;
 
@@ -18,7 +20,9 @@ public class CameraControl : MonoBehaviour {
 			Destroy (this.gameObject);
 
 		cam.orthographicSize = 5;
-		transform.position = player.transform.position;
+
+		focus = player.transform;
+		transform.position = focus.position;
 
 		float height = cam.orthographicSize * 2.0f;
 		float width = height * Screen.width / Screen.height;
@@ -30,15 +34,7 @@ public class CameraControl : MonoBehaviour {
 
 	void Update()
 	{
-		if (player.targetedEnemy == null)
-		{
-			transform.position = Vector3.Lerp (transform.position, player.transform.position, Time.deltaTime * 8f);
-		}
-		else
-		{
-			Vector3 dest = Vector3.Lerp (player.transform.position, player.targetedEnemy.position, 0.3f);
-			transform.position = Vector3.Lerp (transform.position, dest, Time.deltaTime * 3f);
-		}
+		transform.position = Vector3.Lerp (transform.position, focus.position, Time.deltaTime * 8f);
 	}
 
 	void OnEnable()

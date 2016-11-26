@@ -59,8 +59,8 @@ public class Player : MonoBehaviour, IDamageable
 	public ObjectPooler deathPropPool;
 	[HideInInspector]
 	public ObjectPooler effectPool;
-	[HideInInspector]
-	public Transform targetedEnemy;
+/*	[HideInInspector]
+	public Transform targetedEnemy;*/
 
 	void Start()
 	{
@@ -173,15 +173,15 @@ public class Player : MonoBehaviour, IDamageable
 
 	void Update()
 	{
-		if (autoTargetEnabled)
+/*		if (autoTargetEnabled)
 		{
 			AutoTarget ();
 			if (targetedEnemy != null)
 				autoTargetReticle.position = targetedEnemy.position;
-		}
+		}*/
 	}
 
-	public void AutoTarget()
+/*	public void AutoTarget()
 	{
 		RaycastHit2D[] raycastHits = Physics2D.CircleCastAll (transform.position, 1f, dir, 8f);
 		Debug.DrawRay (transform.position, dir.normalized * 8f, Color.white);
@@ -207,7 +207,7 @@ public class Player : MonoBehaviour, IDamageable
 		targetedEnemy = null;
 		autoTargetReticle.position = new Vector3 (-1, -1, -1);
 		autoTargetReticle.gameObject.SetActive (false);
-	}
+	}*/
 
 	private void SpawnDeathProps()
 	{
