@@ -17,7 +17,7 @@ public class IncrementingText : MonoBehaviour {
 	void Awake()
 	{
 		audioSrc = GetComponent<AudioSource> ();
-		//text.text = "0";
+		text.text = "0";
 	}
 
 	public void ReportScore(int number)
@@ -56,9 +56,10 @@ public class IncrementingText : MonoBehaviour {
 
 	void Update()
 	{
-		if (Input.GetMouseButtonDown(0))
+		if (Input.GetMouseButtonDown(0) && doneUpdating == false)
 		{
 			StopAllCoroutines ();
+			doneUpdating = true;
 			text.text = numberToReport.ToString ();
 		}
 	}

@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour {
 
 	public static GameManager instance;
 	public Image loadingOverlay;
-	public string selectedHero = "";
+	private string selectedHero = "knight";
 	public GameObject player;
 	private Map map;
 
@@ -64,12 +64,6 @@ public class GameManager : MonoBehaviour {
 		{
 			InitGameScene ();
 		}
-#if UNITY_EDITOR
-		if (SceneManager.GetActiveScene().name == "TestGame")
-		{
-			InitGameScene();
-		}
-#endif
 		Application.targetFrameRate = 60;
 	}
 
@@ -132,7 +126,6 @@ public class GameManager : MonoBehaviour {
 														// initialize the player without a selected hero
 		playerScript.Init (selectedHero);
 		SoundManager.instance.PlayMusicLoop (map.info.musicLoop, map.info.musicIntro);
-		//didInitializeGameScene = true;
 	}
 
 	public void SelectHero(string name)
@@ -195,6 +188,7 @@ public class GameManager : MonoBehaviour {
 
 
 	// ========================== DEBUG FUNCTIONS ======================
+#if UNITY_EDITOR
 	public void SetMoneyDebugString(string str)
 	{
 		int i = 0;
@@ -234,4 +228,20 @@ public class GameManager : MonoBehaviour {
 		Player plyr = player.GetComponentInChildren<Player> ();
 		plyr.hero.IncrementSpecialAbilityCharge (int.MaxValue);
 	}
+
+	public void KillAllEnemies()
+	{
+		EnemyManager enemyManager = GameObject.Find ("/Game/EnemyManager").GetComponent<EnemyManager> ();
+		foreach (Enemy e in enemyManager.Enemies)
+		{
+			e.Die ();
+		}
+	}
+
+	public void SpawnBoss()
+	{
+		EnemyManager enemyManager = GameObject.Find ("/Game/EnemyManager").GetComponent<EnemyManager> ();
+		enemyManager.SpawnBoss ();
+	}
+#endif
 }

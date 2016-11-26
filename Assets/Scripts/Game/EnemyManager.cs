@@ -13,7 +13,7 @@ public class EnemyManager : MonoBehaviour {
 	public ObjectPooler enemyHealthBarPool;
 
 	private List<Enemy> enemies = new List<Enemy>();
-	public List<Enemy> Enemies { get; private set; }
+	public List<Enemy> Enemies { get {return enemies;} }
 	public EnemyManagerInfo info;
 
 	public EnemyHealthBar bossHealthBar;
@@ -56,6 +56,7 @@ public class EnemyManager : MonoBehaviour {
 	{
 		while (true)
 		{
+			// all enemies dead
 			if (NumAliveEnemies() <= 0)
 			{
 				if (waveNumber >= 1)
@@ -64,15 +65,16 @@ public class EnemyManager : MonoBehaviour {
 				}
 				waveNumber++;
 				difficultyCurve++;
-				TrySpawnBoss ();
-				// if it is the wave before a boss wave, spawn the shopkeep
-				if (waveNumber % bossWave == bossWave - 1)
+				// every 'bossWave' waves, spawn a boss
+				if (waveNumber % bossWave == 0)
 				{
-					// spawn shop npc
+					// spawn shop npc before the boss
 					shopNPC.Appear ();
 					// wait for shopNPC to disappear
 					while (shopNPC.gameObject.activeInHierarchy)
 						yield return null;
+					
+					TrySpawnBoss ();
 				}
 				// if it is the wave after a boss wave (just defeated boss), spawn heart pickup
 				if (waveNumber % bossWave == 1 && waveNumber != 1)
@@ -88,14 +90,10 @@ public class EnemyManager : MonoBehaviour {
 
 	private void TrySpawnBoss()
 	{
-		// every 'bossWave' waves, spawn a boss
-		if (waveNumber % bossWave == 0)
-		{
-			difficultyCurve -= onBossDifficultyScaleBack;
-			if (difficultyCurve <= 0)
-				difficultyCurve = 1;
-			Invoke ("StartBossIncoming", 5.0f);
-		}
+		difficultyCurve -= onBossDifficultyScaleBack;
+		if (difficultyCurve <= 0)
+			difficultyCurve = 1;
+		Invoke ("StartBossIncoming", 5.0f);
 	}
 
 	private void StartNextWave()

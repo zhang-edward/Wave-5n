@@ -8,6 +8,8 @@ public class MoneyPickup : MonoBehaviour
 	private Transform player;
 	public int value;
 
+	public AudioClip coinPickupSound;
+
 	void Awake()
 	{
 		rb2d = GetComponent<Rigidbody2D> ();
@@ -38,6 +40,7 @@ public class MoneyPickup : MonoBehaviour
 			if (distance <= 0.5)
 			{
 				GameManager.instance.wallet.Earn (value, false);
+				SoundManager.instance.PlaySingle (coinPickupSound);
 				Destroy (gameObject);
 			}
 		}

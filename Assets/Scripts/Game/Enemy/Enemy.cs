@@ -225,7 +225,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 		SpawnDeathProps ();
 		SpawnMoneyPickup ();
 		transform.parent.gameObject.SetActive (false);
-
+		Destroy (this, 5.0f);
 	}
 
 	public virtual void Heal (int amt)

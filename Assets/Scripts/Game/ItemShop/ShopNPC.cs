@@ -8,6 +8,8 @@ public class ShopNPC : MonoBehaviour
 	
 	public Shop shop;
 	public SimpleAnimationPlayer smokeAnim;
+	public SimpleAnimationPlayer npcAnim;
+	public SimpleAnimationPlayer dialogueAnim;
 
 	[Header("Audio")]
 	public AudioClip smokePoof;
@@ -40,6 +42,9 @@ public class ShopNPC : MonoBehaviour
 		float waitTime = smokeAnim.anim.SecondsPerFrame * 3;
 		yield return new WaitForSeconds (waitTime);
 		sr.color = Color.white;
+
+		npcAnim.Play ();
+		dialogueAnim.Play ();
 
 		yield return new WaitForSeconds (1.0f);
 		SoundManager.instance.PlaySingle (shopNotification);

@@ -62,8 +62,6 @@ public class Player : MonoBehaviour, IDamageable
 	[HideInInspector]
 	public Transform targetedEnemy;
 
-	private Wallet wallet;
-
 	void Start()
 	{
 		deathPropPool = ObjectPooler.GetObjectPooler ("DeathProp");
@@ -74,7 +72,6 @@ public class Player : MonoBehaviour, IDamageable
 
 	public void Init(string name)
 	{
-		wallet = GameManager.instance.wallet;
 		InitPlayerHero (name);
 		anim.runtimeAnimatorController = hero.animatorController;
 		health = maxHealth;
@@ -127,7 +124,7 @@ public class Player : MonoBehaviour, IDamageable
 		while (sr.color != Color.white)
 		{
 			sr.color = Color.Lerp (Color.red, Color.white, t);
-			t += Time.deltaTime;
+			t += Time.deltaTime * 2f;
 			yield return null;
 		}
 		hitDisabled = false;

@@ -20,10 +20,9 @@ public class LockedInfoPanel : MonoBehaviour {
 	private void UnlockHero()
 	{
 		Wallet wallet = GameManager.instance.wallet;
-		if (wallet.money >= hero.cost)
+		if (wallet.TrySpend (hero.cost))
 		{
 			hero.Unlock ();
-			wallet.Spend (hero.cost);
 			chooser.UpdateHeroInfoPanel ();
 		}
 	}

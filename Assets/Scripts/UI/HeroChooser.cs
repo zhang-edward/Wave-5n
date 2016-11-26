@@ -38,7 +38,7 @@ public class HeroChooser : MonoBehaviour
 		if (heroIcon.unlocked)
 		{
 			heroName = heroIcon.heroName;
-			GameManager.instance.selectedHero = heroName;	// select the hero in the GameManager
+			GameManager.instance.SelectHero (heroName);	// select the hero in the GameManager
 			playButton.interactable = true;
 			// initialize info panel
 			infoPanel.selectedHeroName = heroName;
