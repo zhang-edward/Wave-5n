@@ -33,7 +33,7 @@ public class EntityPhysics : MonoBehaviour {
 			sr.flipX = false;
 	}
 
-	public void AddRandomImpulse()
+	public void AddRandomImpulse(float amt)
 	{
 		/*Vector3 dirAsVector3 = (Vector3)dir;
 		Vector3 perpendicularVector = Vector3.Cross (Vector3.forward, dirAsVector3);
@@ -41,11 +41,6 @@ public class EntityPhysics : MonoBehaviour {
 		Debug.Log (perpendicularVector);
 
 		rb2d.AddForce ((Vector2)perpendicularVector, ForceMode2D.Impulse);*/
-		rb2d.AddForce (new Vector2 (Random.Range (-2, 3), Random.Range (-2, 3)), ForceMode2D.Impulse);
-	}
-
-	void Update()
-	{
-
+		rb2d.AddForce (new Vector2 (Random.Range (-amt, amt), Random.Range (-amt, amt)), ForceMode2D.Impulse);
 	}
 }

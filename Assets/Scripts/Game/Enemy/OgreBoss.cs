@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class OgreBoss : Enemy {
+public class OgreBoss : BossEnemy {
 	
 	private const int NO_ACTION = 0;
 	private const int ATTACK = 1;
@@ -9,7 +9,6 @@ public class OgreBoss : Enemy {
 
 	private float attackTimer;
 	private float roarTimer;
-	private EnemyManager enemyManager;
 
 	[Header("OgreBoss Properties")]
 	public Vector3 clubHitboxOffset;
@@ -60,12 +59,6 @@ public class OgreBoss : Enemy {
 	void OnDrawGizmosSelected()
 	{
 		Gizmos.DrawWireSphere (transform.position + stompHitboxOffset, 1f);
-	}
-
-	public override void Init (Vector3 spawnLocation, Map map)
-	{
-		base.Init (spawnLocation, map);
-		enemyManager = GetComponentInParent<EnemyManager> ();
 	}
 
 	protected override IEnumerator MoveState()

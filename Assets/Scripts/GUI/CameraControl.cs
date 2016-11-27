@@ -5,9 +5,9 @@ public class CameraControl : MonoBehaviour {
 
 	public static CameraControl instance;
 	public Camera cam;
-	public Player player;
-
-	public Transform focus;
+	private Player player;
+	private Transform focus;
+	public Transform secondaryFocus;
 
 	public SpriteRenderer screenFlash;
 	public SpriteRenderer screenOverlay;
@@ -19,6 +19,7 @@ public class CameraControl : MonoBehaviour {
 		else if (instance != this)
 			Destroy (this.gameObject);
 
+		player = GameObject.Find ("/Game/Player").GetComponentInChildren<Player> ();
 		cam.orthographicSize = 5;
 
 		focus = player.transform;
@@ -34,7 +35,25 @@ public class CameraControl : MonoBehaviour {
 
 	void Update()
 	{
-		transform.position = Vector3.Lerp (transform.position, focus.position, Time.deltaTime * 8f);
+		if (secondaryFocus != null)
+		{
+			Vector3 target = Vector3.Lerp (focus.position, secondaryFocus.position, 0.2f);
+			transform.position = Vector3.Lerp (transform.position, target, Time.deltaTime * 8f);
+		}
+		else
+		{
+			transform.position = Vector3.Lerp (transform.position, focus.position, Time.deltaTime * 8f);
+		}
+	}
+
+	public void SetFocus(Transform tr)
+	{
+		focus = tr;
+	}
+
+	public void ResetFocus()
+	{
+		focus = player.transform;
 	}
 
 	void OnEnable()

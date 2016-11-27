@@ -140,7 +140,7 @@ public class Player : MonoBehaviour, IDamageable
 		if (hitDisabled || isInvincible)
 			return;
 
-		body.AddRandomImpulse ();
+		body.AddRandomImpulse (3f);
 		StartCoroutine (FlashRed ());
 
 		health -= amt;

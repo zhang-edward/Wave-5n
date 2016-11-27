@@ -85,7 +85,6 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 		while (Vector3.Distance(transform.position, target) > 0.1f)
 		{
 			body.Move ((target - transform.position).normalized);
-			CheckIfWithinMapBounds ();
 			yield return null;
 		}
 		body.gameObject.layer = DEFAULT_LAYER;
@@ -95,7 +94,6 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 
 	protected virtual IEnumerator AnimateIn(Vector3 target)
 	{
-		invincible = true;
 		body.transform.position = target;
 		UnityEngine.Assertions.Assert.IsTrue(anim.HasState(0, Animator.StringToHash("Spawn")));
 		anim.CrossFade ("Spawn", 0f);
@@ -104,7 +102,6 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 		while (anim.GetCurrentAnimatorStateInfo (0).IsName ("Spawn"))
 			yield return null;
 
-		invincible = false;
 		StartCoroutine (DEFAULT_STATE);
 	}
 
@@ -135,12 +132,12 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 	}
 
 	// Hit Disable
-	private IEnumerator HitDisableState()
+	private IEnumerator HitDisableState(float time, float randomImpulse)
 	{
-		body.AddRandomImpulse ();
+		body.AddRandomImpulse (randomImpulse);
 		hitDisabled = true;
 		//Debug.Log ("Stopped all Coroutines");
-		yield return new WaitForSeconds (0.05f);
+		yield return new WaitForSeconds (time);
 		hitDisabled = false;
 
 		yield return new WaitForSeconds (0.2f);
@@ -161,7 +158,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 		invincible = false;
 	}
 
-	private void SpawnDeathProps()
+	protected void SpawnDeathProps()
 	{
 		foreach (Sprite sprite in deathProps)
 		{
@@ -180,20 +177,26 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 		}
 	}
 
-	private void SpawnMoneyPickup()
+	protected void SpawnMoneyPickup()
 	{
 		int value = Random.Range (0, maxHealth * 5);
 		Instantiate (moneyPickupPrefab, transform.position, Quaternion.identity);
 		moneyPickupPrefab.GetComponent<MoneyPickup> ().value = value;
 	}
 
-	// makes this enemy untouchable if outside map bounds (still needs to walk in bounds on spawn)
-	public void CheckIfWithinMapBounds()
+	// makes this enemy untouchable if outside map bounds (meaning it still needs to walk in bounds)
+/*	public void CheckIfWithinMapBounds()
 	{
 		if (!map.WithinOpenCells (transform.position))
 			invincible = true;
 		else
 			invincible = false;
+	}*/
+
+	public void Disable(float time)
+	{
+		StopAllCoroutines ();
+		StartCoroutine (HitDisableState (time, 0));
 	}
 
 	// ===== IDamageable methods ===== //
@@ -209,7 +212,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 			{
 				// Stop all states
 				StopAllCoroutines ();
-				StartCoroutine (HitDisableState ());
+				StartCoroutine (HitDisableState (0.05f, 3f));
 			}
 			StartCoroutine (FlashRed ());
 		}
@@ -225,7 +228,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 		SpawnDeathProps ();
 		SpawnMoneyPickup ();
 		transform.parent.gameObject.SetActive (false);
-		Destroy (this, 5.0f);
+		Destroy (this, 1.0f);
 	}
 
 	public virtual void Heal (int amt)
