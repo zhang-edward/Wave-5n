@@ -57,7 +57,7 @@ public class EnemyWaveText : MonoBehaviour {
 			yield return null;
 		}
 		canDisplayNextMessage = true;
-		//Debug.Log ("Stopped");
+		Debug.Log ("Stopped");
 		text.color = finalColor;
 		waveCompleteParticles.gameObject.SetActive (false);
 	}

@@ -82,7 +82,14 @@ public class MageHero : PlayerHero {
 		//chargeTime = 0f;
 		// if cooldown has not finished
 		if (abilityCooldowns[0] > 0)
+		{
+			if (abilityCooldowns [0]< 0.3f)
+			{
+				inputAction = HandleSwipe;
+				QueueAction (abilityCooldowns [0]);
+			}
 			return;
+		}
 		ResetCooldown (0);
 		// Sound
 		SoundManager.instance.RandomizeSFX (shootSound);

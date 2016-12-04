@@ -52,11 +52,8 @@ public abstract class PlayerHero : MonoBehaviour {
 	[Header("Hero Audio")]
 	public AudioClip spawnSound;
 
-	public enum InputType {
-		Tap,
-		Swipe
-	}
-	//public InputType inputType;
+	protected delegate void InputAction();
+	protected InputAction inputAction;
 
 	void OnDisable()
 	{
@@ -69,6 +66,19 @@ public abstract class PlayerHero : MonoBehaviour {
 	/// </summary>
 	public virtual void HandleTapRelease ()
 	{}
+
+	protected void QueueAction(float t)
+	{
+		StopCoroutine("QueueActionCoroutine");
+		StartCoroutine ("QueueActionCoroutine", t);
+	}
+
+	private IEnumerator QueueActionCoroutine(float t)
+	{
+		yield return new WaitForSeconds (t);
+		inputAction ();
+	}
+
 	/// <summary>
 	/// Performs an action on button held down
 	/// </summary>

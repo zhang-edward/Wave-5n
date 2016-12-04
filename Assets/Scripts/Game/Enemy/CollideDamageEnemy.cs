@@ -4,6 +4,14 @@ using System.Collections;
 public class CollideDamageEnemy : Enemy {
 
 	public int damage = 1;
+	public float attackCooldown = 2f;
+	private float cooldown;
+
+	void Update()
+	{
+		if (cooldown > 0)
+			cooldown -= Time.deltaTime;
+	}
 
 	protected override IEnumerator MoveState()
 	{
@@ -26,8 +34,11 @@ public class CollideDamageEnemy : Enemy {
 		if (col.CompareTag("Player"))
 		{
 			Player player = col.GetComponentInChildren<Player>();
-			if (health > 0 && !hitDisabled)
+			if (cooldown <= 0 && health > 0 && !hitDisabled)
+			{
 				player.Damage (damage);
+				cooldown = attackCooldown;
+			}
 		}
 	}
 }

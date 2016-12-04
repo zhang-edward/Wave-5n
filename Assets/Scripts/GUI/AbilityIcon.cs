@@ -5,18 +5,20 @@ using System.Collections;
 public class AbilityIcon : MonoBehaviour
 {
 	public Image image { get; private set; }
-	public RectTransform cooldownMask;
+	public Slider slider;
 
 	void Awake()
 	{
 		image = GetComponent<Image> ();
+		slider.maxValue = 1;
+		slider.minValue = 0;
 	}
 
 	public void SetCooldown(float percent)
 	{
 		if (percent < 0)
 			return;
-		cooldownMask.sizeDelta = new Vector2 (16, percent * 16);
+		slider.value = percent;
 	}
 }
 

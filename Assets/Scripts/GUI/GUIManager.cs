@@ -18,10 +18,6 @@ public class GUIManager : MonoBehaviour {
 	public EnemyManager enemyManager;
 	public Player player;
 
-	void Awake()
-	{
-	}
-
 	void OnEnable()
 	{
 		player.OnPlayerDied += GameOverUI;

@@ -36,8 +36,15 @@ public class NinjaHero : PlayerHero {
 
 	public override void HandleSwipe ()
 	{
-		if (abilityCooldowns [0] > 0)
+		if (abilityCooldowns[0] > 0)
+		{
+			if (abilityCooldowns [0]< 0.3f)
+			{
+				inputAction = HandleSwipe;
+				QueueAction (abilityCooldowns [0]);
+			}
 			return;
+		}
 		ResetCooldown (0);
 		StartCoroutine(DashAttack ());
 	}

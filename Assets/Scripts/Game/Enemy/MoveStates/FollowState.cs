@@ -7,6 +7,8 @@ public class FollowState : IMoveState
 	private EntityPhysics body;
 	private Transform player;
 
+	private Vector3 target;
+
 	public FollowState(Enemy enemy)
 	{
 		this.enemy = enemy;
@@ -16,7 +18,8 @@ public class FollowState : IMoveState
 
 	public void UpdateState()
 	{
-		body.Move ((player.position - enemy.transform.position).normalized);
+		target = Vector3.Lerp (target, (player.position - enemy.transform.position).normalized, 0.1f);
+		body.Move (target);
 	}
 }
 

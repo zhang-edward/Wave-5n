@@ -38,7 +38,14 @@ public class KnightHero : PlayerHero {
 	{
 		// if cooldown has not finished
 		if (abilityCooldowns[0] > 0)
+		{
+			if (abilityCooldowns [0]< 0.3f)
+			{
+				inputAction = HandleSwipe;
+				QueueAction (abilityCooldowns [0]);
+			}
 			return;
+		}
 		ResetCooldown (0);
 		// Sound
 		SoundManager.instance.RandomizeSFX (rushSound);
@@ -51,6 +58,7 @@ public class KnightHero : PlayerHero {
 		killBox = true;
 		body.moveSpeed = rushMoveSpeed;
 		body.Move(player.dir.normalized);
+		Debug.DrawRay (transform.position, player.dir, Color.red, 0.5f);
 		player.isInvincible = true;
 		// reset ability
 		Invoke ("ResetRushAbility", rushDuration);

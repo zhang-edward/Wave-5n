@@ -94,6 +94,7 @@ public class PlayerInput : MonoBehaviour {
 	private void HandleSwipe(Vector2 dir)
 	{
 		player.dir = dir;
+		Debug.DrawRay (transform.position, dir, Color.white, 0.5f);
 		player.hero.HandleSwipe ();
 	}
 

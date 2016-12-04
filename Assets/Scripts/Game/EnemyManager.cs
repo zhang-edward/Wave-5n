@@ -5,6 +5,13 @@ using System.Collections.Generic;
 public class EnemyManager : MonoBehaviour {
 
 	private const float DIFFICULTY_CURVE = 3.5f;
+	[System.Serializable]
+	public class EnemyInfoDictionaryEntry
+	{
+		public string name;
+		public EnemyManagerInfo info;
+	}
+
 
 	public Player player;
 	public int enemiesKilled { get; private set; }
@@ -14,7 +21,10 @@ public class EnemyManager : MonoBehaviour {
 
 	private List<Enemy> enemies = new List<Enemy>();
 	public List<Enemy> Enemies { get {return enemies;} }
-	public EnemyManagerInfo info;
+
+	public EnemyInfoDictionaryEntry[] infos;
+	public EnemyManagerInfo info { get; private set; }
+	public string chosenInfo;
 
 	public EnemyHealthBar bossHealthBar;
 	private BossSpawn bossSpawn;
@@ -48,8 +58,19 @@ public class EnemyManager : MonoBehaviour {
 
 	private void Init()
 	{
+		info = GetEnemyInfo ();	
 		bossSpawn = map.bossSpawn.GetComponent<BossSpawn> ();
 		StartCoroutine (StartSpawningEnemies ());
+	}
+
+	private EnemyManagerInfo GetEnemyInfo()
+	{
+		foreach (EnemyInfoDictionaryEntry entry in infos)
+		{
+			if (entry.name.Equals (chosenInfo))
+				return entry.info;
+		}
+		throw new UnityEngine.Assertions.AssertionException ("EnemyManager.cs:", "EnemyManagerInfo not found");
 	}
 
 	private IEnumerator StartSpawningEnemies()

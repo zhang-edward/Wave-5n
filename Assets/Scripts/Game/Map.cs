@@ -4,15 +4,21 @@ using Utils;
 
 public class Map : MonoBehaviour {
 
-/*	public GameObject terrainPrefab;
-	public Sprite[] terrainSprites;
-	public GameObject[] terrainObjectPrefabs;
-	public GameObject bossSpawnPrefab;
-	public GameObject borderPrefab;*/
-	public GameObject terrainPrefab;
-	public MapInfo info;
+	[System.Serializable]
+	public class MapInfoDictionaryEntry
+	{
+		public string name;
+		public MapInfo info;
+	}
 
-	public GameObject bossSpawn;
+	public GameObject terrainPrefab;
+	public MapInfo info { get; private set; }
+
+	[Header("Map Info")]
+	public MapInfoDictionaryEntry[] mapInfos;
+	public string chosenInfo;
+
+	public GameObject bossSpawn { get; set; }
 
 	private SpriteRenderer[,] terrainSpriteMap = new SpriteRenderer[size, size];
 	private List<GameObject> terrainObjects = new List<GameObject>();
@@ -37,7 +43,6 @@ public class Map : MonoBehaviour {
 	public int[,] colliders = new int[size, size];
 
 	[Header("Folders")]
-
 	public Transform terrainFolder;
 	public Transform collidersFolder;
 	public Transform objectsFolder;
@@ -51,10 +56,21 @@ public class Map : MonoBehaviour {
 
 	public void GenerateMap()
 	{
+		info = GetMapInfo ();
 		info.gameObject.SetActive (true);
 		GetIntegerMaps ();
 		InitSpriteMap ();
 		CreateMap ();
+	}
+
+	private MapInfo GetMapInfo()
+	{
+		foreach (MapInfoDictionaryEntry infoEntry in mapInfos)
+		{
+			if (infoEntry.name.Equals (chosenInfo))
+				return infoEntry.info;
+		}
+		throw new UnityEngine.Assertions.AssertionException ("Map.cs:", "MapInfo not found");
 	}
 
 	private void GetIntegerMaps()

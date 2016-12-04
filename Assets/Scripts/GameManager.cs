@@ -38,8 +38,8 @@ public class GameManager : MonoBehaviour {
 	public static GameManager instance;
 	public Image loadingOverlay;
 	private string selectedHero = "knight";
+	public string selectedMap = "grass";
 	public GameObject player;
-	private Map map;
 
 	public ScoreManager scoreManager;
 	public Wallet wallet;
@@ -99,9 +99,7 @@ public class GameManager : MonoBehaviour {
 		Assert.IsNotNull (async);
 
 		while (!async.isDone)
-		{
 			yield return null;
-		}
 		StartCoroutine(DeactivateLoadingScreen ());
 
 		// On finished scene loading
@@ -116,8 +114,15 @@ public class GameManager : MonoBehaviour {
 
 	private void InitGameScene()
 	{
-		map = GameObject.Find ("/Game/Map").GetComponent<Map>();
+		// init main game environment
+		Map map = GameObject.Find ("/Game/Map").GetComponent<Map>();
+		EnemyManager enemyManager = GameObject.Find ("/Game/EnemyManager").GetComponent<EnemyManager> ();
+
+		map.chosenInfo = selectedMap;
 		map.GenerateMap ();
+		enemyManager.chosenInfo = selectedMap;
+
+
 		player = GameObject.Find ("/Game/Player");
 		Assert.IsNotNull (player);
 		Player playerScript = player.GetComponentInChildren<Player> ();
@@ -126,6 +131,34 @@ public class GameManager : MonoBehaviour {
 														// initialize the player without a selected hero
 		playerScript.Init (selectedHero);
 		SoundManager.instance.PlayMusicLoop (map.info.musicLoop, map.info.musicIntro);
+	}
+
+	public void TeleportMaps(string newMap)
+	{
+		selectedMap = newMap;
+		StartCoroutine ("Teleport");
+	}
+
+	private IEnumerator Teleport()
+	{
+		Color initialColor = Color.clear;
+		Color finalColor = Color.white;
+		float t = 0;
+		while (loadingOverlay.color.a < 0.95f)
+		{
+			loadingOverlay.color = Color.Lerp (initialColor, finalColor, t * 4);
+			t += Time.deltaTime;
+			yield return null;
+		}
+		loadingOverlay.color = finalColor;
+		AsyncOperation async = SceneManager.LoadSceneAsync ("Game");
+		Assert.IsNotNull (async);
+
+		while (!async.isDone)
+			yield return null;
+		StartCoroutine(DeactivateLoadingScreen ());
+		InitGameScene ();
+
 	}
 
 	public void SelectHero(string name)
