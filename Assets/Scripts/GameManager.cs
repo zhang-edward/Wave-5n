@@ -135,6 +135,7 @@ public class GameManager : MonoBehaviour {
 
 	public void TeleportMaps(string newMap)
 	{
+		SaveLoad.Save ();
 		selectedMap = newMap;
 		StartCoroutine ("Teleport");
 	}
@@ -158,7 +159,6 @@ public class GameManager : MonoBehaviour {
 			yield return null;
 		StartCoroutine(DeactivateLoadingScreen ());
 		InitGameScene ();
-
 	}
 
 	public void SelectHero(string name)

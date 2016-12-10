@@ -8,7 +8,6 @@ public class HeartPickup : MonoBehaviour {
 		if (col.CompareTag("Player"))
 		{
 			Player player = col.GetComponentInChildren<Player> ();
-			Debug.Log (col.gameObject);
 			UnityEngine.Assertions.Assert.IsNotNull (player);
 			player.Heal (1);
 			CameraControl.instance.StartFlashColor (Color.white);

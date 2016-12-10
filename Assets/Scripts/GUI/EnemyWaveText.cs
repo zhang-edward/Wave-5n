@@ -4,44 +4,115 @@ using System.Collections;
 
 public class EnemyWaveText : MonoBehaviour {
 
-	public Text text;
-	public Color defaultColor;
+	public MessageText messageText;
+	public Color waveTextColor;
+	public Color waveCompleteTextColor;
+	public Color bossIncomingTextColor;
 
 	public AudioClip victorySound;
 	public AudioClip warningSound;
 
-	private bool canDisplayNextMessage = true;
+	//private bool canDisplayNextMessage = true;
 
 	public ParticleSystem waveCompleteParticles;
 
-	public void DisplayWaveNumberAfterDelay (int waveNumber)
+	public void DisplayWaveNumberAfterDelay (int waveNumber, float delay)
 	{
-		text.color = new Color (0, 0, 0, 0);
-		StartCoroutine (DisplayWaveNum (waveNumber));
+		StartCoroutine (DisplayMessageDelayed ("Wave " + waveNumber, waveTextColor, 1f));
 	}
 
 	public void DisplayWaveComplete()
 	{
+		StartCoroutine (DisplayMessageInterrupt("Wave Complete", 
+			waveCompleteTextColor,
+			WaveCompleteEffect));
+	}
+
+	private void WaveCompleteEffect()
+	{
 		waveCompleteParticles.gameObject.SetActive (true);
+		waveCompleteParticles.Play ();
 		SoundManager.instance.PlayUISound (victorySound);
-		StartCoroutine (FadeAway (Color.yellow, "Wave Complete"));
 	}
 
 	public void DisplayBossIncoming()
 	{
-		text.text = "Warning: Boss Incoming";
-		StartCoroutine (Flash (3, Color.red));
+		StartCoroutine (DisplayMessage("Warning: Boss Incoming", 
+			bossIncomingTextColor, 
+			BossIncomingEffect, 
+			numTimes: 3, 
+			persistTime: 0.5f, 
+			fadeOutTime: 0.5f));
 	}
 
-	private IEnumerator DisplayWaveNum(int waveNumber)
+	private void BossIncomingEffect()
 	{
-		yield return new WaitForSeconds (1.0f);
-		StartCoroutine (FadeAway (Color.white, "Wave " + waveNumber));
+		SoundManager.instance.PlayUISound (warningSound);
+	}
+
+	private IEnumerator DisplayMessageDelayed(string message, Color color, float delay, 
+		MessageText.FlashedMessage callback = null, int numTimes = 1, float persistTime = 1f, float fadeOutTime = 1f)
+	{
+		while (messageText.displaying)
+			yield return null;
+		yield return new WaitForSecondsRealtime (delay);
+
+		messageText.SetColor (color);
+		messageText.Display (message, numTimes, persistTime, fadeOutTime);
+	}
+
+	private IEnumerator DisplayMessage(string message, Color color,
+		MessageText.FlashedMessage callback = null, int numTimes = 1, float persistTime = 1f, float fadeOutTime = 1f)
+	{
+		while (messageText.displaying)
+			yield return null;
+
+		messageText.OnFlashMessage = callback;
+		messageText.SetColor (color);
+		messageText.Display (message, numTimes, persistTime, fadeOutTime);
+	}
+
+	private IEnumerator DisplayMessageInterrupt(string message, Color color,
+		MessageText.FlashedMessage callback = null, int numTimes = 1, float persistTime = 1f, float fadeOutTime = 1f)
+	{
+		messageText.OnFlashMessage = callback;
+		messageText.SetColor (color);
+		messageText.Display (message, numTimes, persistTime, fadeOutTime);
+		yield return null;
+	}
+
+	/*private IEnumerator FlashMessage(string message, int numTimes = 1, float fadeOutTime = 1f)
+	{
+		text.text = message;
+		// wait for the current message (if any) to be completed
+		while (!canDisplayNextMessage)
+		{
+			Debug.Log ("Blocked by current message!");
+			yield return null;
+		}	
+		// we are currently displaying a message
+		canDisplayNextMessage = false;
+		while (numTimes > 0)
+		{
+			yield return new WaitForSecondsRealtime (1f);
+			text.CrossFadeAlpha (0, fadeOutTime, true);	// fade out
+
+			yield return new WaitForSecondsRealtime (fadeOutTime);
+			numTimes--;
+		}
+		canDisplayNextMessage = true;
+	}
+
+	private IEnumerator DisplayWaveNum(int waveNumber, float delay)
+	{
+		yield return new WaitForSeconds (delay);
+		text.color = defaultColor;
+		StartCoroutine (FlashMessage ("Wave " + waveNumber));
 	}
 
 	private IEnumerator FadeAway(Color color, string message)
 	{
-		yield return new WaitUntil (CanDisplayNextMessage);
+		//yield return new WaitUntil (CanDisplayNextMessage);
 
 		text.text = message;
 		canDisplayNextMessage = false;
@@ -57,7 +128,7 @@ public class EnemyWaveText : MonoBehaviour {
 			yield return null;
 		}
 		canDisplayNextMessage = true;
-		Debug.Log ("Stopped");
+		//Debug.Log ("Stopped");
 		text.color = finalColor;
 		waveCompleteParticles.gameObject.SetActive (false);
 	}
@@ -65,7 +136,7 @@ public class EnemyWaveText : MonoBehaviour {
 	private IEnumerator Flash(int numTimes, Color color)
 	{
 		//Debug.Log ("Started Boss");
-		yield return new WaitUntil (CanDisplayNextMessage);
+		//yield return new WaitUntil (CanDisplayNextMessage);
 		//Debug.Log ("Continuing Boss");
 
 		canDisplayNextMessage = false;
@@ -90,13 +161,5 @@ public class EnemyWaveText : MonoBehaviour {
 		canDisplayNextMessage = true;
 
 		text.color = finalColor;
-	}
-
-	private bool CanDisplayNextMessage()
-	{
-		//Debug.Log (canDisplayNextMessage);
-//		if (canDisplayNextMessage)
-//			Debug.Log ("Fuck yeah");
-		return canDisplayNextMessage;
-	}
+	}*/
 }
