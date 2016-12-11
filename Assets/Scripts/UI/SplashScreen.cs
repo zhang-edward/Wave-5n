@@ -13,6 +13,14 @@ public class SplashScreen : MonoBehaviour {
 		StartCoroutine (DoSplashScreen ());
 	}
 
+	void Update()
+	{
+		if (Input.anyKeyDown) 
+		{
+			SceneManager.LoadScene ("StartScreen");
+		}
+	}
+
 	private IEnumerator DoSplashScreen()
 	{
 		overlay.color = Color.black;

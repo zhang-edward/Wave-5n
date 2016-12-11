@@ -27,10 +27,6 @@ public class LungingEnemy : Enemy {
 		base.Damage (amt);
 		attackTimer += 0.5f;
 	}
-	/*void OnDrawGizmosSelected()
-	{
-		Gizmos.DrawWireSphere (transform.position, 2f);
-	}*/
 
 	protected override IEnumerator MoveState()
 	{

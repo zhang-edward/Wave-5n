@@ -19,12 +19,11 @@ public class ScrollViewSnap : MonoBehaviour {
 	public delegate void EndedDrag ();
 	public event EndedDrag OnEndDrag;
 
-	void Start()
+	void Awake()
 	{
 		distances = new float[content.Length];
-		EvaluateDistances ();
 		InitContent ();
-
+		EvaluateDistances ();
 		/*contentDistance = Mathf.Abs (
 			content [1].GetComponent<RectTransform> ().anchoredPosition.x -
 			content [0].GetComponent<RectTransform> ().anchoredPosition.x);*/

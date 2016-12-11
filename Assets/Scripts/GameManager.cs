@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviour {
 			highScores = new Dictionary<string, ScoreManager.Score> ();
 		}
 	}
-	public SaveGame saveGame = new SaveGame();
+	public SaveGame saveGame;
 
 	public static GameManager instance;
 	public Image loadingOverlay;
@@ -45,6 +45,7 @@ public class GameManager : MonoBehaviour {
 	public Wallet wallet;
 
 	public GameObject debugPanel;
+	public MessageText debugText;
 
 	//private bool didInitializeGameScene = false;
 
@@ -55,7 +56,6 @@ public class GameManager : MonoBehaviour {
 		else if (instance != this)
 			Destroy (this.gameObject);
 		DontDestroyOnLoad (this);
-		SaveLoad.Load ();
 	}
 
 	void Start()
@@ -65,6 +65,7 @@ public class GameManager : MonoBehaviour {
 			InitGameScene ();
 		}
 		Application.targetFrameRate = 60;
+		SaveLoad.Load ();
 	}
 
 	void Update()
@@ -91,7 +92,7 @@ public class GameManager : MonoBehaviour {
 
 	public IEnumerator LoadScene(string scene)
 	{
-		Debug.Log ("Loading scene");
+		//Debug.Log ("Loading scene");
 		StartCoroutine(ActivateLoadingScreen ());
 		while (loadingOverlay.color.a <= 0.95f)
 			yield return null;
@@ -105,11 +106,11 @@ public class GameManager : MonoBehaviour {
 		// On finished scene loading
 		switch (scene)
 		{
-			case("Game"):
-				InitGameScene();
-				break;
+		case("Game"):
+			InitGameScene();
+			break;
 		}
-		Debug.Log ("Scene loaded");
+		//Debug.Log ("Scene loaded");
 	}
 
 	private void InitGameScene()
@@ -219,6 +220,11 @@ public class GameManager : MonoBehaviour {
 		SaveLoad.Save ();
 	}
 
+	public void DisplayMessage(string message)
+	{
+		debugText.SetColor (Color.white);
+		debugText.Display (message, 1, 2f, 1f);
+	}
 
 	// ========================== DEBUG FUNCTIONS ======================
 #if UNITY_EDITOR

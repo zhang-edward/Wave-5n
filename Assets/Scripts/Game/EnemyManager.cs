@@ -12,7 +12,6 @@ public class EnemyManager : MonoBehaviour {
 		public EnemyManagerInfo info;
 	}
 
-
 	public Player player;
 	public int enemiesKilled { get; private set; }
 	public Map map;
@@ -154,7 +153,7 @@ public class EnemyManager : MonoBehaviour {
 		Invoke ("SpawnBoss", bossSpawnDelay);
 	}
 
-	public void SpawnEnemy(GameObject prefab, Vector3 pos)
+	public GameObject SpawnEnemy(GameObject prefab, Vector3 pos)
 	{
 		GameObject o = Instantiate (prefab);
 		o.transform.SetParent (transform);
@@ -164,15 +163,16 @@ public class EnemyManager : MonoBehaviour {
 			o.transform.position = new Vector3 (Random.Range (0, 10), -4);
 
 		Enemy e = o.GetComponentInChildren<Enemy> ();
-		EnemyHealthBar healthBar = enemyHealthBarPool.GetPooledObject ().GetComponent<EnemyHealthBar>();
-		healthBar.Init (e);
-		healthBar.player = player;
-
 		e.Init (pos, map);
 		e.moneyPickupPrefab = moneyPickup;
 		e.player = player.transform;
 		enemies.Add (e);
 		e.OnEnemyDied += IncrementEnemiesKilled;
+
+		EnemyHealthBar healthBar = enemyHealthBarPool.GetPooledObject ().GetComponent<EnemyHealthBar>();
+		healthBar.Init (e);
+		healthBar.player = player;
+		return o;
 	}
 
 	public void SpawnBoss()

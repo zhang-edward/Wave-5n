@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public abstract class Enemy : MonoBehaviour, IDamageable {
 
@@ -7,7 +8,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 	protected int DEFAULT_LAYER;
 	protected float DEFAULT_SPEED;
 
-	public enum MoveMethod {
+	protected enum MoveMethod {
 		Follow,
 		Bounce,
 		WalkVicinty
@@ -23,12 +24,17 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 	public Map map;		// used only for walk-in spawners
 
 	public bool hitDisabled{ get; private set; }
-	public bool confused { get; private set; }
 
 	[Header("Enemy Properties")]
 	public float playerDetectionRange = 2f;
 	public bool canBeDisabledOnHit = true;
 	public bool invincible = false;
+
+	[Header("Abilities")]
+	public List<EnemyAbility> abilities;
+
+	[Header("Status")]
+	public List<EnemyStatus> statuses;
 
 	[Header("Spawn Properties")]
 	public bool walkIn = true;		// whether this enemy walks onto the play area or not
@@ -44,12 +50,14 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 	public Vector3 healthBarOffset;
 
 	[Header("Move State")]
-	public MoveMethod movementMethod;
+	protected MoveMethod movementMethod;
 	protected IMoveState moveState;
 
 	[HideInInspector]
 	public GameObject moneyPickupPrefab;
 
+	public delegate void EnemyInit();
+	public event EnemyInit OnEnemyInit;
 	public delegate void EnemyDied();
 	public event EnemyDied OnEnemyDied;
 	public delegate void CollideWithMapBorder();
@@ -58,12 +66,36 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 
 	public virtual void Init(Vector3 spawnLocation, Map map)
 	{
-		this.map = map;
-		health = maxHealth;
+		InitAbilities ();
+		if (OnEnemyInit != null)
+			OnEnemyInit ();
+		// init default values
 		DEFAULT_LAYER = body.gameObject.layer;
-		deathPropPool = ObjectPooler.GetObjectPooler ("DeathProp");
 		DEFAULT_SPEED = body.moveSpeed;
+		// set map
+		this.map = map;
+		// set stat
+		health = maxHealth;
+		deathPropPool = ObjectPooler.GetObjectPooler ("DeathProp");
+
 		Spawn (spawnLocation);
+	}
+
+	private void InitAbilities()
+	{
+		foreach (EnemyAbility ability in abilities)
+		{
+			ability.Init (this);
+		}
+	}
+
+	public void AddAbility(GameObject abilityPrefab)
+	{
+		GameObject o = Instantiate (abilityPrefab);
+		o.transform.SetParent (this.transform);
+		EnemyAbility enemyAbility = o.GetComponent<EnemyAbility> ();
+		abilities.Add (enemyAbility);
+
 	}
 
 	protected abstract void ResetVars();
@@ -228,7 +260,9 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 		SpawnDeathProps ();
 		SpawnMoneyPickup ();
 		transform.parent.gameObject.SetActive (false);
-		Destroy (this, 1.0f);
+		if (OnEnemyDied != null)
+			OnEnemyDied ();
+		Destroy (gameObject, 1.0f);
 	}
 
 	public virtual void Heal (int amt)
@@ -238,8 +272,6 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 
 	void OnDisable()
 	{
-		if (OnEnemyDied != null)
-			OnEnemyDied ();
 		Destroy (gameObject, 1.0f);
 	}
 

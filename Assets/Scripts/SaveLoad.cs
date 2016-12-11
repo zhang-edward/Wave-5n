@@ -14,6 +14,7 @@ public class SaveLoad
 		bf.Serialize(file, GameManager.instance.saveGame);
 		file.Close();
 		Debug.Log ("Saved Data");
+		GameManager.instance.DisplayMessage ("Saved Data");
 	}
 
 	public static void Load() {
@@ -24,6 +25,7 @@ public class SaveLoad
 			file.Close();
 
 			GameManager.instance.LoadSaveFile ();
+			GameManager.instance.DisplayMessage ("Loaded Save Data");
 			Debug.Log ("Loaded Saved Data");
 		}
 	}

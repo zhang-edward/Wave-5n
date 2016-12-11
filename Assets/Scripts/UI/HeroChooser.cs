@@ -13,11 +13,6 @@ public class HeroChooser : MonoBehaviour
 
 	void Awake()
 	{
-	}
-
-	// Use this for initialization
-	void Start ()
-	{
 		UpdateHeroInfoPanel ();
 	}
 
