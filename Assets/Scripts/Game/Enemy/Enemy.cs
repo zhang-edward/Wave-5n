@@ -7,8 +7,9 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 	protected string DEFAULT_STATE = "MoveState";
 	protected int DEFAULT_LAYER;
 	protected float DEFAULT_SPEED;
+	public static int MAX_ABILITIES = 4;
 
-	protected enum MoveMethod {
+	public enum MoveMethod {
 		Follow,
 		Bounce,
 		WalkVicinty
@@ -16,6 +17,8 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 
 	[Header("Entity Base Properties")]
 	public SpriteRenderer sr;
+	public Vector2 srSize;
+	public bool overrideSrSize;		// true = use the inspector value srSize for sprite size, false = use the sr bounds for sprite size
 	[HideInInspector]
 	public Transform player;
 	public EntityPhysics body;
@@ -50,7 +53,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 	public Vector3 healthBarOffset;
 
 	[Header("Move State")]
-	protected MoveMethod movementMethod;
+	public MoveMethod movementMethod;
 	protected IMoveState moveState;
 
 	[HideInInspector]
@@ -58,6 +61,8 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 
 	public delegate void EnemyInit();
 	public event EnemyInit OnEnemyInit;
+	public delegate void EnemyDamaged(int amt);
+	public event EnemyDamaged OnEnemyDamaged;
 	public delegate void EnemyDied();
 	public event EnemyDied OnEnemyDied;
 	public delegate void CollideWithMapBorder();
@@ -66,6 +71,10 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 
 	public virtual void Init(Vector3 spawnLocation, Map map)
 	{
+		// init sr size values
+		if (!overrideSrSize)
+			srSize = sr.bounds.size;
+		// init abilities
 		InitAbilities ();
 		if (OnEnemyInit != null)
 			OnEnemyInit ();
@@ -92,6 +101,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 	public void AddAbility(GameObject abilityPrefab)
 	{
 		GameObject o = Instantiate (abilityPrefab);
+		o.transform.position = this.transform.position;
 		o.transform.SetParent (this.transform);
 		EnemyAbility enemyAbility = o.GetComponent<EnemyAbility> ();
 		abilities.Add (enemyAbility);
@@ -127,8 +137,9 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 	protected virtual IEnumerator AnimateIn(Vector3 target)
 	{
 		body.transform.position = target;
-		UnityEngine.Assertions.Assert.IsTrue(anim.HasState(0, Animator.StringToHash("Spawn")));
-		anim.CrossFade ("Spawn", 0f);
+		//UnityEngine.Assertions.Assert.IsTrue(anim.HasState(0, Animator.StringToHash("Spawn")));
+		if (anim.HasState(0, Animator.StringToHash("Spawn")))
+			anim.CrossFade ("Spawn", 0f);
 
 		yield return new WaitForEndOfFrame ();		// wait for the animation state to update before continuing
 		while (anim.GetCurrentAnimatorStateInfo (0).IsName ("Spawn"))
@@ -177,17 +188,22 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 		anim.CrossFade ("default", 0f);
 
 		ResetVars ();
+
+		// reset "flashRed" coroutine, in case it was interrupted
+		invincible = false;
+		sr.color = Color.white;
+
 		StartCoroutine (DEFAULT_STATE);
 		yield return null;
 	}
 
 	private IEnumerator FlashRed()
 	{
-		sr.color = Color.red;
 		invincible = true;
+		sr.color = Color.red;
 		yield return new WaitForSeconds (0.2f);
-		sr.color = Color.white;
 		invincible = false;
+		sr.color = Color.white;
 	}
 
 	protected void SpawnDeathProps()
@@ -237,7 +253,8 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 		if (invincible)
 			return;
 		health -= amt;
-
+		if (OnEnemyDamaged != null)
+			OnEnemyDamaged (amt);
 		if (health > 0)
 		{
 			if (canBeDisabledOnHit)
@@ -262,7 +279,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 		transform.parent.gameObject.SetActive (false);
 		if (OnEnemyDied != null)
 			OnEnemyDied ();
-		Destroy (gameObject, 1.0f);
+		Destroy (transform.parent.gameObject, 1.0f);
 	}
 
 	public virtual void Heal (int amt)

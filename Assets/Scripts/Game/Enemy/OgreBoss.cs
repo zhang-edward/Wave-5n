@@ -128,7 +128,7 @@ public class OgreBoss : BossEnemy {
 	{
 		//UnityEngine.Assertions.Assert.IsTrue (state == State.Attacking);
 		//Debug.Log ("attacking: enter");
-		attackTimer = actionCooldownTime;	
+		attackTimer = actionCooldownTime + Random.Range(-1f, 1f);	
 		body.Move (Vector2.zero);
 
 		anim.SetTrigger ("Charge");
@@ -156,7 +156,7 @@ public class OgreBoss : BossEnemy {
 	{
 		//UnityEngine.Assertions.Assert.IsTrue (state == State.Attacking);
 		//Debug.Log ("attacking: enter");
-		attackTimer = actionCooldownTime;	
+		attackTimer = actionCooldownTime + Random.Range(-1f, 1f);	
 		body.Move (Vector2.zero);
 
 		anim.SetTrigger ("StompCharge");
@@ -180,7 +180,7 @@ public class OgreBoss : BossEnemy {
 	{
 		//UnityEngine.Assertions.Assert.IsTrue (state == State.Attacking);
 		//Debug.Log ("attacking: enter");
-		attackTimer = actionCooldownTime;
+		attackTimer = actionCooldownTime + Random.Range(-1f, 1f);
 		roarTimer = 10.0f;
 
 		anim.SetTrigger ("RoarCharge");

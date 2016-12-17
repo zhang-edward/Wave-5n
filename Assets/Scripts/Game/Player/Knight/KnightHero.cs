@@ -99,7 +99,10 @@ public class KnightHero : PlayerHero {
 		killBox = false;
 		body.moveSpeed = player.DEFAULT_SPEED;
 
-		player.isInvincible = false;
+		// if special ability is activated, stay invincible
+		if (!activatedSpecialAbility)
+			player.isInvincible = false;
+		
 		player.input.isInputEnabled = true;
 		anim.SetBool ("Attacking", false);
 	}
@@ -108,7 +111,10 @@ public class KnightHero : PlayerHero {
 	{
 		anim.SetBool ("AreaAttack", false);
 		player.input.isInputEnabled = true;
-		player.isInvincible = false;
+
+		// if special ability is activated, stay invincible
+		if (!activatedSpecialAbility)
+			player.isInvincible = false;
 	}
 
 	private void ResetSpecialAbility()
@@ -116,6 +122,7 @@ public class KnightHero : PlayerHero {
 		// Sound
 		SoundManager.instance.PlayImportantSound(powerDownSound);
 
+		player.isInvincible = false;
 		activatedSpecialAbility = false;
 		specialAbilityCharge = 0;
 		cooldownTime [0] = cooldownTimeNormal [0];

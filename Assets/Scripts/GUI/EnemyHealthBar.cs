@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 
 public class EnemyHealthBar : MonoBehaviour {
 
+	[Header("Slider")]
 	public Slider slider;
 	public Image fillArea;
 
@@ -11,15 +13,24 @@ public class EnemyHealthBar : MonoBehaviour {
 	public Color damagedColor;	// color of health bar when health is below max health
 	public Color criticalColor; // color of health bar when player can kill this enemy in one hit
 
-	public bool movesWithEnemy = true;		// set to false for boss health bars
+	public bool fixedPos;
 	private Enemy enemy;
 	public Player player;	// used for setting the critical health bar color (See above)
 
-	private RectTransform rect;
+
+	[Header("Statuses")]
+	public GameObject abilityIconBar;
+	public GameObject imagePrefab;
+	public List<GameObject> icons = new List<GameObject>();
 
 	void Awake()
 	{
-		rect = GetComponent<RectTransform> ();
+		for (int i = 0; i < 4; i ++)
+		{
+			GameObject o = Instantiate (imagePrefab);
+			o.transform.SetParent (abilityIconBar.transform, false);
+			icons.Add (o);
+		}
 	}
 
 	/// <summary>
@@ -28,21 +39,37 @@ public class EnemyHealthBar : MonoBehaviour {
 	/// <param name="enemy">Enemy.</param>
 	public void Init(Enemy enemy)
 	{
+		gameObject.SetActive (true);
+		abilityIconBar.SetActive (true);
+
 		this.enemy = enemy;
 		slider.maxValue = enemy.maxHealth;
-		if (movesWithEnemy)
-			transform.position = enemy.transform.position;
-		gameObject.SetActive (true);
+		if (!fixedPos)
+		{
+			slider.transform.localPosition = enemy.healthBarOffset;
+		}
+		foreach (GameObject o in icons)
+			o.SetActive (false);
+		for (int i = 0; i < enemy.abilities.Count; i ++)
+		{
+			EnemyAbility ability = enemy.abilities [i];
+			if (ability.icon != null)
+			{
+				icons [i].GetComponent<Image> ().sprite = ability.icon;
+				icons [i].SetActive (true);
+			}
+		}
 	}
 
 	void Update()
 	{
 		slider.value = enemy.health;
 		SetFillAreaColor ();
-		if (movesWithEnemy)
-			rect.anchoredPosition = enemy.transform.position + enemy.healthBarOffset;
 		if (!enemy.gameObject.activeInHierarchy)
+		{
 			gameObject.SetActive (false);
+			abilityIconBar.SetActive (false);
+		}
 	}
 
 	private void SetFillAreaColor()

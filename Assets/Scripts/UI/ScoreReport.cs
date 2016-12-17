@@ -14,6 +14,12 @@ public class ScoreReport : MonoBehaviour {
 
 	private IEnumerator ReportScoreTimed(int enemiesDefeatedNum, int wavesSurvivedNum, int maxComboNum)
 	{
+		int currentMoney = GameManager.instance.wallet.money;
+		int moneyEarnedNum = GameManager.instance.wallet.moneyEarned;
+
+		GameManager.instance.wallet.MergeEarnedMoney ();
+		GameManager.instance.UpdateScores (enemiesDefeatedNum, wavesSurvivedNum, maxComboNum);
+
 		enemiesDefeated.ReportScore (enemiesDefeatedNum);
 		while (!enemiesDefeated.doneUpdating)
 			yield return null;
@@ -26,13 +32,7 @@ public class ScoreReport : MonoBehaviour {
 		while (!maxCombo.doneUpdating)
 			yield return null;
 
-		int currentMoney = GameManager.instance.wallet.money;
-		int moneyEarnedNum = GameManager.instance.wallet.moneyEarned;
-
 		moneyText.ReportScore (currentMoney + moneyEarnedNum); 
 		moneyEarned.ReportScore (0);
-
-		GameManager.instance.wallet.MergeEarnedMoney ();
-		GameManager.instance.UpdateScores (enemiesDefeatedNum, wavesSurvivedNum, maxComboNum);
 	}
 }

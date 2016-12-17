@@ -5,6 +5,7 @@ public class HeroIconsView : ScrollViewSnap {
 
 	protected override void InitContent ()
 	{
+		base.InitContent ();
 		bool[] unlockedHeroes = GameManager.instance.saveGame.unlockedHeroes;
 		for (int i = 0; i < content.Length; i ++)
 		{

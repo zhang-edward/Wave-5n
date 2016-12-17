@@ -5,6 +5,7 @@ public abstract class BossEnemy : Enemy
 {
 	public AudioClip deathSound;
 	protected EnemyManager enemyManager;
+	public bool dying { get; private set; }
 
 	public override void Init (Vector3 spawnLocation, Map map)
 	{
@@ -17,7 +18,8 @@ public abstract class BossEnemy : Enemy
 	{
 		foreach (Enemy e in enemyManager.Enemies)
 		{
-			e.Disable (4f);
+			if (e as BossEnemy == null)
+				e.Disable (4f);
 		}
 		StopAllCoroutines ();
 		StartCoroutine ("DeathAnimation");
@@ -26,12 +28,12 @@ public abstract class BossEnemy : Enemy
 	private IEnumerator DeathAnimation()
 	{
 		CameraControl camera = CameraControl.instance;
-
+		yield return new WaitWhile (OtherBossesDying);
+		print ("dying");
+		dying = true;
 		camera.SetFocus (this.transform);
 		anim.CrossFade ("Dead", 0f);
-		Debug.Log ("Dying");
 		yield return new WaitForSeconds (1f);
-		Debug.Log ("Dead");
 		camera.StartShake (0.5f, 0.05f);
 		camera.StartFlashColor (Color.white);
 		SoundManager.instance.RandomizeSFX (deathSound);
@@ -39,7 +41,18 @@ public abstract class BossEnemy : Enemy
 		camera.secondaryFocus = null;
 		camera.ResetFocus ();
 		base.Die ();
+		dying = false;
 		yield return null;
+	}
+
+	private bool OtherBossesDying()
+	{
+		foreach (BossEnemy boss in enemyManager.bosses)
+		{
+			if (boss.dying)
+				return true;
+		}
+		return false;
 	}
 }
 

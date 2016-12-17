@@ -35,5 +35,10 @@ public class EnemyAbilitiesManager : MonoBehaviour
 		Debug.LogError ("Cannot find ability with name " + abilityName);
 		return null;
 	}
+
+	public GameObject GetRandomAbility()
+	{
+		return enemyAbilities [Random.Range (0, enemyAbilities.Count)].ability;
+	}
 }
 

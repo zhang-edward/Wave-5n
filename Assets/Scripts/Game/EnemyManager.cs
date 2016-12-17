@@ -38,6 +38,8 @@ public class EnemyManager : MonoBehaviour {
 	private int difficultyCurve = 0;	// number to determine the number of enemies to spawn
 	public ShopNPC shopNPC;
 
+	public List<BossEnemy> bosses;
+
 	public delegate void EnemyWaveSpawned (int waveNumber);
 	public event EnemyWaveSpawned OnEnemyWaveSpawned;
 	public delegate void EnemyWaveCompleted ();
@@ -171,6 +173,27 @@ public class EnemyManager : MonoBehaviour {
 
 		EnemyHealthBar healthBar = enemyHealthBarPool.GetPooledObject ().GetComponent<EnemyHealthBar>();
 		healthBar.Init (e);
+		healthBar.GetComponent<UIFollow> ().Init(o.transform);
+		healthBar.player = player;
+		return o;
+	}
+
+	public GameObject SpawnEnemyForcePosition(GameObject prefab, Vector3 pos)
+	{
+		GameObject o = Instantiate (prefab);
+		o.transform.SetParent (transform);
+		o.transform.position = pos;
+
+		Enemy e = o.GetComponentInChildren<Enemy> ();
+		e.Init (map.OpenCells[Random.Range(0, map.OpenCells.Count)], map);
+		e.moneyPickupPrefab = moneyPickup;
+		e.player = player.transform;
+		enemies.Add (e);
+		e.OnEnemyDied += IncrementEnemiesKilled;
+
+		EnemyHealthBar healthBar = enemyHealthBarPool.GetPooledObject ().GetComponent<EnemyHealthBar>();
+		healthBar.Init (e);
+		healthBar.GetComponent<UIFollow> ().Init(o.transform);
 		healthBar.player = player;
 		return o;
 	}
@@ -180,12 +203,16 @@ public class EnemyManager : MonoBehaviour {
 		bossSpawn.PlayAnimation ();
 		GameObject o = Instantiate (info.bossPrefabs [Random.Range (0, info.bossPrefabs.Count)]);
 		o.transform.SetParent (transform);
+
 		Enemy e = o.GetComponentInChildren<Enemy> ();
 		e.Init (bossSpawn.transform.position, map);
 		e.moneyPickupPrefab = moneyPickup;
 		e.player = player.transform;
+
 		bossHealthBar.Init (e);
+		bossHealthBar.abilityIconBar.GetComponent<UIFollow> ().Init(o.transform, e.healthBarOffset);
 		enemies.Add (e);
+		//bosses.Add ((BossEnemy)e);
 	}
 
 	private int NumAliveEnemies()
@@ -195,7 +222,7 @@ public class EnemyManager : MonoBehaviour {
 		{
 			Enemy e = enemies [i];
 			// simultaneously clean list
-			if (e == null)
+			if (!e.isActiveAndEnabled)
 				enemies.Remove (e);
 			// count alive enemies
 			if (e.health > 0)

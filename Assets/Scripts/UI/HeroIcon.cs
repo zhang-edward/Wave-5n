@@ -35,6 +35,7 @@ public class HeroIcon : ScrollViewSnapContent {
 		unlocked = true;
 		GameManager.instance.saveGame.unlockedHeroes [index] = true;
 		GameManager.instance.PrepareSaveFile ();
+		print ("unlocked " + index);
 		SaveLoad.Save ();
 	}
 }

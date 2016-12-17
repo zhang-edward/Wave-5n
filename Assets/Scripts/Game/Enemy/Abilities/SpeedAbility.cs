@@ -11,7 +11,7 @@ public class SpeedAbility : EnemyAbility
 
 	private void OnInit()
 	{
-		enemy.body.moveSpeed *= 3f;
+		enemy.body.moveSpeed *= 2f;
 	}
 }
 
