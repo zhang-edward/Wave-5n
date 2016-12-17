@@ -105,7 +105,37 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 		o.transform.SetParent (this.transform);
 		EnemyAbility enemyAbility = o.GetComponent<EnemyAbility> ();
 		abilities.Add (enemyAbility);
+	}
 
+	public void AddStatus(GameObject statusObj)
+	{
+		EnemyStatus statusType = statusObj.GetComponent<EnemyStatus> ();
+		// check if this enemy already has this status
+		if (HasStatus (statusType))
+		{
+			Destroy (statusObj);
+			return;
+		}
+		statusObj.transform.position = this.transform.position;
+		statusObj.transform.SetParent (this.transform);
+
+		EnemyStatus status = statusObj.GetComponent<EnemyStatus>();
+
+		statuses.Add (status);
+		status.Init (this);
+	}
+
+	private bool HasStatus(EnemyStatus status)
+	{
+		for (int i = statuses.Count - 1; i >= 0; i --)
+		{
+			EnemyStatus existingStatus = statuses [i];
+			if (existingStatus == null)
+				statuses.RemoveAt (i);
+			else if (existingStatus.statusName.Equals (status.statusName))
+				return true;
+		}
+		return false;
 	}
 
 	protected abstract void ResetVars();

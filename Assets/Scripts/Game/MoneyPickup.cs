@@ -17,7 +17,14 @@ public class MoneyPickup : MonoBehaviour
 
 	void Start()
 	{
-		player = GameObject.Find ("Player").transform;
+		GameObject o = GameObject.Find ("Player");
+		// if cannot find player, player has died already;
+		// any coins spawned after death should be destroyed
+		if (o == null)
+			Destroy (this);
+		else
+			player = o.transform;
+		
 		rb2d.AddForce(new Vector2(Random.Range(-1f, 1f),
 			Random.Range(-1f, 1f)),
 			ForceMode2D.Impulse

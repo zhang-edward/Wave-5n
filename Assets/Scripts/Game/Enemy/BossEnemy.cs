@@ -16,6 +16,10 @@ public abstract class BossEnemy : Enemy
 
 	public override void Die ()
 	{
+		foreach (EnemyStatus status in statuses)
+		{
+			status.gameObject.SetActive (false);
+		}
 		foreach (Enemy e in enemyManager.Enemies)
 		{
 			if (e as BossEnemy == null)

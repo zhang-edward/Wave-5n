@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class EnemyAbility : MonoBehaviour
+public abstract class EnemyAbility : MonoBehaviour
 {
 	public Sprite icon;
 	protected Enemy enemy;
