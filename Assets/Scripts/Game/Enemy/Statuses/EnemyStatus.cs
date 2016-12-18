@@ -22,5 +22,8 @@ public abstract class EnemyStatus : MonoBehaviour
 	}
 
 	protected abstract IEnumerator Effect ();
+
+	public virtual void Boost()
+	{}
 }
 

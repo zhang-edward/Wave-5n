@@ -206,6 +206,12 @@ public class KnightHero : PlayerHero {
 	{
 		if (!e.invincible && e.health > 0)
 		{
+			string status;
+			if (Random.value < 0.5f)
+				status = "Freeze";
+			else
+				status = "Burn";
+			e.AddStatus (Instantiate (StatusEffectContainer.instance.GetStatus (status)));
 			e.Damage (damage);
 			/*Instantiate (hitEffect, 
 						Vector3.Lerp (transform.position, e.transform.position, 0.5f), 

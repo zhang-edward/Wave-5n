@@ -6,7 +6,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 
 	protected string DEFAULT_STATE = "MoveState";
 	protected int DEFAULT_LAYER;
-	protected float DEFAULT_SPEED;
+	public float DEFAULT_SPEED;
 	public static int MAX_ABILITIES = 4;
 
 	public enum MoveMethod {
@@ -117,8 +117,10 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 	{
 		EnemyStatus statusType = statusObj.GetComponent<EnemyStatus> ();
 		// check if this enemy already has this status
-		if (HasStatus (statusType))
+		EnemyStatus existingStatus = GetStatus (statusType);
+		if (existingStatus != null)
 		{
+			existingStatus.Boost ();
 			Destroy (statusObj);
 			return;
 		}
@@ -131,7 +133,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 		status.Init (this);
 	}
 
-	private bool HasStatus(EnemyStatus status)
+	private EnemyStatus GetStatus(EnemyStatus status)
 	{
 		for (int i = statuses.Count - 1; i >= 0; i --)
 		{
@@ -139,9 +141,9 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 			if (existingStatus == null)
 				statuses.RemoveAt (i);
 			else if (existingStatus.statusName.Equals (status.statusName))
-				return true;
+				return existingStatus;
 		}
-		return false;
+		return null;
 	}
 
 	protected abstract void ResetVars();
