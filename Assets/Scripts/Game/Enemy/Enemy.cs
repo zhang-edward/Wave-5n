@@ -15,6 +15,12 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 		WalkVicinty
 	}
 
+	public enum SpawnMethod {
+		WalkIn,
+		AnimateIn,
+		None
+	}
+
 	[Header("Entity Base Properties")]
 	public SpriteRenderer sr;
 	public Vector2 srSize;
@@ -40,7 +46,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 	public List<EnemyStatus> statuses;
 
 	[Header("Spawn Properties")]
-	public bool walkIn = true;		// whether this enemy walks onto the play area or not
+	public SpawnMethod spawnMethod;		// whether this enemy walks onto the play area or not
 
 	[Header("Death Props")]
 	//public Sprite deathSprite;
@@ -143,10 +149,19 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 
 	private void Spawn(Vector3 spawnLocation)
 	{
-		if (walkIn)
+		switch (spawnMethod)
+		{
+		case SpawnMethod.WalkIn:
 			StartCoroutine (WalkInSpawn (spawnLocation));
-		else
+			break;
+		case SpawnMethod.AnimateIn:
 			StartCoroutine (AnimateIn (spawnLocation));
+			break;
+		case SpawnMethod.None:
+			body.transform.position = spawnLocation;
+			StartCoroutine (DEFAULT_STATE);
+			break;
+		}
 	}
 
 	protected virtual IEnumerator WalkInSpawn(Vector3 target)

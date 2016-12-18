@@ -29,8 +29,7 @@ public class TwinsAbility : EnemyAbility
 			EnemyAbilitiesManager.instance.GetAbility ("Dwarf"));
 		for (int i = 0; i < 2; i ++)
 		{
-			enemyManager.SpawnEnemy (twinPrefab, 
-				UtilMethods.RandomOffsetVector2(transform.position, 1.0f));
+			enemyManager.SpawnEnemyForcePosition (twinPrefab, transform.position);
 		}
 		enemy.transform.parent.gameObject.SetActive(false);
 	}

@@ -180,12 +180,14 @@ public class EnemyManager : MonoBehaviour {
 
 	public GameObject SpawnEnemyForcePosition(GameObject prefab, Vector3 pos)
 	{
+		print (pos);
 		GameObject o = Instantiate (prefab);
 		o.transform.SetParent (transform);
 		o.transform.position = pos;
 
 		Enemy e = o.GetComponentInChildren<Enemy> ();
-		e.Init (map.OpenCells[Random.Range(0, map.OpenCells.Count)], map);
+		e.spawnMethod = Enemy.SpawnMethod.None;		// no spawn animation
+		e.Init (pos, map);
 		e.moneyPickupPrefab = moneyPickup;
 		e.player = player.transform;
 		enemies.Add (e);
