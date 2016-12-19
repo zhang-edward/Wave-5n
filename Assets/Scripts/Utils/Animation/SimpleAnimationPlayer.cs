@@ -12,6 +12,8 @@ public class SimpleAnimationPlayer : MonoBehaviour {
 	public bool isPlaying;
 	public bool looping;
 
+	public bool destroyOnFinish;
+
 	void Awake()
 	{
 		sr = GetComponent<SpriteRenderer>();
@@ -56,6 +58,8 @@ public class SimpleAnimationPlayer : MonoBehaviour {
 			yield return new WaitForSeconds(anim.SecondsPerFrame);
 		}
 		isPlaying = false;
+		if (destroyOnFinish)
+			Destroy (gameObject);
 		yield return null;
 	}
 }

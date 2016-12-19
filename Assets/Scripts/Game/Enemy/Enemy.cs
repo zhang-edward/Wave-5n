@@ -133,7 +133,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 		status.Init (this);
 	}
 
-	private EnemyStatus GetStatus(EnemyStatus status)
+	public EnemyStatus GetStatus(EnemyStatus status)
 	{
 		for (int i = statuses.Count - 1; i >= 0; i --)
 		{

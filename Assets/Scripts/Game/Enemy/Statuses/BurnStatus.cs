@@ -49,14 +49,7 @@ public class BurnStatus : EnemyStatus
 			{
 				Enemy e = col.GetComponentInChildren<Enemy> ();
 				// check if the enemy already has this status
-				bool hasBurnStatus = false;
-				foreach (EnemyStatus status in e.statuses)
-				{
-					if (status as BurnStatus != null)
-					{
-						hasBurnStatus = true;
-					}
-				}
+				bool hasBurnStatus = e.GetStatus(this) != null;
 				// if not, add a burn status but with no spread
 				if (!hasBurnStatus)
 				{

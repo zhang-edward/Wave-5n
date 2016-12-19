@@ -3,10 +3,12 @@ using System.Collections;
 
 public abstract class EnemyStatus : MonoBehaviour
 {
+	[Header("Base EnemyStatus Variables")]
 	public string statusName;
-	protected Enemy enemy;
 	public bool permanent;
 	public float duration;
+
+	protected Enemy enemy;
 	protected float timer;
 
 	public virtual void Init(Enemy enemy)

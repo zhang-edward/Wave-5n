@@ -14,8 +14,17 @@ public abstract class BossEnemy : Enemy
 		CameraControl.instance.secondaryFocus = this.transform;
 	}
 
+	void Update()
+	{
+		if (health <= 0 && !dying)
+		{
+			Die();
+		}
+	}
+
 	public override void Die ()
 	{
+		print ("Boss dying");
 		foreach (EnemyStatus status in statuses)
 		{
 			status.gameObject.SetActive (false);
@@ -32,7 +41,6 @@ public abstract class BossEnemy : Enemy
 	private IEnumerator DeathAnimation()
 	{
 		CameraControl camera = CameraControl.instance;
-		yield return new WaitWhile (OtherBossesDying);
 		print ("dying");
 		dying = true;
 		camera.SetFocus (this.transform);

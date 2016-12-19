@@ -163,12 +163,7 @@ public class KnightHero : PlayerHero {
 		info.isSelfDeactivating = false;
 		info.targetColor = new Color (1, 1, 1, 0.5f);
 		info.fadeOutTime = 0.1f;
-		effect.Init (
-			Quaternion.Euler(new Vector3(0, 0, angle)),
-			transform.position,
-			animPlayer.anim.frames[0],
-			info
-		);
+		effect.Init (Quaternion.Euler (new Vector3 (0, 0, angle)), transform.position, animPlayer.anim.frames [0], info);
 		animPlayer.Play ();
 	}
 
@@ -206,11 +201,11 @@ public class KnightHero : PlayerHero {
 	{
 		if (!e.invincible && e.health > 0)
 		{
-			string status;
-			if (Random.value < 0.5f)
+			string status = "Poison";
+			/*if (Random.value < 0.5f)
 				status = "Freeze";
 			else
-				status = "Burn";
+				status = "Burn";*/
 			e.AddStatus (Instantiate (StatusEffectContainer.instance.GetStatus (status)));
 			e.Damage (damage);
 			/*Instantiate (hitEffect, 
