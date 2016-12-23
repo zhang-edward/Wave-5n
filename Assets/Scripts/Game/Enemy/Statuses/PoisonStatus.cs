@@ -38,7 +38,7 @@ public class PoisonStatus : EnemyStatus
 		CancelInvoke ();
 	}
 
-	public override void Boost ()
+	public override void Stack ()
 	{
 		CancelInvoke ();
 		timer = duration;

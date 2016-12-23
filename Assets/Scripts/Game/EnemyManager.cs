@@ -27,7 +27,8 @@ public class EnemyManager : MonoBehaviour {
 
 	public EnemyHealthBar bossHealthBar;
 	private BossSpawn bossSpawn;
-	public int bossWave = 2;
+	public int shopWave = 3;
+	public int bossWave = 5;
 	public float bossSpawnDelay = 3f;
 	public int onBossDifficultyScaleBack = 3;	// subtract this from difficultyCurve on a boss wave
 
@@ -76,9 +77,18 @@ public class EnemyManager : MonoBehaviour {
 
 	private IEnumerator StartSpawningEnemies()
 	{
+		int prevCount = 0;
+		int count = 0;
+
 		while (true)
 		{
 			// all enemies dead
+			count = NumAliveEnemies();
+			if (count != prevCount)
+			{
+				prevCount = count;
+				print ("Number of enemies still alive: " + count);
+			}
 			if (NumAliveEnemies() <= 0)
 			{
 				if (waveNumber >= 1)
@@ -87,15 +97,18 @@ public class EnemyManager : MonoBehaviour {
 				}
 				waveNumber++;
 				difficultyCurve++;
-				// every 'bossWave' waves, spawn a boss
-				if (waveNumber % bossWave == 0)
+				// spawn shop every 3 waves after wave 5
+				if (waveNumber % shopWave == 0 && waveNumber > 3)
 				{
 					// spawn shop npc before the boss
 					shopNPC.Appear ();
 					// wait for shopNPC to disappear
 					while (shopNPC.gameObject.activeInHierarchy)
 						yield return null;
-					
+				}
+				// every 'bossWave' waves, spawn a boss
+				if (waveNumber % bossWave == 0)
+				{					
 					TrySpawnBoss ();
 				}
 				// if it is the wave after a boss wave (just defeated boss), spawn heart pickup
@@ -170,6 +183,7 @@ public class EnemyManager : MonoBehaviour {
 		e.player = player.transform;
 		enemies.Add (e);
 		e.OnEnemyDied += IncrementEnemiesKilled;
+		e.OnEnemyObjectDisabled += RemoveEnemyFromEnemiesList;
 
 		EnemyHealthBar healthBar = enemyHealthBarPool.GetPooledObject ().GetComponent<EnemyHealthBar>();
 		healthBar.Init (e);
@@ -180,7 +194,7 @@ public class EnemyManager : MonoBehaviour {
 
 	public GameObject SpawnEnemyForcePosition(GameObject prefab, Vector3 pos)
 	{
-		print (pos);
+		//print (pos);
 		GameObject o = Instantiate (prefab);
 		o.transform.SetParent (transform);
 		o.transform.position = pos;
@@ -192,6 +206,7 @@ public class EnemyManager : MonoBehaviour {
 		e.player = player.transform;
 		enemies.Add (e);
 		e.OnEnemyDied += IncrementEnemiesKilled;
+		e.OnEnemyObjectDisabled += RemoveEnemyFromEnemiesList;
 
 		EnemyHealthBar healthBar = enemyHealthBarPool.GetPooledObject ().GetComponent<EnemyHealthBar>();
 		healthBar.Init (e);
@@ -210,6 +225,8 @@ public class EnemyManager : MonoBehaviour {
 		e.Init (bossSpawn.transform.position, map);
 		e.moneyPickupPrefab = moneyPickup;
 		e.player = player.transform;
+		e.OnEnemyDied += IncrementEnemiesKilled;
+		e.OnEnemyObjectDisabled += RemoveEnemyFromEnemiesList;
 
 		bossHealthBar.Init (e);
 		bossHealthBar.abilityIconBar.GetComponent<UIFollow> ().Init(o.transform, e.healthBarOffset);
@@ -223,17 +240,18 @@ public class EnemyManager : MonoBehaviour {
 		for (int i = enemies.Count - 1; i >= 0; i --)
 		{
 			Enemy e = enemies [i];
-			// simultaneously clean list
-			if (!e.isActiveAndEnabled)
-			{
-				enemies.Remove (e);
-				Destroy (e.transform.parent.gameObject, 1.0f);
-			}
 			// count alive enemies
 			if (e.health > 0)
 				count++;
 		}
+		print (count);
 		return count;
+	}
+
+	private void RemoveEnemyFromEnemiesList(Enemy e)
+	{
+		Debug.Log ("Removed " + e);
+		enemies.Remove (e);
 	}
 
 	private void IncrementEnemiesKilled()

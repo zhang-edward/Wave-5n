@@ -33,7 +33,7 @@ public class BurnStatus : EnemyStatus
 		yield return null;
 	}
 
-	public override void Boost ()
+	public override void Stack ()
 	{
 		timer = duration;
 		spreadLevel++;

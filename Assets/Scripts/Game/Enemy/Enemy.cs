@@ -65,14 +65,16 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 	[HideInInspector]
 	public GameObject moneyPickupPrefab;
 
-	public delegate void EnemyInit();
-	public event EnemyInit OnEnemyInit;
+	public delegate void EnemyLifecycleEvent();
+	public event EnemyLifecycleEvent OnEnemyInit;
+	public event EnemyLifecycleEvent OnEnemyDied;
+	public event EnemyLifecycleEvent OnCollideWithMapBorder;
+
 	public delegate void EnemyDamaged(int amt);
 	public event EnemyDamaged OnEnemyDamaged;
-	public delegate void EnemyDied();
-	public event EnemyDied OnEnemyDied;
-	public delegate void CollideWithMapBorder();
-	public event CollideWithMapBorder OnCollideWithMapBorder;
+
+	public delegate void EnemyObjectDisabled(Enemy e);
+	public event EnemyObjectDisabled OnEnemyObjectDisabled;
 
 
 	public virtual void Init(Vector3 spawnLocation, Map map)
@@ -120,7 +122,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 		EnemyStatus existingStatus = GetStatus (statusType);
 		if (existingStatus != null)
 		{
-			existingStatus.Boost ();
+			existingStatus.Stack ();
 			Destroy (statusObj);
 			return;
 		}
@@ -320,12 +322,14 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 
 	public virtual void Die()
 	{
+		if (OnEnemyDied != null)
+			OnEnemyDied ();
 		ResetVars ();
 		SpawnDeathProps ();
 		SpawnMoneyPickup ();
 		transform.parent.gameObject.SetActive (false);
-		if (OnEnemyDied != null)
-			OnEnemyDied ();
+		if (OnEnemyObjectDisabled != null)
+			OnEnemyObjectDisabled (this);
 		Destroy (transform.parent.gameObject, 1.0f);
 	}
 

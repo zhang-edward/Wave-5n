@@ -13,6 +13,7 @@ public class ShopItemsHolder : MonoBehaviour
 		public string heroName;
 		public GameObject[] shopItemPrefabs;
 	}
+	public GameObject addPowerUpItemPrefab;
 	public HeroItemSet[] heroItemSets;
 	public List<GameObject> shopItems;
 
@@ -20,8 +21,9 @@ public class ShopItemsHolder : MonoBehaviour
 	public ScrollingText scrollingText;
 	public ToggleGroup toggleGroup;
 
-	public void InitShopItemsList (string heroName)
+	public void InitShopItemsList (PlayerHero hero)
 	{
+		string heroName = hero.heroName;
 		foreach (GameObject item in universalShopItems)
 		{
 			CreateShopItem (item);
@@ -30,6 +32,30 @@ public class ShopItemsHolder : MonoBehaviour
 		{
 			CreateShopItem (item);
 		}
+		foreach (HeroPowerUpHolder.HeroPowerUpDictionaryEntry entry in hero.powerUpHolder.powerUpPrefabs)
+		{
+			HeroPowerUp powerUp = entry.powerUpPrefab.GetComponent<HeroPowerUp> ();
+			CreateAddPowerUpShopItem (powerUp);
+		}
+	}
+
+	private GameObject CreateAddPowerUpShopItem(HeroPowerUp powerUp)
+	{
+		GameObject o = CreateShopItem (addPowerUpItemPrefab);
+		AddPowerUpItem addPowerUpItem = o.GetComponent<AddPowerUpItem> ();
+		addPowerUpItem.Init (powerUp);
+		// if the powerup unlocks further powerups
+		if (powerUp.unlockable.Length > 0)
+		{
+			addPowerUpItem.unlockable = new GameObject[powerUp.unlockable.Length];	// initialize the array for the shopItem
+			for (int i = 0; i < powerUp.unlockable.Length; i ++)
+			{
+				HeroPowerUp childPowerUp = powerUp.unlockable [i];			// get the child powerUp
+				GameObject child = CreateAddPowerUpShopItem (childPowerUp);	// create a shopItem for the child powerUp
+				addPowerUpItem.unlockable [i] = child;						// set this powerUp to be a parent of the child
+			}	
+		}
+		return o;
 	}
 
 	public void UpdateShopItemsList()
@@ -58,7 +84,6 @@ public class ShopItemsHolder : MonoBehaviour
 		count = Mathf.Min (count, shopItems.Count);	// if the available shop items < count, only return the number of available shop items
 		for (int i = 0; i < count; i ++)
 		{
-			print (i);
 			int debugCounter = 0;
 			while (!TryEnableRandomShopItem () && debugCounter < 1000)
 				debugCounter++;
@@ -99,7 +124,7 @@ public class ShopItemsHolder : MonoBehaviour
 			"Cannot find HeroItemSet with name " + "\"" + heroName + "\"");
 	}
 
-	private void CreateShopItem(GameObject prefab)
+	private GameObject CreateShopItem(GameObject prefab)
 	{
 		GameObject o = Instantiate (prefab);
 		o.transform.SetParent (shopItemPanel, false);
@@ -107,6 +132,7 @@ public class ShopItemsHolder : MonoBehaviour
 		o.GetComponent<Toggle> ().group = toggleGroup;
 		shopItems.Add (o);
 		o.SetActive (false);
+		return o;
 	}
 }
 

@@ -271,9 +271,9 @@ public class GameManager : MonoBehaviour {
 	public void KillAllEnemies()
 	{
 		EnemyManager enemyManager = GameObject.Find ("/Game/EnemyManager").GetComponent<EnemyManager> ();
-		foreach (Enemy e in enemyManager.Enemies)
+		for (int i = enemyManager.Enemies.Count - 1; i >= 0; i --)
 		{
-			e.Die ();
+			enemyManager.Enemies [i].Die ();
 		}
 	}
 
@@ -282,5 +282,6 @@ public class GameManager : MonoBehaviour {
 		EnemyManager enemyManager = GameObject.Find ("/Game/EnemyManager").GetComponent<EnemyManager> ();
 		enemyManager.SpawnBoss ();
 	}
+
 #endif
 }

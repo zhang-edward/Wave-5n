@@ -11,20 +11,24 @@ public abstract class PlayerHero : MonoBehaviour {
 		{"NINJA", "ninja"}
 	};
 
-	[Header("Player Hero Properties")]
-	public Sprite[] icons;
-	public Sprite specialAbilityIcon;
-	public string heroName;
-	
-	protected Player player;
+	public Player player;
 	protected EntityPhysics body;
 	protected Animator anim;
 
+	[Header("Ability Icons")]
+	public Sprite[] icons;
+	public Sprite specialAbilityIcon;
+	public string heroName { get; protected set; }
+
+	[Header("PlayerHero Properties")]
 	public int maxHealth;
 	public int damage;
+	[HideInInspector]
+	public HeroPowerUpHolder powerUpHolder;
 
+	[Space]
 	public Sprite[] deathProps;
-
+	[Space]
 	public RuntimeAnimatorController animatorController;
 
 	public int combo { get; private set; }
@@ -33,6 +37,7 @@ public abstract class PlayerHero : MonoBehaviour {
 	[HideInInspector]
 	public float maxComboTimer = 3.0f;
 
+	[Header("Special Ability Properties")]
 	public float chargeMultiplier = 1;
 	public float specialAbilityChargeCapacity;
 	public float specialAbilityCharge { get; protected set; }
@@ -41,7 +46,7 @@ public abstract class PlayerHero : MonoBehaviour {
 	public float[] AbilityCooldowns {
 		get {return abilityCooldowns;}
 	}
-
+	[Header("Ability Cooldown Times")]
 	public float[] cooldownTimeNormal;		// the regular cooldown time for each ability. Set in inspector
 	public float[] cooldownTime { get; private set; }			// the cooldown time used for each ability
 
@@ -99,6 +104,7 @@ public abstract class PlayerHero : MonoBehaviour {
 	public virtual void Init(EntityPhysics body, Animator anim, Player player)
 	{
 		SoundManager.instance.PlaySingle (spawnSound);
+		powerUpHolder = GetComponent<HeroPowerUpHolder> ();
 		this.body = body;
 		this.anim = anim;
 		this.player = player;

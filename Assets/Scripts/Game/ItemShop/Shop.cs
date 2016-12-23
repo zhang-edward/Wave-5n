@@ -33,9 +33,10 @@ public class Shop : MonoBehaviour
 
 	private void InitShopItemsHolder()
 	{
-		shopItemsHolder.InitShopItemsList (player.hero.heroName);
+		shopItemsHolder.InitShopItemsList (player.hero);
 	}
 
+	// 
 	public void GetShopItems()
 	{
 		shopItemsHolder.ResetShopItems ();
@@ -58,11 +59,7 @@ public class Shop : MonoBehaviour
 
 	public void AnimateOut()
 	{
-		foreach (ShopItem item in shopItems)
-		{
-			Toggle toggle = item.GetComponent<Toggle> ();
-			toggle.isOn = false;
-		}
+		Invoke ("ResetToggles", 2.0f);
 		animator.SetTrigger ("Out");
 		purchaseButton.interactable = false;
 		// Hard override input for player
@@ -80,6 +77,15 @@ public class Shop : MonoBehaviour
 			selectedItem.OnPurchased (player);
 		}
 		AnimateOut ();
+	}
+
+	private void ResetToggles()
+	{
+		foreach (ShopItem item in shopItems)
+		{
+			Toggle toggle = item.GetComponent<Toggle> ();
+			toggle.isOn = false;
+		}
 	}
 }
 

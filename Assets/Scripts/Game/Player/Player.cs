@@ -3,20 +3,17 @@ using System.Collections;
 
 public class Player : MonoBehaviour, IDamageable
 {
-	public delegate void PlayerInitialized();
-	public event PlayerInitialized OnPlayerInitialized;
-
 	public delegate void EnemyDamaged (float strength);
 	public event EnemyDamaged OnEnemyDamaged;
 
-	public delegate void PlayerDamaged (int damage);
-	public event PlayerDamaged OnPlayerDamaged;
+	public delegate void PlayerHealthChanged (int amt);
+	public event PlayerHealthChanged OnPlayerDamaged;
+	public event PlayerHealthChanged OnPlayerHealed;
 
-	public delegate void PlayerHealed (int amt);
-	public event PlayerHealed OnPlayerHealed;
-
-	public delegate void PlayerDied();
-	public event PlayerDied OnPlayerDied;
+	public delegate void PlayerLifecycleEvent();
+	public event PlayerLifecycleEvent OnPlayerInitialized;
+	public event PlayerLifecycleEvent OnPlayerDied;
+	public event PlayerLifecycleEvent OnPlayerWillDie;
 
 	[HideInInspector]
 	public float DEFAULT_SPEED;
@@ -139,11 +136,14 @@ public class Player : MonoBehaviour, IDamageable
 	{
 		if (hitDisabled || isInvincible)
 			return;
+		health -= amt;
+		OnPlayerDamaged(amt);
 
 		body.AddRandomImpulse (3f);
 		StartCoroutine (FlashRed ());
 
-		health -= amt;
+		if (health <= 0 && OnPlayerWillDie != null)	
+			OnPlayerWillDie ();	// for events that prevent the player's death
 		// Player Died
 		if (health <= 0)
 		{
@@ -155,7 +155,6 @@ public class Player : MonoBehaviour, IDamageable
 		}
 		else
 			SoundManager.instance.RandomizeSFX (hurtSound);
-		OnPlayerDamaged(amt);
 	}
 
 	/// <summary>
@@ -167,8 +166,14 @@ public class Player : MonoBehaviour, IDamageable
 		health += amt;
 		if (health >= maxHealth)
 			health = maxHealth;
-		healEffect.Play ();
 		OnPlayerHealed (amt);
+	}
+
+	public void HealEffect (int amt, bool playEffect)
+	{
+		if (playEffect)
+			healEffect.Play ();
+		Heal (amt);
 	}
 
 	void Update()

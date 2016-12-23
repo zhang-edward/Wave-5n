@@ -35,7 +35,7 @@ public class FreezeStatus : EnemyStatus
 		Destroy (gameObject);
 	}
 
-	public override void Boost ()
+	public override void Stack ()
 	{
 		timer = duration;
 		frozen = true;
