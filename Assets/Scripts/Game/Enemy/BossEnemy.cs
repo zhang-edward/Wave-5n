@@ -24,14 +24,16 @@ public abstract class BossEnemy : Enemy
 
 	public override void Die ()
 	{
-		print ("Boss dying");
+		if (dying)
+			return;
+		//print ("Boss dying");
 		foreach (EnemyStatus status in statuses)
 		{
 			status.gameObject.SetActive (false);
 		}
 		foreach (Enemy e in enemyManager.Enemies)
 		{
-			if (e as BossEnemy == null)
+			if (e.isActiveAndEnabled && e as BossEnemy == null)
 				e.Disable (4f);
 		}
 		StopAllCoroutines ();
@@ -41,7 +43,7 @@ public abstract class BossEnemy : Enemy
 	private IEnumerator DeathAnimation()
 	{
 		CameraControl camera = CameraControl.instance;
-		print ("dying");
+		//print ("dying");
 		dying = true;
 		camera.SetFocus (this.transform);
 		anim.CrossFade ("Dead", 0f);

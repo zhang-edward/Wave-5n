@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class KnightHero : PlayerHero {
 
@@ -20,6 +21,8 @@ public class KnightHero : PlayerHero {
 	public AudioClip areaAttackSound;
 	public AudioClip powerUpSound;
 	public AudioClip powerDownSound;
+
+	private List<Enemy> hitEnemies = new List<Enemy>();
 
 	public void OnDrawGizmosSelected()
 	{
@@ -95,6 +98,7 @@ public class KnightHero : PlayerHero {
 
 	private void ResetRushAbility()
 	{
+		hitEnemies.Clear ();
 		rushEffect.GetComponent<TempObject> ().Deactivate ();
 		killBox = false;
 		body.moveSpeed = player.DEFAULT_SPEED;
@@ -109,6 +113,7 @@ public class KnightHero : PlayerHero {
 
 	private void ResetAreaAttackAbility()
 	{
+		hitEnemies.Clear ();
 		anim.SetBool ("AreaAttack", false);
 		player.input.isInputEnabled = true;
 
@@ -199,15 +204,16 @@ public class KnightHero : PlayerHero {
 
 	private void DamageEnemy(Enemy e)
 	{
-		if (!e.invincible && e.health > 0)
+		if (!e.invincible && e.health > 0 && !hitEnemies.Contains(e))
 		{
-			string status = "Poison";
+			//string status = "Poison";
 			/*if (Random.value < 0.5f)
 				status = "Freeze";
 			else
 				status = "Burn";*/
-			e.AddStatus (Instantiate (StatusEffectContainer.instance.GetStatus (status)));
+			//e.AddStatus (Instantiate (StatusEffectContainer.instance.GetStatus (status)));
 			e.Damage (damage);
+			hitEnemies.Add (e);
 			/*Instantiate (hitEffect, 
 						Vector3.Lerp (transform.position, e.transform.position, 0.5f), 
 						Quaternion.identity);*/

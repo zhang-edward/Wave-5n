@@ -5,10 +5,11 @@ using System.Collections.Generic;
 
 public class Shop : MonoBehaviour
 {
+	[Header("Find in Hierarchy")]
 	public ShopNPC shopNPC;
-	private Animator animator;
 	public Player player;
-	public List<ShopItem> shopItems;
+	[Header("Shop Items")]
+	private List<ShopItem> shopItems = new List<ShopItem>();
 	public ShopItem selectedItem {
 		get {
 			foreach (ShopItem shopItem in shopItems)
@@ -17,23 +18,53 @@ public class Shop : MonoBehaviour
 			return null;
 		}
 	}
+	[Header("Set by Prefab")]
 	public Button purchaseButton;
+
+	private ShopItemsHolder shopItemsHolder;
+	private Animator animator;
 
 	void Awake()
 	{
+		shopItemsHolder = GetComponent<ShopItemsHolder> ();
 		animator = GetComponent<Animator> ();
+		player.OnPlayerInitialized += InitShopItemsHolder;
+	}
+
+	private void InitShopItemsHolder()
+	{
+		shopItemsHolder.InitShopItemsList (player.hero.heroName);
+	}
+
+	public void GetShopItems()
+	{
+		shopItemsHolder.ResetShopItems ();
+		shopItemsHolder.UpdateShopItemsList ();		// update available shop item pool
+		shopItemsHolder.GetRandomShopItems (5);
+		foreach (GameObject o in shopItemsHolder.shopItems)
+		{
+			if (o.activeInHierarchy)
+				shopItems.Add (o.GetComponent<ShopItem> ());
+		}
 	}
 
 	public void AnimateIn()
 	{
 		animator.SetTrigger ("In");
+		purchaseButton.interactable = true;
 		// Hard override input for player
 		player.input.enabled = false;
 	}
 
 	public void AnimateOut()
 	{
+		foreach (ShopItem item in shopItems)
+		{
+			Toggle toggle = item.GetComponent<Toggle> ();
+			toggle.isOn = false;
+		}
 		animator.SetTrigger ("Out");
+		purchaseButton.interactable = false;
 		// Hard override input for player
 		player.input.enabled = true;
 		shopNPC.Disappear ();
@@ -48,6 +79,7 @@ public class Shop : MonoBehaviour
 		{
 			selectedItem.OnPurchased (player);
 		}
+		AnimateOut ();
 	}
 }
 

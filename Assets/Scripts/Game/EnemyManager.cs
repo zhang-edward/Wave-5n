@@ -225,7 +225,10 @@ public class EnemyManager : MonoBehaviour {
 			Enemy e = enemies [i];
 			// simultaneously clean list
 			if (!e.isActiveAndEnabled)
+			{
 				enemies.Remove (e);
+				Destroy (e.transform.parent.gameObject, 1.0f);
+			}
 			// count alive enemies
 			if (e.health > 0)
 				count++;

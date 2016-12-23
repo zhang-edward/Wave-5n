@@ -56,6 +56,7 @@ public class GameManager : MonoBehaviour {
 		else if (instance != this)
 			Destroy (this.gameObject);
 		DontDestroyOnLoad (this);
+		SaveLoad.Load ();
 	}
 
 	void Start()
@@ -65,7 +66,6 @@ public class GameManager : MonoBehaviour {
 			InitGameScene ();
 		}
 		Application.targetFrameRate = 60;
-		SaveLoad.Load ();
 	}
 
 	void Update()

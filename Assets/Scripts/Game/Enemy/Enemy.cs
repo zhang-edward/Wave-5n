@@ -334,11 +334,6 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 		health += amt;
 	}
 
-	void OnDisable()
-	{
-		Destroy (gameObject, 1.0f);
-	}
-
 	protected virtual void OnTriggerEnter2D(Collider2D col)
 	{
 		if (col.CompareTag("MapBorder"))

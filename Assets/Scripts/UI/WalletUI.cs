@@ -16,11 +16,6 @@ public class WalletUI : MonoBehaviour
 		moneyCounter = wallet.money;
 	}
 
-	void Update()
-	{
-		
-	}
-
 	private IEnumerator UpdateCounters()
 	{
 		while (true)

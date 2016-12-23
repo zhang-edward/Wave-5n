@@ -67,6 +67,7 @@ public class ShopNPC : MonoBehaviour
 	{
 		if (activated && col.CompareTag("Player"))
 		{
+			shop.GetShopItems ();
 			shop.AnimateIn ();
 		}
 	}
