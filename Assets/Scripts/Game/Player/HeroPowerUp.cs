@@ -10,6 +10,7 @@ public abstract class HeroPowerUp : MonoBehaviour
 	public Sprite icon;
 	[HideInInspector]
 	public int stacks;
+	public bool activated;
 
 	[Header("Shop Item Properties")]
 	public HeroPowerUp[] unlockable;
@@ -20,8 +21,8 @@ public abstract class HeroPowerUp : MonoBehaviour
 	[Space]
 	public string description;
 
-	public abstract void Activate(PlayerHero hero);
-	public abstract void Deactivate();
+	public virtual void Activate(PlayerHero hero) {activated = true;}
+	public virtual void Deactivate() {activated = false;}
 	public virtual void Stack() {stacks++;}
 }
 

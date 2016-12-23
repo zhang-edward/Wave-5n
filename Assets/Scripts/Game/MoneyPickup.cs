@@ -44,7 +44,7 @@ public class MoneyPickup : MonoBehaviour
 			float distance = Vector3.Distance (transform.position, player.position);
 			Vector3 dir = (player.position - transform.position).normalized;
 			rb2d.velocity = dir * distance * 5;
-			if (distance <= 0.5)
+			if (distance <= 1.0)
 			{
 				GameManager.instance.wallet.Earn (value, false);
 				SoundManager.instance.PlaySingle (coinPickupSound);

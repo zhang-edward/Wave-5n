@@ -8,6 +8,7 @@ public class KnightShield : HeroPowerUp
 
 	public override void Activate(PlayerHero hero)
 	{
+		base.Activate(hero);
 		this.knight = (KnightHero)hero;
 		knight.rushMoveSpeed *= 1.1f;
 		shielded = true;
@@ -20,18 +21,18 @@ public class KnightShield : HeroPowerUp
 			return;
 
 		knight.player.Heal (amt);
-		shielded = false;
+		Deactivate ();
 	}
 
 	public override void Deactivate ()
 	{
-		knight.rushMoveSpeed /= 1.1f;
+		base.Deactivate ();
+		shielded = false;
 	}
 
 	public override void Stack ()
 	{
 		base.Stack ();
-		knight.rushMoveSpeed *= 1.1f;
 	}
 }
 

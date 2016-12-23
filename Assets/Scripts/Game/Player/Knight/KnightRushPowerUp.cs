@@ -8,6 +8,7 @@ public class KnightRushPowerUp : HeroPowerUp
 
 	public override void Activate(PlayerHero hero)
 	{
+		base.Activate (hero);
 		this.knight = (KnightHero)hero;
 		knight.rushMoveSpeed *= 1.1f;
 		totalSpeedMultiplier = 1.1f;
@@ -15,6 +16,7 @@ public class KnightRushPowerUp : HeroPowerUp
 
 	public override void Deactivate ()
 	{
+		base.Deactivate ();
 		knight.rushMoveSpeed /= totalSpeedMultiplier;
 	}
 
