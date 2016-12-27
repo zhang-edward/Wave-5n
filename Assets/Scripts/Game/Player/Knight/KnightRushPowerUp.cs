@@ -3,6 +3,8 @@ using System.Collections;
 
 public class KnightRushPowerUp : HeroPowerUp
 {
+	private const float MULTIPLIER = 1.2f;
+
 	public KnightHero knight;
 	private float totalSpeedMultiplier;		// the amount of speed that this powerup adds to the rush effect
 
@@ -10,8 +12,8 @@ public class KnightRushPowerUp : HeroPowerUp
 	{
 		base.Activate (hero);
 		this.knight = (KnightHero)hero;
-		knight.rushMoveSpeed *= 1.1f;
-		totalSpeedMultiplier = 1.1f;
+		knight.rushMoveSpeed *= MULTIPLIER;
+		totalSpeedMultiplier = MULTIPLIER;
 	}
 
 	public override void Deactivate ()
@@ -23,8 +25,8 @@ public class KnightRushPowerUp : HeroPowerUp
 	public override void Stack ()
 	{
 		base.Stack ();
-		knight.rushMoveSpeed *= 1.1f;
-		totalSpeedMultiplier *= 1.1f;
+		knight.rushMoveSpeed *= MULTIPLIER;
+		totalSpeedMultiplier *= MULTIPLIER;
 	}
 }
 

@@ -10,10 +10,11 @@ public abstract class HeroPowerUp : MonoBehaviour
 	public Sprite icon;
 	[HideInInspector]
 	public int stacks;
-	public bool activated;
+	public float percentActivated;
 
 	[Header("Shop Item Properties")]
 	public HeroPowerUp[] unlockable;
+	public HeroPowerUp parent;			// the power up that needs to be unlocked for this one to be available;
 	// for shop item
 	public int maxStacks;
 	public int cost;
@@ -21,8 +22,8 @@ public abstract class HeroPowerUp : MonoBehaviour
 	[Space]
 	public string description;
 
-	public virtual void Activate(PlayerHero hero) {activated = true;}
-	public virtual void Deactivate() {activated = false;}
+	public virtual void Activate(PlayerHero hero) {percentActivated = 1f;}
+	public virtual void Deactivate() {percentActivated = 0f;}
 	public virtual void Stack() {stacks++;}
 }
 

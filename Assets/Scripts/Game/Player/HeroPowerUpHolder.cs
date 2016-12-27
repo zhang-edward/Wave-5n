@@ -51,6 +51,7 @@ public class HeroPowerUpHolder : MonoBehaviour
 
 		GameObject o = Instantiate (prefab);
 		o.transform.SetParent (transform);
+		o.transform.localPosition = Vector3.zero;
 		HeroPowerUp powerUp = o.GetComponent<HeroPowerUp> ();
 		activePowerUps.Add (powerUp);
 		powerUp.Activate (hero);

@@ -20,6 +20,7 @@ public class Shop : MonoBehaviour
 	}
 	[Header("Set by Prefab")]
 	public Button purchaseButton;
+	public Text priceText;
 
 	private ShopItemsHolder shopItemsHolder;
 	private Animator animator;
@@ -31,18 +32,27 @@ public class Shop : MonoBehaviour
 		player.OnPlayerInitialized += InitShopItemsHolder;
 	}
 
+	void Update()
+	{
+		if (selectedItem != null)
+			priceText.text = selectedItem.cost.ToString ();
+		else
+			priceText.text = "";
+	}
+
+	// get a list of potential shop items
 	private void InitShopItemsHolder()
 	{
 		shopItemsHolder.InitShopItemsList (player.hero);
 	}
 
-	// 
+	// instantiate a random selection of 5 shop items from the potential items list
 	public void GetShopItems()
 	{
 		shopItemsHolder.ResetShopItems ();
-		shopItemsHolder.UpdateShopItemsList ();		// update available shop item pool
+		//shopItemsHolder.UpdateShopItemsList ();		// update available shop item pool
 		shopItemsHolder.GetRandomShopItems (5);
-		foreach (GameObject o in shopItemsHolder.shopItems)
+		foreach (GameObject o in shopItemsHolder.potentialShopItems)
 		{
 			if (o.activeInHierarchy)
 				shopItems.Add (o.GetComponent<ShopItem> ());
@@ -51,6 +61,7 @@ public class Shop : MonoBehaviour
 
 	public void AnimateIn()
 	{
+		ResetToggles ();
 		animator.SetTrigger ("In");
 		purchaseButton.interactable = true;
 		// Hard override input for player
@@ -59,7 +70,6 @@ public class Shop : MonoBehaviour
 
 	public void AnimateOut()
 	{
-		Invoke ("ResetToggles", 2.0f);
 		animator.SetTrigger ("Out");
 		purchaseButton.interactable = false;
 		// Hard override input for player

@@ -87,7 +87,7 @@ public class EnemyManager : MonoBehaviour {
 			if (count != prevCount)
 			{
 				prevCount = count;
-				print ("Number of enemies still alive: " + count);
+				//print ("Number of enemies still alive: " + count);
 			}
 			if (NumAliveEnemies() <= 0)
 			{
@@ -244,13 +244,13 @@ public class EnemyManager : MonoBehaviour {
 			if (e.health > 0)
 				count++;
 		}
-		print (count);
+		//print (count);
 		return count;
 	}
 
 	private void RemoveEnemyFromEnemiesList(Enemy e)
 	{
-		Debug.Log ("Removed " + e);
+		//Debug.Log ("Removed " + e);
 		enemies.Remove (e);
 	}
 

@@ -7,15 +7,15 @@ public class ShopItemsHolder : MonoBehaviour
 {
 	public GameObject[] universalShopItems;
 
-	[System.Serializable]
+	/*[System.Serializable]
 	public class HeroItemSet
 	{
 		public string heroName;
 		public GameObject[] shopItemPrefabs;
-	}
+	}*/
 	public GameObject addPowerUpItemPrefab;
-	public HeroItemSet[] heroItemSets;
-	public List<GameObject> shopItems;
+	//public HeroItemSet[] heroItemSets;
+	public List<GameObject> potentialShopItems;		// available shop items after initialization
 
 	public Transform shopItemPanel;
 	public ScrollingText scrollingText;
@@ -28,14 +28,11 @@ public class ShopItemsHolder : MonoBehaviour
 		{
 			CreateShopItem (item);
 		}
-		foreach (GameObject item in GetHeroItemSet(heroName).shopItemPrefabs)
-		{
-			CreateShopItem (item);
-		}
 		foreach (HeroPowerUpHolder.HeroPowerUpDictionaryEntry entry in hero.powerUpHolder.powerUpPrefabs)
 		{
 			HeroPowerUp powerUp = entry.powerUpPrefab.GetComponent<HeroPowerUp> ();
-			CreateAddPowerUpShopItem (powerUp);
+			if (powerUp.parent == null)		// if this powerup is not dependent on another powerup (has no parent to be unlocked first)
+				CreateAddPowerUpShopItem (powerUp);
 		}
 	}
 
@@ -47,41 +44,20 @@ public class ShopItemsHolder : MonoBehaviour
 		// if the powerup unlocks further powerups
 		if (powerUp.unlockable.Length > 0)
 		{
-			addPowerUpItem.unlockable = new GameObject[powerUp.unlockable.Length];	// initialize the array for the shopItem
-			for (int i = 0; i < powerUp.unlockable.Length; i ++)
+			foreach (HeroPowerUp childPowerUp in powerUp.unlockable)
 			{
-				HeroPowerUp childPowerUp = powerUp.unlockable [i];			// get the child powerUp
 				GameObject child = CreateAddPowerUpShopItem (childPowerUp);	// create a shopItem for the child powerUp
-				addPowerUpItem.unlockable [i] = child;						// set this powerUp to be a parent of the child
-			}	
+				AddPowerUpItem childItem = child.GetComponent<AddPowerUpItem>();
+				childItem.SetAvailable (false);
+				addPowerUpItem.unlockable.Add(childItem);
+			}
 		}
 		return o;
 	}
 
-	public void UpdateShopItemsList()
-	{
-		for (int i = 0; i < shopItems.Count; i ++)
-		{
-			ShopItem item = shopItems [i].GetComponent<ShopItem>();
-			if (item as ShopItemProgression != null)
-			{
-				ShopItemProgression itemProgression = item as ShopItemProgression;
-				// if item has been purchased
-				if (itemProgression.timesPurchased > 1)
-				{
-					// make all items in unlockable list available for purchase in the next round of shop items
-					foreach (GameObject item2 in itemProgression.unlockable)
-					{
-						CreateShopItem (item2);
-					}
-				}
-			}
-		}
-	}
-
 	public void GetRandomShopItems(int count)
 	{
-		count = Mathf.Min (count, shopItems.Count);	// if the available shop items < count, only return the number of available shop items
+		count = Mathf.Min (count, potentialShopItems.Count);	// if the available shop items < count, only return the number of available shop items
 		for (int i = 0; i < count; i ++)
 		{
 			int debugCounter = 0;
@@ -94,7 +70,7 @@ public class ShopItemsHolder : MonoBehaviour
 
 	public void ResetShopItems()
 	{
-		foreach (GameObject o in shopItems)
+		foreach (GameObject o in potentialShopItems)
 		{
 			o.SetActive (false);
 		}
@@ -102,26 +78,15 @@ public class ShopItemsHolder : MonoBehaviour
 
 	private bool TryEnableRandomShopItem()
 	{
-		int i = Random.Range (0, shopItems.Count);
-		ShopItem shopItem = shopItems [i].GetComponent<ShopItem>();
+		int i = Random.Range (0, potentialShopItems.Count);
+		ShopItem shopItem = potentialShopItems [i].GetComponent<ShopItem>();
 		if (!shopItem.gameObject.activeInHierarchy && shopItem.available)
 		{
-			print ("Enabled " + shopItems [i]);
-			shopItems [i].gameObject.SetActive (true);
+			print ("Enabled " + potentialShopItems [i].GetComponent<ScrollingTextOption>().text);
+			potentialShopItems [i].gameObject.SetActive (true);
 			return true;
 		}
 		return false;
-	}
-
-	private HeroItemSet GetHeroItemSet(string heroName)
-	{
-		foreach (HeroItemSet itemSet in heroItemSets)
-		{
-			if (itemSet.heroName.Equals (heroName))
-				return itemSet;
-		}
-		throw new UnityEngine.Assertions.AssertionException ("ShopItemsHolder.cs", 
-			"Cannot find HeroItemSet with name " + "\"" + heroName + "\"");
 	}
 
 	private GameObject CreateShopItem(GameObject prefab)
@@ -130,8 +95,8 @@ public class ShopItemsHolder : MonoBehaviour
 		o.transform.SetParent (shopItemPanel, false);
 		o.GetComponent<ScrollingTextOption> ().scrollingText = scrollingText;
 		o.GetComponent<Toggle> ().group = toggleGroup;
-		shopItems.Add (o);
 		o.SetActive (false);
+		potentialShopItems.Add (o);
 		return o;
 	}
 }

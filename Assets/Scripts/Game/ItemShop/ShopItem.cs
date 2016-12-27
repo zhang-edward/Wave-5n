@@ -21,6 +21,11 @@ public abstract class ShopItem : MonoBehaviour
 		available = true;
 	}
 
-	public abstract void OnPurchased (Player player);
+	public virtual void OnPurchased (Player player)
+	{
+		timesPurchased++;
+		if (timesPurchased >= purchaseLimit)
+			available = false;
+	}
 }
 

@@ -7,10 +7,12 @@ public class UIPowerUpIcon : MonoBehaviour
 	private HeroPowerUp powerUp;
 	public Image icon;
 	private Image iconFrame;
+	private Slider slider;
 
 	void Awake()
 	{
 		iconFrame = GetComponent<Image> ();
+		slider = GetComponent<Slider> ();
 	}
 
 	public void Init(HeroPowerUp powerUp)
@@ -21,7 +23,8 @@ public class UIPowerUpIcon : MonoBehaviour
 
 	void Update()
 	{
-		if (!powerUp.activated)
+		slider.value = 1f - powerUp.percentActivated;
+		if (powerUp.percentActivated < 1f)
 		{
 			iconFrame.color = new Color (1, 1, 1, 0.5f);
 			icon.color = new Color (1, 1, 1, 0.5f);

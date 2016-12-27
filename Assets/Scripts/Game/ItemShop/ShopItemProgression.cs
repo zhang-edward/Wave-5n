@@ -1,9 +1,23 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public abstract class ShopItemProgression : ShopItem
 {
-	public GameObject[] unlockable;		// shop items to be unlocked after this item is purchased
+	public List<ShopItemProgression> unlockable = new List<ShopItemProgression> ();
 
+	public override void OnPurchased (Player player)
+	{
+		base.OnPurchased (player);
+		foreach (ShopItemProgression item in unlockable)
+		{
+			item.available = true;
+		}
+	}
+
+	public void SetAvailable(bool available)
+	{
+		this.available = available;
+	}
 }
 

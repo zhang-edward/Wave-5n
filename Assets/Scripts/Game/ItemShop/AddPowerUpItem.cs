@@ -18,12 +18,8 @@ public class AddPowerUpItem : ShopItemProgression
 
 	public override void OnPurchased (Player player)
 	{
+		base.OnPurchased (player);
 		player.hero.powerUpHolder.AddPowerUp (powerUp.powerUpName);
-		timesPurchased++;
-		if (timesPurchased >= purchaseLimit)
-		{
-			available = false;
-		}
 	}
 }
 

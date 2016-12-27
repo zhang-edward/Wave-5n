@@ -11,7 +11,7 @@ public class KnightHero : PlayerHero {
 	public float areaAttackRange = 2.0f;
 	private bool activatedSpecialAbility = false;
 
-	public float rushMoveSpeed = 10f;
+	public float rushMoveSpeed = 9f;
 	public float rushDuration = 0.5f;
 	private bool killBox = false;
 
