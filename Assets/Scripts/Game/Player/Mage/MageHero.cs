@@ -30,7 +30,7 @@ public class MageHero : PlayerHero {
 
 	public override void Init(EntityPhysics body, Animator anim, Player player)
 	{
-		abilityCooldowns = new float[2];
+		cooldownTimers = new float[2];
 		base.Init (body, anim, player);
 		map = GameObject.Find ("Map").GetComponent<Map>();
 		heroName = PlayerHero.HERO_TYPES ["MAGE"];
@@ -81,16 +81,16 @@ public class MageHero : PlayerHero {
 	{
 		//chargeTime = 0f;
 		// if cooldown has not finished
-		if (abilityCooldowns[0] > 0)
+		if (cooldownTimers[0] > 0)
 		{
-			if (abilityCooldowns [0]< 0.3f)
+			if (cooldownTimers [0]< 0.3f)
 			{
 				inputAction = HandleSwipe;
-				QueueAction (abilityCooldowns [0]);
+				QueueAction (cooldownTimers [0]);
 			}
 			return;
 		}
-		ResetCooldown (0);
+		ResetCooldownTimer (0);
 		// Sound
 		SoundManager.instance.RandomizeSFX (shootSound);
 		// Animation
@@ -121,13 +121,13 @@ public class MageHero : PlayerHero {
 	private void StartTeleport()
 	{
 		if (map.WithinOpenCells(player.transform.position + (Vector3)player.dir) &&
-			abilityCooldowns[1] <= 0)
+			cooldownTimers[1] <= 0)
 			StartCoroutine (Teleport ());
 	}
 
 	private IEnumerator Teleport()
 	{
-		ResetCooldown (1);
+		ResetCooldownTimer (1);
 		// Sound
 		SoundManager.instance.RandomizeSFX (teleportOutSound);
 		// Animation
@@ -191,6 +191,7 @@ public class MageHero : PlayerHero {
 				1.0f);
 
 			player.TriggerOnEnemyDamagedEvent(damage);
+			player.TriggerOnEnemyLastHitEvent (e);
 		}
 	}
 }

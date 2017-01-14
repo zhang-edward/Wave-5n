@@ -51,7 +51,8 @@ public class AbilityIconBar : MonoBehaviour {
 			return;
 		for (int i = 0; i < hero.NumAbilities; i ++)
 		{
-			float percentCooldown = (hero.AbilityCooldowns[i] / hero.cooldownTime[i]);
+			float percentCooldown = (hero.CooldownTimers[i] / hero.GetCooldownTime(i));
+			//print (i + ": " + hero.GetCooldownTime (i));
 			abilityIcons [i].SetCooldown (percentCooldown);
 		}
 		float percent = (hero.specialAbilityCharge / hero.specialAbilityChargeCapacity);

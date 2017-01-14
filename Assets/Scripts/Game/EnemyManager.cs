@@ -98,7 +98,7 @@ public class EnemyManager : MonoBehaviour {
 				waveNumber++;
 				difficultyCurve++;
 				// spawn shop every 3 waves after wave 5
-				if (waveNumber % shopWave == 0 && waveNumber > 3)
+				if (waveNumber % shopWave == 0 && waveNumber > 1)
 				{
 					// spawn shop npc before the boss
 					shopNPC.Appear ();

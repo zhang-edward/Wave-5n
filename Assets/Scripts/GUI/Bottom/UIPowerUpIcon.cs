@@ -4,8 +4,10 @@ using System.Collections;
 
 public class UIPowerUpIcon : MonoBehaviour
 {
-	private HeroPowerUp powerUp;
 	public Image icon;
+	public GameObject[] stacksIcons;
+
+	private HeroPowerUp powerUp;
 	private Image iconFrame;
 	private Slider slider;
 
@@ -33,6 +35,15 @@ public class UIPowerUpIcon : MonoBehaviour
 		{
 			iconFrame.color = Color.white;
 			icon.color = Color.white;
+		}
+
+		if (powerUp.stacks > 0)
+		{
+			UnityEngine.Assertions.Assert.IsTrue (powerUp.stacks <= 4);
+			for (int i = 0; i < powerUp.stacks; i ++)
+			{
+				stacksIcons [i].SetActive (true);
+			}
 		}
 	}
 }

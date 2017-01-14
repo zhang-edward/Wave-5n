@@ -11,8 +11,9 @@ public class KnightHero : PlayerHero {
 	public float areaAttackRange = 2.0f;
 	private bool activatedSpecialAbility = false;
 
-	public float rushMoveSpeed = 9f;
-	public float rushDuration = 0.5f;
+	public float baseRushMoveSpeed = 9f;
+	public float rushMoveSpeedMultiplier = 1;
+	public float baseRushDuration = 0.5f;
 	private bool killBox = false;
 
 	[Header("Audio")]
@@ -31,7 +32,7 @@ public class KnightHero : PlayerHero {
 
 	public override void Init (EntityPhysics body, Animator anim, Player player)
 	{
-		abilityCooldowns = new float[2];
+		cooldownTimers = new float[2];
 		base.Init (body, anim, player);
 		heroName = PlayerHero.HERO_TYPES ["KNIGHT"];
 	}
@@ -40,16 +41,16 @@ public class KnightHero : PlayerHero {
 	public override void HandleSwipe()
 	{
 		// if cooldown has not finished
-		if (abilityCooldowns[0] > 0)
+		if (CooldownTimers[0] > 0)
 		{
-			if (abilityCooldowns [0]< 0.3f)
+			if (CooldownTimers [0]< 0.3f)
 			{
 				inputAction = HandleSwipe;
-				QueueAction (abilityCooldowns [0]);
+				QueueAction (CooldownTimers [0]);
 			}
 			return;
 		}
-		ResetCooldown (0);
+		ResetCooldownTimer (0);
 		// Sound
 		SoundManager.instance.RandomizeSFX (rushSound);
 		// Animation
@@ -59,20 +60,19 @@ public class KnightHero : PlayerHero {
 		// Player properties
 		player.input.isInputEnabled = false;
 		killBox = true;
-		body.moveSpeed = rushMoveSpeed;
+		body.moveSpeed = baseRushMoveSpeed;
 		body.Move(player.dir.normalized);
 		Debug.DrawRay (transform.position, player.dir, Color.red, 0.5f);
-		player.isInvincible = true;
 		// reset ability
-		Invoke ("ResetRushAbility", rushDuration);
+		Invoke ("ResetRushAbility", baseRushDuration);
 	}
 
 	// Area attack
 	public override void HandleTapRelease ()
 	{
-		if (abilityCooldowns [1] > 0)
+		if (CooldownTimers [1] > 0)
 			return;
-		ResetCooldown (1);
+		ResetCooldownTimer (1);
 		// Sound
 		SoundManager.instance.RandomizeSFX (areaAttackSound);
 		// Animation
@@ -81,7 +81,6 @@ public class KnightHero : PlayerHero {
 		PlayAreaAttackEffect ();
 		// Properties
 		player.input.isInputEnabled = false;
-		player.isInvincible = true;
 		body.Move (Vector2.zero);
 		Collider2D[] cols = Physics2D.OverlapCircleAll (transform.position, areaAttackRange);
 		foreach (Collider2D col in cols)
@@ -127,13 +126,14 @@ public class KnightHero : PlayerHero {
 		// Sound
 		SoundManager.instance.PlayImportantSound(powerDownSound);
 
+		// Reset Stats
+		cooldownMultipliers [0] /= 0.5f;
+		cooldownMultipliers [1] /= 0.8f;
 		player.isInvincible = false;
 		activatedSpecialAbility = false;
 		specialAbilityCharge = 0;
-		cooldownTime [0] = cooldownTimeNormal [0];
-		cooldownTime [1] = cooldownTimeNormal [1];
-		rushMoveSpeed = 10f;
-		rushDuration = 0.5f;
+		baseRushMoveSpeed = 9f * rushMoveSpeedMultiplier;
+		baseRushDuration = 0.5f;
 
 		CameraControl.instance.StartFlashColor (Color.white);
 		CameraControl.instance.SetOverlayColor (Color.clear, 0);
@@ -147,10 +147,10 @@ public class KnightHero : PlayerHero {
 		SoundManager.instance.PlayImportantSound(powerUpSound);
 		// Properties
 		activatedSpecialAbility = true;
-		cooldownTime [0] = 0.5f;
-		cooldownTime [1] = 2f;
-		rushMoveSpeed = 15;
-		rushDuration = 0.4f;
+		cooldownMultipliers [0] *= 0.5f;
+		cooldownMultipliers [1] *= 0.8f;
+		baseRushMoveSpeed = 15 * rushMoveSpeedMultiplier;
+		baseRushDuration = 0.4f;
 		CameraControl.instance.StartShake (0.3f, 0.05f);
 		CameraControl.instance.StartFlashColor (Color.white);
 		CameraControl.instance.SetOverlayColor (Color.red, 0.3f);
@@ -226,6 +226,7 @@ public class KnightHero : PlayerHero {
 
 			SoundManager.instance.RandomizeSFX (hitSounds[Random.Range(0, hitSounds.Length)]);
 			player.TriggerOnEnemyDamagedEvent(damage);
+			player.TriggerOnEnemyLastHitEvent (e);
 		}
 	}
 }

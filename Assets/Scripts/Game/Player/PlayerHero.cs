@@ -23,6 +23,7 @@ public abstract class PlayerHero : MonoBehaviour {
 	[Header("PlayerHero Properties")]
 	public int maxHealth;
 	public int damage;
+
 	[HideInInspector]
 	public HeroPowerUpHolder powerUpHolder;
 
@@ -42,16 +43,17 @@ public abstract class PlayerHero : MonoBehaviour {
 	public float specialAbilityChargeCapacity;
 	public float specialAbilityCharge { get; protected set; }
 
-	protected float[] abilityCooldowns;
-	public float[] AbilityCooldowns {
-		get {return abilityCooldowns;}
+	protected float[] cooldownTimers;
+	public float[] CooldownTimers {
+		get {return cooldownTimers;}
 	}
 	[Header("Ability Cooldown Times")]
 	public float[] cooldownTimeNormal;		// the regular cooldown time for each ability. Set in inspector
-	public float[] cooldownTime { get; private set; }			// the cooldown time used for each ability
+	private float[] cooldownTime;			// the cooldown time used for each ability
+	public float[] cooldownMultipliers;
 
 	public int NumAbilities{
-		get {return abilityCooldowns.Length;}
+		get {return cooldownTimers.Length;}
 	}
 
 	[Header("Hero Audio")]
@@ -109,11 +111,14 @@ public abstract class PlayerHero : MonoBehaviour {
 		this.anim = anim;
 		this.player = player;
 		cooldownTime = new float[cooldownTimeNormal.Length];
+		cooldownMultipliers = new float[cooldownTimeNormal.Length];
 		for(int i = 0; i < cooldownTime.Length; i ++)
 		{
 			cooldownTime [i] = cooldownTimeNormal [i];
+			cooldownMultipliers [i] = 1;
 		}
 		player.maxHealth = maxHealth;
+		powerUpHolder.Init ();
 		player.OnPlayerDamaged += ResetCombo;
 		player.OnEnemyDamaged += IncrementCombo;
 		player.OnEnemyDamaged += IncrementSpecialAbilityCharge;
@@ -121,12 +126,12 @@ public abstract class PlayerHero : MonoBehaviour {
 
 	protected virtual void Update()
 	{
-		if (abilityCooldowns != null)
+		if (cooldownTimers != null)
 		{
-			for (int i = 0; i < abilityCooldowns.Length; i++)
+			for (int i = 0; i < cooldownTimers.Length; i++)
 			{
-				if (abilityCooldowns[i] > 0)
-					abilityCooldowns [i] -= Time.deltaTime;
+				if (cooldownTimers[i] > 0)
+					cooldownTimers [i] -= Time.deltaTime;
 			}
 		}
 		if (comboTimer > 0)
@@ -139,9 +144,9 @@ public abstract class PlayerHero : MonoBehaviour {
 		}
 	}
 
-	protected void ResetCooldown(int index)
+	protected void ResetCooldownTimer(int index)
 	{
-		abilityCooldowns [index] = cooldownTime [index];
+		cooldownTimers [index] = GetCooldownTime(index);
 	}
 
 	public void IncrementSpecialAbilityCharge(float amt)
@@ -176,5 +181,18 @@ public abstract class PlayerHero : MonoBehaviour {
 		chargeMultiplier = combo * 0.05f + 1;
 		if (chargeMultiplier > 2)
 			chargeMultiplier = 2;
+	}
+
+	public float GetCooldownTime(int index)
+	{
+		return cooldownTime [index] * cooldownMultipliers [index];
+	}
+
+	public void ResetToDefaultCooldowns()
+	{
+		for (int i = 0; i < cooldownTime.Length; i ++)
+		{
+			cooldownTime [i] = cooldownTimeNormal [i];
+		}
 	}
 }

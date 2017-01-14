@@ -27,7 +27,7 @@ public class NinjaHero : PlayerHero {
 
 	public override void Init(EntityPhysics body, Animator anim, Player player)
 	{
-		abilityCooldowns = new float[2];
+		cooldownTimers = new float[2];
 		base.Init (body, anim, player);
 		heroName = PlayerHero.HERO_TYPES ["NINJA"];
 		projectilePool = (RuntimeObjectPooler)ObjectPooler.GetObjectPooler ("PlayerProjectile");
@@ -36,16 +36,16 @@ public class NinjaHero : PlayerHero {
 
 	public override void HandleSwipe ()
 	{
-		if (abilityCooldowns[0] > 0)
+		if (cooldownTimers[0] > 0)
 		{
-			if (abilityCooldowns [0]< 0.3f)
+			if (cooldownTimers [0]< 0.3f)
 			{
 				inputAction = HandleSwipe;
-				QueueAction (abilityCooldowns [0]);
+				QueueAction (cooldownTimers [0]);
 			}
 			return;
 		}
-		ResetCooldown (0);
+		ResetCooldownTimer (0);
 		StartCoroutine(DashAttack ());
 	}
 
@@ -64,7 +64,7 @@ public class NinjaHero : PlayerHero {
 		// Properties
 		activatedSpecialAbility = true;
 		projectilePool.SetPooledObject (specialProjectilePrefab);
-		cooldownTime [1] = 0.3f;
+		cooldownMultipliers[1] *= 0.3f;
 
 		// Effects
 		CameraControl.instance.StartShake (0.3f, 0.05f);
@@ -81,7 +81,7 @@ public class NinjaHero : PlayerHero {
 		specialAbilityCharge = 0;
 		activatedSpecialAbility = false;
 		projectilePool.SetPooledObject (projectilePrefab);
-		cooldownTime [1] = cooldownTimeNormal [1];
+		cooldownMultipliers[1] /= 0.3f;
 
 		CameraControl.instance.StartFlashColor (Color.white);
 		CameraControl.instance.SetOverlayColor (Color.clear, 0);
@@ -90,9 +90,9 @@ public class NinjaHero : PlayerHero {
 	private void ShootNinjaStar()
 	{
 		// if cooldown has not finished
-		if (abilityCooldowns[1] > 0)
+		if (cooldownTimers[1] > 0)
 			return;
-		ResetCooldown (1);
+		ResetCooldownTimer (1);
 		// Sound
 		SoundManager.instance.RandomizeSFX (shootSound);
 		// Animation
@@ -217,6 +217,7 @@ public class NinjaHero : PlayerHero {
 			
 
 			player.TriggerOnEnemyDamagedEvent(damage);
+			player.TriggerOnEnemyLastHitEvent (e);
 		}
 	}
 

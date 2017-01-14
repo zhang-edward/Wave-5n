@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Assertions;
 using System.Collections;
 
 public abstract class HeroPowerUp : MonoBehaviour
@@ -8,7 +9,6 @@ public abstract class HeroPowerUp : MonoBehaviour
 
 	public string powerUpName;
 	public Sprite icon;
-	[HideInInspector]
 	public int stacks;
 	public float percentActivated;
 
@@ -22,8 +22,16 @@ public abstract class HeroPowerUp : MonoBehaviour
 	[Space]
 	public string description;
 
-	public virtual void Activate(PlayerHero hero) {percentActivated = 1f;}
+	public virtual void Activate(PlayerHero hero) 
+	{
+		playerHero = hero;
+		percentActivated = 1f;
+	}
 	public virtual void Deactivate() {percentActivated = 0f;}
-	public virtual void Stack() {stacks++;}
+	public virtual void Stack() 
+	{
+		stacks++;
+		Assert.IsFalse (stacks > maxStacks);
+	}
 }
 

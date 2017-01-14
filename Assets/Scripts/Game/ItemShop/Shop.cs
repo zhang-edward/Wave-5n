@@ -8,6 +8,7 @@ public class Shop : MonoBehaviour
 	[Header("Find in Hierarchy")]
 	public ShopNPC shopNPC;
 	public Player player;
+
 	[Header("Shop Items")]
 	private List<ShopItem> shopItems = new List<ShopItem>();
 	public ShopItem selectedItem {
@@ -40,7 +41,7 @@ public class Shop : MonoBehaviour
 			priceText.text = "";
 	}
 
-	// get a list of potential shop items
+	// get a list of potential shop items (create addPowerUpItems from the player's hero)
 	private void InitShopItemsHolder()
 	{
 		shopItemsHolder.InitShopItemsList (player.hero);
@@ -49,9 +50,10 @@ public class Shop : MonoBehaviour
 	// instantiate a random selection of 5 shop items from the potential items list
 	public void GetShopItems()
 	{
+		// set up the shop items holder
 		shopItemsHolder.ResetShopItems ();
-		//shopItemsHolder.UpdateShopItemsList ();		// update available shop item pool
 		shopItemsHolder.GetRandomShopItems (5);
+		// get the active shop items and add them to the list
 		foreach (GameObject o in shopItemsHolder.potentialShopItems)
 		{
 			if (o.activeInHierarchy)

@@ -6,6 +6,9 @@ public class Player : MonoBehaviour, IDamageable
 	public delegate void EnemyDamaged (float strength);
 	public event EnemyDamaged OnEnemyDamaged;
 
+	public delegate void EnemySelected (Enemy e);
+	public event EnemySelected OnEnemyLastHit;
+
 	public delegate void PlayerHealthChanged (int amt);
 	public event PlayerHealthChanged OnPlayerDamaged;
 	public event PlayerHealthChanged OnPlayerHealed;
@@ -28,6 +31,9 @@ public class Player : MonoBehaviour, IDamageable
 
 	[Header("Player Ability")]
 	public PlayerHero hero;
+
+	[Header("Universal Power Ups")]
+	public HeroPowerUpHolder.HeroPowerUpDictionaryEntry[] powerUpPrefabs;
 
 	[Header("Player direction")]
 	public Vector2 dir;		// player's facing direction and movement direction
@@ -107,7 +113,16 @@ public class Player : MonoBehaviour, IDamageable
 	/// <param name="damage">Damage.</param>
 	public void TriggerOnEnemyDamagedEvent(int damage)
 	{
+		if (OnEnemyDamaged == null)
+			return;
 		OnEnemyDamaged (damage);
+	}
+
+	public void TriggerOnEnemyLastHitEvent(Enemy e)
+	{
+		if (OnEnemyLastHit == null)
+			return;
+		OnEnemyLastHit (e);
 	}
 
 	/// <summary>

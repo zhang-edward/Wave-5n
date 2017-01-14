@@ -5,22 +5,20 @@ using System.Collections.Generic;
 
 public class ShopItemsHolder : MonoBehaviour
 {
-	public GameObject[] universalShopItems;
+	public GameObject[] universalShopItems;			// a list of shop items that all heros are able to purchase
 
-	/*[System.Serializable]
-	public class HeroItemSet
-	{
-		public string heroName;
-		public GameObject[] shopItemPrefabs;
-	}*/
-	public GameObject addPowerUpItemPrefab;
-	//public HeroItemSet[] heroItemSets;
+	public GameObject addPowerUpItemPrefab;			// prefab for the custom powerups for each hero
 	public List<GameObject> potentialShopItems;		// available shop items after initialization
 
+	// UI stuff
 	public Transform shopItemPanel;
 	public ScrollingText scrollingText;
 	public ToggleGroup toggleGroup;
 
+	/// <summary>
+	/// Initialize the list of shop items that can be potentially available to the player
+	/// </summary>
+	/// <param name="hero">Hero.</param>
 	public void InitShopItemsList (PlayerHero hero)
 	{
 		string heroName = hero.heroName;
@@ -28,6 +26,7 @@ public class ShopItemsHolder : MonoBehaviour
 		{
 			CreateShopItem (item);
 		}
+
 		foreach (HeroPowerUpHolder.HeroPowerUpDictionaryEntry entry in hero.powerUpHolder.powerUpPrefabs)
 		{
 			HeroPowerUp powerUp = entry.powerUpPrefab.GetComponent<HeroPowerUp> ();
@@ -55,6 +54,11 @@ public class ShopItemsHolder : MonoBehaviour
 		return o;
 	}
 
+	/// <summary>
+	/// Gets random shop items from the list of potential shop items and enables them 
+	/// to make them available to the player.
+	/// </summary>
+	/// <param name="count">Number of random shop items to get</param>
 	public void GetRandomShopItems(int count)
 	{
 		count = Mathf.Min (count, potentialShopItems.Count);	// if the available shop items < count, only return the number of available shop items

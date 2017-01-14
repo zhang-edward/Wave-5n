@@ -15,8 +15,10 @@ public class HeroPowerUpHolder : MonoBehaviour
 		}
 		public GameObject powerUpPrefab;
 	}
-	public HeroPowerUpDictionaryEntry[] powerUpPrefabs;
-	public List<HeroPowerUp> activePowerUps;
+
+	[Header("Set In Inspector")]
+	public List<HeroPowerUpDictionaryEntry> powerUpPrefabs;			// dictionary database of all available power ups
+	public List<HeroPowerUp> activePowerUps;						// list of powerups that are active on the player in the game
 
 	public delegate void OnPowerUpsChanged();
 	public OnPowerUpsChanged OnPowerUpAdded;
@@ -24,6 +26,15 @@ public class HeroPowerUpHolder : MonoBehaviour
 	void Awake()
 	{
 		hero = GetComponent<PlayerHero> ();
+	}
+
+	public void Init()
+	{
+		// get universal player powerups (apply status effect)
+		foreach (HeroPowerUpDictionaryEntry entry in hero.player.powerUpPrefabs)
+		{
+			powerUpPrefabs.Add (entry);
+		}
 	}
 
 	public GameObject GetPowerUp(string name)
