@@ -5,7 +5,7 @@ public class HealthItem : ShopItem
 {
 	public override void OnPurchased(Player player)
 	{
-		player.Heal (1);
+		player.HealEffect (4, true);
 	}
 }
 

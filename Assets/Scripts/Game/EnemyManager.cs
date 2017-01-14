@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class EnemyManager : MonoBehaviour {
 
-	private const float DIFFICULTY_CURVE = 3.5f;
+	private const float DIFFICULTY_CURVE = 10f;
 	[System.Serializable]
 	public class EnemyInfoDictionaryEntry
 	{

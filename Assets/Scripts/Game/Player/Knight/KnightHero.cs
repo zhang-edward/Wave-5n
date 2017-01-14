@@ -80,6 +80,7 @@ public class KnightHero : PlayerHero {
 		// Effects
 		PlayAreaAttackEffect ();
 		// Properties
+		player.isInvincible = true;
 		player.input.isInputEnabled = false;
 		body.Move (Vector2.zero);
 		Collider2D[] cols = Physics2D.OverlapCircleAll (transform.position, areaAttackRange);
@@ -147,6 +148,7 @@ public class KnightHero : PlayerHero {
 		SoundManager.instance.PlayImportantSound(powerUpSound);
 		// Properties
 		activatedSpecialAbility = true;
+		player.isInvincible = true;
 		cooldownMultipliers [0] *= 0.5f;
 		cooldownMultipliers [1] *= 0.8f;
 		baseRushMoveSpeed = 15 * rushMoveSpeedMultiplier;

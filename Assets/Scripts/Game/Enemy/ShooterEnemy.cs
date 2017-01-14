@@ -15,6 +15,8 @@ public class ShooterEnemy : Enemy {
 	public float attackTime = 0.2f;
 	public float cooldownTime = 1.0f;
 
+	public int damage;
+
 	[Header("Audio")]
 	public AudioClip shootSound;
 
@@ -94,7 +96,7 @@ public class ShooterEnemy : Enemy {
 		anim.SetTrigger ("Attack");
 		Projectile p = projectilePool.GetPooledObject ().GetComponent<Projectile> ();
 		UnityEngine.Assertions.Assert.IsNotNull (p);
-		p.Init (shootPoint.position, dir, projectileSprite, "Player", projectileSpeed, 1);
+		p.Init (shootPoint.position, dir, projectileSprite, "Player", projectileSpeed, damage);
 		SoundManager.instance.RandomizeSFX (shootSound);
 	}
 }

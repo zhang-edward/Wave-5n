@@ -12,6 +12,8 @@ public class LungingEnemy : Enemy {
 	public float attackTime = 0.2f;
 	public float cooldownTime = 1.0f;
 	public float lungeSpeed = 10.0f;
+	[Space]
+	public int damage;
 
 	[Header("Audio")]
 	public AudioClip swingSound;
@@ -102,7 +104,7 @@ public class LungingEnemy : Enemy {
 			if (attacking)
 			{
 				Player player = col.GetComponentInChildren<Player>();
-				player.Damage (1);
+				player.Damage (damage);
 			}
 		}
 	}

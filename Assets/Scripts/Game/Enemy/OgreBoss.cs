@@ -217,7 +217,7 @@ public class OgreBoss : BossEnemy {
 			if (col.CompareTag("Player"))
 			{
 				Player player = col.GetComponentInChildren<Player>();
-				player.Damage (2);
+				player.Damage (4);
 			}
 		}
 		CameraControl.instance.StartShake (0.3f, 0.05f);
