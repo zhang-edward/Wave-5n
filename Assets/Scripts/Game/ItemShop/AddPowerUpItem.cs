@@ -22,6 +22,10 @@ public class AddPowerUpItem : ShopItemProgression
 	void OnEnable()
 	{
 		stacksIndicator.text = ToRomanNumeral(timesPurchased + 1);
+		if (timesPurchased > 0 && !powerUp.stackDescription.Equals(""))
+		{
+			GetComponent<ScrollingTextOption> ().text = powerUp.stackDescription;
+		}
 	}
 
 	public override void OnPurchased (Player player)

@@ -28,11 +28,16 @@ public class SoundManager : MonoBehaviour {
 		music.volume = musicVolume;
 	}
 
+	/// <summary>
+	/// Plays the AudioClip with some pitch variance.
+	/// </summary>
+	/// <param name="clip">Clip.</param>
+	/// <param name="stacking">whether or not this clip can be stacked with others (bad for many sounds played at the same time)</param>
 	public void RandomizeSFX(AudioClip clip)
 	{
 		float randomPitch = Random.Range (lowPitchRange, highPitchRange);
 		sfx.pitch = randomPitch;
-		sfx.PlayOneShot(clip);
+		sfx.PlayOneShot (clip);
 	}
 
 	public void PlayInterrupt(AudioClip clip)

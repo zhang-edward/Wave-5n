@@ -15,7 +15,8 @@ public abstract class EnemyStatus : MonoBehaviour
 	{
 		this.enemy = enemy;
 		timer = duration;
-		StartCoroutine ("Effect");
+		if (gameObject.activeInHierarchy)
+			StartCoroutine ("Effect");
 	}
 
 	void Update()

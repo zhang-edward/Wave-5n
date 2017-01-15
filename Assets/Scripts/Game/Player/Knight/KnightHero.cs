@@ -25,6 +25,9 @@ public class KnightHero : PlayerHero {
 
 	private List<Enemy> hitEnemies = new List<Enemy>();
 
+	public delegate void KnightAbilityActivated();
+	public event KnightAbilityActivated OnKnightRush;
+
 	public void OnDrawGizmosSelected()
 	{
 		Gizmos.DrawWireSphere (transform.position, 1f);
@@ -58,13 +61,15 @@ public class KnightHero : PlayerHero {
 		// Effects
 		PlayRushEffect ();
 		// Player properties
-		player.input.isInputEnabled = false;
 		killBox = true;
 		body.moveSpeed = baseRushMoveSpeed;
 		body.Move(player.dir.normalized);
 		Debug.DrawRay (transform.position, player.dir, Color.red, 0.5f);
 		// reset ability
 		Invoke ("ResetRushAbility", baseRushDuration);
+
+		if (OnKnightRush != null)
+			OnKnightRush();
 	}
 
 	// Area attack
@@ -82,6 +87,7 @@ public class KnightHero : PlayerHero {
 		// Properties
 		player.isInvincible = true;
 		player.input.isInputEnabled = false;
+		player.sr.color = new Color (0.8f, 0.8f, 0.8f);
 		body.Move (Vector2.zero);
 		Collider2D[] cols = Physics2D.OverlapCircleAll (transform.position, areaAttackRange);
 		foreach (Collider2D col in cols)
@@ -94,6 +100,13 @@ public class KnightHero : PlayerHero {
 		}
 		// Reset Ability
 		Invoke ("ResetAreaAttackAbility", 0.5f);
+		Invoke ("ResetInvincibility", 1.5f);
+	}
+
+	private void ResetInvincibility()
+	{
+		player.sr.color = Color.white;
+		player.isInvincible = false;
 	}
 
 	private void ResetRushAbility()
@@ -102,10 +115,6 @@ public class KnightHero : PlayerHero {
 		rushEffect.GetComponent<TempObject> ().Deactivate ();
 		killBox = false;
 		body.moveSpeed = player.DEFAULT_SPEED;
-
-		// if special ability is activated, stay invincible
-		if (!activatedSpecialAbility)
-			player.isInvincible = false;
 		
 		player.input.isInputEnabled = true;
 		anim.SetBool ("Attacking", false);
@@ -116,10 +125,6 @@ public class KnightHero : PlayerHero {
 		hitEnemies.Clear ();
 		anim.SetBool ("AreaAttack", false);
 		player.input.isInputEnabled = true;
-
-		// if special ability is activated, stay invincible
-		if (!activatedSpecialAbility)
-			player.isInvincible = false;
 	}
 
 	private void ResetSpecialAbility()
@@ -128,8 +133,7 @@ public class KnightHero : PlayerHero {
 		SoundManager.instance.PlayImportantSound(powerDownSound);
 
 		// Reset Stats
-		cooldownMultipliers [0] /= 0.5f;
-		cooldownMultipliers [1] /= 0.8f;
+		cooldownMultipliers [0] /= 0.8f;
 		player.isInvincible = false;
 		activatedSpecialAbility = false;
 		specialAbilityCharge = 0;
@@ -149,9 +153,8 @@ public class KnightHero : PlayerHero {
 		// Properties
 		activatedSpecialAbility = true;
 		player.isInvincible = true;
-		cooldownMultipliers [0] *= 0.5f;
-		cooldownMultipliers [1] *= 0.8f;
-		baseRushMoveSpeed = 15 * rushMoveSpeedMultiplier;
+		cooldownMultipliers [0] *= 0.8f;
+		baseRushMoveSpeed = 13 * rushMoveSpeedMultiplier;
 		baseRushDuration = 0.4f;
 		CameraControl.instance.StartShake (0.3f, 0.05f);
 		CameraControl.instance.StartFlashColor (Color.white);

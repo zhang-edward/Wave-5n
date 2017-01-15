@@ -32,7 +32,7 @@ public class LungingEnemy : Enemy {
 
 	protected override IEnumerator MoveState()
 	{
-		UnityEngine.Assertions.Assert.IsTrue (body.moveSpeed == DEFAULT_SPEED);
+		//UnityEngine.Assertions.Assert.IsTrue (body.moveSpeed == DEFAULT_SPEED);
 		moveState = GetAssignedMoveState ();
 		while (true)
 		{
@@ -80,7 +80,7 @@ public class LungingEnemy : Enemy {
 	private void Charge(out Vector3 dir)
 	{
 		//anim.ResetTrigger ("Charge");
-		anim.SetTrigger ("Charge");
+		anim.CrossFade ("charge", 0f);		// triggers are unreliable, crossfade forces state to execute
 		body.Move (Vector2.zero);
 		dir = (Vector2)(player.position - transform.position); // freeze moving direction
 	}
@@ -89,7 +89,7 @@ public class LungingEnemy : Enemy {
 	{
 		attacking = true;
 
-		anim.SetTrigger ("Attack");
+		anim.CrossFade ("attack", 0f);		// triggers are unreliable, crossfade forces state to execute
 		SoundManager.instance.RandomizeSFX (swingSound);
 
 		body.moveSpeed = lungeSpeed;

@@ -52,7 +52,13 @@ public class SpecialAbilityIcon : MonoBehaviour
 	private void FinishCooldownEffect()
 	{
 		playedCooledDownEffect = true;
+		transform.localScale = Vector3.one * 1.125f;
 		StartCoroutine (PlayFinishCooldownEffect ());
+	}
+
+	public void SetScale(float scale)
+	{
+		transform.localScale = Vector3.one * scale;
 	}
 
 	private IEnumerator PlayFinishCooldownEffect()

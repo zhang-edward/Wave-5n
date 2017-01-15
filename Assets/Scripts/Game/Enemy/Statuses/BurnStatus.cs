@@ -7,9 +7,12 @@ public class BurnStatus : EnemyStatus
 	public float fireSpreadRange = 1.5f;
 	public int spreadLevel = 2;
 	public int numSpreads = 2;
+	public AudioClip[] applySounds;
 
 	protected override IEnumerator Effect ()
 	{
+		SoundManager.instance.RandomizeSFX (applySounds [Random.Range (0, applySounds.Length)]);
+		yield return new WaitForSeconds (0.1f);
 		// last spread level should not spread
 		if (spreadLevel == 0)
 			numSpreads = 0;

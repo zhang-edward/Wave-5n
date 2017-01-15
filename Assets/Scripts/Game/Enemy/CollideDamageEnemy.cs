@@ -7,7 +7,7 @@ public class CollideDamageEnemy : Enemy {
 	public float attackCooldown = 1f;
 	private float cooldown;
 
-	private float attackBuildUp = 1f;	// time for the player to be in contact with the enemy before the player is damaged
+	private float attackBuildUp = 0.2f;	// time for the player to be in contact with the enemy before the player is damaged
 	private float buildUp;				// timer for attackBuildUp
 
 	void Update()

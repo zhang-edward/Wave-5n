@@ -5,9 +5,12 @@ public class FreezeStatus : EnemyStatus
 {
 	public ParticleSystem particles;
 	public bool frozen;
+	public AudioClip[] applySounds;
+
 
 	protected override IEnumerator Effect ()
 	{
+		SoundManager.instance.RandomizeSFX (applySounds [Random.Range (0, applySounds.Length)]);
 		// make the particle effect box emitter the same size as the entity 
 		ParticleSystem.ShapeModule shapeModule = particles.shape;
 		shapeModule.shapeType = ParticleSystemShapeType.Box;

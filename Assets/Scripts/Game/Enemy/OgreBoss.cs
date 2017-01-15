@@ -131,12 +131,12 @@ public class OgreBoss : BossEnemy {
 		attackTimer = actionCooldownTime + Random.Range(-1f, 1f);	
 		body.Move (Vector2.zero);
 
-		anim.SetTrigger ("Charge");
+		anim.CrossFade ("Charge", 0);
 		yield return new WaitForSeconds (chargeTime);
 
 		// Attack animation
-		anim.SetTrigger ("Attack");
-		yield return new WaitForSeconds (0.3f);	// wait for the animation to reach the attacking part
+		anim.CrossFade ("Attack", 0);
+		yield return new WaitForSeconds (0.1f);	// wait for the animation to reach the attacking part
 		OnClubHitGround();
 
 		yield return new WaitForSeconds (attackTime);
@@ -159,12 +159,11 @@ public class OgreBoss : BossEnemy {
 		attackTimer = actionCooldownTime + Random.Range(-1f, 1f);	
 		body.Move (Vector2.zero);
 
-		anim.SetTrigger ("StompCharge");
+		anim.CrossFade ("StompCharge", 0);
 		yield return new WaitForSeconds (stompChargeTime);
-		anim.ResetTrigger ("StompCharge");	// prevents some glitchiness from happening
 
 		// Attack animation
-		anim.SetTrigger ("Stomp");
+		anim.CrossFade ("Stomp", 0);
 		OnStomp ();
 		yield return new WaitForSeconds (stompTime);
 	
@@ -183,12 +182,11 @@ public class OgreBoss : BossEnemy {
 		attackTimer = actionCooldownTime + Random.Range(-1f, 1f);
 		roarTimer = 10.0f;
 
-		anim.SetTrigger ("RoarCharge");
+		anim.CrossFade ("RoarCharge", 0);
 		yield return new WaitForSeconds (roarChargeTime);
-		anim.ResetTrigger ("RoarCharge");	// prevents some glitchiness from happening
 
 		// Attack animation
-		anim.SetTrigger ("Roar");
+		anim.CrossFade ("Roar", 0);
 		// wait for actual roaring part
 		yield return new WaitForSeconds (0.2f);
 		OnRoar ();

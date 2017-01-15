@@ -42,7 +42,7 @@ public class AbilityIconBar : MonoBehaviour {
 		}
 		int centerIndex = hero.NumAbilities / 2;
 		specialAbilityIcon.image.sprite = hero.specialAbilityIcon;
-		specialAbilityIcon.transform.SetSiblingIndex (centerIndex);
+		specialAbilityIcon.transform.parent.SetSiblingIndex (centerIndex);
 	}
 
 	void LateUpdate()

@@ -248,10 +248,8 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 
 	private IEnumerator FlashRed()
 	{
-		invincible = true;
 		sr.color = Color.red;
 		yield return new WaitForSeconds (0.2f);
-		invincible = false;
 		sr.color = Color.white;
 	}
 

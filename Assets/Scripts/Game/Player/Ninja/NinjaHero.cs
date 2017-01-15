@@ -171,15 +171,19 @@ public class NinjaHero : PlayerHero {
 	/// <param name="dest">Destination.</param>
 	private void DashCircleCast(Vector3 origin, Vector3 dest)
 	{
+		bool damagedEnemy = false;
 		RaycastHit2D[] hits = Physics2D.CircleCastAll (origin, 0.5f, (dest - origin), dashDistance);
 		foreach (RaycastHit2D hit in hits)
 		{
 			if (hit.collider.CompareTag("Enemy"))
 			{
+				damagedEnemy = true;
 				Enemy e = hit.collider.GetComponentInChildren<Enemy> ();
 				DamageEnemy (e);
 			}
 		}
+		if (damagedEnemy)
+			SoundManager.instance.PlaySingle (hitSounds [Random.Range (0, hitSounds.Length)]);
 	}
 
 	private float GetDashDistanceClamped(Vector3 start, Vector2 dir)
@@ -201,7 +205,6 @@ public class NinjaHero : PlayerHero {
 	{
 		if (!e.invincible && e.health > 0)
 		{
-			SoundManager.instance.PlaySingle (hitSounds [Random.Range (0, hitSounds.Length)]);
 			e.Damage (damage);
 			TempObject o = player.effectPool.GetPooledObject ().GetComponent<TempObject> ();
 			SimpleAnimationPlayer anim = o.GetComponent<SimpleAnimationPlayer> ();
@@ -223,14 +226,19 @@ public class NinjaHero : PlayerHero {
 
 	private void AreaAttack()
 	{
+		bool damagedEnemy = false;
 		Collider2D[] cols = Physics2D.OverlapCircleAll (transform.position, 1.5f);
 		foreach (Collider2D col in cols)
 		{
 			if (col.CompareTag("Enemy"))
 			{
+				damagedEnemy = true;
 				Enemy e = col.gameObject.GetComponentInChildren<Enemy> ();
 				DamageEnemy (e);
 			}
 		}
+		if (damagedEnemy)
+			SoundManager.instance.PlaySingle (hitSounds [Random.Range (0, hitSounds.Length)]);
+		
 	}
 }

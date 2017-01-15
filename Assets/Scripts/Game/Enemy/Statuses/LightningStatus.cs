@@ -9,6 +9,7 @@ public class LightningStatus : EnemyStatus
 	[Header("Arc Effect")]
 	public SimpleAnimation[] lightningArcAnimations;
 	public SimpleAnimationPlayer anim;
+	public AudioClip[] applySounds;
 
 	private LightningBolt lightning;
 	private Transform effectsFolder;
@@ -27,6 +28,7 @@ public class LightningStatus : EnemyStatus
 
 	protected override IEnumerator Effect ()
 	{
+		SoundManager.instance.RandomizeSFX (applySounds [Random.Range (0, applySounds.Length)]);
 		InvokeRepeating ("LightningArcEffect", 0, 1.0f);
 		yield return new WaitForSeconds (0.2f);
 		while (timer >= 0)

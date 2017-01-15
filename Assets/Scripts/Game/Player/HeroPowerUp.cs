@@ -21,6 +21,7 @@ public abstract class HeroPowerUp : MonoBehaviour
 
 	[Space]
 	public string description;
+	public string stackDescription;
 
 	public virtual void Activate(PlayerHero hero) 
 	{
