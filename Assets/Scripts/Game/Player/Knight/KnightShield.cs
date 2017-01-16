@@ -14,7 +14,7 @@ public class KnightShield : HeroPowerUp
 	[Header("Animations")]
 	public SimpleAnimation shieldBreakAnim;
 	public SimpleAnimation shieldRegenAnim;
-	public TempObject effect;
+	public GameObject effect;
 
 	public override void Activate(PlayerHero hero)
 	{
@@ -28,7 +28,7 @@ public class KnightShield : HeroPowerUp
 	private void ActivateShield()
 	{
 		shielded = true;
-		PlayEffect (shieldRegenAnim);
+		effect.SetActive (true);
 	}
 
 	public void AbsorbDamage(int amt)
@@ -38,7 +38,7 @@ public class KnightShield : HeroPowerUp
 
 		knight.player.Heal (amt);
 		Deactivate ();
-		PlayEffect (shieldBreakAnim);
+		effect.GetComponent<IndicatorEffect> ().AnimateOut ();
 		CameraControl.instance.StartShake (0.1f, 0.05f);
 	}
 
@@ -64,24 +64,6 @@ public class KnightShield : HeroPowerUp
 			ActivateShield ();
 			charge = 0;
 		}
-	}
-
-	private void PlayEffect(SimpleAnimation anim)
-	{
-		SimpleAnimationPlayer animPlayer = effect.GetComponent<SimpleAnimationPlayer> ();
-		animPlayer.anim = anim;
-
-		TempObjectInfo info = new TempObjectInfo ();
-		info.isSelfDeactivating = true;
-		info.lifeTime = animPlayer.anim.TimeLength + 0.5f;
-		info.targetColor = new Color (1, 1, 1, 1f);
-		effect.Init (
-			Quaternion.identity,
-			transform.position,
-			animPlayer.anim.frames[0],
-			info
-		);
-		animPlayer.Play ();
 	}
 }
 

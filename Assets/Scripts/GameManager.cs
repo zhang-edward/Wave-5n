@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour {
 
 	public static GameManager instance;
 	public Image loadingOverlay;
-	private string selectedHero = "knight";
+	public string selectedHero = "knight";
 	public string selectedMap = "grass";
 	public GameObject player;
 
@@ -71,10 +71,6 @@ public class GameManager : MonoBehaviour {
 	void Update()
 	{
 #if UNITY_EDITOR
-		if (Input.GetKeyDown (KeyCode.R))
-		{
-			SceneManager.LoadScene (SceneManager.GetActiveScene ().name);
-		}
 		if (Input.GetKeyDown(KeyCode.BackQuote))
 		{
 			debugPanel.SetActive(!debugPanel.activeInHierarchy);
@@ -281,6 +277,12 @@ public class GameManager : MonoBehaviour {
 	{
 		EnemyManager enemyManager = GameObject.Find ("/Game/EnemyManager").GetComponent<EnemyManager> ();
 		enemyManager.SpawnBoss ();
+	}
+
+	public void AddPowerUp(string name)
+	{
+		Player plyr = player.GetComponentInChildren<Player> ();
+		plyr.hero.powerUpHolder.AddPowerUp (name);
 	}
 
 #endif

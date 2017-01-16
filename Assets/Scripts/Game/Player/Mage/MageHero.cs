@@ -12,9 +12,10 @@ public class MageHero : PlayerHero {
 	public Map map;
 	public GameObject projectilePrefab;
 	private bool activatedSpecialAbility;
-
-	private bool isInFireSpreadMode = false;
 	public MageFire mageFirePrefab;
+
+	private float fireballSpeed;
+	public float fireballSpeedMultiplier;
 
 	[Header("Audio")]
 	public AudioClip shootSound;
@@ -23,10 +24,16 @@ public class MageHero : PlayerHero {
 	public AudioClip powerUpSound;
 	public AudioClip powerDownSound;
 
+	public delegate void MageAbilityActivated();
+	public event MageAbilityActivated OnMageTeleportIn;
+
+	public delegate void MageCreatedObject (GameObject o);
+	public event MageCreatedObject OnMageShotFireball;
+
 	//private float chargeTime;
 	//private bool sprayingFire;
-	private float tapHoldTime;
-	private const float minTapHoldTime = 0.2f;
+	//private float tapHoldTime;
+	//private const float minTapHoldTime = 0.2f;
 
 	public override void Init(EntityPhysics body, Animator anim, Player player)
 	{
@@ -36,6 +43,9 @@ public class MageHero : PlayerHero {
 		heroName = PlayerHero.HERO_TYPES ["MAGE"];
 		projectilePool = ObjectPooler.GetObjectPooler ("PlayerProjectile") as RuntimeObjectPooler;
 		projectilePool.SetPooledObject(projectilePrefab);
+
+		fireballSpeed = projectilePrefab.GetComponent<PlayerProjectile> ().setSpeed;
+		fireballSpeedMultiplier = 1f;
 	}
 
 	public override void HandleSwipe ()
@@ -55,7 +65,6 @@ public class MageHero : PlayerHero {
 		// Sound
 		SoundManager.instance.PlayImportantSound(powerUpSound);
 		activatedSpecialAbility = true;
-		isInFireSpreadMode = true;
 
 		CameraControl.instance.StartFlashColor (Color.white);
 		CameraControl.instance.SetOverlayColor (new Color(1, 0.2f, 0), 0.2f);
@@ -71,7 +80,6 @@ public class MageHero : PlayerHero {
 
 		activatedSpecialAbility = false;
 		specialAbilityCharge = 0;
-		isInFireSpreadMode = false;
 
 		CameraControl.instance.StartFlashColor (Color.white);
 		CameraControl.instance.SetOverlayColor (Color.clear, 0f);
@@ -98,14 +106,18 @@ public class MageHero : PlayerHero {
 		anim.SetBool ("Attack", true);
 
 		// actual projectile stuff
-		GameObject o = projectilePool.GetPooledObject ();
+		GameObject fireballObj = projectilePool.GetPooledObject ();
 		Vector2 dir = player.dir.normalized;
-		PlayerProjectile fireball = o.GetComponent<PlayerProjectile> ();
-		fireball.Init (transform.position, dir, player);
+		PlayerProjectile fireball = fireballObj.GetComponent<PlayerProjectile> ();
+		fireball.Init (transform.position, dir, player, fireballSpeed * fireballSpeedMultiplier, 1);
 
 		// recoil
 		body.Move (dir);	// set the sprites flipX to the correct direction
 		body.Rb2d.velocity = dir * -4f;
+
+		// event
+		if (OnMageShotFireball != null)
+			OnMageShotFireball (fireballObj);
 
 		// Reset the ability
 		Invoke ("ResetShootFireball", 0.5f);
@@ -146,8 +158,10 @@ public class MageHero : PlayerHero {
 		player.transform.parent.position = (Vector3)player.dir + player.transform.parent.position;
 		// do area attack
 		AreaAttack ();
-		if (isInFireSpreadMode)
+		if (activatedSpecialAbility)
 			CreateFire ();
+		if (OnMageTeleportIn != null)
+			OnMageTeleportIn ();
 		// Wait for end of animation
 		yield return new WaitForEndOfFrame ();		// wait for the animation state to update before continuing
 		while (anim.GetCurrentAnimatorStateInfo (0).IsName ("TeleportIn"))

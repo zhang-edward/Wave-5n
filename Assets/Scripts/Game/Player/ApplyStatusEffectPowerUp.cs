@@ -30,7 +30,7 @@ public class ApplyStatusEffectPowerUp : HeroPowerUp
 	public override void Stack ()
 	{
 		base.Stack ();
-		applyStatusChance += 0.05f;
+		applyStatusChance += 0.08f;
 	}
 
 	private void ApplyStatus(Enemy e)

@@ -33,6 +33,14 @@ public class PlayerProjectile : Projectile
 		anim.Play ();
 	}
 
+	public void Init(Vector3 pos, Vector2 dir, Player player, float speed, int damage)
+	{
+		base.Init (pos, dir, anim.anim.frames[0], target, speed, damage);
+		this.player = player;
+		anim.looping = true;
+		anim.Play ();
+	}
+
 	void OnDrawGizmosSelected()
 	{
 		Gizmos.DrawWireSphere (transform.position, 1.5f);

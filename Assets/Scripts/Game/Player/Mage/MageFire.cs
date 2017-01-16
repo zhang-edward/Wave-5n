@@ -6,23 +6,27 @@ public class MageFire : MonoBehaviour
 	private ObjectPooler effectPool;
 	public Sprite hitEffect;
 
+	public float radius;
+	public float interval;
+	public float lifetime;
+
 	void Start()
 	{
 		effectPool = ObjectPooler.GetObjectPooler ("Effect");
 		StartCoroutine (DamageEnemiesInRange ());
-		Destroy (gameObject, 8.0f);
+		Destroy (gameObject, lifetime);
 	}
 
 	void OnDrawGizmosSelected()
 	{
-		Gizmos.DrawWireSphere (transform.position, 3.0f);
+		Gizmos.DrawWireSphere (transform.position, radius);
 	}
 
 	private IEnumerator DamageEnemiesInRange()
 	{
 		while (true)
 		{
-			Collider2D[] cols = Physics2D.OverlapCircleAll (transform.position, 3.0f);
+			Collider2D[] cols = Physics2D.OverlapCircleAll (transform.position, radius);
 			foreach (Collider2D col in cols)
 			{
 				if (col.CompareTag("Enemy"))
@@ -42,7 +46,7 @@ public class MageFire : MonoBehaviour
 					}
 				}
 			}
-			yield return new WaitForSeconds (2.0f);
+			yield return new WaitForSeconds (interval);
 		}
 	}
 }

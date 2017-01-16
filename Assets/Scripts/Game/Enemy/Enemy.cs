@@ -274,7 +274,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 
 	protected void SpawnMoneyPickup()
 	{
-		int value = Random.Range (0, maxHealth * 5);
+		int value = Random.Range (1, maxHealth * 2);
 		Instantiate (moneyPickupPrefab, transform.position, Quaternion.identity);
 		moneyPickupPrefab.GetComponent<MoneyPickup> ().value = value;
 	}

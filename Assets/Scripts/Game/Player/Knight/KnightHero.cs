@@ -54,6 +54,11 @@ public class KnightHero : PlayerHero {
 			return;
 		}
 		ResetCooldownTimer (0);
+		RushAbility ();
+	}
+
+	private void RushAbility()
+	{
 		// Sound
 		SoundManager.instance.RandomizeSFX (rushSound);
 		// Animation
@@ -83,7 +88,7 @@ public class KnightHero : PlayerHero {
 		// Animation
 		anim.SetTrigger ("AreaAttack");
 		// Effects
-		PlayAreaAttackEffect ();
+		areaAttackEffect.SetActive(true);
 		// Properties
 		player.isInvincible = true;
 		player.input.isInputEnabled = false;
@@ -105,6 +110,8 @@ public class KnightHero : PlayerHero {
 
 	private void ResetInvincibility()
 	{
+		areaAttackEffect.GetComponent<IndicatorEffect> ().AnimateOut ();
+
 		player.sr.color = Color.white;
 		player.isInvincible = false;
 	}
@@ -177,7 +184,7 @@ public class KnightHero : PlayerHero {
 		animPlayer.Play ();
 	}
 
-	private void PlayAreaAttackEffect()
+	/*private void PlayAreaAttackEffect()
 	{
 		TempObject effect = areaAttackEffect.GetComponent<TempObject> ();
 		SimpleAnimationPlayer animPlayer = areaAttackEffect.GetComponent<SimpleAnimationPlayer> ();
@@ -193,7 +200,7 @@ public class KnightHero : PlayerHero {
 			info
 		);
 		animPlayer.Play ();
-	}
+	}*/
 
 	void OnTriggerStay2D(Collider2D col)
 	{

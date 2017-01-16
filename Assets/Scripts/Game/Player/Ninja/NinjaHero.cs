@@ -155,8 +155,7 @@ public class NinjaHero : PlayerHero {
 		player.transform.parent.position = dest;
 		body.Move (player.dir.normalized);		
 		player.isInvincible = false;
-		// Do area attack at the end
-		AreaAttack ();
+
 		yield return new WaitForEndOfFrame ();		// wait for the animation state to update before continuing
 		while (anim.GetCurrentAnimatorStateInfo (0).IsName ("DashIn"))
 			yield return null;
