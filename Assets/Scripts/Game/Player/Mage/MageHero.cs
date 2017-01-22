@@ -46,16 +46,9 @@ public class MageHero : PlayerHero {
 
 		fireballSpeed = projectilePrefab.GetComponent<PlayerProjectile> ().setSpeed;
 		fireballSpeedMultiplier = 1f;
-	}
 
-	public override void HandleSwipe ()
-	{
-		ShootFireball ();
-	}
-
-	public override void HandleTapRelease()
-	{
-		StartTeleport ();
+		onSwipe = ShootFireball;
+		onTapRelease = StartTeleport;
 	}
 
 	public override void SpecialAbility ()
@@ -87,17 +80,8 @@ public class MageHero : PlayerHero {
 
 	private void ShootFireball()
 	{
-		//chargeTime = 0f;
-		// if cooldown has not finished
-		if (cooldownTimers[0] > 0)
-		{
-			if (cooldownTimers [0]< 0.3f)
-			{
-				inputAction = HandleSwipe;
-				QueueAction (cooldownTimers [0]);
-			}
+		if (!IsCooledDown (0, true, HandleSwipe))
 			return;
-		}
 		ResetCooldownTimer (0);
 		// Sound
 		SoundManager.instance.RandomizeSFX (shootSound);
@@ -132,8 +116,10 @@ public class MageHero : PlayerHero {
 
 	private void StartTeleport()
 	{
-		if (map.WithinOpenCells(player.transform.position + (Vector3)player.dir) &&
-			cooldownTimers[1] <= 0)
+		if (!IsCooledDown (1))
+			return;
+		ResetCooldownTimer (1);
+		if (map.WithinOpenCells(player.transform.position + (Vector3)player.dir))
 			StartCoroutine (Teleport ());
 	}
 

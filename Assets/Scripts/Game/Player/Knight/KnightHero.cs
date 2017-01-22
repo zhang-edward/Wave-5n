@@ -14,7 +14,8 @@ public class KnightHero : PlayerHero {
 	public float baseRushMoveSpeed = 9f;
 	public float rushMoveSpeedMultiplier = 1;
 	public float baseRushDuration = 0.5f;
-	private bool killBox = false;
+	[HideInInspector]
+	public bool killBox = false;
 
 	[Header("Audio")]
 	public AudioClip rushSound;
@@ -38,27 +39,18 @@ public class KnightHero : PlayerHero {
 		cooldownTimers = new float[2];
 		base.Init (body, anim, player);
 		heroName = PlayerHero.HERO_TYPES ["KNIGHT"];
+		// handle input
+		onSwipe = RushAbility;
+		onTapRelease = AreaAttack;
 	}
 
-	// Dash attack
-	public override void HandleSwipe()
+	public void RushAbility()
 	{
-		// if cooldown has not finished
-		if (CooldownTimers[0] > 0)
-		{
-			if (CooldownTimers [0]< 0.3f)
-			{
-				inputAction = HandleSwipe;
-				QueueAction (CooldownTimers [0]);
-			}
+		// check cooldown
+		if (!IsCooledDown (0, true, HandleSwipe))
 			return;
-		}
 		ResetCooldownTimer (0);
-		RushAbility ();
-	}
 
-	private void RushAbility()
-	{
 		// Sound
 		SoundManager.instance.RandomizeSFX (rushSound);
 		// Animation
@@ -77,10 +69,21 @@ public class KnightHero : PlayerHero {
 			OnKnightRush();
 	}
 
-	// Area attack
-	public override void HandleTapRelease ()
+	public void ResetRushAbility()
 	{
-		if (CooldownTimers [1] > 0)
+		// Animation
+		anim.SetBool ("Attacking", false);
+		// Player Properties
+		hitEnemies.Clear ();	// reset hit list
+		killBox = false;
+		body.moveSpeed = player.DEFAULT_SPEED;
+		player.input.isInputEnabled = true;
+	}
+
+	public void AreaAttack()
+	{
+		// check cooldown
+		if (!IsCooledDown (1))
 			return;
 		ResetCooldownTimer (1);
 		// Sound
@@ -108,30 +111,19 @@ public class KnightHero : PlayerHero {
 		Invoke ("ResetInvincibility", 1.5f);
 	}
 
+	private void ResetAreaAttackAbility()
+	{
+		hitEnemies.Clear ();
+		anim.SetBool ("AreaAttack", false);
+		player.input.isInputEnabled = true;
+	}
+
 	private void ResetInvincibility()
 	{
 		areaAttackEffect.GetComponent<IndicatorEffect> ().AnimateOut ();
 
 		player.sr.color = Color.white;
 		player.isInvincible = false;
-	}
-
-	private void ResetRushAbility()
-	{
-		hitEnemies.Clear ();
-		rushEffect.GetComponent<TempObject> ().Deactivate ();
-		killBox = false;
-		body.moveSpeed = player.DEFAULT_SPEED;
-		
-		player.input.isInputEnabled = true;
-		anim.SetBool ("Attacking", false);
-	}
-
-	private void ResetAreaAttackAbility()
-	{
-		hitEnemies.Clear ();
-		anim.SetBool ("AreaAttack", false);
-		player.input.isInputEnabled = true;
 	}
 
 	private void ResetSpecialAbility()
@@ -177,8 +169,8 @@ public class KnightHero : PlayerHero {
 		Vector2 dir = player.dir;
 		float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
 		TempObjectInfo info = new TempObjectInfo ();
-		info.isSelfDeactivating = false;
 		info.targetColor = new Color (1, 1, 1, 0.5f);
+		info.lifeTime = baseRushDuration;
 		info.fadeOutTime = 0.1f;
 		effect.Init (Quaternion.Euler (new Vector3 (0, 0, angle)), transform.position, animPlayer.anim.frames [0], info);
 		animPlayer.Play ();

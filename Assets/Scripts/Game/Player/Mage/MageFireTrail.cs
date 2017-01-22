@@ -41,11 +41,13 @@ public class MageFireTrail : HeroPowerUp
 			GameObject o = Instantiate (fireTrailEmitterPrefab);
 			o.transform.position = fireballObj.transform.position;
 			o.transform.SetParent (fireballObj.transform);
+			percentActivated = 0f;
 		}
 		else if (Random.value < createFireTrailChance)
 		{
 			fireTrailReady = true;
 			fireTrailReadyIndicator.SetActive (true);
+			percentActivated = 1f;
 		}
 	}
 }

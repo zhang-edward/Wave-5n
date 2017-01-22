@@ -11,9 +11,12 @@ public abstract class PlayerHero : MonoBehaviour {
 		{"NINJA", "ninja"}
 	};
 
+	[HideInInspector]
 	public Player player;
-	protected EntityPhysics body;
-	protected Animator anim;
+	[HideInInspector]
+	public EntityPhysics body;
+	[HideInInspector]
+	public Animator anim;
 
 	[Header("Ability Icons")]
 	public Sprite[] icons;
@@ -48,8 +51,8 @@ public abstract class PlayerHero : MonoBehaviour {
 		get {return cooldownTimers;}
 	}
 	[Header("Ability Cooldown Times")]
-	public float[] cooldownTimeNormal;		// the regular cooldown time for each ability. Set in inspector
-	private float[] cooldownTime;			// the cooldown time used for each ability
+	public float[] cooldownTime;		// the regular cooldown time for each ability. Set in inspector
+	[HideInInspector]
 	public float[] cooldownMultipliers;
 
 	public int NumAbilities{
@@ -59,8 +62,12 @@ public abstract class PlayerHero : MonoBehaviour {
 	[Header("Hero Audio")]
 	public AudioClip spawnSound;
 
-	protected delegate void InputAction();
+	public delegate void InputAction();
 	protected InputAction inputAction;
+	public InputAction onSwipe;
+	public InputAction onTapRelease;
+	public InputAction onTapHoldDown;
+	public InputAction onSpecialAbility;
 
 	void OnDisable()
 	{
@@ -72,7 +79,33 @@ public abstract class PlayerHero : MonoBehaviour {
 	/// Performs an ability on swipe
 	/// </summary>
 	public virtual void HandleTapRelease ()
-	{}
+	{
+		if (onTapRelease != null)
+			onTapRelease();
+	}
+
+	/// <summary>
+	/// Performs an action on button held down
+	/// </summary>
+	public virtual void HandleHoldDown()
+	{
+		if (onTapHoldDown != null)
+			onTapHoldDown();
+	}
+
+	/// <summary>
+	/// Performs an ability on swipe
+	/// </summary>
+	public virtual void HandleSwipe()
+	{
+		if (onSwipe != null)
+			onSwipe();
+	}
+
+	/// <summary>
+	/// Performs a special ability.
+	/// </summary>
+	public abstract void SpecialAbility();
 
 	protected void QueueAction(float t)
 	{
@@ -86,23 +119,6 @@ public abstract class PlayerHero : MonoBehaviour {
 		inputAction ();
 	}
 
-	/// <summary>
-	/// Performs an action on button held down
-	/// </summary>
-	public virtual void HandleHoldDown()
-	{}
-
-	/// <summary>
-	/// Performs an ability on swipe
-	/// </summary>
-	public virtual void HandleSwipe()
-	{}
-
-	/// <summary>
-	/// Specials the ability.
-	/// </summary>
-	public abstract void SpecialAbility();
-
 	public virtual void Init(EntityPhysics body, Animator anim, Player player)
 	{
 		SoundManager.instance.PlaySingle (spawnSound);
@@ -110,11 +126,10 @@ public abstract class PlayerHero : MonoBehaviour {
 		this.body = body;
 		this.anim = anim;
 		this.player = player;
-		cooldownTime = new float[cooldownTimeNormal.Length];
-		cooldownMultipliers = new float[cooldownTimeNormal.Length];
+		// init cooldownMultipliers
+		cooldownMultipliers = new float[cooldownTime.Length];
 		for(int i = 0; i < cooldownTime.Length; i ++)
 		{
-			cooldownTime [i] = cooldownTimeNormal [i];
 			cooldownMultipliers [i] = 1;
 		}
 		player.maxHealth = maxHealth;
@@ -144,7 +159,23 @@ public abstract class PlayerHero : MonoBehaviour {
 		}
 	}
 
-	protected void ResetCooldownTimer(int index)
+	public bool IsCooledDown(int index, bool queueActionIfFailed = false, InputAction input = null)
+	{
+		// check cooldown timer
+		if (CooldownTimers[index] > 0)
+		{
+			if (queueActionIfFailed && CooldownTimers [index]< 0.3f)
+			{
+				inputAction = input;
+				QueueAction (CooldownTimers [index]);
+			}
+			return false;
+		}
+		else
+			return true;
+	}
+
+	public void ResetCooldownTimer(int index)
 	{
 		cooldownTimers [index] = GetCooldownTime(index);
 	}
@@ -186,13 +217,5 @@ public abstract class PlayerHero : MonoBehaviour {
 	public float GetCooldownTime(int index)
 	{
 		return cooldownTime [index] * cooldownMultipliers [index];
-	}
-
-	public void ResetToDefaultCooldowns()
-	{
-		for (int i = 0; i < cooldownTime.Length; i ++)
-		{
-			cooldownTime [i] = cooldownTimeNormal [i];
-		}
 	}
 }

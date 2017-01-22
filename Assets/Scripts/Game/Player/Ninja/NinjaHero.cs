@@ -7,7 +7,7 @@ public class NinjaHero : PlayerHero {
 	public RuntimeObjectPooler projectilePool;
 	public GameObject projectilePrefab;
 	public GameObject specialProjectilePrefab;
-	public int smokeBombRange = 2;
+	// public int smokeBombRange = 2;
 	public float dashDistance = 4;
 
 	public SimpleAnimation hitEffect;
@@ -24,6 +24,9 @@ public class NinjaHero : PlayerHero {
 	public AudioClip powerDownSound;
 
 	//public int damage = 1;
+	public delegate void NinjaCreatedObject(GameObject o);
+	public delegate void NinjaActivatedAbility();
+	public event NinjaActivatedAbility OnNinjaThrewStar;
 
 	public override void Init(EntityPhysics body, Animator anim, Player player)
 	{
@@ -32,27 +35,17 @@ public class NinjaHero : PlayerHero {
 		heroName = PlayerHero.HERO_TYPES ["NINJA"];
 		projectilePool = (RuntimeObjectPooler)ObjectPooler.GetObjectPooler ("PlayerProjectile");
 		projectilePool.SetPooledObject(projectilePrefab);
+
+		onSwipe = DashAttack;
+		onTapRelease = ShootNinjaStar;
 	}
 
-	public override void HandleSwipe ()
+	public void DashAttack()
 	{
-		if (cooldownTimers[0] > 0)
-		{
-			if (cooldownTimers [0]< 0.3f)
-			{
-				inputAction = HandleSwipe;
-				QueueAction (cooldownTimers [0]);
-			}
+		if (!IsCooledDown (0, true, HandleSwipe))
 			return;
-		}
 		ResetCooldownTimer (0);
-		StartCoroutine(DashAttack ());
-	}
-
-	public override void HandleTapRelease()
-	{
-		//smokeBomb.Init (transform.position);
-		ShootNinjaStar();
+		StartCoroutine(DashAttackRoutine ());
 	}
 
 	public override void SpecialAbility ()
@@ -90,7 +83,7 @@ public class NinjaHero : PlayerHero {
 	private void ShootNinjaStar()
 	{
 		// if cooldown has not finished
-		if (cooldownTimers[1] > 0)
+		if (!IsCooledDown (1))
 			return;
 		ResetCooldownTimer (1);
 		// Sound
@@ -99,18 +92,21 @@ public class NinjaHero : PlayerHero {
 		anim.SetBool ("Attack", true);
 		// Player properties
 		Vector2 dir = player.dir.normalized;
-		InitNinjaStar (dir);
+		GameObject o = InitNinjaStar (dir);
 		if (activatedSpecialAbility)
 			ShootNinjaStarFanPattern ();
 		// set direction
 		body.Move (dir);
 		body.Rb2d.velocity = Vector2.zero;
 
+		if (OnNinjaThrewStar != null)
+			OnNinjaThrewStar ();
+
 		Invoke ("ResetAbility", 0.5f);
 	}
 
 	// Special ability
-	private void ShootNinjaStarFanPattern()
+	public void ShootNinjaStarFanPattern()
 	{
 		Vector2 dir = player.dir.normalized;
 		float angle = Mathf.Atan2 (dir.y, dir.x) * Mathf.Rad2Deg;
@@ -120,10 +116,11 @@ public class NinjaHero : PlayerHero {
 		InitNinjaStar (UtilMethods.DegreeToVector2 (fanAngle2));
 	}
 
-	private void InitNinjaStar(Vector2 dir)
+	private GameObject InitNinjaStar(Vector2 dir)
 	{
 		PlayerProjectile ninjaStar = projectilePool.GetPooledObject ().GetComponent<PlayerProjectile>();
 		ninjaStar.Init (transform.position, dir, player);
+		return ninjaStar.gameObject;
 	}
 
 	public void ResetAbility()
@@ -132,7 +129,7 @@ public class NinjaHero : PlayerHero {
 		anim.SetBool("Attack", false);
 	}
 
-	private IEnumerator DashAttack()
+	private IEnumerator DashAttackRoutine()
 	{
 		player.isInvincible = true;
 		player.input.isInputEnabled = false;

@@ -20,7 +20,9 @@ public abstract class HeroPowerUp : MonoBehaviour
 	public int cost;
 
 	[Space]
+	[TextArea]
 	public string description;
+	[TextArea]
 	public string stackDescription;
 
 	public virtual void Activate(PlayerHero hero) 
