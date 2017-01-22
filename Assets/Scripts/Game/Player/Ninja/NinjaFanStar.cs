@@ -12,7 +12,7 @@ public class NinjaFanStar : HeroPowerUp
 		base.Activate (hero);
 		ninja = (NinjaHero)hero;
 		ninja.OnNinjaThrewStar += ActivateFanStar;
-		activateChance = 0.2f;
+		activateChance = 0.1f;
 	}
 
 	public override void Deactivate ()

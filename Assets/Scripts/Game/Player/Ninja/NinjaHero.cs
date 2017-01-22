@@ -13,7 +13,8 @@ public class NinjaHero : PlayerHero {
 	public SimpleAnimation hitEffect;
 	public SimpleAnimation ninjaStarAnim;
 
-	private bool activatedSpecialAbility = false;
+	[HideInInspector]
+	public bool activatedSpecialAbility = false;
 
 	[Header("Audio")]
 	public AudioClip[] hitSounds;
@@ -27,6 +28,7 @@ public class NinjaHero : PlayerHero {
 	public delegate void NinjaCreatedObject(GameObject o);
 	public delegate void NinjaActivatedAbility();
 	public event NinjaActivatedAbility OnNinjaThrewStar;
+	public event NinjaActivatedAbility OnNinjaDash;
 
 	public override void Init(EntityPhysics body, Animator anim, Player player)
 	{
@@ -80,7 +82,7 @@ public class NinjaHero : PlayerHero {
 		CameraControl.instance.SetOverlayColor (Color.clear, 0);
 	}
 
-	private void ShootNinjaStar()
+	public void ShootNinjaStar()
 	{
 		// if cooldown has not finished
 		if (!IsCooledDown (1))
@@ -116,7 +118,7 @@ public class NinjaHero : PlayerHero {
 		InitNinjaStar (UtilMethods.DegreeToVector2 (fanAngle2));
 	}
 
-	private GameObject InitNinjaStar(Vector2 dir)
+	public GameObject InitNinjaStar(Vector2 dir)
 	{
 		PlayerProjectile ninjaStar = projectilePool.GetPooledObject ().GetComponent<PlayerProjectile>();
 		ninjaStar.Init (transform.position, dir, player);
@@ -152,6 +154,9 @@ public class NinjaHero : PlayerHero {
 		player.transform.parent.position = dest;
 		body.Move (player.dir.normalized);		
 		player.isInvincible = false;
+
+		if (OnNinjaDash != null)
+			OnNinjaDash ();
 
 		yield return new WaitForEndOfFrame ();		// wait for the animation state to update before continuing
 		while (anim.GetCurrentAnimatorStateInfo (0).IsName ("DashIn"))
@@ -197,7 +202,7 @@ public class NinjaHero : PlayerHero {
 		return dashDistance;
 	}
 
-	private void DamageEnemy(Enemy e)
+	public void DamageEnemy(Enemy e)
 	{
 		if (!e.invincible && e.health > 0)
 		{
