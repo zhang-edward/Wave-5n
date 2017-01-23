@@ -64,10 +64,10 @@ public class OgreBoss : BossEnemy {
 	protected override IEnumerator MoveState()
 	{
 		UnityEngine.Assertions.Assert.IsTrue (body.moveSpeed == DEFAULT_SPEED);
-		moveState = new WalkVicinityState (this);
+		//movementMethod = new WalkVicinityState (this);
 		while (true)
 		{
-			moveState.UpdateState ();
+			movementMethod.UpdateState ();
 			if (attackTimer <= 0)
 			{
 				if (roarTimer <= 0)

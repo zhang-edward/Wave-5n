@@ -6,14 +6,9 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 
 	protected string DEFAULT_STATE = "MoveState";
 	protected int DEFAULT_LAYER;
+	[HideInInspector]
 	public float DEFAULT_SPEED;
 	public static int MAX_ABILITIES = 4;
-
-	public enum MoveMethod {
-		Follow,
-		Bounce,
-		WalkVicinty
-	}
 
 	public enum SpawnMethod {
 		WalkIn,
@@ -58,9 +53,8 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 	public int health { get; private set; }
 	public Vector3 healthBarOffset;
 
-	[Header("Move State")]
-	public MoveMethod movementMethod;
-	protected IMoveState moveState;
+	[Header("Move State"), SerializeField]
+	public MoveState movementMethod;
 
 	[HideInInspector]
 	public GameObject moneyPickupPrefab;
@@ -89,11 +83,13 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 		// init default values
 		DEFAULT_LAYER = body.gameObject.layer;
 		DEFAULT_SPEED = body.moveSpeed;
-		// set map
-		this.map = map;
-		// set stat
-		health = maxHealth;
-		deathPropPool = ObjectPooler.GetObjectPooler ("DeathProp");
+
+		this.map = map;			// set map
+		health = maxHealth;		// set stat
+		deathPropPool = ObjectPooler.GetObjectPooler ("DeathProp");	// set deathPropPool
+
+		// init movement and action
+		movementMethod.Init(this, body, player);
 
 		Spawn (spawnLocation);
 	}
@@ -288,7 +284,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 			invincible = false;
 	}*/
 
-	public void Disable(float time)
+	public virtual void Disable(float time)
 	{
 		StopAllCoroutines ();
 		StartCoroutine (HitDisableState (time, 0));
@@ -343,24 +339,5 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 			if (OnCollideWithMapBorder != null)
 				OnCollideWithMapBorder ();
 		}	
-	}
-
-	/// <summary>
-	/// Gets the IMoveState as specified by <see cref="movementMethod"/>
-	/// </summary>
-	/// <returns>The assigned move state.</returns>
-	protected IMoveState GetAssignedMoveState()
-	{
-		switch (movementMethod)
-		{
-		case MoveMethod.Bounce:
-			return new BounceState (this);
-		case MoveMethod.Follow:
-			return new FollowState (this);
-		case MoveMethod.WalkVicinty:
-			return new WalkVicinityState (this);
-		default:
-			return null;
-		}
 	}
 }

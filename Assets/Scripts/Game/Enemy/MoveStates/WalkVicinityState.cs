@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class WalkVicinityState : IMoveState
+public class WalkVicinityState : MoveState
 {
 	private enum State {
 		Walk,
@@ -9,25 +9,27 @@ public class WalkVicinityState : IMoveState
 	}
 	private State state = State.Walk;
 
-	private Enemy enemy;
-	private EntityPhysics body;
-	private Transform player;
 	private Animator anim;
 
 	private Vector3 target;
 	private float waitTimer;	// how long this entity should wait, once it has reached its destination
 
-	public WalkVicinityState(Enemy enemy)
+	public float waitTime = 1.0f;
+	public float walkRadius = 1.0f;
+
+	public override void Init (Enemy e, EntityPhysics body, Transform player)
 	{
-		this.enemy = enemy;
-		body = enemy.body;
-		player = enemy.player;
-		anim = enemy.anim;
-		enemy.OnCollideWithMapBorder += ToWaitState;
+		base.Init (e, body, player);
+		anim = e.anim;
+	}
+
+	public override void Reset()
+	{
 		ToWalkState ();
 	}
 
-	public void UpdateState()
+	// Simple FSM
+	public override void UpdateState()
 	{
 		switch (state)
 		{
@@ -42,10 +44,11 @@ public class WalkVicinityState : IMoveState
 
 	private void ToWalkState()
 	{
-		target = (Vector2)(player.position)
-			+ new Vector2(Random.Range(-1,2), Random.Range(-1,2));		// add a random offset;
-
+		target = (Vector2)(player.position) + new Vector2(
+				Random.Range(-walkRadius, walkRadius),
+				Random.Range(-walkRadius, walkRadius));		// add a random offset;
 		state = State.Walk;
+		print("moving");
 	}
 
 	private void WalkState()
@@ -77,7 +80,7 @@ public class WalkVicinityState : IMoveState
 		waitTimer-= Time.deltaTime;
 		if (waitTimer <= 0)
 		{
-			waitTimer = 1.0f;
+			waitTimer = waitTime;
 			ToWalkState ();
 		}
 	}

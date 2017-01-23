@@ -1,0 +1,21 @@
+﻿using UnityEngine;
+using System.Collections;
+
+public class PlayerInRangeCondition : EnemyCondition
+{
+	public float range;
+
+	public override bool Check ()
+	{
+		Collider2D[] cols = Physics2D.OverlapCircleAll (e.transform.position, range);
+		foreach (Collider2D col in cols)
+		{
+			if (col.CompareTag ("Player"))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+}
+

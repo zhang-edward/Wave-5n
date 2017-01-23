@@ -178,12 +178,12 @@ public class EnemyManager : MonoBehaviour {
 			o.transform.position = new Vector3 (Random.Range (0, 10), -4);
 
 		Enemy e = o.GetComponentInChildren<Enemy> ();
-		e.Init (pos, map);
-		e.moneyPickupPrefab = moneyPickup;
 		e.player = player.transform;
-		enemies.Add (e);
+		e.moneyPickupPrefab = moneyPickup;
+		e.Init (pos, map);
 		e.OnEnemyDied += IncrementEnemiesKilled;
 		e.OnEnemyObjectDisabled += RemoveEnemyFromEnemiesList;
+		enemies.Add (e);
 
 		EnemyHealthBar healthBar = enemyHealthBarPool.GetPooledObject ().GetComponent<EnemyHealthBar>();
 		healthBar.Init (e);

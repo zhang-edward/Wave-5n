@@ -1,13 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BounceState : IMoveState
+public class BounceState : MoveState
 {
-	private Enemy enemy;
-	private EntityPhysics body;
-	private Transform player;
-
-	public Vector2 dir;
+	private Vector2 dir;
 
 	public BounceState(Enemy enemy)
 	{
@@ -18,7 +14,7 @@ public class BounceState : IMoveState
 		Bounce ();
 	}
 
-	public void UpdateState()
+	public override void UpdateState()
 	{
 		body.Move (dir);
 	}

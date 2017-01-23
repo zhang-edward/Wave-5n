@@ -5,7 +5,8 @@ public class LungingEnemy : Enemy {
 
 	private float attackTimer;
 
-	private bool attacking = false;
+	public EnemyAction lungeAction;
+	//public EnemyAction shootAction;
 
 	[Header("LungingEnemy Properties")]
 	public float chargeTime = 0.5f;
@@ -18,6 +19,13 @@ public class LungingEnemy : Enemy {
 	[Header("Audio")]
 	public AudioClip swingSound;
 
+	public override void Init (Vector3 spawnLocation, Map map)
+	{
+		base.Init (spawnLocation, map);
+		lungeAction.Init (this, ToMoveState);
+		//shootAction.Init (this, ToMoveState);
+	}
+
 	// Update is called once per frame
 	void Update () {
 		if (attackTimer > 0)
@@ -28,25 +36,31 @@ public class LungingEnemy : Enemy {
 	{
 		base.Damage (amt);
 		attackTimer += 0.5f;
+		lungeAction.Interrupt ();
 	}
 
 	protected override IEnumerator MoveState()
 	{
-		//UnityEngine.Assertions.Assert.IsTrue (body.moveSpeed == DEFAULT_SPEED);
-		moveState = GetAssignedMoveState ();
+		movementMethod.Reset ();
 		while (true)
 		{
-			moveState.UpdateState ();
-			if (PlayerInRange() && attackTimer <= 0)
+			movementMethod.UpdateState ();
+			if (lungeAction.CanExecute ())
 			{
-				StartCoroutine ("AttackState");
+				lungeAction.Execute ();
 				yield break;
 			}
 			yield return null;
 		}
 	}
 
-	private IEnumerator AttackState()
+	private void ToMoveState()
+	{
+		attackTimer = cooldownTime;
+		StartCoroutine ("MoveState");
+	}
+
+/*	private IEnumerator AttackState()
 	{
 		//UnityEngine.Assertions.Assert.IsTrue (state == State.Attacking);
 		//Debug.Log ("attacking: enter");
@@ -68,13 +82,6 @@ public class LungingEnemy : Enemy {
 		yield return new WaitForSeconds (0.3f);
 
 		StartCoroutine ("MoveState");
-	}
-
-	protected override void ResetVars()
-	{
-		body.gameObject.layer = DEFAULT_LAYER;
-		body.moveSpeed = DEFAULT_SPEED;
-		attacking = false;
 	}
 
 	private void Charge(out Vector3 dir)
@@ -107,5 +114,12 @@ public class LungingEnemy : Enemy {
 				player.Damage (damage);
 			}
 		}
+	}*/
+
+	protected override void ResetVars()
+	{
+		body.gameObject.layer = DEFAULT_LAYER;
+		body.moveSpeed = DEFAULT_SPEED;
+		//attacking = false;
 	}
 }

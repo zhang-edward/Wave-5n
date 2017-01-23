@@ -1,42 +1,33 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CollideDamageEnemy : Enemy {
-
-	public int damage = 1;
-	public float attackCooldown = 1f;
+public class CollideDamageAction : EnemyAction
+{
 	private float cooldown;
-
 	private float attackBuildUp = 0.2f;	// time for the player to be in contact with the enemy before the player is damaged
 	private float buildUp;				// timer for attackBuildUp
 
-	void Update()
+	public int damage = 1;
+	public bool activated;
+	public float attackCooldown = 1f;
+
+	public override void Execute ()
 	{
-		if (cooldown > 0)
-			cooldown -= Time.deltaTime;
+		activated = true;
 	}
 
-	protected override IEnumerator MoveState()
+	public override void Interrupt ()
 	{
-		while (true)
-		{
-			movementMethod.UpdateState ();
-			yield return null;
-		}
-	}
-
-	protected override void ResetVars ()
-	{
-		body.gameObject.layer = DEFAULT_LAYER;
-		body.moveSpeed = DEFAULT_SPEED;
 	}
 
 	void OnTriggerStay2D(Collider2D col)
 	{
+		if (!activated)
+			return;
 		if (col.CompareTag("Player"))
 		{
 			Player player = col.GetComponentInChildren<Player>();
-			if (cooldown <= 0 && health > 0 && !hitDisabled && buildUp >= attackBuildUp)
+			if (cooldown <= 0 && e.health > 0 && !e.hitDisabled && buildUp >= attackBuildUp)
 			{
 				player.Damage (damage);
 				cooldown = attackCooldown;
@@ -56,3 +47,4 @@ public class CollideDamageEnemy : Enemy {
 		}
 	}
 }
+

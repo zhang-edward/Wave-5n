@@ -46,10 +46,9 @@ public class ShooterEnemy : Enemy {
 	protected override IEnumerator MoveState()
 	{
 		UnityEngine.Assertions.Assert.IsTrue (body.moveSpeed == DEFAULT_SPEED);
-		moveState = GetAssignedMoveState();
 		while (true)
 		{
-			moveState.UpdateState ();
+			movementMethod.UpdateState ();
 			if (PlayerInRange() && attackTimer <= 0)
 			{
 				StartCoroutine ("AttackState");

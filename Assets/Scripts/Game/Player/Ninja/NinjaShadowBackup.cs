@@ -1,16 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class NinjaShadowBackup : HeroPowerUp
 {
-	private const float RADIUS = 5f;
-	private const int NUM_COMPANIONS = 1;
+	private const float RADIUS = 4f;
 
 	private NinjaHero ninja;
+	private int numCompanions = 1;
 	private float activateChance = 0.4f;
 
 	public GameObject companionPrefab;
-	private GameObject[] companions = new GameObject[NUM_COMPANIONS];
+	private List<GameObject> companions = new List<GameObject>();
 
 	public SimpleAnimation[] companionAnimations;
 
@@ -21,12 +22,9 @@ public class NinjaShadowBackup : HeroPowerUp
 		ninja.OnNinjaDash += ShadowBackup;
 
 		// instantiate companions
-		Transform parent = ObjectPooler.GetObjectPooler ("Effect").transform;
-		for (int i = 0; i < NUM_COMPANIONS; i ++)
+		for (int i = 0; i < numCompanions; i ++)
 		{
-			GameObject o = Instantiate (companionPrefab, parent);
-			companions [i] = o;
-			o.SetActive (false);
+			CreateCompanion ();
 		}
 	}
 
@@ -40,7 +38,16 @@ public class NinjaShadowBackup : HeroPowerUp
 	{
 		base.Stack ();
 		activateChance += 0.1f;
-		NUM_COMPANIONS++;
+		numCompanions++;
+		CreateCompanion ();
+	}
+
+	private void CreateCompanion()
+	{
+		Transform parent = ObjectPooler.GetObjectPooler ("Effect").transform;
+		GameObject o = Instantiate (companionPrefab, parent);
+		companions.Add (o);
+		o.SetActive (false);
 	}
 
 	/*void OnDrawGizmos()
@@ -61,18 +68,18 @@ public class NinjaShadowBackup : HeroPowerUp
 			if (col.CompareTag("Enemy"))
 			{
 				Enemy e = col.gameObject.GetComponentInChildren<Enemy> ();
-				StartCoroutine(SpawnCompanion (e, i));
+				StartCoroutine(ActivateCompanion (e, i));
 				i++;
-				if (i >= companions.Length)
+				if (i >= companions.Count)
 					break;
 			}
 		}
 	}
 
-	public IEnumerator SpawnCompanion(Enemy e, int i)
+	public IEnumerator ActivateCompanion(Enemy e, int i)
 	{
 		// random delay before starting routine
-		yield return new WaitForSeconds (Random.Range(0f, 1f));
+		yield return new WaitForSeconds (Random.Range(0f, 0.5f));
 
 		// randomize the orientation of the sprite a bit (flip, position)
 		SpriteRenderer sr = companions[i].GetComponent<SpriteRenderer> ();
