@@ -46,6 +46,7 @@ public class SpawnEnemiesAction : EnemyAction
 
 	public override void Interrupt ()
 	{
+		base.Interrupt ();
 		StopAllCoroutines ();
 	}
 

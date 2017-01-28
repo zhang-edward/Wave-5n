@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class KnightHero : PlayerHero {
 
+	public const int MAX_HIT = 5;	// maximum number of enemies that this player can damage per rush/area attack
+
 	[Header("Class-Specific")]
 	public GameObject rushEffect;
 	public GameObject areaAttackEffect;
@@ -15,7 +17,7 @@ public class KnightHero : PlayerHero {
 	public float rushMoveSpeedMultiplier = 1;
 	public float baseRushDuration = 0.5f;
 	[HideInInspector]
-	public bool killBox = false;
+	public bool rushHitBoxOn = false;
 
 	[Header("Audio")]
 	public AudioClip rushSound;
@@ -24,7 +26,7 @@ public class KnightHero : PlayerHero {
 	public AudioClip powerUpSound;
 	public AudioClip powerDownSound;
 
-	private List<Enemy> hitEnemies = new List<Enemy>();
+	private List<Enemy> hitEnemies = new List<Enemy>();		// list of the enemies that the player has hit during the rush ability
 
 	public delegate void KnightAbilityActivated();
 	public event KnightAbilityActivated OnKnightRush;
@@ -58,7 +60,7 @@ public class KnightHero : PlayerHero {
 		// Effects
 		PlayRushEffect ();
 		// Player properties
-		killBox = true;
+		rushHitBoxOn = true;
 		body.moveSpeed = baseRushMoveSpeed;
 		body.Move(player.dir.normalized);
 		Debug.DrawRay (transform.position, player.dir, Color.red, 0.5f);
@@ -75,7 +77,7 @@ public class KnightHero : PlayerHero {
 		anim.SetBool ("Attacking", false);
 		// Player Properties
 		hitEnemies.Clear ();	// reset hit list
-		killBox = false;
+		rushHitBoxOn = false;
 		body.moveSpeed = player.DEFAULT_SPEED;
 		player.input.isInputEnabled = true;
 	}
@@ -97,15 +99,26 @@ public class KnightHero : PlayerHero {
 		player.input.isInputEnabled = false;
 		player.sr.color = new Color (0.8f, 0.8f, 0.8f);
 		body.Move (Vector2.zero);
+
+		bool enemyHit = false;
+		int numEnemiesHit = 0;
 		Collider2D[] cols = Physics2D.OverlapCircleAll (transform.position, areaAttackRange);
 		foreach (Collider2D col in cols)
 		{
 			if (col.CompareTag("Enemy"))
 			{
-				Enemy e = col.gameObject.GetComponentInChildren<Enemy> ();
-				DamageEnemy (e);
+				numEnemiesHit++;
+				if (numEnemiesHit < MAX_HIT)
+				{
+					Enemy e = col.gameObject.GetComponentInChildren<Enemy> ();
+					DamageEnemy (e);
+					enemyHit = true;
+				}
 			}
 		}
+		if (enemyHit)
+			SoundManager.instance.RandomizeSFX (hitSounds[Random.Range(0, hitSounds.Length)]);
+		
 		// Reset Ability
 		Invoke ("ResetAreaAttackAbility", 0.5f);
 		Invoke ("ResetInvincibility", 1.5f);
@@ -196,12 +209,16 @@ public class KnightHero : PlayerHero {
 
 	void OnTriggerStay2D(Collider2D col)
 	{
-		if (killBox)
+		if (rushHitBoxOn)
 		{
 			if (col.CompareTag("Enemy"))
 			{
 				Enemy e = col.gameObject.GetComponentInChildren<Enemy> ();
-				DamageEnemy (e);
+				if (!hitEnemies.Contains (e) && hitEnemies.Count < MAX_HIT)
+				{
+					SoundManager.instance.RandomizeSFX (hitSounds[Random.Range(0, hitSounds.Length)]);
+					DamageEnemy (e);
+				}
 			}
 		}
 	}
@@ -210,25 +227,14 @@ public class KnightHero : PlayerHero {
 	{
 		if (!e.invincible && e.health > 0 && !hitEnemies.Contains(e))
 		{
-			//string status = "Poison";
-			/*if (Random.value < 0.5f)
-				status = "Freeze";
-			else
-				status = "Burn";*/
-			//e.AddStatus (Instantiate (StatusEffectContainer.instance.GetStatus (status)));
 			e.Damage (damage);
 			hitEnemies.Add (e);
-			/*Instantiate (hitEffect, 
-						Vector3.Lerp (transform.position, e.transform.position, 0.5f), 
-						Quaternion.identity);*/
 			player.effectPool.GetPooledObject().GetComponent<TempObject>().Init(
 				Quaternion.Euler(new Vector3(0, 0, Random.Range(0, 360f))),
 				Vector3.Lerp (transform.position, e.transform.position, 0.5f), 
 				hitEffect,
 				true,
 				0);
-
-			SoundManager.instance.RandomizeSFX (hitSounds[Random.Range(0, hitSounds.Length)]);
 			player.TriggerOnEnemyDamagedEvent(damage);
 			player.TriggerOnEnemyLastHitEvent (e);
 		}

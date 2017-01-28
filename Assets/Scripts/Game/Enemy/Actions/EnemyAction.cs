@@ -4,6 +4,7 @@ using System.Collections;
 public abstract class EnemyAction : MonoBehaviour
 {
 	public EnemyCondition[] conditions;
+	public bool interruptable;
 
 	protected Enemy e;
 
@@ -28,7 +29,12 @@ public abstract class EnemyAction : MonoBehaviour
 		return true;
 	}
 
-	public abstract void Interrupt();
+	public virtual void Interrupt()
+	{
+		if (!interruptable)
+			return;
+	}
+
 	public abstract void Execute ();
 }
 

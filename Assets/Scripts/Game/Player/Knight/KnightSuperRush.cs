@@ -53,7 +53,7 @@ public class KnightSuperRush : HeroPowerUp
 		PlayRushEffect();
 		// Player properties
 		knight.damage = 2;
-		knight.killBox = true;
+		knight.rushHitBoxOn = true;
 		knight.body.moveSpeed = knight.baseRushMoveSpeed * 1.3f;
 		knight.body.Move(playerHero.player.dir.normalized);
 		// Debug.DrawRay (transform.position, playerHero.player.dir, Color.red, 0.5f);

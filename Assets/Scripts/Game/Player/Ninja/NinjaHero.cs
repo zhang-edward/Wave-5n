@@ -3,6 +3,8 @@ using System.Collections;
 
 public class NinjaHero : PlayerHero {
 
+	private const int MAX_HIT = 5;
+
 	[Header("Class-Specific")]
 	public RuntimeObjectPooler projectilePool;
 	public GameObject projectilePrefab;
@@ -173,14 +175,19 @@ public class NinjaHero : PlayerHero {
 	private void DashCircleCast(Vector3 origin, Vector3 dest)
 	{
 		bool damagedEnemy = false;
+		int numEnemiesHit = 0;
 		RaycastHit2D[] hits = Physics2D.CircleCastAll (origin, 0.5f, (dest - origin), dashDistance);
 		foreach (RaycastHit2D hit in hits)
 		{
 			if (hit.collider.CompareTag("Enemy"))
 			{
-				damagedEnemy = true;
-				Enemy e = hit.collider.GetComponentInChildren<Enemy> ();
-				DamageEnemy (e);
+				numEnemiesHit++;
+				if (numEnemiesHit < MAX_HIT)
+				{
+					damagedEnemy = true;
+					Enemy e = hit.collider.GetComponentInChildren<Enemy> ();
+					DamageEnemy (e);
+				}
 			}
 		}
 		if (damagedEnemy)

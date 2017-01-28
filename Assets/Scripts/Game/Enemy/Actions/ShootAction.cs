@@ -35,6 +35,7 @@ public class ShootAction : EnemyAction {
 
 	public override void Interrupt ()
 	{
+		base.Interrupt ();
 		StopAllCoroutines ();
 	}
 

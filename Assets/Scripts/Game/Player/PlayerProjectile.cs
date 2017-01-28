@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-// WARNING: May contain some bugs regarding hitting enemies and maps and init
 public class PlayerProjectile : Projectile
 {
+	private const int MAX_HIT = 5; 	// The maxmimum number of enemies the area attack can hit
 	private Player player;
 	private SimpleAnimationPlayer anim;
 
@@ -69,14 +69,19 @@ public class PlayerProjectile : Projectile
 
 	private void AreaAttack()
 	{
+		int numEnemiesHit = 0;
 		Collider2D[] cols = Physics2D.OverlapCircleAll (transform.position, 1.5f);
 		foreach (Collider2D colChild in cols)
 		{
 			if (colChild.CompareTag(target))
 			{
-				IDamageable damageableTarget = colChild.GetComponentInChildren<IDamageable> ();
-				damageableTarget.Damage (damage);
-				player.TriggerOnEnemyDamagedEvent (damage);
+				numEnemiesHit++;
+				if (numEnemiesHit < MAX_HIT)
+				{
+					IDamageable damageableTarget = colChild.GetComponentInChildren<IDamageable> ();
+					damageableTarget.Damage (damage);
+					player.TriggerOnEnemyDamagedEvent (damage);
+				}
 			}
 		}
 	}

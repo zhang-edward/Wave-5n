@@ -18,6 +18,7 @@ public class CollideDamageAction : EnemyAction
 
 	public override void Interrupt ()
 	{
+		base.Interrupt ();
 	}
 
 	void OnTriggerStay2D(Collider2D col)

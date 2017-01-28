@@ -36,6 +36,7 @@ public class LungeAction : EnemyAction {
 
 	public override void Interrupt ()
 	{
+		base.Interrupt ();
 		StopAllCoroutines ();
 		attacking = false;
 	}
