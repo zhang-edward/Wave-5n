@@ -13,6 +13,7 @@ public class CollideDamageAction : EnemyAction
 
 	public override void Execute ()
 	{
+		base.Execute ();
 		activated = true;
 	}
 

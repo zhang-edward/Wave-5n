@@ -15,6 +15,9 @@ public class ShootAction : EnemyAction {
 	public float attackTime = 0.2f;
 	public float cooldownTime = 1.0f;
 	public int damage;
+	[Header("AnimationStates")]
+	public string chargeState;
+	public string shootState;
 	[Header("Audio")]
 	public AudioClip shootSound;
 
@@ -30,6 +33,7 @@ public class ShootAction : EnemyAction {
 
 	public override void Execute ()
 	{
+		base.Execute ();
 		StartCoroutine (UpdateState ());
 	}
 
@@ -55,12 +59,13 @@ public class ShootAction : EnemyAction {
 			onShoot ();
 		yield return new WaitForSeconds (attackTime);
 
-		onActionFinished ();
+		if (onActionFinished != null)
+			onActionFinished ();
 	}
 
 	private void Charge(out Vector3 dir)
 	{
-		anim.CrossFade ("charge", 0f);		// triggers are unreliable, crossfade forces state to execute
+		anim.CrossFade (chargeState, 0f);		// triggers are unreliable, crossfade forces state to execute
 		body.Move (Vector2.zero);
 		dir = (Vector2)(e.player.position - transform.position); // freeze moving direction
 		//+ new Vector2(Random.value, Random.value);		// add a random offset
@@ -68,7 +73,7 @@ public class ShootAction : EnemyAction {
 
 	private void Shoot(Vector2 dir)
 	{
-		anim.CrossFade ("attack", 0f);		// triggers are unreliable, crossfade forces state to execute
+		anim.CrossFade (shootState, 0f);		// triggers are unreliable, crossfade forces state to execute
 		Projectile p = projectilePool.GetPooledObject ().GetComponent<Projectile> ();
 		UnityEngine.Assertions.Assert.IsNotNull (p);
 		p.Init (shootPoint.position, dir, projectileSprite, "Player", projectileSpeed, damage);

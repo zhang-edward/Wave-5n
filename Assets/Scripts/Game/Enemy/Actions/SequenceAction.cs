@@ -12,13 +12,24 @@ public class SequenceAction : EnemyAction
 	}
 	private int index;
 
+	public override void Init (Enemy e, OnActionStateChanged onActionFinished)
+	{
+		base.Init (e, onActionFinished);
+		foreach (EnemyAction action in actions)
+			action.Init (e, onActionFinished);
+	}
+
 	public override bool CanExecute ()
 	{
+		if (!base.CanExecute ())
+			return false;
 		return currentAction.CanExecute ();
 	}
 
 	public override void Execute ()
 	{
+		base.Execute ();
+		print (currentAction);
 		currentAction.Execute ();
 		index++;
 		if (index >= actions.Length)
@@ -29,6 +40,7 @@ public class SequenceAction : EnemyAction
 	{
 		base.Interrupt ();
 		currentAction.Interrupt ();
+		index = 0;
 	}
 }
 

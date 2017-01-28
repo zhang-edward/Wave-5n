@@ -2,13 +2,17 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public abstract class Enemy : MonoBehaviour, IDamageable {
+public class Enemy : MonoBehaviour, IDamageable {
+
+	public static int MAX_ABILITIES = 4;
 
 	protected string DEFAULT_STATE = "MoveState";
 	protected int DEFAULT_LAYER;
-	[HideInInspector]
-	public float DEFAULT_SPEED;
-	public static int MAX_ABILITIES = 4;
+
+	[HideInInspector] public float DEFAULT_SPEED;
+	[HideInInspector] public Transform player;
+	[HideInInspector] public GameObject moneyPickupPrefab;
+	[HideInInspector] public Map map;						// used only for walk-in spawners
 
 	public enum SpawnMethod {
 		WalkIn,
@@ -20,44 +24,33 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 	public SpriteRenderer sr;
 	public Vector2 srSize;
 	public bool overrideSrSize;		// true = use the inspector value srSize for sprite size, false = use the sr bounds for sprite size
-	[HideInInspector]
-	public Transform player;
+
 	public EntityPhysics body;
 	public Animator anim;
-	[HideInInspector]
-	public Map map;		// used only for walk-in spawners
 
 	public bool hitDisabled{ get; private set; }
 
 	[Header("Enemy Properties")]
-	public float playerDetectionRange = 2f;
+	public int maxHealth;
+	public int health { get; private set; }
+	public Vector3 healthBarOffset;
 	public bool canBeDisabledOnHit = true;
 	public bool invincible = false;
 
-	[Header("Abilities")]
+	[Header("Abilities and Status Effects")]
 	public List<EnemyAbility> abilities;
-
-	[Header("Status")]
 	public List<EnemyStatus> statuses;
-
-	[Header("Spawn Properties")]
-	public SpawnMethod spawnMethod;		// whether this enemy walks onto the play area or not
 
 	[Header("Death Props")]
 	//public Sprite deathSprite;
 	public Sprite[] deathProps;
 	private ObjectPooler deathPropPool;
 
-	[Header("Enemy Stats")]
-	public int maxHealth;
-	public int health { get; private set; }
-	public Vector3 healthBarOffset;
-
-	[Header("Move State"), SerializeField]
+	[Header("Behavior")]
 	public MoveState movementMethod;
+	public EnemyAction action;
+	public SpawnMethod spawnMethod;		// whether this enemy walks onto the arena or not
 
-	[HideInInspector]
-	public GameObject moneyPickupPrefab;
 
 	public delegate void EnemyLifecycleEvent();
 	public event EnemyLifecycleEvent OnEnemyInit;
@@ -86,14 +79,16 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 
 		this.map = map;			// set map
 		health = maxHealth;		// set stat
-		deathPropPool = ObjectPooler.GetObjectPooler ("DeathProp");	// set deathPropPool
+		deathPropPool = ObjectPooler.GetObjectPooler ("DeathProp");	// instantiate set object pooler
 
 		// init movement and action
-		movementMethod.Init(this, body, player);
+		movementMethod.Init(this, body, player);		
+		action.Init (this, ToMoveState);
 
 		Spawn (spawnLocation);
 	}
 
+	// ============================== Abilities and Statuses ==============================
 	private void InitAbilities()
 	{
 		foreach (EnemyAbility ability in abilities)
@@ -144,9 +139,8 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 		return null;
 	}
 
-	protected abstract void ResetVars();
-	protected abstract IEnumerator MoveState();
 
+	// ============================== Spawn Methods ==============================
 	private void Spawn(Vector3 spawnLocation)
 	{
 		switch (spawnMethod)
@@ -193,33 +187,14 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 		StartCoroutine (DEFAULT_STATE);
 	}
 
-	protected virtual bool PlayerInRange()
+	// ============================== HitState and MoveState ==============================
+
+	public virtual void Disable(float time)
 	{
-		Collider2D[] cols = Physics2D.OverlapCircleAll (transform.position, playerDetectionRange);
-		foreach (Collider2D col in cols)
-		{
-			if (col.CompareTag ("Player"))
-			{
-				return true;
-			}
-		}
-		return false;
+		StopAllCoroutines ();
+		StartCoroutine (HitDisableState (time, 0));
 	}
 
-	protected Player GetPlayerInRange()
-	{
-		Collider2D[] cols = Physics2D.OverlapCircleAll (transform.position, playerDetectionRange);
-		foreach (Collider2D col in cols)
-		{
-			if (col.CompareTag ("Player"))
-			{
-				return col.GetComponentInChildren<Player>();
-			}
-		}
-		return null;
-	}
-
-	// Hit Disable
 	private IEnumerator HitDisableState(float time, float randomImpulse)
 	{
 		body.AddRandomImpulse (randomImpulse);
@@ -228,40 +203,55 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 		yield return new WaitForSeconds (time);
 		hitDisabled = false;
 
-		yield return new WaitForSeconds (0.2f);
+		//yield return new WaitForSeconds (0.2f);
 		UnityEngine.Assertions.Assert.IsTrue(anim.HasState(0, Animator.StringToHash("default")));
 		anim.CrossFade ("default", 0f);
 
-		ResetVars ();
-
-		// reset "flashRed" coroutine, in case it was interrupted
-		invincible = false;
-		sr.color = Color.white;
-
-		StartCoroutine (DEFAULT_STATE);
+		ToMoveState ();
 		yield return null;
 	}
 
-	private IEnumerator FlashRed()
+	private void ResetColor()
 	{
-		sr.color = Color.red;
-		yield return new WaitForSeconds (0.2f);
 		sr.color = Color.white;
 	}
 
+	protected IEnumerator MoveState()
+	{
+		yield return new WaitForEndOfFrame ();
+		movementMethod.Reset ();
+		while (true)
+		{
+			movementMethod.UpdateState ();
+			if (action.CanExecute ())
+			{
+				action.Execute ();
+				yield break;
+			}
+			yield return null;
+		}
+	}
+	
+	private void ToMoveState()
+	{
+		anim.CrossFade ("default", 0f);
+		StopAllCoroutines ();		// stops any duplicate MoveStates that may have been started concurrently
+		StartCoroutine ("MoveState");
+	}
+
+	// ============================== Death ==============================
 	protected void SpawnDeathProps()
 	{
 		foreach (Sprite sprite in deathProps)
 		{
-			//GameObject o = Instantiate (deathPropPrefab, transform.position, Quaternion.identity) as GameObject;
-			//o.transform.SetParent (this.transform);
 			GameObject o = deathPropPool.GetPooledObject();
+			Rigidbody2D rb2d = o.GetComponent < Rigidbody2D> ();
 			o.GetComponent<TempObject> ().Init (
 				Quaternion.Euler(new Vector3(0, 0, 360f)),
 				this.transform.position,
 				sprite);
-			o.GetComponent<Rigidbody2D> ().AddTorque (Random.Range (-50f, 50f));
-			o.GetComponent<Rigidbody2D> ().AddForce (new Vector2(
+			rb2d.AddTorque (Random.Range (-50f, 50f));
+			rb2d.AddForce (new Vector2(
 				Random.value - 0.5f,
 				Random.value - 0.5f),
 				ForceMode2D.Impulse);
@@ -273,21 +263,6 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 		int value = Random.Range (1, maxHealth * 2);
 		Instantiate (moneyPickupPrefab, transform.position, Quaternion.identity);
 		moneyPickupPrefab.GetComponent<MoneyPickup> ().value = value;
-	}
-
-	// makes this enemy untouchable if outside map bounds (meaning it still needs to walk in bounds)
-/*	public void CheckIfWithinMapBounds()
-	{
-		if (!map.WithinOpenCells (transform.position))
-			invincible = true;
-		else
-			invincible = false;
-	}*/
-
-	public virtual void Disable(float time)
-	{
-		StopAllCoroutines ();
-		StartCoroutine (HitDisableState (time, 0));
 	}
 
 	// ===== IDamageable methods ===== //
@@ -302,11 +277,13 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 		{
 			if (canBeDisabledOnHit)
 			{
+				action.Interrupt ();
 				// Stop all states
 				StopAllCoroutines ();
 				StartCoroutine (HitDisableState (0.05f, 3f));
 			}
-			StartCoroutine (FlashRed ());
+			sr.color = Color.red;
+			Invoke ("ResetColor", 0.2f);
 		}
 		else
 		{
@@ -318,7 +295,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable {
 	{
 		if (OnEnemyDied != null)
 			OnEnemyDied ();
-		ResetVars ();
+		//ResetVars ();
 		SpawnDeathProps ();
 		SpawnMoneyPickup ();
 		transform.parent.gameObject.SetActive (false);

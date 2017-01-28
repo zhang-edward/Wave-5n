@@ -8,15 +8,22 @@ public class CooldownCondition : EnemyCondition
 	public float interruptAmt = 0.5f;
 	private float timer;
 
-	public override void Init (Enemy e, Transform p)
+	public override void Init (EnemyAction action, Enemy e, Transform p)
 	{
-		base.Init (e, p);
+		base.Init (action, e, p);
 		e.OnEnemyDamaged += Interrupt;
+		action.onExecute += ResetTimer;
 	}
 
 	void Update()
 	{
-		timer -= Time.deltaTime;
+		if (timer > 0)
+			timer -= Time.deltaTime;
+	}
+
+	public override bool Check ()
+	{
+		return timer <= 0;
 	}
 
 	private void Interrupt (int foo)
@@ -24,12 +31,9 @@ public class CooldownCondition : EnemyCondition
 		timer += interruptAmt;
 	}
 
-	public override bool Check ()
+	private void ResetTimer()
 	{
-		bool timerDone = timer <= 0;
-		if (timerDone)
-			timer = cooldown;
-		return timerDone;
+		timer = cooldown;
 	}
 }
 

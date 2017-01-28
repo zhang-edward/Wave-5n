@@ -48,7 +48,7 @@ public class WalkVicinityState : MoveState
 				Random.Range(-walkRadius, walkRadius),
 				Random.Range(-walkRadius, walkRadius));		// add a random offset;
 		state = State.Walk;
-		print("moving");
+//		print("moving");
 	}
 
 	private void WalkState()

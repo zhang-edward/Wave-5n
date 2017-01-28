@@ -19,7 +19,6 @@ public class LungeAction : EnemyAction {
 	[Header("Audio")]
 	public AudioClip lungeSound;
 
-	public event OnActionStateChanged onLunge;
 
 	public override void Init (Enemy e, OnActionStateChanged onActionFinished)
 	{
@@ -31,38 +30,39 @@ public class LungeAction : EnemyAction {
 
 	public override void Execute ()
 	{
+		base.Execute ();
 		StartCoroutine (UpdateState());
 	}
 
 	public override void Interrupt ()
 	{
 		base.Interrupt ();
-		StopAllCoroutines ();
+		StopAllCoroutines();
+		print ("Interrupted");
+		body.moveSpeed = defaultSpeed;
+		body.Move (Vector3.zero);
 		attacking = false;
 	}
 
 	private IEnumerator UpdateState()
 	{
-		//UnityEngine.Assertions.Assert.IsTrue (state == State.Attacking);
-		//Debug.Log ("attacking: enter");
 		// Charge up before attack
 		Vector3 dir;
-		Charge(out dir);
+		Charge (out dir);
+		print ("Charge");
 		yield return new WaitForSeconds (chargeTime);
 
 		// Lunge
-		Lunge(dir);
-		if (onLunge != null)
-			onLunge ();
+		Lunge (dir);
+		print ("Lunge");
 		yield return new WaitForSeconds (attackTime);
 
 		// Reset vars
 		attacking = false;
 		body.moveSpeed = defaultSpeed;
 		body.Move (dir.normalized);
-		yield return new WaitForSeconds (0.3f);
-
-		onActionFinished ();
+		if (onActionFinished != null)
+			onActionFinished ();
 	}
 
 	private void Charge(out Vector3 dir)

@@ -17,5 +17,11 @@ public class PlayerInRangeCondition : EnemyCondition
 		}
 		return false;
 	}
+
+
+	void OnDrawGizmosSelected()
+	{
+		Gizmos.DrawWireSphere (transform.position, range);
+	}
 }
 

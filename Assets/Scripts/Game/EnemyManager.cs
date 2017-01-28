@@ -138,7 +138,7 @@ public class EnemyManager : MonoBehaviour {
 			OnEnemyWaveSpawned (waveNumber);
 		}
 		// Number of enemies spawning curve (used desmos.com for the graph)
-		int numToSpawn = Mathf.RoundToInt (DIFFICULTY_CURVE * Mathf.Log (difficultyCurve) + 5);
+		int numToSpawn = 1;//Mathf.RoundToInt (DIFFICULTY_CURVE * Mathf.Log (difficultyCurve) + 5);
 		List<GameObject> prefabPool = new List<GameObject>();
 		if (waveNumber <= 5)
 		{

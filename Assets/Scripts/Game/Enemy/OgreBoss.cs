@@ -61,7 +61,7 @@ public class OgreBoss : BossEnemy {
 		Gizmos.DrawWireSphere (transform.position + stompHitboxOffset, 1f);
 	}
 
-	protected override IEnumerator MoveState()
+	/*protected override IEnumerator MoveState()
 	{
 		UnityEngine.Assertions.Assert.IsTrue (body.moveSpeed == DEFAULT_SPEED);
 		//movementMethod = new WalkVicinityState (this);
@@ -87,7 +87,7 @@ public class OgreBoss : BossEnemy {
 			}
 			yield return null;
 		}
-	}
+	}*/
 
 	protected override IEnumerator AnimateIn (Vector3 target)
 	{
@@ -96,7 +96,7 @@ public class OgreBoss : BossEnemy {
 	}
 
 	// returns an int id for which action to take when the player is in certain locations
-	private int PlayerInRangeModes()
+	/*private int PlayerInRangeModes()
 	{
 		// check if ogre can use ATTACK
 		Collider2D[] check = Physics2D.OverlapCircleAll (transform.position + hitboxOffset, playerDetectionRange);
@@ -117,7 +117,7 @@ public class OgreBoss : BossEnemy {
 			}
 		}
 		return NO_ACTION;
-	}
+	}*/
 
 /*	void OnDrawGizmosSelected()
 	{
@@ -197,12 +197,6 @@ public class OgreBoss : BossEnemy {
 		anim.CrossFade ("Move", 0f);
 
 		StartCoroutine ("MoveState");
-	}
-
-	protected override void ResetVars()
-	{
-		body.gameObject.layer = DEFAULT_LAYER;
-		body.moveSpeed = DEFAULT_SPEED;
 	}
 
 	// Club hit ground effect

@@ -7,8 +7,17 @@ public class JointAction : EnemyAction
 	public EnemyAction[] actions;
 	public bool checkAllConditions; // whether all conditions must be met for all of the actions to be executed
 
+	public override void Init (Enemy e, OnActionStateChanged onActionFinished)
+	{
+		base.Init (e, onActionFinished);
+		foreach (EnemyAction action in actions)
+			action.Init (e, onActionFinished);
+	}
+
 	public override bool CanExecute ()
 	{
+		if (!base.CanExecute ())
+			return false;
 		foreach (EnemyAction action in actions)
 		{
 			if (checkAllConditions && !action.CanExecute ())
@@ -21,6 +30,7 @@ public class JointAction : EnemyAction
 
 	public override void Execute ()
 	{
+		base.Execute ();
 		foreach (EnemyAction action in actions)
 			action.Execute ();
 	}

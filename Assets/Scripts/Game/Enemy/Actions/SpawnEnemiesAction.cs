@@ -32,6 +32,7 @@ public class SpawnEnemiesAction : EnemyAction
 
 	public override void Execute ()
 	{
+		base.Execute ();
 		StartCoroutine (UpdateState ());
 	}
 
@@ -63,7 +64,8 @@ public class SpawnEnemiesAction : EnemyAction
 		
 		yield return new WaitForSeconds (spawnTime);
 
-		onActionFinished ();
+		if (onActionFinished != null)
+			onActionFinished ();
 	}
 
 	// Spawn minions

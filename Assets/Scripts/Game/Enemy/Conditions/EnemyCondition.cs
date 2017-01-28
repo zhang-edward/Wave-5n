@@ -6,9 +6,11 @@ public abstract class EnemyCondition : MonoBehaviour
 {
 	protected Enemy e;
 	protected Transform player;
+	protected EnemyAction action;
 
-	public virtual void Init(Enemy e, Transform p)
+	public virtual void Init(EnemyAction action, Enemy e, Transform p)
 	{
+		this.action = action;
 		this.e = e;
 		this.player = p;
 	}

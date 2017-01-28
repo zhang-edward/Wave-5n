@@ -15,6 +15,7 @@ public class CameraShakeAction : EnemyAction
 
 	public override void Execute ()
 	{
+		base.Execute ();
 		cam.StartShake (time, magnitude);
 	}
 
