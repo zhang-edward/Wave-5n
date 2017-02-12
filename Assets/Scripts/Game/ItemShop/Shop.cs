@@ -79,6 +79,15 @@ public class Shop : MonoBehaviour
 		shopNPC.Disappear ();
 	}
 
+	private void ResetToggles()
+	{
+		foreach (ShopItem item in shopItems)
+		{
+			Toggle toggle = item.GetComponent<Toggle> ();
+			toggle.isOn = false;
+		}
+	}
+
 	public void purchaseSelected()
 	{
 		if (selectedItem == null)
@@ -87,17 +96,9 @@ public class Shop : MonoBehaviour
 		if (wallet.TrySpend (selectedItem.cost))
 		{
 			selectedItem.OnPurchased (player);
+			AnimateOut ();
 		}
-		AnimateOut ();
-	}
-
-	private void ResetToggles()
-	{
-		foreach (ShopItem item in shopItems)
-		{
-			Toggle toggle = item.GetComponent<Toggle> ();
-			toggle.isOn = false;
-		}
+		// TODO: cannot purchase item animation
 	}
 }
 

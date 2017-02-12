@@ -4,7 +4,6 @@ using System.Collections;
 public class CameraShakeAction : EnemyAction
 {
 	private CameraControl cam;
-	public float delay;
 	public float time, magnitude;
 
 	public override void Init (Enemy e, OnActionStateChanged onActionFinished)
@@ -16,12 +15,7 @@ public class CameraShakeAction : EnemyAction
 	public override void Execute ()
 	{
 		base.Execute ();
-		Invoke ("Shake", delay);
-	}
-
-	public void Shake()
-	{
-		cam.StartShake (time, magnitude);
+		cam.StartShake(time, magnitude);
 	}
 
 	public override void Interrupt ()

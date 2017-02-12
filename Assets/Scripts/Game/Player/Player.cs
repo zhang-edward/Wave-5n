@@ -149,7 +149,7 @@ public class Player : MonoBehaviour, IDamageable
 	/// <param name="amt">Amount to deduct from health.</param>
 	public void Damage(int amt)
 	{
-		if (hitDisabled || isInvincible)
+		if (hitDisabled || isInvincible || amt <= 0)
 			return;
 		health -= amt;
 		OnPlayerDamaged(amt);

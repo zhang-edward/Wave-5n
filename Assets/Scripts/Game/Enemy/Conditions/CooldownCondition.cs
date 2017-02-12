@@ -3,6 +3,7 @@ using System.Collections;
 
 public class CooldownCondition : EnemyCondition
 {
+	public float initialTimerValue;
 	public float cooldown;
 	[Tooltip("How much should be added to the cooldown timer when this entity is damaged")]
 	public float interruptAmt = 0.5f;
@@ -13,6 +14,7 @@ public class CooldownCondition : EnemyCondition
 		base.Init (action, e, p);
 		e.OnEnemyDamaged += Interrupt;
 		action.onExecute += ResetTimer;
+		timer = initialTimerValue;
 	}
 
 	void Update()

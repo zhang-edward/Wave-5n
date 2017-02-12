@@ -138,7 +138,7 @@ public class EnemyManager : MonoBehaviour {
 			OnEnemyWaveSpawned (waveNumber);
 		}
 		// Number of enemies spawning curve (used desmos.com for the graph)
-		int numToSpawn = 1;//Mathf.RoundToInt (DIFFICULTY_CURVE * Mathf.Log (difficultyCurve) + 5);
+		int numToSpawn = Mathf.RoundToInt (DIFFICULTY_CURVE * Mathf.Log (difficultyCurve) + 5);
 		List<GameObject> prefabPool = new List<GameObject>();
 		if (waveNumber <= 5)
 		{
@@ -222,9 +222,9 @@ public class EnemyManager : MonoBehaviour {
 		o.transform.SetParent (transform);
 
 		Enemy e = o.GetComponentInChildren<Enemy> ();
+		e.player = player.transform;
 		e.Init (bossSpawn.transform.position, map);
 		e.moneyPickupPrefab = moneyPickup;
-		e.player = player.transform;
 		e.OnEnemyDied += IncrementEnemiesKilled;
 		e.OnEnemyObjectDisabled += RemoveEnemyFromEnemiesList;
 

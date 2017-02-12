@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class JointAction : EnemyAction
@@ -32,12 +32,16 @@ public class JointAction : EnemyAction
 	{
 		base.Execute ();
 		foreach (EnemyAction action in actions)
-			action.Execute ();
+		{
+			if (action.CanExecute())
+				action.Execute ();
+		}
 	}
 
 	public override void Interrupt ()
 	{
-		base.Interrupt ();
+		if (!interruptable)
+			return;
 		foreach (EnemyAction action in actions)
 			action.Interrupt ();
 	}

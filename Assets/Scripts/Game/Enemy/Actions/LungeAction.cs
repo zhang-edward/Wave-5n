@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class LungeAction : EnemyAction {
@@ -36,9 +36,9 @@ public class LungeAction : EnemyAction {
 
 	public override void Interrupt ()
 	{
-		base.Interrupt ();
+		if (!interruptable)
+			return;
 		StopAllCoroutines();
-		print ("Interrupted");
 		body.moveSpeed = defaultSpeed;
 		body.Move (Vector3.zero);
 		attacking = false;
@@ -49,12 +49,10 @@ public class LungeAction : EnemyAction {
 		// Charge up before attack
 		Vector3 dir;
 		Charge (out dir);
-		print ("Charge");
 		yield return new WaitForSeconds (chargeTime);
 
 		// Lunge
 		Lunge (dir);
-		print ("Lunge");
 		yield return new WaitForSeconds (attackTime);
 
 		// Reset vars
@@ -84,7 +82,7 @@ public class LungeAction : EnemyAction {
 		body.Move (dir.normalized);
 	}
 
-	protected void OnTriggerEnter2D(Collider2D col)
+	protected void OnTriggerStay2D(Collider2D col)
 	{
 		if (col.CompareTag("Player"))
 		{

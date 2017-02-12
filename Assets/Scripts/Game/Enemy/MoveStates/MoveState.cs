@@ -7,10 +7,10 @@ public abstract class MoveState : MonoBehaviour
 	protected EntityPhysics body;
 	protected Transform player;
 
-	public virtual void Init(Enemy e, EntityPhysics body, Transform player)
+	public virtual void Init(Enemy e, Transform player)
 	{
 		this.enemy = e;
-		this.body = body;
+		this.body = e.body;
 		this.player = player;
 	}
 

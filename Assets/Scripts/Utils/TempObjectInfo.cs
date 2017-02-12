@@ -17,6 +17,15 @@ public class TempObjectInfo
 	{
 	}
 
+	public TempObjectInfo(TempObjectInfo info)
+	{
+		this.isSelfDeactivating = info.isSelfDeactivating;
+		this.fadeInTime = info.fadeInTime;
+		this.lifeTime = info.lifeTime;
+		this.fadeOutTime = info.fadeOutTime;
+		this.targetColor = info.targetColor;
+	}
+
 	public TempObjectInfo (bool isSelfDeactivating, float fadeInTime, float lifeTime, float fadeOutTime)
 	{
 		this.isSelfDeactivating = isSelfDeactivating;

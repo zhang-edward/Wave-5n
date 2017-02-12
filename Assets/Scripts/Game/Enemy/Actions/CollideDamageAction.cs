@@ -15,11 +15,18 @@ public class CollideDamageAction : EnemyAction
 	{
 		base.Execute ();
 		activated = true;
+		onActionFinished ();
 	}
 
 	public override void Interrupt ()
 	{
-		base.Interrupt ();
+		if (!interruptable)
+			return;
+	}
+
+	void Update()
+	{
+		cooldown -= Time.deltaTime;
 	}
 
 	void OnTriggerStay2D(Collider2D col)

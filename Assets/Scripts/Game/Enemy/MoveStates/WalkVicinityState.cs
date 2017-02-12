@@ -17,9 +17,9 @@ public class WalkVicinityState : MoveState
 	public float waitTime = 1.0f;
 	public float walkRadius = 1.0f;
 
-	public override void Init (Enemy e, EntityPhysics body, Transform player)
+	public override void Init (Enemy e, Transform player)
 	{
-		base.Init (e, body, player);
+		base.Init (e, player);
 		anim = e.anim;
 	}
 

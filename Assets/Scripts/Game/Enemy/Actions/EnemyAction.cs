@@ -32,11 +32,7 @@ public abstract class EnemyAction : MonoBehaviour
 		return true;
 	}
 
-	public virtual void Interrupt()
-	{
-		if (!interruptable)
-			return;
-	}
+	public abstract void Interrupt();
 
 	public virtual void Execute ()
 	{

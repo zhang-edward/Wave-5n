@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class SequenceAction : EnemyAction
@@ -38,7 +38,8 @@ public class SequenceAction : EnemyAction
 
 	public override void Interrupt ()
 	{
-		base.Interrupt ();
+		if (!interruptable)
+			return;
 		currentAction.Interrupt ();
 		index = 0;
 	}

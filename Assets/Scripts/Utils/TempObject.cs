@@ -68,7 +68,7 @@ public class TempObject : MonoBehaviour {
 		transform.rotation = rotation;
 		transform.position = position;
 		sr.sprite = sprite;
-		this.info = tempObjectInfo;
+		this.info = new TempObjectInfo(tempObjectInfo);
 		StartCoroutine (FadeIn());
 	}
 

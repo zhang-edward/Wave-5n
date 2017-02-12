@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -47,7 +47,8 @@ public class SpawnEnemiesAction : EnemyAction
 
 	public override void Interrupt ()
 	{
-		base.Interrupt ();
+		if (!interruptable)
+			return;
 		StopAllCoroutines ();
 	}
 

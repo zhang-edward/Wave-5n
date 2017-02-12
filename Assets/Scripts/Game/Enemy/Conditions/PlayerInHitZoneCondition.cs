@@ -1,10 +1,11 @@
-﻿using System;
-namespace AssemblyCSharp
+﻿using UnityEngine;
+
+public class PlayerInHitZoneCondition : EnemyCondition
 {
-	public class PlayerInHitZoneCondition
+	public PlayerDetectionCircle hitZone;
+
+	public override bool Check()
 	{
-		public PlayerInHitZoneCondition()
-		{
-		}
+		return hitZone.Activate() != null;	// PlayerDetectionCircle.Activate() returns a Player in the detection area
 	}
 }

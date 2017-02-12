@@ -82,7 +82,7 @@ public class Enemy : MonoBehaviour, IDamageable {
 		deathPropPool = ObjectPooler.GetObjectPooler ("DeathProp");	// instantiate set object pooler
 
 		// init movement and action
-		movementMethod.Init(this, body, player);		
+		movementMethod.Init(this, player);		
 		action.Init (this, ToMoveState);
 
 		Spawn (spawnLocation);

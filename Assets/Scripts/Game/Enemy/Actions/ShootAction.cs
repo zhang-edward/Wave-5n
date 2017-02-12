@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class ShootAction : EnemyAction {
@@ -6,6 +6,7 @@ public class ShootAction : EnemyAction {
 	private Animator anim;
 	private EntityPhysics body;
 	private ObjectPooler projectilePool;
+	private Vector3 shootPointPos;
 	[Header("Set from Hierarchy")]
 	public Sprite projectileSprite;
 	public Transform shootPoint;
@@ -13,8 +14,8 @@ public class ShootAction : EnemyAction {
 	public float projectileSpeed = 5;
 	public float chargeTime = 0.5f;
 	public float attackTime = 0.2f;
-	public float cooldownTime = 1.0f;
 	public int damage;
+	public bool reflectX = true;
 	[Header("AnimationStates")]
 	public string chargeState;
 	public string shootState;
@@ -29,6 +30,7 @@ public class ShootAction : EnemyAction {
 		anim = e.anim;
 		body = e.body;
 		projectilePool = ObjectPooler.GetObjectPooler ("Projectile");
+		shootPointPos = shootPoint.localPosition;
 	}
 
 	public override void Execute ()
@@ -39,7 +41,8 @@ public class ShootAction : EnemyAction {
 
 	public override void Interrupt ()
 	{
-		base.Interrupt ();
+		if (!interruptable)
+			return;
 		StopAllCoroutines ();
 	}
 
@@ -48,10 +51,15 @@ public class ShootAction : EnemyAction {
 		//UnityEngine.Assertions.Assert.IsTrue (state == State.Attacking);
 		//Debug.Log ("attacking: enter");
 		// Charge up before attack
-		Vector3 dir;
-		Charge(out dir);
+		Charge();
 		yield return new WaitForSeconds (chargeTime);
 
+		if (e.sr.flipX)
+			shootPoint.localPosition = new Vector3(shootPointPos.x * -1, shootPointPos.y);
+		else
+			shootPoint.localPosition = new Vector3(shootPointPos.x, shootPointPos.y);
+
+		Vector2 dir = e.player.transform.position - shootPoint.position;
 		// Shoot
 		Shoot(dir.normalized);
 
@@ -63,11 +71,10 @@ public class ShootAction : EnemyAction {
 			onActionFinished ();
 	}
 
-	private void Charge(out Vector3 dir)
+	private void Charge()
 	{
 		anim.CrossFade (chargeState, 0f);		// triggers are unreliable, crossfade forces state to execute
 		body.Move (Vector2.zero);
-		dir = (Vector2)(e.player.position - transform.position); // freeze moving direction
 		//+ new Vector2(Random.value, Random.value);		// add a random offset
 	}
 
