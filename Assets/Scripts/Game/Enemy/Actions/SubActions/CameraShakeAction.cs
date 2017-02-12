@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class CameraShakeAction : EnemyAction
@@ -9,19 +9,25 @@ public class CameraShakeAction : EnemyAction
 
 	public override void Init (Enemy e, OnActionStateChanged onActionFinished)
 	{
-		base.Init (e, onActionFinished);
+		base.Init (e, null);
 		cam = CameraControl.instance;
 	}
 
 	public override void Execute ()
 	{
 		base.Execute ();
+		Invoke ("Shake", delay);
+	}
+
+	public void Shake()
+	{
 		cam.StartShake (time, magnitude);
 	}
 
 	public override void Interrupt ()
 	{
-		base.Interrupt ();
+		if (!interruptable)
+			return;
 		cam.StartShake (0, 0);
 	}
 }
