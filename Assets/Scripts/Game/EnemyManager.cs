@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class EnemyManager : MonoBehaviour {
 
-	private const float DIFFICULTY_CURVE = 8f;
+	private const float DIFFICULTY_CURVE = 10f;
 	[System.Serializable]
 	public class EnemyInfoDictionaryEntry
 	{
@@ -133,12 +133,28 @@ public class EnemyManager : MonoBehaviour {
 
 	private void StartNextWave()
 	{
+		// event call
 		if (OnEnemyWaveSpawned != null)
-		{
 			OnEnemyWaveSpawned (waveNumber);
-		}
 		// Number of enemies spawning curve (used desmos.com for the graph)
-		int numToSpawn = Mathf.RoundToInt (DIFFICULTY_CURVE * Mathf.Log (difficultyCurve) + 5);
+		int spawningPointsAvailable = Mathf.RoundToInt (DIFFICULTY_CURVE * Mathf.Log (difficultyCurve) + 10);
+		List<GameObject> prefabPool = GetPrefabPool();
+
+
+		for (int i = 0; i < spawningPointsAvailable; i++)
+		{
+			Vector3 randOpenCell = (Vector3)map.OpenCells [Random.Range (0, map.OpenCells.Count)];
+			SpawnEnemy (prefabPool [Random.Range (0, prefabPool.Count)], randOpenCell);
+		}
+		Debug.Log ("Number of enemies in this wave: " + spawningPointsAvailable);
+	}
+
+	/// <summary>
+	/// Gets the list of potential enemies to spawn
+	/// </summary>
+	/// <returns>Prefab pool</returns>
+	private List<GameObject> GetPrefabPool()
+	{
 		List<GameObject> prefabPool = new List<GameObject>();
 		if (waveNumber <= 5)
 		{
@@ -146,20 +162,14 @@ public class EnemyManager : MonoBehaviour {
 		}
 		else if (5 < waveNumber && waveNumber <= 10)
 		{
-			prefabPool.AddRange (info.enemyPrefabs1);
-			prefabPool.AddRange (info.enemyPrefabs2);
+			prefabPool.AddRange(info.enemyPrefabs1);
+			prefabPool.AddRange(info.enemyPrefabs2);
 		}
 		else
 		{
 			prefabPool = info.enemyPrefabs2;
 		}
-
-		for (int i = 0; i < numToSpawn; i++)
-		{
-			Vector3 randOpenCell = (Vector3)map.OpenCells [Random.Range (0, map.OpenCells.Count)];
-			SpawnEnemy (prefabPool [Random.Range (0, prefabPool.Count)], randOpenCell);
-		}
-		Debug.Log ("Number of enemies in this wave: " + numToSpawn);
+		return prefabPool
 	}
 
 	private void StartBossIncoming()
