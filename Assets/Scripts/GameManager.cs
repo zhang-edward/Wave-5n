@@ -119,7 +119,6 @@ public class GameManager : MonoBehaviour {
 		map.GenerateMap ();
 		enemyManager.chosenInfo = selectedMap;
 
-
 		player = GameObject.Find ("/Game/Player");
 		Assert.IsNotNull (player);
 		Player playerScript = player.GetComponentInChildren<Player> ();

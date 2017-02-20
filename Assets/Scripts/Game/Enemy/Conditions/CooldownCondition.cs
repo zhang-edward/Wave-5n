@@ -1,41 +1,44 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CooldownCondition : EnemyCondition
+namespace EnemyActions
 {
-	public float initialTimerValue;
-	public float cooldown;
-	[Tooltip("How much should be added to the cooldown timer when this entity is damaged")]
-	public float interruptAmt = 0.5f;
-	private float timer;
-
-	public override void Init (EnemyAction action, Enemy e, Transform p)
+	public class CooldownCondition : EnemyCondition
 	{
-		base.Init (action, e, p);
-		e.OnEnemyDamaged += Interrupt;
-		action.onExecute += ResetTimer;
-		timer = initialTimerValue;
-	}
+		public float initialTimerValue;
+		public float cooldown;
+		[Tooltip("How much should be added to the cooldown timer when this entity is damaged")]
+		public float interruptAmt = 0.5f;
+		private float timer;
 
-	void Update()
-	{
-		if (timer > 0)
-			timer -= Time.deltaTime;
-	}
+		public override void Init(EnemyAction action, Enemy e, Transform p)
+		{
+			base.Init(action, e, p);
+			e.OnEnemyDamaged += Interrupt;
+			action.onExecute += ResetTimer;
+			timer = initialTimerValue;
+		}
 
-	public override bool Check ()
-	{
-		return timer <= 0;
-	}
+		void Update()
+		{
+			if (timer > 0)
+				timer -= Time.deltaTime;
+		}
 
-	private void Interrupt (int foo)
-	{
-		timer += interruptAmt;
-	}
+		public override bool Check()
+		{
+			return timer <= 0;
+		}
 
-	private void ResetTimer()
-	{
-		timer = cooldown;
+		private void Interrupt(int foo)
+		{
+			timer += interruptAmt;
+		}
+
+		private void ResetTimer()
+		{
+			timer = cooldown;
+		}
 	}
 }
 

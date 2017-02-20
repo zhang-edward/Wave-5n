@@ -1,45 +1,48 @@
-public class MultiAction : EnemyAction 
+namespace EnemyActions
 {
-	public EnemyAction[] actions;
-
-	public override void Init(Enemy e, OnActionStateChanged onActionFinished)
+	public class MultiAction : EnemyAction
 	{
-		base.Init(e, onActionFinished);
-		foreach (EnemyAction action in actions)
-			action.Init(e, onActionFinished);
-	}
+		public EnemyAction[] actions;
 
-	public override bool CanExecute()
-	{
-		if (!base.CanExecute())
+		public override void Init(Enemy e, OnActionStateChanged onActionFinished)
+		{
+			base.Init(e, onActionFinished);
+			foreach (EnemyAction action in actions)
+				action.Init(e, onActionFinished);
+		}
+
+		public override bool CanExecute()
+		{
+			if (!base.CanExecute())
+				return false;
+			foreach (EnemyAction action in actions)
+			{
+				if (action.CanExecute())
+				{
+					return true;
+				}
+			}
 			return false;
-		foreach (EnemyAction action in actions)
+		}
+
+		public override void Execute()
 		{
-			if (action.CanExecute())
+			base.Execute();
+			foreach (EnemyAction action in actions)
 			{
-				return true;
+				if (action.CanExecute())
+				{
+					action.Execute();
+				}
 			}
 		}
-		return false;
-	}
 
-	public override void Execute()
-	{
-		base.Execute();
-		foreach (EnemyAction action in actions)
+		public override void Interrupt()
 		{
-			if (action.CanExecute())
-			{
-				action.Execute();
-			}
+			if (!interruptable)
+				return;
+			foreach (EnemyAction action in actions)
+				action.Interrupt();
 		}
-	}
-
-	public override void Interrupt()
-	{
-		if (!interruptable)
-			return;
-		foreach (EnemyAction action in actions)
-			action.Interrupt();
 	}
 }

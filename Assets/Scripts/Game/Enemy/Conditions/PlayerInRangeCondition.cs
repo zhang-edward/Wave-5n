@@ -1,27 +1,29 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-public class PlayerInRangeCondition : EnemyCondition
+namespace EnemyActions
 {
-	public float range;
-
-	public override bool Check ()
+	public class PlayerInRangeCondition : EnemyCondition
 	{
-		Collider2D[] cols = Physics2D.OverlapCircleAll (e.transform.position, range);
-		foreach (Collider2D col in cols)
+		public float range;
+
+		public override bool Check()
 		{
-			if (col.CompareTag ("Player"))
+			Collider2D[] cols = Physics2D.OverlapCircleAll(e.transform.position, range);
+			foreach (Collider2D col in cols)
 			{
-				return true;
+				if (col.CompareTag("Player"))
+				{
+					return true;
+				}
 			}
+			return false;
 		}
-		return false;
-	}
 
 
-	void OnDrawGizmosSelected()
-	{
-		Gizmos.DrawWireSphere (transform.position, range);
+		void OnDrawGizmosSelected()
+		{
+			Gizmos.DrawWireSphere(transform.position, range);
+		}
 	}
 }
 

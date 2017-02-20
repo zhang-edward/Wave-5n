@@ -1,28 +1,31 @@
 using UnityEngine;
 using System.Collections;
 
-public class CameraShakeAction : EnemyAction
+namespace EnemyActions
 {
-	private CameraControl cam;
-	public float time, magnitude;
-
-	public override void Init (Enemy e, OnActionStateChanged onActionFinished)
+	public class CameraShakeAction : EnemyAction
 	{
-		base.Init (e, null);
-		cam = CameraControl.instance;
-	}
+		private CameraControl cam;
+		public float time, magnitude;
 
-	public override void Execute ()
-	{
-		base.Execute ();
-		cam.StartShake(time, magnitude);
-	}
+		public override void Init(Enemy e, OnActionStateChanged onActionFinished)
+		{
+			base.Init(e, null);
+			cam = CameraControl.instance;
+		}
 
-	public override void Interrupt ()
-	{
-		if (!interruptable)
-			return;
-		cam.StartShake (0, 0);
+		public override void Execute()
+		{
+			base.Execute();
+			cam.StartShake(time, magnitude);
+		}
+
+		public override void Interrupt()
+		{
+			if (!interruptable)
+				return;
+			cam.StartShake(0, 0);
+		}
 	}
 }
 

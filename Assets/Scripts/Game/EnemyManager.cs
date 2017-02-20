@@ -60,7 +60,7 @@ public class EnemyManager : MonoBehaviour {
 
 	private void Init()
 	{
-		info = GetEnemyInfo ();	
+		info = GetEnemyInfo ();
 		bossSpawn = map.bossSpawn.GetComponent<BossSpawn> ();
 		StartCoroutine (StartSpawningEnemies ());
 	}
@@ -140,12 +140,12 @@ public class EnemyManager : MonoBehaviour {
 		int spawningPointsAvailable = Mathf.RoundToInt (DIFFICULTY_CURVE * Mathf.Log (difficultyCurve) + 10);
 		List<GameObject> prefabPool = GetPrefabPool();
 
-
 		for (int i = 0; i < spawningPointsAvailable; i++)
 		{
-			Vector3 randOpenCell = (Vector3)map.OpenCells [Random.Range (0, map.OpenCells.Count)];
+			Vector3 randOpenCell = map.OpenCells [Random.Range (0, map.OpenCells.Count)];
 			SpawnEnemy (prefabPool [Random.Range (0, prefabPool.Count)], randOpenCell);
 		}
+
 		Debug.Log ("Number of enemies in this wave: " + spawningPointsAvailable);
 	}
 
@@ -169,7 +169,7 @@ public class EnemyManager : MonoBehaviour {
 		{
 			prefabPool = info.enemyPrefabs2;
 		}
-		return prefabPool
+		return prefabPool;
 	}
 
 	private void StartBossIncoming()

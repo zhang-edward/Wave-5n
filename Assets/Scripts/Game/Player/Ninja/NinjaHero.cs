@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Projectiles;
 using System.Collections;
 
 public class NinjaHero : PlayerHero {
@@ -6,7 +7,7 @@ public class NinjaHero : PlayerHero {
 	private const int MAX_HIT = 5;
 
 	[Header("Class-Specific")]
-	public RuntimeObjectPooler projectilePool;
+	private RuntimeObjectPooler projectilePool;
 	public GameObject projectilePrefab;
 	public GameObject specialProjectilePrefab;
 	// public int smokeBombRange = 2;
@@ -37,8 +38,7 @@ public class NinjaHero : PlayerHero {
 		cooldownTimers = new float[2];
 		base.Init (body, anim, player);
 		heroName = PlayerHero.HERO_TYPES ["NINJA"];
-		projectilePool = (RuntimeObjectPooler)ObjectPooler.GetObjectPooler ("PlayerProjectile");
-		projectilePool.SetPooledObject(projectilePrefab);
+		projectilePool = (RuntimeObjectPooler)projectilePrefab.GetComponent<Projectile>().GetObjectPooler();
 
 		onSwipe = DashAttack;
 		onTapRelease = ShootNinjaStar;
@@ -122,8 +122,8 @@ public class NinjaHero : PlayerHero {
 
 	public GameObject InitNinjaStar(Vector2 dir)
 	{
-		PlayerProjectile ninjaStar = projectilePool.GetPooledObject ().GetComponent<PlayerProjectile>();
-		ninjaStar.Init (transform.position, dir, player);
+		Projectile ninjaStar = projectilePool.GetPooledObject ().GetComponent<Projectile>();
+		ninjaStar.Init (transform.position, dir);
 		return ninjaStar.gameObject;
 	}
 

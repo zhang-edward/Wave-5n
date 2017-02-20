@@ -2,18 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class EnemyCondition : MonoBehaviour 
+namespace EnemyActions
 {
-	protected Enemy e;
-	protected Transform player;
-	protected EnemyAction action;
-
-	public virtual void Init(EnemyAction action, Enemy e, Transform p)
+	public abstract class EnemyCondition : MonoBehaviour
 	{
-		this.action = action;
-		this.e = e;
-		this.player = p;
-	}
+		protected Enemy e;
+		protected Transform player;
+		protected EnemyAction action;
 
-	public abstract bool Check ();
+		public virtual void Init(EnemyAction action, Enemy e, Transform p)
+		{
+			this.action = action;
+			this.e = e;
+			this.player = p;
+		}
+
+		public abstract bool Check();
+	}
 }

@@ -1,43 +1,44 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-public abstract class EnemyAction : MonoBehaviour
+namespace EnemyActions 
 {
-	public EnemyCondition[] conditions;
-	public bool interruptable = true;
-
-	protected Enemy e;
-
-	public delegate void OnActionStateChanged();
-	public OnActionStateChanged onActionFinished;
-	public event OnActionStateChanged onExecute;
-
-	public virtual void Init(Enemy e, OnActionStateChanged onActionFinished)
+	public abstract class EnemyAction : MonoBehaviour
 	{
-		this.e = e;
-		this.onActionFinished = onActionFinished;
-		foreach (EnemyCondition condition in conditions)
+		public EnemyCondition[] conditions;
+		public bool interruptable = true;
+
+		protected Enemy e;
+
+		public delegate void OnActionStateChanged();
+		public OnActionStateChanged onActionFinished;
+		public event OnActionStateChanged onExecute;
+
+		public virtual void Init(Enemy e, OnActionStateChanged onActionFinished)
 		{
-			condition.Init (this, e, e.player);
+			this.e = e;
+			this.onActionFinished = onActionFinished;
+			foreach (EnemyCondition condition in conditions)
+			{
+				condition.Init(this, e, e.player);
+			}
 		}
-	}
 
-	public virtual bool CanExecute()
-	{
-		foreach (EnemyCondition condition in conditions)
+		public virtual bool CanExecute()
 		{
-			if (!condition.Check ())
-				return false;
+			foreach (EnemyCondition condition in conditions)
+			{
+				if (!condition.Check())
+					return false;
+			}
+			return true;
 		}
-		return true;
-	}
 
-	public abstract void Interrupt();
+		public abstract void Interrupt();
 
-	public virtual void Execute ()
-	{
-		if (onExecute != null)
-			onExecute ();
-	}
+		public virtual void Execute()
+		{
+			if (onExecute != null)
+				onExecute();
+		}
+	}	
 }
-

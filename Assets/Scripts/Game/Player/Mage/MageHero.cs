@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Projectiles;
 using System.Collections;
 
 public class MageHero : PlayerHero {
@@ -41,10 +42,9 @@ public class MageHero : PlayerHero {
 		base.Init (body, anim, player);
 		map = GameObject.Find ("Map").GetComponent<Map>();
 		heroName = PlayerHero.HERO_TYPES ["MAGE"];
-		projectilePool = ObjectPooler.GetObjectPooler ("PlayerProjectile") as RuntimeObjectPooler;
-		projectilePool.SetPooledObject(projectilePrefab);
+		projectilePool = (RuntimeObjectPooler)projectilePrefab.GetComponent<Projectile>().GetObjectPooler();
 
-		fireballSpeed = projectilePrefab.GetComponent<PlayerProjectile> ().setSpeed;
+		fireballSpeed = projectilePrefab.GetComponent<Projectile> ().speed;
 		fireballSpeedMultiplier = 1f;
 
 		onSwipe = ShootFireball;
@@ -92,8 +92,9 @@ public class MageHero : PlayerHero {
 		// actual projectile stuff
 		GameObject fireballObj = projectilePool.GetPooledObject ();
 		Vector2 dir = player.dir.normalized;
-		PlayerProjectile fireball = fireballObj.GetComponent<PlayerProjectile> ();
-		fireball.Init (transform.position, dir, player, fireballSpeed * fireballSpeedMultiplier, 1);
+		Projectile fireball = fireballObj.GetComponent<Projectile> ();
+		fireball.speed = fireballSpeed * fireballSpeedMultiplier;
+		fireball.Init (transform.position, dir);
 
 		// recoil
 		body.Move (dir);	// set the sprites flipX to the correct direction

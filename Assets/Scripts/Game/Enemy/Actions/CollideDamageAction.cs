@@ -1,59 +1,59 @@
 ﻿using UnityEngine;
-using System.Collections;
-
-public class CollideDamageAction : EnemyAction
+namespace EnemyActions
 {
-	private float cooldown;
-	private float attackBuildUp = 0.2f;	// time for the player to be in contact with the enemy before the player is damaged
-	private float buildUp;				// timer for attackBuildUp
-
-	public int damage = 1;
-	public bool activated;
-	public float attackCooldown = 1f;
-
-	public override void Execute ()
+	public class CollideDamageAction : EnemyAction
 	{
-		base.Execute ();
-		activated = true;
-		onActionFinished ();
-	}
+		private float cooldown;
+		private float attackBuildUp = 0.2f; // time for the player to be in contact with the enemy before the player is damaged
+		private float buildUp;              // timer for attackBuildUp
 
-	public override void Interrupt ()
-	{
-		if (!interruptable)
-			return;
-	}
+		public int damage = 1;
+		public bool activated;
+		public float attackCooldown = 1f;
 
-	void Update()
-	{
-		cooldown -= Time.deltaTime;
-	}
-
-	void OnTriggerStay2D(Collider2D col)
-	{
-		if (!activated)
-			return;
-		if (col.CompareTag("Player"))
+		public override void Execute()
 		{
-			Player player = col.GetComponentInChildren<Player>();
-			if (cooldown <= 0 && e.health > 0 && !e.hitDisabled && buildUp >= attackBuildUp)
+			base.Execute();
+			activated = true;
+			onActionFinished();
+		}
+
+		public override void Interrupt()
+		{
+			if (!interruptable)
+				return;
+		}
+
+		void Update()
+		{
+			cooldown -= Time.deltaTime;
+		}
+
+		void OnTriggerStay2D(Collider2D col)
+		{
+			if (!activated)
+				return;
+			if (col.CompareTag("Player"))
 			{
-				player.Damage (damage);
-				cooldown = attackCooldown;
-			}
-			else
-			{
-				buildUp += Time.deltaTime;
+				Player player = col.GetComponentInChildren<Player>();
+				if (cooldown <= 0 && e.health > 0 && !e.hitDisabled && buildUp >= attackBuildUp)
+				{
+					player.Damage(damage);
+					cooldown = attackCooldown;
+				}
+				else
+				{
+					buildUp += Time.deltaTime;
+				}
 			}
 		}
-	}
 
-	void OnTriggerExit2D(Collider2D col)
-	{
-		if (col.CompareTag ("Player"))
+		void OnTriggerExit2D(Collider2D col)
 		{
-			buildUp = 0;
+			if (col.CompareTag("Player"))
+			{
+				buildUp = 0;
+			}
 		}
 	}
 }
-

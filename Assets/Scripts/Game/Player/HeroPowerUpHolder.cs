@@ -16,8 +16,8 @@ public class HeroPowerUpHolder : MonoBehaviour
 		public GameObject powerUpPrefab;
 	}
 
-	[Header("Set In Inspector")]
 	public List<HeroPowerUpDictionaryEntry> powerUpPrefabs;			// dictionary database of all available power ups
+	[HideInInspector]
 	public List<HeroPowerUp> activePowerUps;						// list of powerups that are active on the player in the game
 
 	public delegate void OnPowerUpsChanged();

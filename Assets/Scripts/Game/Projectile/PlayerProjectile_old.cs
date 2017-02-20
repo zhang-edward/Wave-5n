@@ -1,11 +1,10 @@
-﻿using UnityEngine;
+/* using UnityEngine;
 using System.Collections;
 
 public class PlayerProjectile : Projectile
 {
 	private const int MAX_HIT = 5; 	// The maxmimum number of enemies the area attack can hit
 	private Player player;
-	private SimpleAnimationPlayer anim;
 
 	// SET IN INSPECTOR!
 	public float setSpeed;
@@ -17,20 +16,10 @@ public class PlayerProjectile : Projectile
 	[Header("Audio")]
 	public AudioClip onHitSound;
 
-	void Awake()
-	{
-		anim = GetComponent<SimpleAnimationPlayer> ();
-		rb2d = this.GetComponent<Rigidbody2D> ();
-		sr = this.GetComponent<SpriteRenderer> ();
-		box = this.GetComponent<BoxCollider2D> ();
-	}
-
 	public void Init(Vector3 pos, Vector2 dir, Player player)
 	{
-		base.Init (pos, dir, anim.anim.frames[0], target, setSpeed, setDamage);
+		base.Init (pos, dir);
 		this.player = player;
-		anim.looping = true;
-		anim.Play ();
 	}
 
 	public void Init(Vector3 pos, Vector2 dir, Player player, float speed, int damage)
@@ -85,5 +74,4 @@ public class PlayerProjectile : Projectile
 			}
 		}
 	}
-}
-
+} */

@@ -1,11 +1,12 @@
-﻿using UnityEngine;
-
-public class PlayerInHitZoneCondition : EnemyCondition
+﻿namespace EnemyActions
 {
-	public PlayerDetectionCircle hitZone;
-
-	public override bool Check()
+	public class PlayerInHitZoneCondition : EnemyCondition
 	{
-		return hitZone.Activate() != null;	// PlayerDetectionCircle.Activate() returns a Player in the detection area
+		public PlayerDetectionCircle hitZone;
+
+		public override bool Check()
+		{
+			return hitZone.Activate() != null;  // PlayerDetectionCircle.Activate() returns a Player in the detection area
+		}
 	}
 }

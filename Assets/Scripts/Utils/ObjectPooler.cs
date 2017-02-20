@@ -59,6 +59,11 @@ public class ObjectPooler : MonoBehaviour {
 		return null;
 	}
 
+	/// <summary>
+	/// Gets the object pooler with the specified name. You should call this in the 'Start' method.
+	/// </summary>
+	/// <returns>The object pooler.</returns>
+	/// <param name="name">Name of the object pooler.</param>
 	public static ObjectPooler GetObjectPooler(string name)
 	{
 		foreach (ObjectPooler pooler in objectPoolers)
