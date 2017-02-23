@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public abstract class ShopItem : MonoBehaviour
+public abstract class UpgradeItem : MonoBehaviour
 {
 	public int cost;
 
@@ -21,7 +21,7 @@ public abstract class ShopItem : MonoBehaviour
 		available = true;
 	}
 
-	public virtual void OnPurchased (Player player)
+	public virtual void Upgrade (Player player)
 	{
 		timesPurchased++;
 		if (timesPurchased >= purchaseLimit)

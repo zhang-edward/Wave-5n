@@ -3,14 +3,15 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
-public class ShopItemsHolder : MonoBehaviour
+public class UpgradeItemsHolder : MonoBehaviour
 {
 	public GameObject[] universalShopItems;			// a list of shop items that all heros are able to purchase
-
 	public GameObject addPowerUpItemPrefab;			// prefab for the custom powerups for each hero
-	public List<GameObject> potentialShopItems;		// available shop items after initialization
+
+	[HideInInspector]public List<GameObject> potentialShopItems;		// available shop items after initialization
 
 	// UI stuff
+	[Header("Set by Prefab")]
 	public Transform shopItemPanel;
 	public ScrollingText scrollingText;
 	public ToggleGroup toggleGroup;
@@ -83,7 +84,7 @@ public class ShopItemsHolder : MonoBehaviour
 	private bool TryEnableRandomShopItem()
 	{
 		int i = Random.Range (0, potentialShopItems.Count);
-		ShopItem shopItem = potentialShopItems [i].GetComponent<ShopItem>();
+		UpgradeItem shopItem = potentialShopItems [i].GetComponent<UpgradeItem>();
 		if (!shopItem.gameObject.activeInHierarchy && shopItem.available)
 		{
 			print ("Enabled " + potentialShopItems [i].GetComponent<ScrollingTextOption>().text);

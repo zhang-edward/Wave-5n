@@ -1,9 +1,9 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
-public class HealthItem : ShopItem
+public class HealthItem : UpgradeItem
 {
-	public override void OnPurchased(Player player)
+	public override void Upgrade(Player player)
 	{
 		player.HealEffect (4, true);
 	}

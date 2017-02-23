@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class ShopNPC : MonoBehaviour
@@ -6,7 +6,7 @@ public class ShopNPC : MonoBehaviour
 	private bool activated;		// whether the player can collide with this shopkeeper to see the shop UI
 	private SpriteRenderer sr;
 	
-	public Shop shop;
+	public UpgradeMenu shop;
 	public SimpleAnimationPlayer smokeAnim;
 	public SimpleAnimationPlayer npcAnim;
 	public SimpleAnimationPlayer dialogueAnim;

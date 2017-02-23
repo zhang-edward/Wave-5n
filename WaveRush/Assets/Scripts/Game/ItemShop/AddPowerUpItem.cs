@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 
@@ -28,9 +28,9 @@ public class AddPowerUpItem : ShopItemProgression
 		}
 	}
 
-	public override void OnPurchased (Player player)
+	public override void Upgrade (Player player)
 	{
-		base.OnPurchased (player);
+		base.Upgrade (player);
 		player.hero.powerUpHolder.AddPowerUp (powerUp.powerUpName);
 	}
 

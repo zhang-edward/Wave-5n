@@ -1,63 +1,53 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 using System.Collections.Generic;
 
-public class Shop : MonoBehaviour
+public class UpgradeMenu : MonoBehaviour
 {
 	[Header("Find in Hierarchy")]
 	public ShopNPC shopNPC;
 	public Player player;
 
 	[Header("Shop Items")]
-	private List<ShopItem> shopItems = new List<ShopItem>();
-	public ShopItem selectedItem {
+	private List<UpgradeItem> items = new List<UpgradeItem>();
+	public UpgradeItem selectedItem {
 		get {
-			foreach (ShopItem shopItem in shopItems)
-				if (shopItem.Selected)
-					return shopItem;
+			foreach (UpgradeItem item in items)
+				if (item.Selected)
+					return item;
 			return null;
 		}
 	}
 	[Header("Set by Prefab")]
-	public Button purchaseButton;
-	public Text priceText;
+	public Button upgradeButton;
 
-	private ShopItemsHolder shopItemsHolder;
+	private UpgradeItemsHolder itemsHolder;
 	private Animator animator;
 
 	void Awake()
 	{
-		shopItemsHolder = GetComponent<ShopItemsHolder> ();
+		itemsHolder = GetComponent<UpgradeItemsHolder> ();
 		animator = GetComponent<Animator> ();
 		player.OnPlayerInitialized += InitShopItemsHolder;
-	}
-
-	void Update()
-	{
-		if (selectedItem != null)
-			priceText.text = selectedItem.cost.ToString ();
-		else
-			priceText.text = "";
 	}
 
 	// get a list of potential shop items (create addPowerUpItems from the player's hero)
 	private void InitShopItemsHolder()
 	{
-		shopItemsHolder.InitShopItemsList (player.hero);
+		itemsHolder.InitShopItemsList (player.hero);
 	}
 
 	// instantiate a random selection of 5 shop items from the potential items list
 	public void GetShopItems()
 	{
 		// set up the shop items holder
-		shopItemsHolder.ResetShopItems ();
-		shopItemsHolder.GetRandomShopItems (5);
+		itemsHolder.ResetShopItems ();
+		itemsHolder.GetRandomShopItems (5);
 		// get the active shop items and add them to the list
-		foreach (GameObject o in shopItemsHolder.potentialShopItems)
+		foreach (GameObject o in itemsHolder.potentialShopItems)
 		{
 			if (o.activeInHierarchy)
-				shopItems.Add (o.GetComponent<ShopItem> ());
+				items.Add (o.GetComponent<UpgradeItem> ());
 		}
 	}
 
@@ -65,7 +55,7 @@ public class Shop : MonoBehaviour
 	{
 		ResetToggles ();
 		animator.SetTrigger ("In");
-		purchaseButton.interactable = true;
+		upgradeButton.interactable = true;
 		// Hard override input for player
 		player.input.enabled = false;
 	}
@@ -73,7 +63,7 @@ public class Shop : MonoBehaviour
 	public void AnimateOut()
 	{
 		animator.SetTrigger ("Out");
-		purchaseButton.interactable = false;
+		upgradeButton.interactable = false;
 		// Hard override input for player
 		player.input.enabled = true;
 		shopNPC.Disappear ();
@@ -81,24 +71,19 @@ public class Shop : MonoBehaviour
 
 	private void ResetToggles()
 	{
-		foreach (ShopItem item in shopItems)
+		foreach (UpgradeItem item in items)
 		{
 			Toggle toggle = item.GetComponent<Toggle> ();
 			toggle.isOn = false;
 		}
 	}
 
-	public void purchaseSelected()
+	public void SelectItem()
 	{
 		if (selectedItem == null)
 			return;
-		Wallet wallet = GameManager.instance.wallet;
-		if (wallet.TrySpend (selectedItem.cost))
-		{
-			selectedItem.OnPurchased (player);
-			AnimateOut ();
-		}
-		// TODO: cannot purchase item animation
+		selectedItem.Upgrade (player);
+		AnimateOut ();
 	}
 }
 

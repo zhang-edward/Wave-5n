@@ -1,14 +1,14 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public abstract class ShopItemProgression : ShopItem
+public abstract class ShopItemProgression : UpgradeItem
 {
 	public List<ShopItemProgression> unlockable = new List<ShopItemProgression> ();
 
-	public override void OnPurchased (Player player)
+	public override void Upgrade (Player player)
 	{
-		base.OnPurchased (player);
+		base.Upgrade (player);
 		foreach (ShopItemProgression item in unlockable)
 		{
 			item.available = true;

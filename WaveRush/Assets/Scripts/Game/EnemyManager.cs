@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class EnemyManager : MonoBehaviour {
 
-	private const float DIFFICULTY_CURVE = 10f;
+	private const float DIFFICULTY_CURVE = 8f;
 	[System.Serializable]
 	public class EnemyInfoDictionaryEntry
 	{
@@ -137,7 +137,7 @@ public class EnemyManager : MonoBehaviour {
 		if (OnEnemyWaveSpawned != null)
 			OnEnemyWaveSpawned (waveNumber);
 		// Number of enemies spawning curve (used desmos.com for the graph)
-		int spawningPointsAvailable = Mathf.RoundToInt (DIFFICULTY_CURVE * Mathf.Log (difficultyCurve) + 10);
+		int spawningPointsAvailable = Mathf.RoundToInt (DIFFICULTY_CURVE * Mathf.Log (difficultyCurve) + 6);
 		List<GameObject> prefabPool = GetPrefabPool();
 
 		for (int i = 0; i < spawningPointsAvailable; i++)
