@@ -3,7 +3,7 @@ using System.Collections;
 
 public class KnightShield : HeroPowerUp
 {
-	public KnightHero knight;
+	private KnightHero knight;
 	public bool shielded;
 	public float chargeCapacity = 50;
 
