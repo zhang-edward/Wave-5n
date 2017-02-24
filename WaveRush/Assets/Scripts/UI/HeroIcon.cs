@@ -4,7 +4,7 @@ using System.Collections;
 
 public class HeroIcon : ScrollViewSnapContent {
 
-	public string heroName;
+	public HeroType heroName;
 	public bool unlocked { get; private set; }
 	public int cost;
 

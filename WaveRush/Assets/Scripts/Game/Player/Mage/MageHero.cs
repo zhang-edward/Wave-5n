@@ -41,7 +41,7 @@ public class MageHero : PlayerHero {
 		cooldownTimers = new float[2];
 		base.Init (body, anim, player);
 		map = GameObject.Find ("Map").GetComponent<Map>();
-		heroName = PlayerHero.HERO_TYPES ["MAGE"];
+		heroName = HeroType.Mage;
 		projectilePool = (RuntimeObjectPooler)projectilePrefab.GetComponent<Projectile>().GetObjectPooler();
 
 		fireballSpeed = projectilePrefab.GetComponent<Projectile> ().speed;

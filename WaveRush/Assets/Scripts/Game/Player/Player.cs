@@ -73,9 +73,9 @@ public class Player : MonoBehaviour, IDamageable
 		input.isInputEnabled = false;
 	}
 
-	public void Init(string name)
+	public void Init(HeroType type)
 	{
-		InitPlayerHero (name);
+		InitPlayerHero (type);
 		anim.runtimeAnimatorController = hero.animatorController;
 		health = maxHealth;
 
@@ -84,7 +84,7 @@ public class Player : MonoBehaviour, IDamageable
 		StartCoroutine (SpawnState ());
 	}
 
-	private void InitPlayerHero(string name)
+	private void InitPlayerHero(HeroType type)
 	{
 		this.hero = infoHolder.InitHero (name);
 		hero.Init (body, anim, this);

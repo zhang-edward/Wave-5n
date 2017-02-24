@@ -7,8 +7,9 @@ public class ScoreDisplay : MonoBehaviour {
 	public Text enemiesDefeated;
 	public Text wavesSurvived;
 
-	public void DisplayScores(string hero)
+	public void DisplayScores(HeroType type)
 	{
+		string hero = type.ToString();
 		ScoreManager sm = GameManager.instance.scoreManager;
 		if (sm.highScores.ContainsKey(hero))
 		{

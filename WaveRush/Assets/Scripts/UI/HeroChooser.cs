@@ -29,7 +29,7 @@ public class HeroChooser : MonoBehaviour
 	public void UpdateHeroInfoPanel()
 	{
 		HeroIcon heroIcon = heroIconsView.SelectedContent.GetComponent<HeroIcon> ();
-		string heroName = "";
+		HeroType heroName = HeroType.Null;
 		if (heroIcon.unlocked)
 		{
 			heroName = heroIcon.heroName;

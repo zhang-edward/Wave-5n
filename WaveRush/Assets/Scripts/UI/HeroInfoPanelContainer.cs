@@ -11,7 +11,7 @@ public class HeroInfoPanelContainer : MonoBehaviour
 		public GameObject infoPanelPrefab;
 	}
 
-	public string selectedHeroName;				// the name of the selected hero
+	public HeroType selectedHeroName;				// the name of the selected hero
 	public HeroInfoPrefab[] heroInfoPrefabs;
 	public GameObject lockedInfoPrefab;
 	private GameObject currentHeroInfoPrefab;
@@ -34,7 +34,7 @@ public class HeroInfoPanelContainer : MonoBehaviour
 	public void DisplayHeroInfo()
 	{
 		// display hero name in name field
-		nameField.text = selectedHeroName.ToUpper();
+		nameField.text = selectedHeroName.ToString().ToUpper();
 		// get the current hero info panel and destroy it
 		if (currentHeroInfoPrefab != null)
 			Destroy (currentHeroInfoPrefab.gameObject);

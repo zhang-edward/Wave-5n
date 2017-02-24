@@ -37,7 +37,7 @@ public class NinjaHero : PlayerHero {
 	{
 		cooldownTimers = new float[2];
 		base.Init (body, anim, player);
-		heroName = PlayerHero.HERO_TYPES ["NINJA"];
+		heroName = HeroType.Ninja;
 		projectilePool = (RuntimeObjectPooler)projectilePrefab.GetComponent<Projectile>().GetObjectPooler();
 
 		onSwipe = DashAttack;

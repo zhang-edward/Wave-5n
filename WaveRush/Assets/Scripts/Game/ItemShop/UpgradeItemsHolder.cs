@@ -22,7 +22,7 @@ public class UpgradeItemsHolder : MonoBehaviour
 	/// <param name="hero">Hero.</param>
 	public void InitShopItemsList (PlayerHero hero)
 	{
-		string heroName = hero.heroName;
+		//string heroName = hero.heroName;
 		foreach (GameObject item in universalShopItems)
 		{
 			CreateShopItem (item);

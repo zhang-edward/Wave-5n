@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using UnityEngine.Assertions;
 using UnityEngine.SceneManagement;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -19,8 +20,9 @@ public class GameManager : MonoBehaviour {
 
 		public SaveGame()
 		{
+			int numHeroTypes = Enum.GetNames(typeof(HeroType)).Length;
 			// default all heroes locked but the first hero (the knight)
-			unlockedHeroes = new bool[PlayerHero.HERO_TYPES.Count];
+			unlockedHeroes = new bool[numHeroTypes];
 			unlockedHeroes[0] = true;
 			// high scores are all 0 by default
 			highScores = new Dictionary<string, ScoreManager.Score>();
@@ -37,7 +39,7 @@ public class GameManager : MonoBehaviour {
 
 	public static GameManager instance;
 	public Image loadingOverlay;
-	public string selectedHero = "knight";
+	public HeroType selectedHero;
 	public string selectedMap = "grass";
 	public GameObject player;
 
@@ -157,14 +159,15 @@ public class GameManager : MonoBehaviour {
 		InitGameScene ();
 	}
 
-	public void SelectHero(string name)
+	public void SelectHero(HeroType name)
 	{
 		selectedHero = name;
 	}
 
 	public void UpdateScores(int enemiesKilled, int wavesSurvived, int maxCombo)
 	{
-		scoreManager.SubmitScore (selectedHero, new ScoreManager.Score (enemiesKilled, wavesSurvived, maxCombo));
+		string heroName = selectedHero.ToString();
+		scoreManager.SubmitScore(heroName, new ScoreManager.Score (enemiesKilled, wavesSurvived, maxCombo));
 		SaveLoad.Save ();
 	}
 

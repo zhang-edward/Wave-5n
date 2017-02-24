@@ -40,7 +40,7 @@ public class KnightHero : PlayerHero {
 	{
 		cooldownTimers = new float[2];
 		base.Init (body, anim, player);
-		heroName = PlayerHero.HERO_TYPES ["KNIGHT"];
+		heroName = HeroType.Knight;
 		// handle input
 		onSwipe = RushAbility;
 		onTapRelease = AreaAttack;

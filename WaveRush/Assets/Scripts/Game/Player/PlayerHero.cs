@@ -4,12 +4,12 @@ using System.Collections.Generic;
 
 public abstract class PlayerHero : MonoBehaviour {
 
-	public static readonly Dictionary<string, string> HERO_TYPES = new Dictionary<string, string> 
+	/*public static readonly Dictionary<string, string> HERO_TYPES = new Dictionary<string, string> 
 	{
 		{"KNIGHT", "knight"},
 		{"MAGE", "mage"},
 		{"NINJA", "ninja"}
-	};
+	};*/
 
 	[HideInInspector]
 	public Player player;
@@ -21,7 +21,7 @@ public abstract class PlayerHero : MonoBehaviour {
 	[Header("Ability Icons")]
 	public Sprite[] icons;
 	public Sprite specialAbilityIcon;
-	public string heroName { get; protected set; }
+	public HeroType heroName { get; protected set;}
 
 	[Header("PlayerHero Properties")]
 	public int maxHealth;
