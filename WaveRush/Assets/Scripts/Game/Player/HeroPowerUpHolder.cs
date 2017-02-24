@@ -10,7 +10,7 @@ public class HeroPowerUpHolder : MonoBehaviour
 	{
 		public string name { 
 			get {
-				return powerUpPrefab.GetComponent<HeroPowerUp> ().powerUpName;
+				return powerUpPrefab.GetComponent<HeroPowerUp> ().info.powerUpName;
 			}
 		}
 		public GameObject powerUpPrefab;
@@ -75,7 +75,7 @@ public class HeroPowerUpHolder : MonoBehaviour
 	{
 		foreach (HeroPowerUp activePowerUp in activePowerUps)
 		{
-			if (powerUp.powerUpName.Equals (activePowerUp.powerUpName))
+			if (powerUp.info.powerUpName.Equals (activePowerUp.info.powerUpName))
 				return activePowerUp;
 		}
 		return null;

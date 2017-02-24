@@ -27,11 +27,11 @@ public class UpgradeItemsHolder : MonoBehaviour
 		{
 			CreateShopItem (item);
 		}
-
+		// initialize character-specific shop items
 		foreach (HeroPowerUpHolder.HeroPowerUpDictionaryEntry entry in hero.powerUpHolder.powerUpPrefabs)
 		{
 			HeroPowerUp powerUp = entry.powerUpPrefab.GetComponent<HeroPowerUp> ();
-			if (powerUp.parent == null)		// if this powerup is not dependent on another powerup (has no parent to be unlocked first)
+			if (powerUp.info.isRoot)		// if this powerup is not dependent on another powerup (has no parent to be unlocked first)
 				CreateAddPowerUpShopItem (powerUp);
 		}
 	}
@@ -41,11 +41,12 @@ public class UpgradeItemsHolder : MonoBehaviour
 		GameObject o = CreateShopItem (addPowerUpItemPrefab);
 		AddPowerUpItem addPowerUpItem = o.GetComponent<AddPowerUpItem> ();
 		addPowerUpItem.Init (powerUp);
-		// if the powerup unlocks further powerups
-		if (powerUp.unlockable.Length > 0)
+		// if the powerup unlocks further powerups, initialize those as well
+		if (powerUp.info.unlockable.Length > 0)
 		{
-			foreach (HeroPowerUp childPowerUp in powerUp.unlockable)
+			foreach (HeroPowerUpInfo childPowerUpInfo in powerUp.info.unlockable)
 			{
+				HeroPowerUp childPowerUp = childPowerUpInfo.prefab;
 				GameObject child = CreateAddPowerUpShopItem (childPowerUp);	// create a shopItem for the child powerUp
 				AddPowerUpItem childItem = child.GetComponent<AddPowerUpItem>();
 				childItem.SetAvailable (false);
@@ -87,7 +88,7 @@ public class UpgradeItemsHolder : MonoBehaviour
 		UpgradeItem shopItem = potentialShopItems [i].GetComponent<UpgradeItem>();
 		if (!shopItem.gameObject.activeInHierarchy && shopItem.available)
 		{
-			print ("Enabled " + potentialShopItems [i].GetComponent<ScrollingTextOption>().text);
+			// print ("Enabled " + potentialShopItems [i].GetComponent<ScrollingTextOption>().text);
 			potentialShopItems [i].gameObject.SetActive (true);
 			return true;
 		}

@@ -3,7 +3,7 @@ using System.Collections;
 
 public class KnightComboRush : HeroPowerUp
 {
-	public KnightHero knight;
+	private KnightHero knight;
 	private float multiplier = 1f;		// the amount of speed that this powerup adds to the rush effect
 
 	public override void Activate(PlayerHero hero)

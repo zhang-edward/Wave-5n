@@ -3,7 +3,7 @@ using System.Collections;
 
 public class KnightShieldChargeUp : HeroPowerUp
 {
-	public KnightHero knight;
+	private KnightHero knight;
 	public KnightShield shieldPowerUp;
 
 	public override void Activate(PlayerHero hero)

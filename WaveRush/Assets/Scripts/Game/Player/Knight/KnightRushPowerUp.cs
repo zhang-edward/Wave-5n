@@ -5,7 +5,7 @@ public class KnightRushPowerUp : HeroPowerUp
 {
 	private const float MULTIPLIER = 1.15f;
 
-	public KnightHero knight;
+	private KnightHero knight;
 	private float totalSpeedMultiplier;		// the amount of speed that this powerup adds to the rush effect
 
 	[Header("Animations")]

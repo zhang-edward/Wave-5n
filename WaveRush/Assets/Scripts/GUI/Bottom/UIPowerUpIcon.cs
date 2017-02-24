@@ -20,7 +20,7 @@ public class UIPowerUpIcon : MonoBehaviour
 	public void Init(HeroPowerUp powerUp)
 	{
 		this.powerUp = powerUp;
-		icon.sprite = powerUp.icon;
+		icon.sprite = powerUp.info.icon;
 	}
 
 	void Update()

@@ -14,7 +14,8 @@ public abstract class HeroPowerUp : MonoBehaviour
 
 	[Header("Shop Item Properties")]
 	public HeroPowerUp[] unlockable;
-	public HeroPowerUp parent;			// the power up that needs to be unlocked for this one to be available;
+	// if this is not a sub-powerup of another powerup (if another powerup has this in its "unlockable" field
+	public bool isRoot = true;
 	// for shop item
 	public int maxStacks;
 	public int cost;
@@ -34,7 +35,7 @@ public abstract class HeroPowerUp : MonoBehaviour
 	public virtual void Stack() 
 	{
 		stacks++;
-		Assert.IsFalse (stacks > maxStacks);
+		Assert.IsFalse (stacks > info.maxStacks);
 	}
 }
 
