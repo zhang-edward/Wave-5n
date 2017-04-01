@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class HeroIconsView : ScrollViewSnap {
@@ -6,11 +6,11 @@ public class HeroIconsView : ScrollViewSnap {
 	protected override void InitContent ()
 	{
 		base.InitContent ();
-		bool[] unlockedHeroes = GameManager.instance.saveGame.unlockedHeroes;
+		SaveGame.HeroSaveData[] unlockedHeroes = GameManager.instance.saveGame.heroData;
 		for (int i = 0; i < content.Length; i ++)
 		{
 			HeroIcon heroIcon = content [i].GetComponent<HeroIcon> ();
-			heroIcon.SetLock(unlockedHeroes[i]);
+			heroIcon.SetLock(unlockedHeroes[i].unlocked);
 		}
 	}
 }

@@ -6,7 +6,8 @@ public class ScrollViewSnap : MonoBehaviour {
 	public RectTransform panel;		// the panel that holds the content
 	public GameObject[] content;
 	public RectTransform center;	// the center of the panel
-	public float contentDistance;	// holds the distance between the content
+	public float contentDistance;   // holds the distance between the content
+	public float scrollSpeed = 20f;
 
 	public GameObject SelectedContent {
 		get {return content [selectedContentIndex];}
@@ -70,7 +71,7 @@ public class ScrollViewSnap : MonoBehaviour {
 		while (Mathf.Abs(panel.anchoredPosition.x - dest) > 0.05f)
 		{
 			// set new position
-			float newX = Mathf.Lerp (panel.anchoredPosition.x, dest, Time.deltaTime * 20f);
+			float newX = Mathf.Lerp (panel.anchoredPosition.x, dest, Time.deltaTime * scrollSpeed);
 			panel.anchoredPosition = new Vector2 (newX, panel.anchoredPosition.y);
 			yield return null;
 		}
@@ -96,5 +97,21 @@ public class ScrollViewSnap : MonoBehaviour {
 	{
 		selectedContentIndex = index;
 		EndDrag ();
+	}
+
+	public void ScrollRight()
+	{
+		selectedContentIndex++;
+		if (selectedContentIndex >= content.Length)
+			selectedContentIndex = content.Length - 1;
+		EndDrag();
+	}
+
+	public void ScrollLeft()
+	{
+		selectedContentIndex--;
+		if (selectedContentIndex <= 0)
+			selectedContentIndex = 0;
+		EndDrag();
 	}
 }

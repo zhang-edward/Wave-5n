@@ -86,7 +86,7 @@ public class Player : MonoBehaviour, IDamageable
 
 	private void InitPlayerHero(HeroType type)
 	{
-		this.hero = infoHolder.InitHero (name);
+		this.hero = infoHolder.InitHero (type.ToString());
 		hero.Init (body, anim, this);
 	}
 

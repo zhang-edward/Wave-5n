@@ -33,7 +33,7 @@ public class HeroIcon : ScrollViewSnapContent {
 	{
 		anim.SetTrigger ("Animate");
 		unlocked = true;
-		GameManager.instance.saveGame.unlockedHeroes [index] = true;
+		GameManager.instance.saveGame.heroData [index].unlocked = true;
 		GameManager.instance.PrepareSaveFile ();
 		print ("unlocked " + index);
 		SaveLoad.Save ();

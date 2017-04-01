@@ -8,33 +8,6 @@ using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour {
 
-	/// <summary>
-	/// Game data to be loaded and saved.
-	/// </summary>
-	[System.Serializable]
-	public class SaveGame
-	{
-		public Dictionary<string, ScoreManager.Score> highScores;
-		public bool[] unlockedHeroes;
-		public Wallet wallet;
-
-		public SaveGame()
-		{
-			int numHeroTypes = Enum.GetNames(typeof(HeroType)).Length;
-			// default all heroes locked but the first hero (the knight)
-			unlockedHeroes = new bool[numHeroTypes];
-			unlockedHeroes[0] = true;
-			// high scores are all 0 by default
-			highScores = new Dictionary<string, ScoreManager.Score>();
-			// wallet money = 0 by default
-			wallet = new Wallet();
-		}
-
-		public void ClearHighScores()
-		{
-			highScores = new Dictionary<string, ScoreManager.Score> ();
-		}
-	}
 	public SaveGame saveGame;
 
 	public static GameManager instance;

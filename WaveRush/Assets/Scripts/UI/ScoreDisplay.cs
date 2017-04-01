@@ -14,13 +14,13 @@ public class ScoreDisplay : MonoBehaviour {
 		if (sm.highScores.ContainsKey(hero))
 		{
 			ScoreManager.Score score = sm.highScores [hero];
-			enemiesDefeated.text = "Most Enemies Defeated: " + score.enemiesDefeated;
-			wavesSurvived.text = "Most Waves Survived: " + score.wavesSurvived;	
+			enemiesDefeated.text = score.enemiesDefeated.ToString();
+			wavesSurvived.text = score.wavesSurvived.ToString();	
 		}
 		else
 		{
-			enemiesDefeated.text = "Most Enemies Defeated: 0";
-			wavesSurvived.text = "Most Waves Survived: 0";	
+			enemiesDefeated.text = "0";
+			wavesSurvived.text = "0";	
 		}
 	}
 }

@@ -11,27 +11,27 @@ public class AddPowerUpItem : ShopItemProgression
 	public void Init(HeroPowerUp powerUp)
 	{
 		this.powerUp = powerUp;
-		icon.sprite = powerUp.info.icon;
-		purchaseLimit = powerUp.info.maxStacks;
-		cost = powerUp.info.cost;
-		GetComponent<ScrollingTextOption> ().text = powerUp.info.description;
-		if (powerUp.info.maxStacks == 1)
+		icon.sprite = powerUp.data.icon;
+		purchaseLimit = powerUp.data.maxStacks;
+		cost = powerUp.data.cost;
+		GetComponent<ScrollingTextOption> ().text = powerUp.data.description;
+		if (powerUp.data.maxStacks == 1)
 			stacksIndicator.transform.parent.gameObject.SetActive (false);
 	}
 
 	void OnEnable()
 	{
 		stacksIndicator.text = ToRomanNumeral(timesPurchased + 1);
-		if (timesPurchased > 0 && !powerUp.info.stackDescription.Equals(""))
+		if (timesPurchased > 0 && !powerUp.data.stackDescription.Equals(""))
 		{
-			GetComponent<ScrollingTextOption> ().text = powerUp.info.stackDescription;
+			GetComponent<ScrollingTextOption> ().text = powerUp.data.stackDescription;
 		}
 	}
 
 	public override void Upgrade (Player player)
 	{
 		base.Upgrade (player);
-		player.hero.powerUpHolder.AddPowerUp (powerUp.info.powerUpName);
+		player.hero.powerUpHolder.AddPowerUp (powerUp.data.powerUpName);
 	}
 
 	private string ToRomanNumeral(int num)
