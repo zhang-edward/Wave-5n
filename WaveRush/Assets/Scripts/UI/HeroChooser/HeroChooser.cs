@@ -7,11 +7,21 @@ public class HeroChooser : MonoBehaviour
 	public static string LOCKED = "LOCKED";
 
 	public HeroIconsView heroIconsView;
-	public HeroInfoPanelContainer infoPanel;
+	private int selectedContentIndex = -1;
+	public ScrollingText descriptionText;
+	//public HeroInfoPanelContainer infoPanel;
 	public ScoreDisplay scoreDisplay;
+	public UpgradeScreen upgradeScreen;
+
 	public Button playButton;
+	public Button toUpgradeScreen;
 
 	void Awake()
+	{
+		toUpgradeScreen.onClick.AddListener(ToUpgradeScreen);
+	}
+
+	void Start()
 	{
 		UpdateHeroInfoPanel ();
 	}
@@ -28,6 +38,12 @@ public class HeroChooser : MonoBehaviour
 
 	public void UpdateHeroInfoPanel()
 	{
+		// check to see if hero selection changed
+		if (selectedContentIndex == heroIconsView.selectedContentIndex)
+			return;
+		selectedContentIndex = heroIconsView.selectedContentIndex;
+
+		// update the description panels
 		HeroIcon heroIcon = heroIconsView.SelectedContent.GetComponent<HeroIcon> ();
 		HeroType heroName = HeroType.Null;
 		if (heroIcon.unlocked)
@@ -35,17 +51,24 @@ public class HeroChooser : MonoBehaviour
 			heroName = heroIcon.heroName;
 			GameManager.instance.SelectHero (heroName);	// select the hero in the GameManager
 			playButton.interactable = true;
-			// initialize info panel
-			infoPanel.selectedHeroName = heroName;
-			infoPanel.DisplayHeroInfo ();
+			// display text
+			descriptionText.UpdateText(DataManager.GetDescriptionData(heroName).heroDescription);
+			// animate score panel
 		}
 		else
 		{
-			infoPanel.DisplayLockedHero (this, heroIcon);
 			playButton.interactable = false;
+			descriptionText.UpdateText(LOCKED);
 		}
 		// display the scores for the selected hero (for locked heroes, display 0 for all)
 		scoreDisplay.DisplayScores (heroName);
+		scoreDisplay.GetComponent<Animator>().SetTrigger("Refresh");
+	}
+
+	private void ToUpgradeScreen()
+	{
+		HeroIcon heroIcon = heroIconsView.SelectedContent.GetComponent<HeroIcon>();
+		upgradeScreen.Init(heroIcon.heroName);
 	}
 }
 

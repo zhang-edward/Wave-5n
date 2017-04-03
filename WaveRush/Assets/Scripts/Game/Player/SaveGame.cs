@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,7 +11,7 @@ public class SaveGame
 	{
 		public HeroType hero;
 		public bool unlocked;
-		public int powerUpsUnlocked;
+		public int numPowerUpsUnlocked;
 	}
 
 	public Dictionary<string, ScoreManager.Score> highScores;

@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using Projectiles;
 using System.Collections;
 
@@ -37,7 +37,6 @@ public class NinjaHero : PlayerHero {
 	{
 		cooldownTimers = new float[2];
 		base.Init (body, anim, player);
-		heroName = HeroType.Ninja;
 		projectilePool = (RuntimeObjectPooler)projectilePrefab.GetComponent<Projectile>().GetObjectPooler();
 
 		onSwipe = DashAttack;

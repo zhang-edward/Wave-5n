@@ -6,6 +6,7 @@ public class ScoreDisplay : MonoBehaviour {
 
 	public Text enemiesDefeated;
 	public Text wavesSurvived;
+	public Text maxCombo;
 
 	public void DisplayScores(HeroType type)
 	{
@@ -15,12 +16,14 @@ public class ScoreDisplay : MonoBehaviour {
 		{
 			ScoreManager.Score score = sm.highScores [hero];
 			enemiesDefeated.text = score.enemiesDefeated.ToString();
-			wavesSurvived.text = score.wavesSurvived.ToString();	
+			wavesSurvived.text = score.wavesSurvived.ToString();
+			maxCombo.text = score.maxCombo.ToString();
 		}
 		else
 		{
-			enemiesDefeated.text = "0";
-			wavesSurvived.text = "0";	
+			enemiesDefeated.text = "-";
+			wavesSurvived.text = "-";
+			maxCombo.text = "-";
 		}
 	}
 }

@@ -53,7 +53,7 @@ public class KnightRushPowerUp : HeroPowerUp
 				info
 			);
 			animPlayer.Play ();
-			print (effects [i] + " is playing");
+			//print (effects [i] + " is playing");
 		}
 	}
 }

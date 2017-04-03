@@ -32,9 +32,6 @@ public class Player : MonoBehaviour, IDamageable
 	[Header("Player Ability")]
 	public PlayerHero hero;
 
-	[Header("Universal Power Ups")]
-	public HeroPowerUpHolder.HeroPowerUpDictionaryEntry[] powerUpPrefabs;
-
 	[Header("Player direction")]
 	public Vector2 dir;		// player's facing direction and movement direction
 

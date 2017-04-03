@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -40,7 +40,6 @@ public class KnightHero : PlayerHero {
 	{
 		cooldownTimers = new float[2];
 		base.Init (body, anim, player);
-		heroName = HeroType.Knight;
 		// handle input
 		onSwipe = RushAbility;
 		onTapRelease = AreaAttack;

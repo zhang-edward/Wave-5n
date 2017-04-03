@@ -14,9 +14,13 @@ public class HeroPowerUpHolder : MonoBehaviour
 			}
 		}
 		public GameObject powerUpPrefab;
+		public HeroPowerUpDictionaryEntry(GameObject prefab)
+		{
+			powerUpPrefab = prefab;
+		}
 	}
 
-	public List<HeroPowerUpDictionaryEntry> powerUpPrefabs;			// dictionary database of all available power ups
+	public List<HeroPowerUpDictionaryEntry> powerUpPrefabs { get; private set; }			// dictionary database of all available power ups
 	[HideInInspector]
 	public List<HeroPowerUp> activePowerUps;						// list of powerups that are active on the player in the game
 
@@ -30,10 +34,13 @@ public class HeroPowerUpHolder : MonoBehaviour
 
 	public void Init()
 	{
-		// get universal player powerups (apply status effect)
-		foreach (HeroPowerUpDictionaryEntry entry in hero.player.powerUpPrefabs)
+		powerUpPrefabs = new List<HeroPowerUpDictionaryEntry>();
+		HeroPowerUpListData powerUpListData = DataManager.GetPowerUpListData(hero.heroType);
+		int numPowerUpsUnlocked = GameManager.instance.saveGame.GetHeroData(hero.heroType).numPowerUpsUnlocked;
+		for (int i = 0; i < numPowerUpsUnlocked; i ++)
 		{
-			powerUpPrefabs.Add (entry);
+			HeroPowerUp powerUp = powerUpListData.powerUps[i];
+			powerUpPrefabs.Add(new HeroPowerUpDictionaryEntry(powerUp.gameObject));
 		}
 	}
 

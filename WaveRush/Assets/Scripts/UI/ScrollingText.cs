@@ -5,6 +5,9 @@ using System.Collections;
 [RequireComponent(typeof(AudioSource))]
 public class ScrollingText : MonoBehaviour {
 
+	public const string START_INVISIBLE_TAG = "<color=#00000000>";
+	public const string END_INVISIBLE_TAG = "</color>";
+
 	public Text textBox;
 	public string defaultText;
 	public string text;		// text to display in the text box
@@ -44,11 +47,14 @@ public class ScrollingText : MonoBehaviour {
 
 	IEnumerator AnimateText()
 	{
+		bool playSound = true;
 		for (int i = 0; i < CountNonMarkupCharacters(text) + 1; i++)
 		{
 			textBox.text = ParseRichTextForTypewriter(i, text);
-			audioSource.Play ();
-			yield return new WaitForSeconds(.05f);
+			if (playSound)
+				audioSource.Play();
+			playSound = !playSound;
+			yield return new WaitForSeconds(.03f);
 		}
 	}
 
@@ -68,8 +74,9 @@ public class ScrollingText : MonoBehaviour {
 		string answer = "";
 		bool openTag = false;
 
-		int numNonMarkupCharacters = 0;
-		int i = 0;
+		int numNonMarkupCharacters = 0;		// number of characters counted
+		int i = 0;							// substring index
+
 		while (numNonMarkupCharacters < numChars)	// continue until we have reached char index 'i', excluding markup
 		{
 			if (str [i] == '<')
@@ -77,7 +84,8 @@ public class ScrollingText : MonoBehaviour {
 				int endOfTagIndex = str.IndexOf ('>', i);		// skip to the end of the tag
 				int length = endOfTagIndex - i + 1;
 				answer += str.Substring(i, length);	// add the tag to the answer
-				openTag = !openTag;	// if we have an encountered a tag, close it. Else, mark that we have found an unclosed tag
+				openTag = !openTag;	// if we have an encountered an open tag <>, close it </>. 
+									// Else, mark that we have found an unclosed tag.
 				i = endOfTagIndex + 1;
 			}
 			answer += str [i];

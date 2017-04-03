@@ -5,7 +5,6 @@ using System.Collections.Generic;
 public class UpgradeScreen : MonoBehaviour
 {
 	private HeroType selectedHero;				// the selected hero to disply info for
-	public HeroPowerUpListData[] powerUpList;	// power up info for every hero
 	public GameObject upgradeIconPrefab;        // the icons for each power up
 
 	[Header("In Prefab")]
@@ -27,20 +26,8 @@ public class UpgradeScreen : MonoBehaviour
 
 	public void Init(HeroType selectedHero)
 	{
-		this.selectedHero = selectedHero;
-		RefreshScrollView(GetSelectedHeroData());
-	}
-
-	private HeroPowerUpListData GetSelectedHeroData()
-	{
-		foreach(HeroPowerUpListData data in powerUpList)
-		{
-			if (data.type == selectedHero)
-				return data;
-		}
-		throw new UnityEngine.Assertions.AssertionException
-		                     (this.name,
-		                      "Could not find data for hero with name " + selectedHero.ToString() + "!");
+		this.selectedHero = HeroType.Mage;
+		RefreshScrollView(DataManager.GetPowerUpListData(selectedHero));
 	}
 
 	private void RefreshScrollView(HeroPowerUpListData data)
@@ -63,7 +50,7 @@ public class UpgradeScreen : MonoBehaviour
 		{
 			// if 1 powerup unlocked, i = 0 should be unlocked
 			// if 2 powerups unlocked, i = 0, 1 should be unlocked, etc.
-			int powerUpsUnlocked = GameManager.instance.saveGame.GetHeroData(selectedHero).powerUpsUnlocked;
+			int powerUpsUnlocked = GameManager.instance.saveGame.GetHeroData(selectedHero).numPowerUpsUnlocked;
 			bool powerUpUnlocked = i < powerUpsUnlocked;
 			HeroPowerUp powerUp = data.powerUps[i];
 
@@ -95,8 +82,8 @@ public class UpgradeScreen : MonoBehaviour
 	{
 		if (GameManager.instance.wallet.TrySpend(GetSelected().data.cost))
 		{
-			GameManager.instance.saveGame.GetHeroData(selectedHero).powerUpsUnlocked++;
-			RefreshScrollView(GetSelectedHeroData());
+			GameManager.instance.saveGame.GetHeroData(selectedHero).numPowerUpsUnlocked++;
+			RefreshScrollView(DataManager.GetPowerUpListData(selectedHero));
 			OnTogglesValueChanged();
 			SoundManager.instance.PlaySingle(purchaseSound);
 			SaveLoad.Save();

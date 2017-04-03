@@ -21,7 +21,7 @@ public abstract class PlayerHero : MonoBehaviour {
 	[Header("Ability Icons")]
 	public Sprite[] icons;
 	public Sprite specialAbilityIcon;
-	public HeroType heroName { get; protected set;}
+	public HeroType heroType;
 
 	[Header("PlayerHero Properties")]
 	public int maxHealth;
