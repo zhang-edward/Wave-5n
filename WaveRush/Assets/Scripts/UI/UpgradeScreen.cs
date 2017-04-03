@@ -26,7 +26,7 @@ public class UpgradeScreen : MonoBehaviour
 
 	public void Init(HeroType selectedHero)
 	{
-		this.selectedHero = HeroType.Mage;
+		this.selectedHero = selectedHero;
 		RefreshScrollView(DataManager.GetPowerUpListData(selectedHero));
 	}
 
@@ -83,10 +83,10 @@ public class UpgradeScreen : MonoBehaviour
 		if (GameManager.instance.wallet.TrySpend(GetSelected().data.cost))
 		{
 			GameManager.instance.saveGame.GetHeroData(selectedHero).numPowerUpsUnlocked++;
+			SaveLoad.Save();
 			RefreshScrollView(DataManager.GetPowerUpListData(selectedHero));
 			OnTogglesValueChanged();
 			SoundManager.instance.PlaySingle(purchaseSound);
-			SaveLoad.Save();
 		}
 		else
 		{
