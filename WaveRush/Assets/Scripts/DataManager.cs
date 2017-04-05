@@ -15,27 +15,27 @@ public class DataManager : MonoBehaviour
 		DontDestroyOnLoad(this);
 	}
 
-	public static HeroPowerUpListData GetPowerUpListData(HeroType type)
+	public static HeroPowerUpListData GetPowerUpListData(HeroType heroName)
 	{
 		foreach (HeroPowerUpListData data in instance.powerUpList)
 		{
-			if (data.type == type)
+			if (data.heroName == heroName)
 				return data;
 		}
 		throw new UnityEngine.Assertions.AssertionException
-		                     (instance.GetType().Name,
-							  "Could not find data for hero with name " + type.ToString() + "!");
+		                     (instance.GetType() + ".cs",
+							  "Could not find data for hero with name " + heroName.ToString() + "!");
 	}
 
 	public static HeroDescriptionData GetDescriptionData(HeroType type)
 	{
 		foreach (HeroDescriptionData data in instance.heroDescriptions)
 		{
-			if (data.type == type)
+			if (data.heroName == type)
 				return data;
 		}
 		throw new UnityEngine.Assertions.AssertionException
-							 (instance.GetType().Name,
+							 (instance.GetType() + ".cs",
 							  "Could not find data for hero with name " + type.ToString() + "!");
 	}
 }

@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class HealthItem : UpgradeItem
+public class HealthItem : PowerUpItem
 {
 	public override void Upgrade(Player player)
 	{

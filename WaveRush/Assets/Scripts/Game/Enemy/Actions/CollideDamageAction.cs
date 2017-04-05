@@ -4,7 +4,7 @@ namespace EnemyActions
 	public class CollideDamageAction : EnemyAction
 	{
 		private float cooldown;
-		private float attackBuildUp = 0.2f; // time for the player to be in contact with the enemy before the player is damaged
+		private float attackBuildUp = 0.4f; // time for the player to be in contact with the enemy before the player is damaged
 		private float buildUp;              // timer for attackBuildUp
 
 		public int damage = 1;

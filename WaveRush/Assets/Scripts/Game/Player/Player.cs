@@ -21,7 +21,8 @@ public class Player : MonoBehaviour, IDamageable
 	[HideInInspector]
 	public float DEFAULT_SPEED;
 
-	public PlayerInfoHolder infoHolder;
+	public GameObject[] heroPrefabs;
+	// public PlayerInfoHolder infoHolder;
 
 	[Header("Entity Base Values")]
 	public SpriteRenderer sr;
@@ -83,8 +84,22 @@ public class Player : MonoBehaviour, IDamageable
 
 	private void InitPlayerHero(HeroType type)
 	{
-		this.hero = infoHolder.InitHero (type.ToString());
-		hero.Init (body, anim, this);
+		// this.hero = infoHolder.CreateHero (type.ToString());
+		foreach (GameObject prefab in heroPrefabs)
+		{
+			PlayerHero prefabHero = prefab.GetComponent<PlayerHero>();
+//			print(prefabHero.heroType == type);
+			if (prefabHero.heroType == type)
+			{
+				GameObject o = Instantiate(prefab, transform.position, Quaternion.identity) as GameObject;
+				o.transform.SetParent(this.transform);
+				hero = o.GetComponent<PlayerHero>();
+				hero.Init(body, anim, this);
+				return;
+			}
+		}
+		throw new UnityEngine.Assertions.AssertionException(this.GetType() + ".cs",
+															"Cannot find hero with name " + type.ToString() + "!");
 	}
 
 	/// <summary>

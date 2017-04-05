@@ -35,7 +35,7 @@ public class MapPortal : MonoBehaviour {
 			Debug.Log ("MapPortal collided");
 			Player player = col.GetComponentInChildren<Player> ();
 			player.body.Move (Vector2.zero);
-			GameManager.instance.TeleportMaps ("hell");
+			GameManager.instance.TeleportMaps (MapType.Hell);
 		}
 	}
 }

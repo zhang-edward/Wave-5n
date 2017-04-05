@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour {
 	public static GameManager instance;
 	public Image loadingOverlay;
 	public HeroType selectedHero;
-	public string selectedMap = "grass";
+	public MapType selectedMap;
 	public GameObject player;
 
 	public ScoreManager scoreManager;
@@ -88,9 +88,9 @@ public class GameManager : MonoBehaviour {
 		Map map = GameObject.Find ("/Game/Map").GetComponent<Map>();
 		EnemyManager enemyManager = GameObject.Find ("/Game/EnemyManager").GetComponent<EnemyManager> ();
 
-		map.chosenInfo = selectedMap;
+		map.chosenMap = selectedMap;
 		map.GenerateMap ();
-		enemyManager.chosenInfo = selectedMap;
+		enemyManager.chosenMap = selectedMap;
 
 		player = GameObject.Find ("/Game/Player");
 		Assert.IsNotNull (player);
@@ -99,10 +99,10 @@ public class GameManager : MonoBehaviour {
 		Assert.IsFalse (selectedHero.Equals (""));		// will throw an error if this script tries to
 														// initialize the player without a selected hero
 		playerScript.Init (selectedHero);
-		SoundManager.instance.PlayMusicLoop (map.info.musicLoop, map.info.musicIntro);
+		SoundManager.instance.PlayMusicLoop (map.data.musicLoop, map.data.musicIntro);
 	}
 
-	public void TeleportMaps(string newMap)
+	public void TeleportMaps(MapType newMap)
 	{
 		SaveLoad.Save ();
 		selectedMap = newMap;
@@ -130,9 +130,9 @@ public class GameManager : MonoBehaviour {
 		InitGameScene ();
 	}
 
-	public void SelectHero(HeroType name)
+	public void SelectHero(HeroType heroName)
 	{
-		selectedHero = name;
+		selectedHero = heroName;
 	}
 
 	public void UpdateScores(int enemiesKilled, int wavesSurvived, int maxCombo)

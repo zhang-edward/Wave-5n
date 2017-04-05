@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public abstract class ShopItemProgression : UpgradeItem
+public abstract class ShopItemProgression : PowerUpItem
 {
 	public List<ShopItemProgression> unlockable = new List<ShopItemProgression> ();
 

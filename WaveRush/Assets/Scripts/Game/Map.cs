@@ -4,19 +4,14 @@ using Utils;
 
 public class Map : MonoBehaviour {
 
-	[System.Serializable]
-	public class MapInfoDictionaryEntry
-	{
-		public string name;
-		public MapInfo info;
-	}
-
 	public GameObject terrainPrefab;
-	public MapInfo info { get; private set; }
+	public GameObject colliderPrefab;
+
+	public MapData data { get; private set; }
 
 	[Header("Map Info")]
-	public MapInfoDictionaryEntry[] mapInfos;
-	public string chosenInfo;
+	public MapData[] mapData;
+	public MapType chosenMap;
 
 	public GameObject bossSpawn { get; set; }
 
@@ -56,19 +51,25 @@ public class Map : MonoBehaviour {
 
 	public void GenerateMap()
 	{
-		info = GetMapInfo ();
-		info.gameObject.SetActive (true);
+		data = GetMapInfo ();
+		CreateBorder();
 		GetIntegerMaps ();
 		InitSpriteMap ();
 		CreateMap ();
 	}
 
-	private MapInfo GetMapInfo()
+	private void CreateBorder()
 	{
-		foreach (MapInfoDictionaryEntry infoEntry in mapInfos)
+		GameObject o = Instantiate(data.borderPrefab);
+		o.transform.SetParent(this.transform);
+	}
+
+	private MapData GetMapInfo()
+	{
+		foreach (MapData data in mapData)
 		{
-			if (infoEntry.name.Equals (chosenInfo))
-				return infoEntry.info;
+			if (data.mapType == chosenMap)
+				return data;
 		}
 		throw new UnityEngine.Assertions.AssertionException ("Map.cs:", "MapInfo not found");
 	}
@@ -116,7 +117,7 @@ public class Map : MonoBehaviour {
 	private void CreateRandomObject(int x, int y)
 	{
 		// get a random object
-		GameObject obj = Instantiate (info.terrainObjectPrefabs[Random.Range(0, info.terrainObjectPrefabs.Length)]);
+		GameObject obj = Instantiate (data.terrainObjectPrefabs[Random.Range(0, data.terrainObjectPrefabs.Length)]);
 		obj.transform.SetParent (objectsFolder);
 		obj.transform.position = new Vector2 (x, y);
 		terrainObjects.Add (obj);
@@ -124,7 +125,7 @@ public class Map : MonoBehaviour {
 
 	private void CreateBossSpawn()
 	{
-		GameObject obj = Instantiate (info.bossSpawnPrefab);
+		GameObject obj = Instantiate (data.bossSpawnPrefab);
 		obj.transform.SetParent (objectsFolder);
 		obj.transform.position = bossSpawnPosition;
 		terrainObjects.Add (obj);
@@ -133,7 +134,7 @@ public class Map : MonoBehaviour {
 
 	public void CreateMap()
 	{
-		SoundManager.instance.PlayMusicLoop (info.musicLoop, info.musicIntro);
+		SoundManager.instance.PlayMusicLoop (data.musicLoop, data.musicIntro);
 		CreateBossSpawn ();
 		for (int x = 0; x < size; x++)
 		{
@@ -150,17 +151,17 @@ public class Map : MonoBehaviour {
 				if (id <= 1)
 				{
 					// get sprites
-					sr.sprite = info.terrainSprites [terrain [y, x]];
+					sr.sprite = data.terrainSprites [terrain [y, x]];
 					if (colliders[y, x] == 1)
 					{
-						GameObject o = Instantiate (info.borderPrefab);
+						GameObject o = Instantiate (colliderPrefab);
 						o.transform.SetParent (collidersFolder);
 						o.transform.position = new Vector2 (x, y);
 					}
 				}
 				// if id > 1, the terrain is an edge or corner tile
 				else
-					sr.sprite = info.terrainSprites [EvaluateEdgeId (id, ref sr)];
+					sr.sprite = data.terrainSprites [EvaluateEdgeId (id, ref sr)];
 			}
 		}
 	}
@@ -187,7 +188,7 @@ public class Map : MonoBehaviour {
 		for (int i = 0; i < bgPropsDensity; i ++)
 		{
 			float randOffset = Random.Range (bgPropsBufferMin, bgPropsBufferMax);
-			GameObject o = Instantiate(info.bgProps[Random.Range(0, info.bgProps.Length)]);
+			GameObject o = Instantiate(data.edgeProps[Random.Range(0, data.edgeProps.Length)]);
 			o.transform.position = new Vector3 (-randOffset,
 				Random.Range (0, Map.size + bgPropsBufferMax));
 			o.transform.SetParent (bgFolder);
@@ -195,7 +196,7 @@ public class Map : MonoBehaviour {
 		for (int i = 0; i < bgPropsDensity; i ++)
 		{
 			float randOffset = Random.Range (bgPropsBufferMin, bgPropsBufferMax);
-			GameObject o = Instantiate(info.bgProps[Random.Range(0, info.bgProps.Length)]);
+			GameObject o = Instantiate(data.edgeProps[Random.Range(0, data.edgeProps.Length)]);
 			o.transform.position = new Vector3 (Map.size + randOffset,
 				Random.Range (0, Map.size + bgPropsBufferMax));
 			o.transform.SetParent (bgFolder);
@@ -203,7 +204,7 @@ public class Map : MonoBehaviour {
 		for (int i = 0; i < bgPropsDensity; i ++)
 		{
 			float randOffset = Random.Range (bgPropsBufferMin, bgPropsBufferMax);
-			GameObject o = Instantiate(info.bgProps[Random.Range(0, info.bgProps.Length)]);
+			GameObject o = Instantiate(data.edgeProps[Random.Range(0, data.edgeProps.Length)]);
 			o.transform.position = new Vector3 (Random.Range (0, Map.size + bgPropsBufferMax),
 				-randOffset);
 			o.transform.SetParent (bgFolder);
@@ -211,7 +212,7 @@ public class Map : MonoBehaviour {
 		for (int i = 0; i < bgPropsDensity; i ++)
 		{
 			float randOffset = Random.Range (bgPropsBufferMin, bgPropsBufferMax);
-			GameObject o = Instantiate(info.bgProps[Random.Range(0, info.bgProps.Length)]);
+			GameObject o = Instantiate(data.edgeProps[Random.Range(0, data.edgeProps.Length)]);
 			o.transform.position = new Vector3 (Random.Range(0, Map.size + bgPropsBufferMax),
 				Map.size + randOffset);
 			o.transform.SetParent (bgFolder);

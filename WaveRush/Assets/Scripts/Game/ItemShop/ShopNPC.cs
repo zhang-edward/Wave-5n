@@ -6,7 +6,7 @@ public class ShopNPC : MonoBehaviour
 	private bool activated;		// whether the player can collide with this shopkeeper to see the shop UI
 	private SpriteRenderer sr;
 	
-	public UpgradeMenu shop;
+	public PowerUpMenu shop;
 	public SimpleAnimationPlayer smokeAnim;
 	public SimpleAnimationPlayer npcAnim;
 	public SimpleAnimationPlayer dialogueAnim;

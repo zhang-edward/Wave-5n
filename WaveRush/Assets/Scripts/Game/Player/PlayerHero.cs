@@ -218,4 +218,9 @@ public abstract class PlayerHero : MonoBehaviour {
 	{
 		return cooldownTime [index] * cooldownMultipliers [index];
 	}
+
+	public override string ToString()
+	{
+		return heroType.ToString();
+	}
 }

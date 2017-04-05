@@ -33,6 +33,7 @@ namespace EnemyActions
 				if (action.CanExecute())
 				{
 					action.Execute();
+					return;
 				}
 			}
 		}

@@ -4,13 +4,7 @@ using System.Collections.Generic;
 
 public class EnemyManager : MonoBehaviour {
 
-	private const float DIFFICULTY_CURVE = 8f;
-	[System.Serializable]
-	public class EnemyInfoDictionaryEntry
-	{
-		public string name;
-		public EnemyManagerInfo info;
-	}
+	private const float DIFFICULTY_CURVE = 5f;
 
 	public Player player;
 	public int enemiesKilled { get; private set; }
@@ -21,9 +15,9 @@ public class EnemyManager : MonoBehaviour {
 	private List<Enemy> enemies = new List<Enemy>();
 	public List<Enemy> Enemies { get {return enemies;} }
 
-	public EnemyInfoDictionaryEntry[] infos;
-	public EnemyManagerInfo info { get; private set; }
-	public string chosenInfo;
+	public EnemyData[] enemyData;
+	public EnemyData data { get; private set; }
+	public MapType chosenMap;
 
 	public EnemyHealthBar bossHealthBar;
 	private BossSpawn bossSpawn;
@@ -60,17 +54,17 @@ public class EnemyManager : MonoBehaviour {
 
 	private void Init()
 	{
-		info = GetEnemyInfo ();
+		data = GetEnemyData ();
 		bossSpawn = map.bossSpawn.GetComponent<BossSpawn> ();
 		StartCoroutine (StartSpawningEnemies ());
 	}
 
-	private EnemyManagerInfo GetEnemyInfo()
+	private EnemyData GetEnemyData()
 	{
-		foreach (EnemyInfoDictionaryEntry entry in infos)
+		foreach (EnemyData data in enemyData)
 		{
-			if (entry.name.Equals (chosenInfo))
-				return entry.info;
+			if (data.mapType == chosenMap)
+				return data;
 		}
 		throw new UnityEngine.Assertions.AssertionException ("EnemyManager.cs:", "EnemyManagerInfo not found");
 	}
@@ -158,16 +152,16 @@ public class EnemyManager : MonoBehaviour {
 		List<GameObject> prefabPool = new List<GameObject>();
 		if (waveNumber <= 5)
 		{
-			prefabPool = info.enemyPrefabs1;
+			prefabPool = data.enemyPrefabs1;
 		}
 		else if (5 < waveNumber && waveNumber <= 10)
 		{
-			prefabPool.AddRange(info.enemyPrefabs1);
-			prefabPool.AddRange(info.enemyPrefabs2);
+			prefabPool.AddRange(data.enemyPrefabs1);
+			prefabPool.AddRange(data.enemyPrefabs2);
 		}
 		else
 		{
-			prefabPool = info.enemyPrefabs2;
+			prefabPool = data.enemyPrefabs2;
 		}
 		return prefabPool;
 	}
@@ -228,7 +222,7 @@ public class EnemyManager : MonoBehaviour {
 	public void SpawnBoss()
 	{
 		bossSpawn.PlayAnimation ();
-		GameObject o = Instantiate (info.bossPrefabs [Random.Range (0, info.bossPrefabs.Count)]);
+		GameObject o = Instantiate (data.bossPrefabs [Random.Range (0, data.bossPrefabs.Count)]);
 		o.transform.SetParent (transform);
 
 		Enemy e = o.GetComponentInChildren<Enemy> ();

@@ -20,7 +20,7 @@ public class SaveGame
 	public SaveGame()
 	{
 		int numHeroTypes = Enum.GetNames(typeof(HeroType)).Length;
-		Debug.Log(numHeroTypes);
+		// Debug.Log(numHeroTypes);
 		// default all heroes locked but the first hero (the knight)
 		heroData = new HeroSaveData[numHeroTypes];
 		for (int i = 0; i < numHeroTypes; i ++)

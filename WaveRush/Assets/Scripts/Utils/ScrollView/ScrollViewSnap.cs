@@ -86,7 +86,7 @@ public class ScrollViewSnap : MonoBehaviour {
 		}
 	}
 
-	public void EndDrag()
+	public virtual void EndDrag()
 	{
 		if (OnEndDrag != null)
 			OnEndDrag();

@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class ChargeItem : UpgradeItem
+public class ChargeItem : PowerUpItem
 {
 	public override void Upgrade(Player player)
 	{
