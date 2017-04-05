@@ -19,14 +19,10 @@ public class UpgradeScreen : MonoBehaviour
 	public AudioClip purchaseSound;
 	public AudioClip notEnoughMoneySound;
 
-	void Start()
+	public void Init(HeroType heroName)
 	{
-		Init(HeroType.Knight);
-	}
-
-	public void Init(HeroType selectedHero)
-	{
-		this.selectedHero = selectedHero;
+		this.selectedHero = heroName;
+		print("Init:" + heroName);
 		// reset scroll view to original position
 		contentPanel.GetComponent<RectTransform>().anchoredPosition = Vector3.zero;
 		// reset scrolling text
@@ -36,11 +32,12 @@ public class UpgradeScreen : MonoBehaviour
 		if (selected != null)
 			selected.GetComponent<Toggle>().isOn = false;
 		
-		RefreshScrollView(DataManager.GetPowerUpListData(selectedHero));
+		RefreshScrollView(DataManager.GetPowerUpListData(heroName));
 	}
 
 	private void RefreshScrollView(HeroPowerUpListData data)
 	{
+		print("RefreshScrollView:" + selectedHero);
 		// if there are not enough icons for each powerup, instantiate more
 		if (data.powerUps.Length > upgradeIcons.Count)
 		{
