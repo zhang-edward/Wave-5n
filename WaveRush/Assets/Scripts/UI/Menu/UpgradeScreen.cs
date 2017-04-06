@@ -22,7 +22,6 @@ public class UpgradeScreen : MonoBehaviour
 	public void Init(HeroType heroName)
 	{
 		this.selectedHero = heroName;
-		print("Init:" + heroName);
 		// reset scroll view to original position
 		contentPanel.GetComponent<RectTransform>().anchoredPosition = Vector3.zero;
 		// reset scrolling text

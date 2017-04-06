@@ -5,7 +5,7 @@ public class KnightShield : HeroPowerUp
 {
 	private KnightHero knight;
 	public bool shielded;
-	public float chargeCapacity = 50;
+	public float chargeCapacity;
 
 	[HideInInspector]
 	public float chargePerHit = 1;
@@ -45,12 +45,14 @@ public class KnightShield : HeroPowerUp
 	public override void Deactivate ()
 	{
 		base.Deactivate ();
+		chargePerHit = 1;
 		shielded = false;
 	}
 
 	public override void Stack ()
 	{
 		base.Stack ();
+		chargePerHit *= 1.5f;
 	}
 
 	private void Charge(float amt)

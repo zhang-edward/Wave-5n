@@ -202,7 +202,6 @@ public class Enemy : MonoBehaviour, IDamageable {
 		hitDisabled = true;
 		//Debug.Log ("Stopped all Coroutines");
 		yield return new WaitForSeconds (time);
-		hitDisabled = false;
 
 		//yield return new WaitForSeconds (0.2f);
 		UnityEngine.Assertions.Assert.IsTrue(anim.HasState(0, Animator.StringToHash("default")));
@@ -276,7 +275,7 @@ public class Enemy : MonoBehaviour, IDamageable {
 			OnEnemyDamaged (amt);
 		if (health > 0)
 		{
-			if (canBeDisabledOnHit)
+			if (canBeDisabledOnHit && !hitDisabled)
 			{
 				action.Interrupt ();
 				// Stop all states
