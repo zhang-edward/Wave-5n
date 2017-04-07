@@ -1,0 +1,105 @@
+﻿using UnityEngine;
+using System.Collections;
+
+public class KnightSuperShield : HeroPowerUp
+{
+	private KnightHero knight;
+	private float activateChance = 0.2f;
+
+	public float areaAttackRange;
+	public GameObject shieldEffect;
+	public AudioClip areaAttackSound;
+
+	public override void Activate(PlayerHero hero)
+	{
+		base.Activate(hero);
+		this.knight = (KnightHero)hero;
+		knight.OnKnightShield += ActivateSuperShield;
+		percentActivated = 0f;
+	}
+
+	public override void Deactivate()
+	{
+		base.Deactivate();
+		knight.OnKnightShield -= ActivateSuperShield;
+	}
+
+	public override void Stack()
+	{
+		base.Stack();
+		activateChance += 0.08f;
+	}
+
+	private void ActivateSuperShield()
+	{
+		if (Random.value < activateChance)
+		{
+			knight.onTapRelease -= knight.AreaAttack;
+			knight.onTapRelease += SuperShield;
+			percentActivated = 1f;
+		}
+	}
+
+	private void SuperShield()
+	{
+		// check cooldown
+		if (!knight.IsCooledDown(1))
+			return;
+		knight.ResetCooldownTimer(1);
+		// Sound
+		SoundManager.instance.RandomizeSFX(areaAttackSound);
+		// Animation
+		knight.anim.SetTrigger("AreaAttack");
+		// Effects
+		shieldEffect.SetActive(true);
+		// Properties
+		knight.player.isInvincible = true;
+		knight.player.input.isInputEnabled = false;
+		knight.player.sr.color = new Color(0.8f, 0.8f, 0.8f);
+		knight.body.Move(Vector2.zero);
+
+		bool enemyHit = false;
+		int numEnemiesHit = 0;
+		Collider2D[] cols = Physics2D.OverlapCircleAll(transform.position, areaAttackRange);
+		knight.damage = 2;
+		foreach (Collider2D col in cols)
+		{
+			if (col.CompareTag("Enemy"))
+			{
+				numEnemiesHit++;
+				if (numEnemiesHit < KnightHero.MAX_HIT)
+				{
+					Enemy e = col.gameObject.GetComponentInChildren<Enemy>();
+					e.AddStatus(Instantiate(StatusEffectContainer.instance.GetStatus("Stun")));
+					knight.DamageEnemy(e);
+					enemyHit = true;
+				}
+			}
+		}
+		knight.damage = 1;
+		if (enemyHit)
+			SoundManager.instance.RandomizeSFX(knight.hitSounds[Random.Range(0, knight.hitSounds.Length)]);
+
+		// Reset Ability
+		Invoke("ResetAreaAttackAbility", 0.5f);
+		Invoke("ResetInvincibility", 1.5f);
+
+		knight.onTapRelease -= SuperShield;
+		knight.onTapRelease += knight.AreaAttack;
+		percentActivated = 0f;
+	}
+
+	private void ResetAreaAttackAbility()
+	{
+		knight.ResetAreaAttackAbility();
+	}
+
+	private void ResetInvincibility()
+	{
+		shieldEffect.GetComponent<IndicatorEffect>().AnimateOut();
+
+		knight.player.sr.color = Color.white;
+		knight.player.isInvincible = false;	
+	}
+}
+

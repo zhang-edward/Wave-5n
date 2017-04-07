@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -30,6 +30,7 @@ public class KnightHero : PlayerHero {
 
 	public delegate void KnightAbilityActivated();
 	public event KnightAbilityActivated OnKnightRush;
+	public event KnightAbilityActivated OnKnightShield;
 
 	public void OnDrawGizmosSelected()
 	{
@@ -121,16 +122,19 @@ public class KnightHero : PlayerHero {
 		// Reset Ability
 		Invoke ("ResetAreaAttackAbility", 0.5f);
 		Invoke ("ResetInvincibility", 1.5f);
+
+		if (OnKnightShield != null)
+			OnKnightShield();
 	}
 
-	private void ResetAreaAttackAbility()
+	public void ResetAreaAttackAbility()
 	{
 		hitEnemies.Clear ();
 		anim.SetBool ("AreaAttack", false);
 		player.input.isInputEnabled = true;
 	}
 
-	private void ResetInvincibility()
+	public void ResetInvincibility()
 	{
 		areaAttackEffect.GetComponent<IndicatorEffect> ().AnimateOut ();
 
@@ -204,7 +208,7 @@ public class KnightHero : PlayerHero {
 		}
 	}
 
-	private void DamageEnemy(Enemy e)
+	public void DamageEnemy(Enemy e)
 	{
 		if (!e.invincible && e.health > 0 && !hitEnemies.Contains(e))
 		{

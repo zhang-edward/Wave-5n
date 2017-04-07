@@ -7,8 +7,8 @@ public abstract class HeroPowerUp : MonoBehaviour
 	[HideInInspector]
 	public PlayerHero playerHero;
 
-	public int stacks;
-	public float percentActivated;
+	public int stacks { get; protected set; }
+	public float percentActivated { get; protected set; }
 
 	public HeroPowerUpData data;
 
