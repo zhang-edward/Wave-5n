@@ -18,7 +18,7 @@ public class KnightComboRush : HeroPowerUp
 		float newMultiplier = 1f;
 		if (playerHero.combo > 0)
 			newMultiplier = 1f / (0.0075f * (playerHero.combo + 133));		// graph with Desmos.com
-		print (newMultiplier);
+		//print (newMultiplier);
 		if (newMultiplier < 0.8f)
 			newMultiplier = 0.8f;
 		for (int i = 0; i < playerHero.cooldownMultipliers.Length; i ++)

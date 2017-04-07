@@ -317,4 +317,9 @@ public class Enemy : MonoBehaviour, IDamageable {
 				OnCollideWithMapBorder ();
 		}	
 	}
+
+	public void DecreaseHealth(int amt)
+	{
+		health -= amt;
+	}
 }

@@ -9,6 +9,7 @@ public class PowerUpMenu : MonoBehaviour
 	public Player player;
 
 	[Header("Shop Items")]
+	public int numShopItems = 3;
 	private List<PowerUpItem> items = new List<PowerUpItem>();
 	public PowerUpItem selectedItem {
 		get {
@@ -42,7 +43,7 @@ public class PowerUpMenu : MonoBehaviour
 	{
 		// set up the shop items holder
 		itemsHolder.ResetShopItems ();
-		itemsHolder.GetRandomShopItems (5);
+		itemsHolder.GetRandomShopItems (numShopItems);
 		// get the active shop items and add them to the list
 		foreach (GameObject o in itemsHolder.potentialShopItems)
 		{

@@ -5,14 +5,7 @@ public class StatusEffectContainer : MonoBehaviour
 {
 	public static StatusEffectContainer instance;
 
-	[System.Serializable]
-	public class EnemyStatusDictionaryEntry
-	{
-		public string name;
-		public GameObject status;
-	}
-
-	public EnemyStatusDictionaryEntry[] statuses;
+	public GameObject[] statuses;
 
 	void Awake()
 	{
@@ -25,10 +18,10 @@ public class StatusEffectContainer : MonoBehaviour
 
 	public GameObject GetStatus(string name)
 	{
-		foreach (EnemyStatusDictionaryEntry entry in statuses)
+		foreach (GameObject obj in statuses)
 		{
-			if (entry.name.Equals (name))
-				return entry.status;
+			if (obj.GetComponent<EnemyStatus>().statusName.Equals (name))
+				return obj;
 		}
 		throw new UnityEngine.Assertions.AssertionException (
 			"StatusEffectContainer.cs:",

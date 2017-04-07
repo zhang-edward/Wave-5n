@@ -210,6 +210,7 @@ public class KnightHero : PlayerHero {
 
 	public void DamageEnemy(Enemy e)
 	{
+		//e.AddStatus(Instantiate(StatusEffectContainer.instance.GetStatus("Weakness")));
 		if (!e.invincible && e.health > 0 && !hitEnemies.Contains(e))
 		{
 			e.Damage (damage);

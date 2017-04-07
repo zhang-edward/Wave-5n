@@ -51,5 +51,10 @@ public class IndicatorEffect : MonoBehaviour
 	{
 		animatingOut = true;
 	}
+
+	public void SetAnimatingOut(bool b)
+	{
+		animatingOut = b;
+	}
 }
 

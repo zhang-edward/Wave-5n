@@ -5,7 +5,6 @@ public class StunStatus : EnemyStatus
 {
 	public SimpleAnimationPlayer anim;
 
-
 	public override void Init(Enemy enemy)
 	{
 		base.Init(enemy);

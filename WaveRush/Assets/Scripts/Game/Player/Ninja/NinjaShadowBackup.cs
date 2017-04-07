@@ -61,8 +61,8 @@ public class NinjaShadowBackup : HeroPowerUp
 			return;
 		
 		// get enemies in a radius and attack random 3
-		Collider2D[] cols = Physics2D.OverlapCircleAll (transform.position, RADIUS);
 		int i = 0;
+		Collider2D[] cols = Physics2D.OverlapCircleAll (transform.position, RADIUS);
 		foreach (Collider2D col in cols)
 		{
 			if (col.CompareTag("Enemy"))
