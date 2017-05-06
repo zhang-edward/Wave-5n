@@ -131,7 +131,7 @@ public class EnemyManager : MonoBehaviour {
 		if (OnEnemyWaveSpawned != null)
 			OnEnemyWaveSpawned (waveNumber);
 		// Number of enemies spawning curve (used desmos.com for the graph)
-		int spawningPointsAvailable = Mathf.RoundToInt (DIFFICULTY_CURVE * Mathf.Log (difficultyCurve) + 6);
+		int spawningPointsAvailable = DifficultyCurveEquation();
 		List<GameObject> prefabPool = GetPrefabPool();
 
 		for (int i = 0; i < spawningPointsAvailable; i++)
@@ -142,6 +142,13 @@ public class EnemyManager : MonoBehaviour {
 
 		Debug.Log ("Number of enemies in this wave: " + spawningPointsAvailable);
 	}
+
+    private int DifficultyCurveEquation()
+    {
+		float t = -difficultyCurve + 18;	// 18 = max slope part of curve (difficulty increases most on this wave)
+		float answer = 20 / (Mathf.Pow(1.2f, t)) + 5;
+		return Mathf.RoundToInt(answer);
+    }
 
 	/// <summary>
 	/// Gets the list of potential enemies to spawn

@@ -6,8 +6,11 @@ public class KnightHero : PlayerHero {
 
 	public const int MAX_HIT = 5;	// maximum number of enemies that this player can damage per rush/area attack
 
+	private ObjectPooler effectPool;
+
 	[Header("Class-Specific")]
 	public GameObject rushEffect;
+	public GameObject specialRushEffect;
 	public GameObject areaAttackEffect;
 	public Sprite hitEffect;
 	public float areaAttackRange = 2.0f;
@@ -18,7 +21,9 @@ public class KnightHero : PlayerHero {
 	public float baseRushDuration = 0.5f;
 	[HideInInspector]
 	public bool rushHitBoxOn = false;
-
+	[Header("Animation")]
+	public SimpleAnimation specialAbilityActivationAnim;
+	public IndicatorEffect specialAbilityIndicator;
 	[Header("Audio")]
 	public AudioClip rushSound;
 	public AudioClip[] hitSounds;
@@ -41,6 +46,7 @@ public class KnightHero : PlayerHero {
 	{
 		cooldownTimers = new float[2];
 		base.Init (body, anim, player);
+		effectPool = ObjectPooler.GetObjectPooler("Effect");
 		// handle input
 		onSwipe = RushAbility;
 		onTapRelease = AreaAttack;
@@ -139,15 +145,19 @@ public class KnightHero : PlayerHero {
 		areaAttackEffect.GetComponent<IndicatorEffect> ().AnimateOut ();
 
 		player.sr.color = Color.white;
-		player.isInvincible = false;
+		if (!activatedSpecialAbility)
+			player.isInvincible = false;
 	}
 
 	private void ResetSpecialAbility()
 	{
 		// Sound
 		SoundManager.instance.PlayImportantSound(powerDownSound);
-
+		// Effects
+		specialAbilityIndicator.AnimateOut();
 		// Reset Stats
+		onSwipe = RushAbility;
+		onTapRelease = AreaAttack;
 		cooldownMultipliers [0] /= 0.8f;
 		player.isInvincible = false;
 		activatedSpecialAbility = false;
@@ -165,22 +175,30 @@ public class KnightHero : PlayerHero {
 			return;
 		// Sound
 		SoundManager.instance.PlayImportantSound(powerUpSound);
+		// Effect
+		PlaySpecialAbilityEffect();
+		specialAbilityIndicator.gameObject.SetActive(true);
+		onTapRelease = RushAbility;
 		// Properties
 		activatedSpecialAbility = true;
 		player.isInvincible = true;
 		cooldownMultipliers [0] *= 0.8f;
 		baseRushMoveSpeed = 13 * rushMoveSpeedMultiplier;
 		baseRushDuration = 0.4f;
-		CameraControl.instance.StartShake (0.3f, 0.05f);
+		// CameraControl.instance.StartShake (0.3f, 0.05f);
 		CameraControl.instance.StartFlashColor (Color.white);
-		CameraControl.instance.SetOverlayColor (Color.red, 0.3f);
+		// CameraControl.instance.SetOverlayColor (Color.red, 0.3f);
 		Invoke ("ResetSpecialAbility", 10f);
+
+		if (onSpecialAbility != null)
+			onSpecialAbility();
 	}
 
 	private void PlayRushEffect()
 	{
-		TempObject effect = rushEffect.GetComponent<TempObject> ();
-		SimpleAnimationPlayer animPlayer = rushEffect.GetComponent<SimpleAnimationPlayer> ();
+		GameObject effectObject = activatedSpecialAbility ? specialRushEffect : rushEffect;
+		TempObject effect = effectObject.GetComponent<TempObject>();
+		SimpleAnimationPlayer animPlayer = effectObject.GetComponent<SimpleAnimationPlayer> ();
 
 		Vector2 dir = player.dir;
 		float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
@@ -224,5 +242,18 @@ public class KnightHero : PlayerHero {
 			player.TriggerOnEnemyDamagedEvent(damage);
 			player.TriggerOnEnemyLastHitEvent (e);
 		}
+	}
+
+	public void PlaySpecialAbilityEffect()
+	{
+		GameObject o = effectPool.GetPooledObject();
+		SimpleAnimationPlayer anim = o.GetComponent<SimpleAnimationPlayer>();
+		TempObject tempObj = o.GetComponent<TempObject>();
+		tempObj.info = new TempObjectInfo(true, 0f, specialAbilityActivationAnim.TimeLength, 0, new Color(1, 1, 1, 0.8f));
+		anim.anim = specialAbilityActivationAnim;
+		tempObj.Init(Quaternion.identity,
+					 transform.position,
+		             specialAbilityActivationAnim.frames[0]);
+		anim.Play();
 	}
 }

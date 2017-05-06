@@ -5,6 +5,8 @@ using System.Collections.Generic;
 
 public class PowerUpItemsHolder : MonoBehaviour
 {
+	public EnemyManager enemyManager;				// used to track wave number
+
 	public GameObject[] universalShopItems;			// a list of shop items that all heros are able to purchase
 	public GameObject addPowerUpItemPrefab;			// prefab for the custom powerups for each hero
 
@@ -22,7 +24,6 @@ public class PowerUpItemsHolder : MonoBehaviour
 	/// <param name="hero">Hero.</param>
 	public void InitShopItemsList (PlayerHero hero)
 	{
-		//string heroName = hero.heroName;
 		foreach (GameObject item in universalShopItems)
 		{
 			CreateShopItem (item);
@@ -87,11 +88,31 @@ public class PowerUpItemsHolder : MonoBehaviour
 		PowerUpItem shopItem = potentialShopItems [i].GetComponent<PowerUpItem>();
 		if (!shopItem.gameObject.activeInHierarchy && shopItem.available)
 		{
+			if (shopItem as AddPowerUpItem != null)
+			{
+				AddPowerUpItem addPowerUpItem = (AddPowerUpItem)shopItem;
+				if (!CanEnableShopItem(addPowerUpItem.powerUp.data.tier))
+					return false;
+			}
 			// print ("Enabled " + potentialShopItems [i].GetComponent<ScrollingTextOption>().text);
-			potentialShopItems [i].gameObject.SetActive (true);
+			potentialShopItems[i].gameObject.SetActive(true);
 			return true;
 		}
 		return false;
+	}
+
+	private bool CanEnableShopItem(PowerUpTier tier)
+	{
+		switch (tier)
+		{
+			case PowerUpTier.tier1:
+				return true;
+			case PowerUpTier.tier2:
+				return enemyManager.waveNumber >= 5;
+			case PowerUpTier.tier3:
+				return enemyManager.waveNumber >= 10;
+		}
+		return true;
 	}
 
 	private GameObject CreateShopItem(GameObject prefab)

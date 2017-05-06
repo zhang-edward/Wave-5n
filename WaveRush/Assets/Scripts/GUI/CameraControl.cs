@@ -97,15 +97,15 @@ public class CameraControl : MonoBehaviour {
 		cam.transform.localPosition = new Vector3 (0, 0, -10);
 	}
 
-	public void StartFlashColor(Color color)
+	public void StartFlashColor(Color color, float time = 0.4f)
 	{
-		StartCoroutine(FlashColor(color));
+		StartCoroutine(FlashColor(color, time));
 	}
 
-	private IEnumerator FlashColor(Color color)
+	private IEnumerator FlashColor(Color color, float time)
 	{
 		screenFlash.color = color;
-		float t = 0.4f;
+		float t = time;
 		while (t > 0)
 		{
 			t -= Time.deltaTime;

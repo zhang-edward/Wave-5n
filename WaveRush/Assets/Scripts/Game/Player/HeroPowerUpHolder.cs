@@ -27,13 +27,11 @@ public class HeroPowerUpHolder : MonoBehaviour
 	public delegate void OnPowerUpsChanged();
 	public OnPowerUpsChanged OnPowerUpAdded;
 
-	void Awake()
-	{
-		hero = GetComponent<PlayerHero> ();
-	}
 
 	public void Init()
 	{
+		hero = GetComponent<PlayerHero>();
+
 		powerUpPrefabs = new List<HeroPowerUpDictionaryEntry>();
 		HeroPowerUpListData powerUpListData = DataManager.GetPowerUpListData(hero.heroType);
 		int numPowerUpsUnlocked = GameManager.instance.saveGame.GetHeroData(hero.heroType).numPowerUpsUnlocked;

@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 1316e650374694ac9989e49bc9c1c7dd
-timeCreated: 1474243451
+timeCreated: 1494042142
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -8,12 +8,12 @@ TextureImporter:
     21300002: shop_ui_items_1
     21300004: shop_ui_items_2
     21300006: shop_ui_items_3
-  serializedVersion: 2
+  serializedVersion: 4
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
+    sRGBTexture: 1
     linearTexture: 0
-    correctGamma: 0
     fadeOut: 0
     borderMipMap: 0
     mipMapFadeDistanceStart: 1
@@ -25,10 +25,8 @@ TextureImporter:
     normalMapFilter: 0
   isReadable: 0
   grayScaleToAlpha: 0
-  generateCubemap: 0
+  generateCubemap: 6
   cubemapConvolution: 0
-  cubemapConvolutionSteps: 7
-  cubemapConvolutionExponent: 1.5
   seamlessCubemap: 0
   textureFormat: -2
   maxTextureSize: 2048
@@ -39,9 +37,7 @@ TextureImporter:
     wrapMode: 1
   nPOTScale: 0
   lightmap: 0
-  rGBM: 0
   compressionQuality: 50
-  allowsAlphaSplitting: 0
   spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
@@ -49,12 +45,52 @@ TextureImporter:
   spritePivot: {x: 0.5, y: 0.5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 16
+  alphaUsage: 1
   alphaIsTransparency: 1
+  spriteTessellationDetail: -1
   textureType: 8
-  buildTargetSettings: []
+  textureShape: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    textureFormat: 2
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: Standalone
+    maxTextureSize: 2048
+    textureFormat: 2
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: iPhone
+    maxTextureSize: 2048
+    textureFormat: 2
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: Android
+    maxTextureSize: 2048
+    textureFormat: 2
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
   spriteSheet:
+    serializedVersion: 2
     sprites:
-    - name: shop_ui_items_0
+    - serializedVersion: 2
+      name: shop_ui_items_0
       rect:
         serializedVersion: 2
         x: 0
@@ -63,9 +99,11 @@ TextureImporter:
         height: 24
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 3, y: 3, z: 3, w: 3}
       outline: []
-    - name: shop_ui_items_1
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: shop_ui_items_1
       rect:
         serializedVersion: 2
         x: 24
@@ -76,7 +114,9 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: shop_ui_items_2
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: shop_ui_items_2
       rect:
         serializedVersion: 2
         x: 48
@@ -87,7 +127,9 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 5, y: 5, z: 5, w: 5}
       outline: []
-    - name: shop_ui_items_3
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: shop_ui_items_3
       rect:
         serializedVersion: 2
         x: 72
@@ -98,6 +140,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 5, y: 5, z: 5, w: 5}
       outline: []
+      tessellationDetail: -1
     outline: []
   spritePackingTag: 
   userData: 

@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 
@@ -6,11 +6,12 @@ public class AddPowerUpItem : ShopItemProgression
 {
 	public Image icon;
 	public Text stacksIndicator;
-	private HeroPowerUp powerUp;
+	public HeroPowerUp powerUp { get; private set; }
 
 	public void Init(HeroPowerUp powerUp)
 	{
 		this.powerUp = powerUp;
+		SetHolderGraphic(powerUp.GetComponent<HeroPowerUp>().data.tier);	// set the holder graphic to match the tier level of the power up
 		icon.sprite = powerUp.data.icon;
 		purchaseLimit = powerUp.data.maxStacks;
 		cost = powerUp.data.cost;

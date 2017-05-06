@@ -6,7 +6,7 @@ public class KnightThornShield : HeroPowerUp
 	private float radius = 2;
 	private KnightShield shieldPowerUp;
 	private ObjectPooler effectPool;
-	private Vector3 shieldBreakPos;	
+	private Vector3 shieldBreakPos;
 
 	[Header("Animations")]
 	public SimpleAnimation thornShieldAnim;
@@ -65,7 +65,7 @@ public class KnightThornShield : HeroPowerUp
 		anim.anim = thornShieldAnim;
 		tempObj.Init(Quaternion.identity,
 					 transform.position,
-		             thornShieldAnim.frames[0]);
+			     thornShieldAnim.frames[0]);
 		anim.Play();
 	}
 
@@ -78,7 +78,7 @@ public class KnightThornShield : HeroPowerUp
 		anim.anim = hitAnim;
 		tempObj.Init(Quaternion.Euler(0, 0, Random.Range(0, 360)),
 					 position,
-		             hitAnim.frames[0]);
+			     hitAnim.frames[0]);
 		anim.Play();
 	}
 }

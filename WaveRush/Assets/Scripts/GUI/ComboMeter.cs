@@ -32,7 +32,6 @@ public class ComboMeter : MonoBehaviour {
 
 	void LateUpdate()
 	{
-		
 		if (hero.combo > 0)
 		{
 			text.gameObject.SetActive (true);

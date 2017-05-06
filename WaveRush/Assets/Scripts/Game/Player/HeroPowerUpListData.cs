@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "Data", menuName = "Player/PowerUpListData", order = 2)]
 public class HeroPowerUpListData : ScriptableObject

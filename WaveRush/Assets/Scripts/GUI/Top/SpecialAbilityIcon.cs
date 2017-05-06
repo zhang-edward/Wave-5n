@@ -14,6 +14,8 @@ public class SpecialAbilityIcon : MonoBehaviour
 	public Text chargeMultiplierText;
 	[HideInInspector]
 	public Image image;
+	[Header("Audio")]
+	public AudioClip abilityReadySound;
 
 	private bool playedCooledDownEffect = false;
 
@@ -52,8 +54,9 @@ public class SpecialAbilityIcon : MonoBehaviour
 	private void FinishCooldownEffect()
 	{
 		playedCooledDownEffect = true;
-		transform.localScale = Vector3.one * 1.125f;
 		StartCoroutine (PlayFinishCooldownEffect ());
+
+		SoundManager.instance.PlayUISound(abilityReadySound);
 	}
 
 	public void SetScale(float scale)
