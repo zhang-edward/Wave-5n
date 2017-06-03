@@ -75,13 +75,17 @@ public class PlayerInput : MonoBehaviour {
 			return;
 		if (Input.GetMouseButton(0))
 		{
+			timeInputHeldDown += Time.deltaTime;
 			Vector3 mousePos = Camera.main.ScreenToWorldPoint (Input.mousePosition);
 			player.dir = ((Vector2)(mousePos - transform.position));
 			player.hero.HandleHoldDown ();
 		}
 		if (Input.GetMouseButtonUp (0))
 		{
-			player.hero.HandleTapRelease ();
+			if (timeInputHeldDown < 0.3f)
+				player.hero.HandleTap ();
+			player.hero.HandleTapRelease();
+			timeInputHeldDown = 0;
 		}
 		if (Input.GetMouseButtonDown(1))
 		{
@@ -107,6 +111,6 @@ public class PlayerInput : MonoBehaviour {
 	private void HandleTapRelease (Vector3 pos)
 	{
 		player.dir = pos - transform.position;
-		player.hero.HandleTapRelease ();
+		player.hero.HandleTap ();
 	}
 }

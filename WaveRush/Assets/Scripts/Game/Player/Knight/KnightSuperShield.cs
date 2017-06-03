@@ -34,8 +34,8 @@ public class KnightSuperShield : HeroPowerUp
 	{
 		if (Random.value < activateChance)
 		{
-			knight.onTapRelease -= knight.AreaAttack;
-			knight.onTapRelease += SuperShield;
+			knight.onTap -= knight.AreaAttack;
+			knight.onTap += SuperShield;
 			percentActivated = 1f;
 		}
 	}
@@ -84,8 +84,8 @@ public class KnightSuperShield : HeroPowerUp
 		Invoke("ResetAreaAttackAbility", 0.5f);
 		Invoke("ResetInvincibility", 1.5f);
 
-		knight.onTapRelease -= SuperShield;
-		knight.onTapRelease += knight.AreaAttack;
+		knight.onTap -= SuperShield;
+		knight.onTap += knight.AreaAttack;
 		percentActivated = 0f;
 	}
 

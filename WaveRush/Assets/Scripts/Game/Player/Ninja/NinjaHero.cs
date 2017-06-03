@@ -40,7 +40,7 @@ public class NinjaHero : PlayerHero {
 		projectilePool = (RuntimeObjectPooler)projectilePrefab.GetComponent<Projectile>().GetObjectPooler();
 
 		onSwipe = DashAttack;
-		onTapRelease = ShootNinjaStar;
+		onTap = ShootNinjaStar;
 	}
 
 	public void DashAttack()

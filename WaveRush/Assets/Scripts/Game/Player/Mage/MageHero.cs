@@ -27,6 +27,7 @@ public class MageHero : PlayerHero {
 
 	public delegate void MageAbilityActivated();
 	public event MageAbilityActivated OnMageTeleportIn;
+	public event MageAbilityActivated OnMageTeleportOut;
 
 	public delegate void MageCreatedObject (GameObject o);
 	public event MageCreatedObject OnMageShotFireball;
@@ -47,7 +48,7 @@ public class MageHero : PlayerHero {
 		fireballSpeedMultiplier = 1f;
 
 		onSwipe = ShootFireball;
-		onTapRelease = StartTeleport;
+		onTap = StartTeleport;
 	}
 
 	public override void SpecialAbility ()
@@ -114,11 +115,10 @@ public class MageHero : PlayerHero {
 		anim.SetTrigger ("Move");
 	}
 
-	private void StartTeleport()
+	public void StartTeleport()
 	{
 		if (!IsCooledDown (1))
 			return;
-		ResetCooldownTimer (1);
 		if (map.WithinOpenCells(player.transform.position + (Vector3)player.dir))
 			StartCoroutine (Teleport ());
 	}
@@ -133,6 +133,9 @@ public class MageHero : PlayerHero {
 		// Set properties
 		player.isInvincible = true;
 		player.input.isInputEnabled = false;
+		// event trigger
+		if (OnMageTeleportOut != null)
+			OnMageTeleportOut();
 		// Wait for end of animation
 		yield return new WaitForEndOfFrame ();		// wait for the animation state to update before continuing
 		while (anim.GetCurrentAnimatorStateInfo (0).IsName ("TeleportOut"))
@@ -146,6 +149,7 @@ public class MageHero : PlayerHero {
 		AreaAttack ();
 		if (activatedSpecialAbility)
 			CreateFire ();
+		// event trigger
 		if (OnMageTeleportIn != null)
 			OnMageTeleportIn ();
 		// Wait for end of animation

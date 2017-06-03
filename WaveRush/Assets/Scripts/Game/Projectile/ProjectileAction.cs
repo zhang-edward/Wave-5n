@@ -9,9 +9,12 @@ namespace Projectiles
 		public enum ProjectileEventTrigger {
 			OnShoot,
 			OnFlight,
-			OnCollide
+			OnCollide,
+			OnDie
 		}
 		public ProjectileEventTrigger eventTrigger;
+		public float interval;
+		private float timer;
 
 		void Awake()
 		{
@@ -26,10 +29,13 @@ namespace Projectiles
 					projectile.OnCollide += Execute;
 					break;
 				case ProjectileEventTrigger.OnFlight:
-					projectile.OnFlight += Execute;
+					projectile.OnFlight += ExecuteInterval;
 					break;
 				case ProjectileEventTrigger.OnShoot:
 					projectile.OnShoot += Execute;
+					break;
+				case ProjectileEventTrigger.OnDie:
+					projectile.OnDie += Execute;
 					break;
 			}
 		}
@@ -42,11 +48,24 @@ namespace Projectiles
 					projectile.OnCollide -= Execute;
 					break;
 				case ProjectileEventTrigger.OnFlight:
-					projectile.OnFlight -= Execute;
+					projectile.OnFlight -= ExecuteInterval;
 					break;
 				case ProjectileEventTrigger.OnShoot:
 					projectile.OnShoot -= Execute;
 					break;
+				case ProjectileEventTrigger.OnDie:
+					projectile.OnDie -= Execute;
+					break;
+			}
+		}
+
+		private void ExecuteInterval()
+		{
+			timer += Time.deltaTime;
+			if (timer >= interval)
+			{
+				Execute();
+				timer = 0;
 			}
 		}
 

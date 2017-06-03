@@ -70,7 +70,7 @@ public class CameraControl : MonoBehaviour {
 
 	private void OnEnemyDamaged(float strength)
 	{
-		StartShake (0.05f, strength * 0.2f);
+		StartShake (0.05f,  0.2f);
 	}
 
 	private void OnPlayerDamaged(int damage)

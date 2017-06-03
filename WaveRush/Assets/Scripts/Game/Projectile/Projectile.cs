@@ -16,6 +16,7 @@ namespace Projectiles
 		[Tooltip("This MUST be unique for each projectile!")]
 		public string projectileName;       // unique identifier for this particular prefab
 		public float speed;
+		public bool setAngle = true;
 		public string target;
 		public float lifeTime;
 		public bool destroyOnCollide;
@@ -26,6 +27,7 @@ namespace Projectiles
 		public event ProjectileLifeCycleEvent OnShoot;
 		public event ProjectileLifeCycleEvent OnFlight;
 		public event ProjectileLifeCycleEvent OnCollide;
+		public event ProjectileLifeCycleEvent OnDie;
 
 		public delegate void DamagedTarget(IDamageable damageable, int damage);
 		public event DamagedTarget OnDamagedTarget;
@@ -70,6 +72,23 @@ namespace Projectiles
 
 		public void DestroySelf()
 		{
+			if (OnDie != null)
+			{
+				OnDie();
+			}
+			sr.enabled = false;
+			StartCoroutine(DestroySelfRoutine());
+		}
+
+		public IEnumerator DestroySelfRoutine()
+		{
+			ParticleSystem particles = GetComponentInChildren<ParticleSystem>();
+			if (particles != null)
+			{
+				while (particles.isPlaying)
+					yield return null;
+			}
+			sr.enabled = true;
 			gameObject.SetActive(false);
 		}
 
@@ -80,8 +99,11 @@ namespace Projectiles
 			transform.position = pos;
 			SetVelocity(dir);
 			// Set angle to be facing the direction of motion
-			float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-			transform.eulerAngles = new Vector3(0, 0, angle);
+			if (setAngle)
+			{
+				float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+				transform.eulerAngles = new Vector3(0, 0, angle);
+			}
 
 			animator.anim = projectileAnim;
 			animator.looping = true;
@@ -138,33 +160,5 @@ namespace Projectiles
 				yield return null;
 			}
 		}
-
-		/*protected void OnCollide()
-		{
-			TempObject effect = effectPool.GetPooledObject().GetComponent<TempObject>();
-			SimpleAnimationPlayer anim = effect.GetComponent<SimpleAnimationPlayer>();
-			anim.anim = onCollideAnim;
-			effect.Init(
-				Quaternion.Euler(new Vector3(0, 0, Random.Range(0, 360))),
-				transform.position,
-				onCollideAnim.frames[0],
-				onCollideEffect
-			);
-			anim.Play();
-		}
-
-		protected void OnShoot()
-		{
-			TempObject effect = effectPool.GetPooledObject().GetComponent<TempObject>();
-			SimpleAnimationPlayer anim = effect.GetComponent<SimpleAnimationPlayer>();
-			anim.anim = onShootAnim;
-			effect.Init(
-				Quaternion.Euler(new Vector3(0, 0, Random.Range(0, 360))),
-				transform.position,
-				onShootAnim.frames[0],
-				onShootEffect
-			);
-			anim.Play();
-		}*/
 	}
 }

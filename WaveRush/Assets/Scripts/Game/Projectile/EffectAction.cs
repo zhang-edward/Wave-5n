@@ -6,6 +6,7 @@ namespace Projectiles
 	{
 		private ObjectPooler effectPool;
 
+		public bool randomAngle = true;
 		public SimpleAnimation anim;
 		public TempObjectInfo effectInfo;
 
@@ -16,11 +17,15 @@ namespace Projectiles
 
 		public override void Execute()
 		{
+			Quaternion angle = Quaternion.identity;
+			if (randomAngle)
+				angle = Quaternion.Euler(new Vector3(0, 0, Random.Range(0, 360)));
+			
 			TempObject effect = effectPool.GetPooledObject().GetComponent<TempObject>();
 			SimpleAnimationPlayer animPlayer = effect.GetComponent<SimpleAnimationPlayer>();
 			animPlayer.anim = this.anim;
 			effect.Init(
-				Quaternion.Euler(new Vector3(0, 0, Random.Range(0, 360))),
+				angle,
 				transform.position,
 				anim.frames[0],
 				effectInfo

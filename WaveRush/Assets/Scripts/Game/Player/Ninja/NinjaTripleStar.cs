@@ -32,8 +32,8 @@ public class NinjaTripleStar : HeroPowerUp
 		if (charge >= CHARGE_THRESHOLD)
 		{
 			percentActivated = 1;
-			ninja.onTapRelease += TripleStar;
-			ninja.onTapRelease -= ninja.ShootNinjaStar;
+			ninja.onTap += TripleStar;
+			ninja.onTap -= ninja.ShootNinjaStar;
 			ninja.player.OnEnemyDamaged -= ChargeTripleStar;
 			numThrows = NUM_THROWS;
 		}
@@ -52,8 +52,8 @@ public class NinjaTripleStar : HeroPowerUp
 			// reset ability
 			charge = 0;
 			percentActivated = 0;
-			ninja.onTapRelease -= TripleStar;
-			ninja.onTapRelease += ninja.ShootNinjaStar;
+			ninja.onTap -= TripleStar;
+			ninja.onTap += ninja.ShootNinjaStar;
 			ninja.player.OnEnemyDamaged += ChargeTripleStar;
 		}
 

@@ -65,6 +65,7 @@ public abstract class PlayerHero : MonoBehaviour {
 	public delegate void InputAction();
 	protected InputAction inputAction;
 	public InputAction onSwipe;
+	public InputAction onTap;
 	public InputAction onTapRelease;
 	public InputAction onTapHoldDown;
 	public InputAction onSpecialAbility;
@@ -76,9 +77,15 @@ public abstract class PlayerHero : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// Performs an ability on swipe
+	/// Performs an ability on tap
 	/// </summary>
-	public virtual void HandleTapRelease ()
+	public virtual void HandleTap ()
+	{
+		if (onTap != null)
+			onTap();
+	}
+
+	public virtual void HandleTapRelease()
 	{
 		if (onTapRelease != null)
 			onTapRelease();

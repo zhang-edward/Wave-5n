@@ -49,7 +49,7 @@ public class KnightHero : PlayerHero {
 		effectPool = ObjectPooler.GetObjectPooler("Effect");
 		// handle input
 		onSwipe = RushAbility;
-		onTapRelease = AreaAttack;
+		onTap = AreaAttack;
 	}
 
 	public void RushAbility()
@@ -157,7 +157,7 @@ public class KnightHero : PlayerHero {
 		specialAbilityIndicator.AnimateOut();
 		// Reset Stats
 		onSwipe = RushAbility;
-		onTapRelease = AreaAttack;
+		onTap = AreaAttack;
 		cooldownMultipliers [0] /= 0.8f;
 		player.isInvincible = false;
 		activatedSpecialAbility = false;
@@ -178,7 +178,7 @@ public class KnightHero : PlayerHero {
 		// Effect
 		PlaySpecialAbilityEffect();
 		specialAbilityIndicator.gameObject.SetActive(true);
-		onTapRelease = RushAbility;
+		onTap = RushAbility;
 		// Properties
 		activatedSpecialAbility = true;
 		player.isInvincible = true;
