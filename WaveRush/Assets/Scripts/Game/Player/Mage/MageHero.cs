@@ -15,9 +15,6 @@ public class MageHero : PlayerHero {
 	private bool activatedSpecialAbility;
 	public MageFire mageFirePrefab;
 
-	private float fireballSpeed;
-	public float fireballSpeedMultiplier;
-
 	[Header("Audio")]
 	public AudioClip shootSound;
 	public AudioClip teleportOutSound;
@@ -28,6 +25,7 @@ public class MageHero : PlayerHero {
 	public delegate void MageAbilityActivated();
 	public event MageAbilityActivated OnMageTeleportIn;
 	public event MageAbilityActivated OnMageTeleportOut;
+	public event MageAbilityActivated OnMageSpecialAbility;
 
 	public delegate void MageCreatedObject (GameObject o);
 	public event MageCreatedObject OnMageShotFireball;
@@ -44,9 +42,6 @@ public class MageHero : PlayerHero {
 		map = GameObject.Find ("Map").GetComponent<Map>();
 		projectilePool = (RuntimeObjectPooler)projectilePrefab.GetComponent<Projectile>().GetObjectPooler();
 
-		fireballSpeed = projectilePrefab.GetComponent<Projectile> ().speed;
-		fireballSpeedMultiplier = 1f;
-
 		onSwipe = ShootFireball;
 		onTap = StartTeleport;
 	}
@@ -62,6 +57,9 @@ public class MageHero : PlayerHero {
 		CameraControl.instance.StartFlashColor (Color.white);
 		CameraControl.instance.SetOverlayColor (new Color(1, 0.2f, 0), 0.2f);
 		CameraControl.instance.StartShake (0.3f, 0.05f);
+
+		if (OnMageSpecialAbility != null)
+			OnMageSpecialAbility();
 
 		Invoke ("ResetSpecialAbility", 10.0f);
 	}
@@ -93,8 +91,7 @@ public class MageHero : PlayerHero {
 		GameObject fireballObj = projectilePool.GetPooledObject ();
 		Vector2 dir = player.dir.normalized;
 		Projectile fireball = fireballObj.GetComponent<Projectile> ();
-		fireball.speed = fireballSpeed * fireballSpeedMultiplier;
-		fireball.Init (transform.position, dir);
+ 		fireball.Init (transform.position, dir);
 
 		// recoil
 		body.Move (dir);	// set the sprites flipX to the correct direction
