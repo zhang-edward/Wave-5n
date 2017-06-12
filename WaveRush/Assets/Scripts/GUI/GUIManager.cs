@@ -23,7 +23,7 @@ public class GUIManager : MonoBehaviour {
 		player.OnPlayerDied += GameOverUI;
 		enemyManager.OnEnemyWaveSpawned += ShowEnemyWaveText;
 		enemyManager.OnEnemyWaveCompleted += OnEnemyWaveCompletedText;
-		enemyManager.OnBossIncoming += ShowBossIncomingText;
+		enemyManager.OnQueueBossMessage += ShowBossIncomingText;
 	}
 
 	void OnDisabled()
@@ -31,7 +31,7 @@ public class GUIManager : MonoBehaviour {
 		player.OnPlayerDied -= GameOverUI;
 		enemyManager.OnEnemyWaveSpawned -= ShowEnemyWaveText;
 		enemyManager.OnEnemyWaveCompleted -= OnEnemyWaveCompletedText;
-		enemyManager.OnBossIncoming -= ShowBossIncomingText;
+		enemyManager.OnQueueBossMessage -= ShowBossIncomingText;
 
 	}
 

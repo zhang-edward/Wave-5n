@@ -24,7 +24,7 @@ public class EnemyManager : MonoBehaviour {
 	public int shopWave = 3;
 	public int bossWave = 5;
 	public float bossSpawnDelay = 3f;
-	public int onBossDifficultyScaleBack = 3;	// subtract this from difficultyCurve on a boss wave
+	// public int onBossDifficultyScaleBack = 3;	// subtract this from difficultyCurve on a boss wave
 
 	public GameObject heartPickup;
 	public GameObject moneyPickup;
@@ -40,7 +40,7 @@ public class EnemyManager : MonoBehaviour {
 	public delegate void EnemyWaveCompleted ();
 	public event EnemyWaveCompleted OnEnemyWaveCompleted;
 	public delegate void BossIncoming();
-	public event BossIncoming OnBossIncoming;
+	public event BossIncoming OnQueueBossMessage;
 
 	void OnEnable()
 	{
@@ -103,7 +103,7 @@ public class EnemyManager : MonoBehaviour {
 				// every 'bossWave' waves, spawn a boss
 				if (waveNumber % bossWave == 0)
 				{					
-					TrySpawnBoss ();
+					StartBossIncoming ();
 				}
 				// if it is the wave after a boss wave (just defeated boss), spawn heart pickup
 				if (waveNumber % bossWave == 1 && waveNumber != 1)
@@ -115,14 +115,6 @@ public class EnemyManager : MonoBehaviour {
 			}
 			yield return null;
 		}
-	}
-
-	private void TrySpawnBoss()
-	{
-		difficultyCurve -= onBossDifficultyScaleBack;
-		if (difficultyCurve <= 0)
-			difficultyCurve = 1;
-		Invoke ("StartBossIncoming", 5.0f);
 	}
 
 	private void StartNextWave()
@@ -146,7 +138,7 @@ public class EnemyManager : MonoBehaviour {
     private int DifficultyCurveEquation()
     {
 		float t = -difficultyCurve + 18;	// 18 = max slope part of curve (difficulty increases most on this wave)
-		float answer = 20 / (Mathf.Pow(1.2f, t)) + 5;
+		float answer = 20 / (1 + Mathf.Pow(1.2f, t)) + 5;
 		return Mathf.RoundToInt(answer);
     }
 
@@ -175,7 +167,7 @@ public class EnemyManager : MonoBehaviour {
 
 	private void StartBossIncoming()
 	{
-		OnBossIncoming ();
+		OnQueueBossMessage ();
 		Invoke ("SpawnBoss", bossSpawnDelay);
 	}
 
@@ -242,7 +234,7 @@ public class EnemyManager : MonoBehaviour {
 		bossHealthBar.Init (e);
 		bossHealthBar.abilityIconBar.GetComponent<UIFollow> ().Init(o.transform, e.healthBarOffset);
 		enemies.Add (e);
-		//bosses.Add ((BossEnemy)e);
+		bosses.Add ((BossEnemy)e);
 	}
 
 	private int NumAliveEnemies()

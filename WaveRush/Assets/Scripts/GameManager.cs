@@ -242,7 +242,7 @@ public class GameManager : MonoBehaviour {
 		EnemyManager enemyManager = GameObject.Find ("/Game/EnemyManager").GetComponent<EnemyManager> ();
 		for (int i = enemyManager.Enemies.Count - 1; i >= 0; i --)
 		{
-			enemyManager.Enemies [i].Die ();
+			enemyManager.Enemies [i].Damage(enemyManager.Enemies[i].maxHealth);
 		}
 	}
 

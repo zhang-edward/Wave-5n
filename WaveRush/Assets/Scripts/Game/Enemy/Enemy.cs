@@ -216,7 +216,7 @@ public class Enemy : MonoBehaviour, IDamageable {
 		sr.color = Color.white;
 	}
 
-	protected IEnumerator MoveState()
+	protected virtual IEnumerator MoveState()
 	{
 		yield return new WaitForEndOfFrame ();
 		movementMethod.Reset ();
