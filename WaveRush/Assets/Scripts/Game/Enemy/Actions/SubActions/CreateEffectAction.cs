@@ -29,8 +29,6 @@ namespace EnemyActions
 
 		public override void Interrupt()
 		{
-			if (!interruptable)
-				return;
 		}
 	}
 }

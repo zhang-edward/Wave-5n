@@ -31,18 +31,18 @@ public abstract class PowerUpItem : MonoBehaviour
 			available = false;
 	}
 
-	protected void SetHolderGraphic(PowerUpTier tier)
+	protected void SetHolderGraphic(HeroTier tier)
 	{
 		Sprite graphic;
 		switch(tier)
 		{
-			case PowerUpTier.tier1:
+			case HeroTier.tier1:
 				graphic = data.tier1Graphic;
 				break;
-			case PowerUpTier.tier2:
+			case HeroTier.tier2:
 				graphic = data.tier2Graphic;
 				break;
-			case PowerUpTier.tier3:
+			case HeroTier.tier3:
 				graphic = data.tier3Graphic;
 				break;
 			default:

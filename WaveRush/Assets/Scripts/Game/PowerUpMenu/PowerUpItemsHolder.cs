@@ -29,9 +29,8 @@ public class PowerUpItemsHolder : MonoBehaviour
 			CreateShopItem (item);
 		}
 		// initialize character-specific shop items
-		foreach (HeroPowerUpHolder.HeroPowerUpDictionaryEntry entry in hero.powerUpHolder.powerUpPrefabs)
+		foreach (HeroPowerUp powerUp in hero.powerUpHolder.powerUps)
 		{
-			HeroPowerUp powerUp = entry.powerUpPrefab.GetComponent<HeroPowerUp> ();
 			if (powerUp.data.isRoot)		// if this powerup is not dependent on another powerup (has no parent to be unlocked first)
 				CreateAddPowerUpShopItem (powerUp);
 		}
@@ -101,15 +100,15 @@ public class PowerUpItemsHolder : MonoBehaviour
 		return false;
 	}
 
-	private bool CanEnableShopItem(PowerUpTier tier)
+	private bool CanEnableShopItem(HeroTier tier)
 	{
 		switch (tier)
 		{
-			case PowerUpTier.tier1:
+			case HeroTier.tier1:
 				return true;
-			case PowerUpTier.tier2:
+			case HeroTier.tier2:
 				return enemyManager.waveNumber >= 5;
-			case PowerUpTier.tier3:
+			case HeroTier.tier3:
 				return enemyManager.waveNumber >= 10;
 		}
 		return true;

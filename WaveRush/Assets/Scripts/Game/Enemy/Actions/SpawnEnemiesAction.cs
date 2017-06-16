@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -49,8 +49,6 @@ namespace EnemyActions
 
 		public override void Interrupt()
 		{
-			if (!interruptable)
-				return;
 			StopAllCoroutines();
 		}
 

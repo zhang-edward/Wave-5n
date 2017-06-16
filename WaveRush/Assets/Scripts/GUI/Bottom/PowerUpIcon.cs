@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class UIPowerUpIcon : MonoBehaviour
+public class PowerUpIcon : MonoBehaviour
 {
 	public Image icon;
 	public GameObject[] stacksIcons;

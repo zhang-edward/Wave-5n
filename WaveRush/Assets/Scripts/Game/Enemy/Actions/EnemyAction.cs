@@ -33,6 +33,18 @@ namespace EnemyActions
 			return true;
 		}
 
+		/// <summary>
+		/// Used for when enemies are hit by an attack; if the enemy's action is interruptable, interrupt it
+		/// </summary>
+		public void TryInterrupt()
+		{
+			if (interruptable)
+				Interrupt();
+		}
+
+		/// <summary>
+		/// Interrupt this action. Can be called directly to force an interruption.
+		/// </summary>
 		public abstract void Interrupt();
 
 		public virtual void Execute()

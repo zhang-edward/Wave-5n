@@ -24,8 +24,7 @@
 
 		public override void Interrupt()
 		{
-			if (interruptable)
-				action.Interrupt();
+			action.Interrupt();
 		}
 	}
 

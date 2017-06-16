@@ -12,7 +12,7 @@ public class HeroPowerUpData : ScriptableObject
 
 	public int maxStacks;
 	public int cost;
-	public PowerUpTier tier;
+	public HeroTier tier;
 
 	[Space]
 	[TextArea]
@@ -21,7 +21,7 @@ public class HeroPowerUpData : ScriptableObject
 	public string stackDescription;
 }
 
-public enum PowerUpTier {
+public enum HeroTier {
 	tier1,
 	tier2,
 	tier3

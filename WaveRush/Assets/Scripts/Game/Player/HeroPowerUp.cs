@@ -12,12 +12,19 @@ public abstract class HeroPowerUp : MonoBehaviour
 
 	public HeroPowerUpData data;
 
+	public bool isActive { get; private set; }
+
 	public virtual void Activate(PlayerHero hero) 
 	{
 		playerHero = hero;
 		percentActivated = 1f;
+		isActive = true;
 	}
-	public virtual void Deactivate() {percentActivated = 0f;}
+	public virtual void Deactivate() 
+	{
+		percentActivated = 0f;
+		isActive = false;
+	}
 	public virtual void Stack() 
 	{
 		stacks++;

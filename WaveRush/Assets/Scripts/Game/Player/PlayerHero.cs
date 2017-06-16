@@ -59,9 +59,6 @@ public abstract class PlayerHero : MonoBehaviour {
 		get {return cooldownTimers.Length;}
 	}
 
-	[Header("Hero Audio")]
-	public AudioClip spawnSound;
-
 	public delegate void InputAction();
 	protected InputAction inputAction;
 	public InputAction onSwipe;
@@ -128,7 +125,6 @@ public abstract class PlayerHero : MonoBehaviour {
 
 	public virtual void Init(EntityPhysics body, Animator anim, Player player)
 	{
-		SoundManager.instance.PlaySingle (spawnSound);
 		powerUpHolder = GetComponent<HeroPowerUpHolder> ();
 		this.body = body;
 		this.anim = anim;
@@ -202,7 +198,7 @@ public abstract class PlayerHero : MonoBehaviour {
 		if (combo > maxCombo)
 			maxCombo = combo;
 		comboTimer += 1.5f;
-		if (comboTimer > maxComboTimer)
+		if (comboTimer > maxComboTimer || combo == 1)		// if just started combo, set to max timer
 			comboTimer = maxComboTimer;
 		SetChargeMultiplier ();
 	}

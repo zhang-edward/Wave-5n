@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 
 namespace EnemyActions
@@ -22,8 +22,6 @@ namespace EnemyActions
 
 		public override void Interrupt()
 		{
-			if (!interruptable)
-				return;
 			cam.StartShake(0, 0);
 		}
 	}

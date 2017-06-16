@@ -22,7 +22,6 @@ public class Player : MonoBehaviour, IDamageable
 	public float DEFAULT_SPEED;
 
 	public GameObject[] heroPrefabs;
-	// public PlayerInfoHolder infoHolder;
 
 	[Header("Entity Base Values")]
 	public SpriteRenderer sr;
@@ -44,10 +43,12 @@ public class Player : MonoBehaviour, IDamageable
 
 	public float damagedCooldownTime = 1.0f;
 
-	[Header("AutoTargeter Object")]
+	/*[Header("AutoTargeter Object")]
 	public Transform autoTargetReticle;
 	[HideInInspector]
-	public bool autoTargetEnabled = false;
+	public Transform targetedEnemy;
+	[HideInInspector]
+	public bool autoTargetEnabled = false;*/
 
 	[Header("Effects")]
 	public ParticleSystem healEffect;
@@ -60,9 +61,6 @@ public class Player : MonoBehaviour, IDamageable
 	public ObjectPooler deathPropPool;
 	[HideInInspector]
 	public ObjectPooler effectPool;
-/*	[HideInInspector]
-	public Transform targetedEnemy;*/
-
 	void Start()
 	{
 		deathPropPool = ObjectPooler.GetObjectPooler ("DeathProp");

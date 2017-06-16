@@ -7,7 +7,7 @@ public class PowerUpsMeter : MonoBehaviour {
 	public Player player;
 	private HeroPowerUpHolder powerUpHolder;
 
-	public List<UIPowerUpIcon> powerUpIcons;
+	public List<PowerUpIcon> powerUpIcons = new List<PowerUpIcon>();
 	public GameObject powerUpIconPrefab;
 
 	void OnEnable()
@@ -25,16 +25,16 @@ public class PowerUpsMeter : MonoBehaviour {
 	private void UpdatePowerUpsMeter()
 	{
 		// instantiate an icon for each power up that the player has
-		while (powerUpIcons.Count < powerUpHolder.activePowerUps.Count)
+		while (powerUpIcons.Count < powerUpHolder.numActivePowerUps)
 		{
 			GameObject o = Instantiate (powerUpIconPrefab);
 			o.transform.SetParent (transform, false);
-			powerUpIcons.Add (o.GetComponent<UIPowerUpIcon> ());
+			powerUpIcons.Add (o.GetComponent<PowerUpIcon> ());
 		}
 		// update the icon for each icon
-		for (int i = 0; i < powerUpHolder.activePowerUps.Count; i ++)
+		for (int i = 0; i < powerUpHolder.numActivePowerUps; i ++)
 		{
-			powerUpIcons [i].Init (powerUpHolder.activePowerUps [i]);
+			powerUpIcons [i].Init (powerUpHolder.powerUps [i]);
 		}
 	}
 

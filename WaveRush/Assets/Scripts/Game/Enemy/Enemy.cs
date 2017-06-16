@@ -277,7 +277,7 @@ public class Enemy : MonoBehaviour, IDamageable {
 		{
 			if (canBeDisabledOnHit && !hitDisabled)
 			{
-				action.Interrupt ();
+				action.TryInterrupt ();
 				// Stop all states
 				StopAllCoroutines ();
 				StartCoroutine (HitDisableState (0.05f, 3f));

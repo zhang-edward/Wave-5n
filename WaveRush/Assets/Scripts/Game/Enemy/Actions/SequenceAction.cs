@@ -39,8 +39,6 @@ namespace EnemyActions
 
 		public override void Interrupt()
 		{
-			if (!interruptable)
-				return;
 			currentAction.Interrupt();
 			index = 0;
 		}

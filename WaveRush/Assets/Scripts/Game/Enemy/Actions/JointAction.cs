@@ -42,8 +42,6 @@ namespace EnemyActions
 
 		public override void Interrupt()
 		{
-			if (!interruptable)
-				return;
 			foreach (EnemyAction action in actions)
 				action.Interrupt();
 		}

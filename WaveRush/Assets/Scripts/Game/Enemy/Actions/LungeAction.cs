@@ -38,8 +38,6 @@ namespace EnemyActions
 
 		public override void Interrupt()
 		{
-			if (!interruptable)
-				return;
 			StopAllCoroutines();
 			body.moveSpeed = defaultSpeed;
 			body.Move(Vector3.zero);

@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour {
 	public Image loadingOverlay;
 	public HeroType selectedHero;
 	public MapType selectedMap;
-	public GameObject player;
+	public GameObject playerObj;
 
 	public ScoreManager scoreManager;
 	public Wallet wallet;
@@ -92,13 +92,13 @@ public class GameManager : MonoBehaviour {
 		map.GenerateMap ();
 		enemyManager.chosenMap = selectedMap;
 
-		player = GameObject.Find ("/Game/Player");
-		Assert.IsNotNull (player);
-		Player playerScript = player.GetComponentInChildren<Player> ();
+		playerObj = GameObject.Find ("/Game/Player");
+		Assert.IsNotNull (playerObj);
+		Player player = playerObj.GetComponentInChildren<Player> ();
 
 		Assert.IsFalse (selectedHero.Equals (""));		// will throw an error if this script tries to
 														// initialize the player without a selected hero
-		playerScript.Init (selectedHero);
+		player.Init (selectedHero);
 		SoundManager.instance.PlayMusicLoop (map.data.musicLoop, map.data.musicIntro);
 	}
 
@@ -196,7 +196,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	// ========================== DEBUG FUNCTIONS ======================
-#if UNITY_EDITOR
+/*#if UNITY_EDITOR
 	public void SetMoneyDebugString(string str)
 	{
 		int i = 0;
@@ -227,13 +227,13 @@ public class GameManager : MonoBehaviour {
 
 	public void KillPlayer()
 	{
-		Player plyr = player.GetComponentInChildren<Player> ();
+		Player plyr = playerObj.GetComponentInChildren<Player> ();
 		plyr.Damage (plyr.health);
 	}
 
 	public void FullChargeSpecial()
 	{
-		Player plyr = player.GetComponentInChildren<Player> ();
+		Player plyr = playerObj.GetComponentInChildren<Player> ();
 		plyr.hero.IncrementSpecialAbilityCharge (int.MaxValue);
 	}
 
@@ -254,9 +254,9 @@ public class GameManager : MonoBehaviour {
 
 	public void AddPowerUp(string name)
 	{
-		Player plyr = player.GetComponentInChildren<Player> ();
+		Player plyr = playerObj.GetComponentInChildren<Player> ();
 		plyr.hero.powerUpHolder.AddPowerUp (name);
 	}
 
-#endif
+#endif*/
 }
