@@ -10,6 +10,8 @@ public class PowerUpMenu : MonoBehaviour
 
 	[Header("Shop Items")]
 	public int numShopItems = 3;
+	public int numUpgrades = 2;
+	private int upgradesLeft;
 	private List<PowerUpItem> items = new List<PowerUpItem>();
 	public PowerUpItem selectedItem {
 		get {
@@ -36,6 +38,7 @@ public class PowerUpMenu : MonoBehaviour
 	private void InitShopItemsHolder()
 	{
 		itemsHolder.InitShopItemsList (player.hero);
+		upgradesLeft = numUpgrades;
 	}
 
 	// instantiate a random selection of 5 shop items from the potential items list
@@ -52,6 +55,11 @@ public class PowerUpMenu : MonoBehaviour
 		}
 	}
 
+	public void RefreshItems()
+	{
+		GetShopItems();
+	}
+
 	public void AnimateIn()
 	{
 		ResetToggles ();
@@ -59,6 +67,8 @@ public class PowerUpMenu : MonoBehaviour
 		upgradeButton.interactable = true;
 		// Hard override input for player
 		player.input.enabled = false;
+
+		upgradesLeft = numUpgrades;
 	}
 
 	public void AnimateOut()
@@ -84,7 +94,17 @@ public class PowerUpMenu : MonoBehaviour
 		if (selectedItem == null)
 			return;
 		selectedItem.Upgrade (player);
-		AnimateOut ();
+		ResetToggles();
+		
+		upgradesLeft--;
+		if (upgradesLeft <= 0)
+		{
+			AnimateOut();
+		}
+		else
+		{
+			RefreshItems();
+		}
 	}
 }
 

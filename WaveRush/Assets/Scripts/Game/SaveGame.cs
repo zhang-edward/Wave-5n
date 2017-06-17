@@ -11,8 +11,9 @@ public class SaveGame
 	{
 		public HeroType hero;
 		public bool unlocked;
-		public int numPowerUpsUnlocked;
 	}
+
+	public List<HeroConsumable> heroConsumables = new List<HeroConsumable>();
 
 	public Dictionary<string, ScoreManager.Score> highScores;
 	public Wallet wallet;

@@ -34,8 +34,9 @@ public class HeroPowerUpHolder : MonoBehaviour
 
 		//powerUpPrefabs = new List<HeroPowerUpDictionaryEntry>();
 		HeroPowerUpListData powerUpListData = DataManager.GetPowerUpListData(hero.heroType);
-		int numPowerUpsUnlocked = GameManager.instance.saveGame.GetHeroData(hero.heroType).numPowerUpsUnlocked;
-		for (int i = 0; i < numPowerUpsUnlocked; i ++)
+		int level = 0;
+		//int numPowerUpsUnlocked = GameManager.instance.saveGame.GetHeroData(hero.heroType).numPowerUpsUnlocked;
+		for (int i = 0; i < level; i ++)
 		{
 			HeroPowerUp powerUp = powerUpListData.powerUps[i];						// get the powerUp prefab data
 			//powerUpPrefabs.Add(new HeroPowerUpDictionaryEntry(powerUp.gameObject));

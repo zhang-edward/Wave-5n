@@ -24,10 +24,10 @@ public class PowerUpItemsHolder : MonoBehaviour
 	/// <param name="hero">Hero.</param>
 	public void InitShopItemsList (PlayerHero hero)
 	{
-		foreach (GameObject item in universalShopItems)
+		/*foreach (GameObject item in universalShopItems)
 		{
 			CreateShopItem (item);
-		}
+		}*/
 		// initialize character-specific shop items
 		foreach (HeroPowerUp powerUp in hero.powerUpHolder.powerUps)
 		{

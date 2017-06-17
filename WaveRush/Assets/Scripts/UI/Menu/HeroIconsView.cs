@@ -28,10 +28,5 @@ public class HeroIconsView : ScrollViewSnap {
 	{
 		leftArrow.gameObject.SetActive(selectedContentIndex > 0);
 		rightArrow.gameObject.SetActive(selectedContentIndex < content.Length - 1);
-
-		if (leftArrow.gameObject.activeInHierarchy)
-			leftArrow.GetComponent<SimpleAnimationPlayerImage>().Play();
-		if (rightArrow.gameObject.activeInHierarchy)
-			rightArrow.GetComponent<SimpleAnimationPlayerImage>().Play();
 	}
 }

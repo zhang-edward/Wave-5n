@@ -11,7 +11,7 @@ public class HeroChooser : MonoBehaviour
 	public ScrollingText descriptionText;
 	//public HeroInfoPanelContainer infoPanel;
 	public ScoreDisplay scoreDisplay;
-	public UpgradeScreen upgradeScreen;
+	//public UpgradeScreen upgradeScreen;
 
 	public Button playButton;
 	public Button unlockButton;
@@ -70,7 +70,7 @@ public class HeroChooser : MonoBehaviour
 	private void ToUpgradeScreen()
 	{
 		HeroIcon heroIcon = heroIconsView.SelectedContent.GetComponent<HeroIcon>();
-		upgradeScreen.Init(heroIcon.heroName);
+		//upgradeScreen.Init(heroIcon.heroName);
 	}
 
 	public void UnlockHero()

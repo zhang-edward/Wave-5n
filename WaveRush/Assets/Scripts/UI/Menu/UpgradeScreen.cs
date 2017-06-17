@@ -1,4 +1,4 @@
-﻿using UnityEngine.UI;
+﻿/*using UnityEngine.UI;
 using UnityEngine;
 using System.Collections.Generic;
 
@@ -109,4 +109,4 @@ public class UpgradeScreen : MonoBehaviour
 			SoundManager.instance.PlaySingle(notEnoughMoneySound);
 		}
 	}
-}
+}*/

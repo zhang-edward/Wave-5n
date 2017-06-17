@@ -9,10 +9,10 @@ public abstract class HeroPowerUp : MonoBehaviour
 
 	public int stacks { get; protected set; }
 	public float percentActivated { get; protected set; }
+	public bool isActive { get; private set; }
 
 	public HeroPowerUpData data;
 
-	public bool isActive { get; private set; }
 
 	public virtual void Activate(PlayerHero hero) 
 	{

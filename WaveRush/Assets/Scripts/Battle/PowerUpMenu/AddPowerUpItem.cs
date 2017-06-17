@@ -13,10 +13,11 @@ public class AddPowerUpItem : ShopItemProgression
 		this.powerUp = powerUp;
 		SetHolderGraphic(powerUp.GetComponent<HeroPowerUp>().data.tier);	// set the holder graphic to match the tier level of the power up
 		icon.sprite = powerUp.data.icon;
-		purchaseLimit = powerUp.data.maxStacks;
+		purchaseLimit = powerUp.data.maxStacks + 1;
 		cost = powerUp.data.cost;
 		GetComponent<ScrollingTextOption> ().text = powerUp.data.description;
-		if (powerUp.data.maxStacks == 1)
+
+		if (powerUp.data.maxStacks == 0)
 			stacksIndicator.transform.parent.gameObject.SetActive (false);
 	}
 
