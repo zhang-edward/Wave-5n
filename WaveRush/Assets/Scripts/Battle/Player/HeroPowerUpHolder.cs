@@ -65,16 +65,16 @@ public class HeroPowerUpHolder : MonoBehaviour
 	public void AddPowerUp(string name)
 	{
 		HeroPowerUp selectedPowerUp = GetPowerUp(name).GetComponent<HeroPowerUp> ();
-		print("Got power up:" + selectedPowerUp.gameObject);
+		//print("Got power up:" + selectedPowerUp.gameObject);
 		// test if this hero already has the selected power up
 		if (selectedPowerUp.isActive)
 		{
-			print("Stacking...");
+			//print("Stacking...");
 			selectedPowerUp.Stack ();
 		}
 		else
 		{
-			print("Power up not active. Activating...");
+			//print("Power up not active. Activating...");
 			selectedPowerUp.gameObject.SetActive(true);
 			selectedPowerUp.Activate(hero);
 			numActivePowerUps++;

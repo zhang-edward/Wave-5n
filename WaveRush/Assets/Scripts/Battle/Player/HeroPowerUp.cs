@@ -19,7 +19,6 @@ public abstract class HeroPowerUp : MonoBehaviour
 		playerHero = hero;
 		percentActivated = 1f;
 		isActive = true;
-		print(data.powerUpName + " is active");
 	}
 	public virtual void Deactivate() 
 	{
