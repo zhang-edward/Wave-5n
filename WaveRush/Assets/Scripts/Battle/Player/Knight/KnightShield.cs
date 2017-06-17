@@ -44,7 +44,7 @@ public class KnightShield : HeroPowerUp
 			return;
 
 		knight.player.Heal (amt / 2);
-		Deactivate ();
+		shielded = false;
 		effect.GetComponent<IndicatorEffect> ().AnimateOut ();
 		CameraControl.instance.StartShake (0.1f, 0.05f);
 		SoundManager.instance.RandomizeSFX(breakSound);
@@ -56,7 +56,6 @@ public class KnightShield : HeroPowerUp
 	public override void Deactivate ()
 	{
 		base.Deactivate ();
-		shielded = false;
 	}
 
 	public override void Stack ()

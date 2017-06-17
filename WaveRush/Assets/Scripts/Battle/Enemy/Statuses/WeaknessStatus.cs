@@ -23,7 +23,7 @@ public class WeaknessStatus : EnemyStatus
 		while (timer > 0)
 			yield return null;
 		enemy.OnEnemyDamaged -= DoubleDamage;
-		Destroy(gameObject);
+		Deactivate();
 	}
 
 	public override void Stack()

@@ -22,7 +22,8 @@ public class StunStatus : EnemyStatus
 			enemy.Disable(0);
 			yield return null;
 		}
-		Destroy(gameObject);
+
+		Deactivate();
 	}
 
 	public override void Stack()

@@ -28,23 +28,26 @@ public class HeroPowerUpHolder : MonoBehaviour
 	public OnPowerUpsChanged OnPowerUpAdded;
 
 
-	public void Init()
+	public void Init(HeroData heroData)
 	{
 		hero = GetComponent<PlayerHero>();
-
-		//powerUpPrefabs = new List<HeroPowerUpDictionaryEntry>();
 		HeroPowerUpListData powerUpListData = DataManager.GetPowerUpListData(hero.heroType);
-		int level = 0;
-		//int numPowerUpsUnlocked = GameManager.instance.saveGame.GetHeroData(hero.heroType).numPowerUpsUnlocked;
+		InitPowerUpList(heroData.level);
+	}
+
+	private void InitPowerUpList(int level)
+	{
+		HeroPowerUpListData powerUpListData = DataManager.GetPowerUpListData(hero.heroType);
 		for (int i = 0; i < level; i ++)
 		{
-			HeroPowerUp powerUp = powerUpListData.powerUps[i];						// get the powerUp prefab data
-			//powerUpPrefabs.Add(new HeroPowerUpDictionaryEntry(powerUp.gameObject));
-			GameObject o = Instantiate(powerUp.gameObject);                         // instantiate the prefab
-			powerUps.Add(o.GetComponent<HeroPowerUp>());
+			HeroPowerUp powerUpPrefab = powerUpListData.GetPowerUpFromLevel(i);
+			GameObject o = Instantiate(powerUpPrefab.gameObject);                         // instantiate the prefab
+			HeroPowerUp powerUp = o.GetComponent<HeroPowerUp>();
+			powerUps.Add(powerUp);
 			o.transform.SetParent(transform);
 			o.transform.localPosition = Vector3.zero;
 			o.SetActive(false);
+			AddPowerUp(powerUp.data.powerUpName);
 		}
 	}
 
@@ -55,51 +58,30 @@ public class HeroPowerUpHolder : MonoBehaviour
 			if (powerUp.data.powerUpName.Equals(name))
 				return powerUp;
 		}
-		/*foreach (HeroPowerUpDictionaryEntry entry in powerUpPrefabs)
-		{
-			if (entry.name.Equals (name))
-				return entry.powerUpPrefab;
-		}*/
 		throw new UnityEngine.Assertions.AssertionException ("HeroPowerUpHolder.cs",
 			"Cannot find HeroPowerUp with name" + "\"" + name + "\"");
 	}
 
 	public void AddPowerUp(string name)
 	{
-		// GameObject prefab = GetPowerUp (name);
 		HeroPowerUp selectedPowerUp = GetPowerUp(name).GetComponent<HeroPowerUp> ();
+		print("Got power up:" + selectedPowerUp.gameObject);
 		// test if this hero already has the selected power up
-		// HeroPowerUp existingPowerUp = GetPowerUp (prefabPowerUp);
-		// if (existingPowerUp != null)
 		if (selectedPowerUp.isActive)
 		{
-			// if yes, then stack the powerup
+			print("Stacking...");
 			selectedPowerUp.Stack ();
 		}
 		else
 		{
+			print("Power up not active. Activating...");
 			selectedPowerUp.gameObject.SetActive(true);
 			selectedPowerUp.Activate(hero);
 			numActivePowerUps++;
 		}
+		// send event
 		if (OnPowerUpAdded != null)
 			OnPowerUpAdded();
-		// GameObject o = Instantiate (prefab);
-		// o.transform.SetParent (transform);
-		// o.transform.localPosition = Vector3.zero;
-		// HeroPowerUp powerUp = o.GetComponent<HeroPowerUp> ();
-		// powerUps.Add (selectedPowerUp);
-
-	}
-
-	private HeroPowerUp GetPowerUp(HeroPowerUp powerUp)
-	{
-		foreach (HeroPowerUp activePowerUp in powerUps)
-		{
-			if (powerUp.data.powerUpName.Equals (activePowerUp.data.powerUpName))
-				return activePowerUp;
-		}
-		return null;
 	}
 }
 

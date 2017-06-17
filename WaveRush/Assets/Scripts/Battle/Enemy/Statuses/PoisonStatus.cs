@@ -26,8 +26,7 @@ public class PoisonStatus : EnemyStatus
 		enemy.sr.color = Color.white;
 		enemy.body.moveSpeed = enemy.DEFAULT_SPEED;
 
-		enemy.statuses.Remove (this);
-		Destroy (gameObject);
+		Deactivate();
 	}
 
 	private void Poison()

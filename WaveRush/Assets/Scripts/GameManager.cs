@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour {
 
 	public static GameManager instance;
 	public Image loadingOverlay;
-	public HeroType selectedHero;
+	public HeroData selectedHero;
 	public MapType selectedMap;
 	public GameObject playerObj;
 
@@ -130,9 +130,9 @@ public class GameManager : MonoBehaviour {
 		InitGameScene ();
 	}
 
-	public void SelectHero(HeroType heroName)
+	public void SelectHero(HeroData hero)
 	{
-		selectedHero = heroName;
+		selectedHero = hero;
 	}
 
 	public void UpdateScores(int enemiesKilled, int wavesSurvived, int maxCombo)

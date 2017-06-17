@@ -35,10 +35,10 @@ public class MageHero : PlayerHero {
 	//private float tapHoldTime;
 	//private const float minTapHoldTime = 0.2f;
 
-	public override void Init(EntityPhysics body, Animator anim, Player player)
+	public override void Init(EntityPhysics body, Animator anim, Player player, HeroData heroData)
 	{
 		cooldownTimers = new float[2];
-		base.Init (body, anim, player);
+		base.Init (body, anim, player, heroData);
 		map = GameObject.Find ("Map").GetComponent<Map>();
 		projectilePool = (RuntimeObjectPooler)projectilePrefab.GetComponent<Projectile>().GetObjectPooler();
 

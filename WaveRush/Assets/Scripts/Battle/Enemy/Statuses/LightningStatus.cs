@@ -40,8 +40,8 @@ public class LightningStatus : EnemyStatus
 		}
 		//enemy.sr.color = Color.white;
 		anim.enabled = false;
-		enemy.statuses.Remove (this);
-		Destroy (gameObject, 1f);
+
+		Deactivate(1f);
 	}
 
 	private void LightningArcEffect()

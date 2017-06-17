@@ -69,9 +69,9 @@ public class Player : MonoBehaviour, IDamageable
 		input.isInputEnabled = false;
 	}
 
-	public void Init(HeroType type)
+	public void Init(HeroData heroData)
 	{
-		InitPlayerHero (type);
+		InitPlayerHero (heroData);
 		anim.runtimeAnimatorController = hero.animatorController;
 		health = maxHealth;
 
@@ -80,24 +80,24 @@ public class Player : MonoBehaviour, IDamageable
 		StartCoroutine (SpawnState ());
 	}
 
-	private void InitPlayerHero(HeroType type)
+	private void InitPlayerHero(HeroData heroData)
 	{
 		// this.hero = infoHolder.CreateHero (type.ToString());
 		foreach (GameObject prefab in heroPrefabs)
 		{
 			PlayerHero prefabHero = prefab.GetComponent<PlayerHero>();
 //			print(prefabHero.heroType == type);
-			if (prefabHero.heroType == type)
+			if (prefabHero.heroType == heroData.type)
 			{
 				GameObject o = Instantiate(prefab, transform.position, Quaternion.identity) as GameObject;
 				o.transform.SetParent(this.transform);
 				hero = o.GetComponent<PlayerHero>();
-				hero.Init(body, anim, this);
+				hero.Init(body, anim, this, heroData);
 				return;
 			}
 		}
 		throw new UnityEngine.Assertions.AssertionException(this.GetType() + ".cs",
-															"Cannot find hero with name " + type.ToString() + "!");
+															"Cannot find hero with name " + heroData.type.ToString() + "!");
 	}
 
 	/// <summary>

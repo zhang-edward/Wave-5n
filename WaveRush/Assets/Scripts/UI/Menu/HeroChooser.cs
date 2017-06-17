@@ -52,7 +52,7 @@ public class HeroChooser : MonoBehaviour
 		if (heroIcon.unlocked)
 		{
 			heroName = heroIcon.heroName;
-			GameManager.instance.SelectHero (heroName);	// select the hero in the GameManager
+			//GameManager.instance.SelectHero (heroName);	// select the hero in the GameManager
 			playButton.interactable = true;
 			// display text
 			descriptionText.UpdateText(DataManager.GetDescriptionData(heroName).heroDescription);

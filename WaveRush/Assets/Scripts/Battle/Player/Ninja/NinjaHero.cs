@@ -33,10 +33,10 @@ public class NinjaHero : PlayerHero {
 	public event NinjaActivatedAbility OnNinjaThrewStar;
 	public event NinjaActivatedAbility OnNinjaDash;
 
-	public override void Init(EntityPhysics body, Animator anim, Player player)
+	public override void Init(EntityPhysics body, Animator anim, Player player, HeroData heroData)
 	{
 		cooldownTimers = new float[2];
-		base.Init (body, anim, player);
+		base.Init (body, anim, player, heroData);
 		projectilePool = (RuntimeObjectPooler)projectilePrefab.GetComponent<Projectile>().GetObjectPooler();
 
 		onSwipe = DashAttack;

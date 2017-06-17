@@ -34,6 +34,7 @@ public class PowerUpsMeter : MonoBehaviour {
 		// update the icon for each icon
 		for (int i = 0; i < powerUpHolder.numActivePowerUps; i ++)
 		{
+			//print("Updating index:" + i);
 			powerUpIcons [i].Init (powerUpHolder.powerUps [i]);
 		}
 	}

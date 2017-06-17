@@ -13,7 +13,7 @@ public class SaveGame
 		public bool unlocked;
 	}
 
-	public List<HeroConsumable> heroConsumables = new List<HeroConsumable>();
+	public List<HeroData> heroConsumables = new List<HeroData>();
 
 	public Dictionary<string, ScoreManager.Score> highScores;
 	public Wallet wallet;

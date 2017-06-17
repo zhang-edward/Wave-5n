@@ -42,10 +42,10 @@ public class KnightHero : PlayerHero {
 		Gizmos.DrawWireSphere (transform.position, 1f);
 	}
 
-	public override void Init (EntityPhysics body, Animator anim, Player player)
+	public override void Init (EntityPhysics body, Animator anim, Player player, HeroData heroData)
 	{
 		cooldownTimers = new float[2];
-		base.Init (body, anim, player);
+		base.Init (body, anim, player, heroData);
 		effectPool = ObjectPooler.GetObjectPooler("Effect");
 		// handle input
 		onSwipe = RushAbility;

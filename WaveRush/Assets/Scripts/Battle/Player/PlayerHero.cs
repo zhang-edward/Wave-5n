@@ -123,7 +123,7 @@ public abstract class PlayerHero : MonoBehaviour {
 		inputAction ();
 	}
 
-	public virtual void Init(EntityPhysics body, Animator anim, Player player)
+	public virtual void Init(EntityPhysics body, Animator anim, Player player, HeroData heroData)
 	{
 		powerUpHolder = GetComponent<HeroPowerUpHolder> ();
 		this.body = body;
@@ -136,7 +136,7 @@ public abstract class PlayerHero : MonoBehaviour {
 			cooldownMultipliers [i] = 1;
 		}
 		player.maxHealth = maxHealth;
-		powerUpHolder.Init ();
+		powerUpHolder.Init (heroData);
 		player.OnPlayerDamaged += ResetCombo;
 		player.OnEnemyDamaged += IncrementCombo;
 		player.OnEnemyDamaged += IncrementSpecialAbilityCharge;

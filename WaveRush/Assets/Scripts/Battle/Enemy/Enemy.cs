@@ -207,6 +207,7 @@ public class Enemy : MonoBehaviour, IDamageable {
 		UnityEngine.Assertions.Assert.IsTrue(anim.HasState(0, Animator.StringToHash("default")));
 		anim.CrossFade ("default", 0f);
 
+		hitDisabled = false;
 		ToMoveState ();
 		yield return null;
 	}

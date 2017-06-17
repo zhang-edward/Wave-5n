@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
+using System.Collections.Generic;
 
-public class AddPowerUpItem : ShopItemProgression
+public class AddPowerUpItem : PowerUpItem
 {
 	public Image icon;
 	public Text stacksIndicator;
 	public HeroPowerUp powerUp { get; private set; }
+	public List<AddPowerUpItem> unlockable = new List<AddPowerUpItem>();
+	
 
 	public void Init(HeroPowerUp powerUp)
 	{
@@ -34,6 +36,15 @@ public class AddPowerUpItem : ShopItemProgression
 	{
 		base.Upgrade (player);
 		player.hero.powerUpHolder.AddPowerUp (powerUp.data.powerUpName);
+		foreach (AddPowerUpItem item in unlockable)
+		{
+			item.available = true;
+		}
+	}
+
+	public void SetAvailable(bool available)
+	{
+		this.available = available;
 	}
 
 	private string ToRomanNumeral(int num)

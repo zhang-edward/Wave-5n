@@ -31,8 +31,8 @@ public class BurnStatus : EnemyStatus
 			yield return null;
 		}
 		enemy.Damage (1);
-		enemy.statuses.Remove (this);
-		Destroy (gameObject);
+
+		Deactivate();
 		yield return null;
 	}
 

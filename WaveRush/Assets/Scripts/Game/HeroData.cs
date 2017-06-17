@@ -1,7 +1,11 @@
 ﻿[System.Serializable]
-public class HeroConsumable
+public class HeroData
 {
-	public HeroType hero;		// the type of the hero
+	public const int T1_MIN_LEVEL = 0;
+	public const int T2_MIN_LEVEL = 5;
+	public const int T3_MIN_LEVEL = 8;
+
+	public HeroType type;		// the type of the hero
 	public int level;			// the level of the hero
 
 	public HeroTier tier {
