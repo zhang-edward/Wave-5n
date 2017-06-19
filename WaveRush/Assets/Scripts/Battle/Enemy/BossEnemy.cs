@@ -37,6 +37,13 @@ public class BossEnemy : Enemy
 		StartCoroutine ("DeathAnimation");
 	}
 
+	protected override IEnumerator MoveState()
+	{
+		if (dying)
+			Die();
+		return base.MoveState();
+	}
+
 	public override void Damage(int amt)
 	{
 		if (dying)

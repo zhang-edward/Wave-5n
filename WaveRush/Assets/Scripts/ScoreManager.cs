@@ -34,14 +34,14 @@ public class ScoreManager : MonoBehaviour {
 		}
 	}
 
-	public Dictionary<string, Score> highScores = new Dictionary<string, Score>();
+	public Dictionary<HeroType, Score> highScores = new Dictionary<HeroType, Score>();
 
 	/// <summary>
 	/// Submits the score.
 	/// </summary>
 	/// <param name="hero">Hero.</param>
 	/// <param name="score">Score.</param>
-	public void SubmitScore(string hero, Score score)
+	public void SubmitScore(HeroType hero, Score score)
 	{
 		if (highScores.ContainsKey (hero))
 			highScores [hero].UpdateScore (score);

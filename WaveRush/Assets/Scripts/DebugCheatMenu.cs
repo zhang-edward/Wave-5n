@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class DebugCheatMenu : MonoBehaviour
 {
@@ -11,7 +12,6 @@ public class DebugCheatMenu : MonoBehaviour
 	}
 
 	// ========================== DEBUG FUNCTIONS ======================
-#if UNITY_EDITOR
 	public void SetMoneyDebugString(string str)
 	{
 		int i = 0;
@@ -73,5 +73,25 @@ public class DebugCheatMenu : MonoBehaviour
 		plyr.hero.powerUpHolder.AddPowerUp(name);
 	}
 
-#endif
+	public void SaveGame()
+	{
+		GameManager.instance.PrepareSaveFile();
+		SaveLoad.Save();
+	}
+
+	public void AddNewPawn()
+	{
+		int numHeroTypes = Enum.GetNames(typeof(HeroType)).Length;
+		//HeroType type = (HeroType)Enum.GetValues(typeof(HeroType)).GetValue(UnityEngine.Random.Range(1, numHeroTypes));
+		Pawn pawn = new Pawn();
+		pawn.level = UnityEngine.Random.Range(0, 10);
+		pawn.type = HeroType.Knight;//type;
+		GameManager.instance.saveGame.AddPawn(pawn);
+		SaveLoad.Save();
+	}
+
+	public void ClearSaveData()
+	{
+		GameManager.instance.DeleteSaveData();
+	}
 }

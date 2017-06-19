@@ -28,17 +28,17 @@ public class HeroPowerUpHolder : MonoBehaviour
 	public OnPowerUpsChanged OnPowerUpAdded;
 
 
-	public void Init(HeroData heroData)
+	public void Init(Pawn pawnData)
 	{
 		hero = GetComponent<PlayerHero>();
 		HeroPowerUpListData powerUpListData = DataManager.GetPowerUpListData(hero.heroType);
-		InitPowerUpList(heroData.level);
+		InitPowerUpList(pawnData.level);
 	}
 
 	private void InitPowerUpList(int level)
 	{
 		HeroPowerUpListData powerUpListData = DataManager.GetPowerUpListData(hero.heroType);
-		for (int i = 0; i < level; i ++)
+		for (int i = 1; i <= level; i ++)
 		{
 			HeroPowerUp powerUpPrefab = powerUpListData.GetPowerUpFromLevel(i);
 			GameObject o = Instantiate(powerUpPrefab.gameObject);                         // instantiate the prefab

@@ -35,7 +35,7 @@ public class MageHero : PlayerHero {
 	//private float tapHoldTime;
 	//private const float minTapHoldTime = 0.2f;
 
-	public override void Init(EntityPhysics body, Animator anim, Player player, HeroData heroData)
+	public override void Init(EntityPhysics body, Animator anim, Player player, Pawn heroData)
 	{
 		cooldownTimers = new float[2];
 		base.Init (body, anim, player, heroData);

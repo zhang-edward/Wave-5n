@@ -42,7 +42,7 @@ public class KnightHero : PlayerHero {
 		Gizmos.DrawWireSphere (transform.position, 1f);
 	}
 
-	public override void Init (EntityPhysics body, Animator anim, Player player, HeroData heroData)
+	public override void Init (EntityPhysics body, Animator anim, Player player, Pawn heroData)
 	{
 		cooldownTimers = new float[2];
 		base.Init (body, anim, player, heroData);
@@ -117,6 +117,7 @@ public class KnightHero : PlayerHero {
 				if (numEnemiesHit < MAX_HIT)
 				{
 					Enemy e = col.gameObject.GetComponentInChildren<Enemy> ();
+					hitEnemies.Clear();
 					DamageEnemy (e);
 					enemyHit = true;
 				}

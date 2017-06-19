@@ -123,7 +123,7 @@ public abstract class PlayerHero : MonoBehaviour {
 		inputAction ();
 	}
 
-	public virtual void Init(EntityPhysics body, Animator anim, Player player, HeroData heroData)
+	public virtual void Init(EntityPhysics body, Animator anim, Player player, Pawn heroData)
 	{
 		powerUpHolder = GetComponent<HeroPowerUpHolder> ();
 		this.body = body;

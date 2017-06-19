@@ -10,11 +10,10 @@ public class ScoreDisplay : MonoBehaviour {
 
 	public void DisplayScores(HeroType type)
 	{
-		string hero = type.ToString();
 		ScoreManager sm = GameManager.instance.scoreManager;
-		if (sm.highScores.ContainsKey(hero))
+		if (sm.highScores.ContainsKey(type))
 		{
-			ScoreManager.Score score = sm.highScores [hero];
+			ScoreManager.Score score = sm.highScores [type];
 			enemiesDefeated.text = score.enemiesDefeated.ToString();
 			wavesSurvived.text = score.wavesSurvived.ToString();
 			maxCombo.text = score.maxCombo.ToString();

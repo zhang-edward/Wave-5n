@@ -33,7 +33,7 @@ public class NinjaHero : PlayerHero {
 	public event NinjaActivatedAbility OnNinjaThrewStar;
 	public event NinjaActivatedAbility OnNinjaDash;
 
-	public override void Init(EntityPhysics body, Animator anim, Player player, HeroData heroData)
+	public override void Init(EntityPhysics body, Animator anim, Player player, Pawn heroData)
 	{
 		cooldownTimers = new float[2];
 		base.Init (body, anim, player, heroData);

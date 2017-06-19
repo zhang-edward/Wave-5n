@@ -69,7 +69,7 @@ public class Player : MonoBehaviour, IDamageable
 		input.isInputEnabled = false;
 	}
 
-	public void Init(HeroData heroData)
+	public void Init(Pawn heroData)
 	{
 		InitPlayerHero (heroData);
 		anim.runtimeAnimatorController = hero.animatorController;
@@ -80,7 +80,7 @@ public class Player : MonoBehaviour, IDamageable
 		StartCoroutine (SpawnState ());
 	}
 
-	private void InitPlayerHero(HeroData heroData)
+	private void InitPlayerHero(Pawn heroData)
 	{
 		// this.hero = infoHolder.CreateHero (type.ToString());
 		foreach (GameObject prefab in heroPrefabs)

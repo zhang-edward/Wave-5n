@@ -11,23 +11,27 @@ public class HeroPowerUpListData : ScriptableObject
 	// return the power up corresponding to the level param given
 	public HeroPowerUp GetPowerUpFromLevel(int level)
 	{
+		HeroPowerUp powerUp;
+		Debug.Log("Getting power up for level:" + level);
 		// levels 8-9 are T3
-		if (level >= HeroData.T3_MIN_LEVEL)
+		if (level >= Pawn.T3_MIN_LEVEL)
 		{
-			int i = level - HeroData.T3_MIN_LEVEL;
-			return t3PPowerups[i];
+			int i = level - Pawn.T3_MIN_LEVEL;
+			powerUp = t3PPowerups[i];
 		}
 		// levels 5-7 are T2
-		else if (level >= HeroData.T2_MIN_LEVEL)
+		else if (level >= Pawn.T2_MIN_LEVEL)
 		{
-			int i = level - HeroData.T2_MIN_LEVEL;
-			return t2PPowerUps[i];
+			int i = level - Pawn.T2_MIN_LEVEL;
+			powerUp = t2PPowerUps[i];
 		}
 		// levels 0-4 are T1
 		else
 		{
-			int i = level - HeroData.T1_MIN_LEVEL;
-			return t1PPowerUps[i];
+			int i = level - Pawn.T1_MIN_LEVEL;
+			powerUp = t1PPowerUps[i];
 		}
+		Debug.Log("Power Up:" + powerUp.data.powerUpName);
+		return powerUp;
 	}
 }

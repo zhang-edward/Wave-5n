@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour {
 
 	public static GameManager instance;
 	public Image loadingOverlay;
-	public HeroData selectedHero;
+	public Pawn selectedPawn;
 	public MapType selectedMap;
 	public GameObject playerObj;
 
@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour {
 
 	public GameObject debugPanel;
 	public MessageText debugText;
+	public Text fpsDisplay;
 
 	//private bool didInitializeGameScene = false;
 
@@ -34,11 +35,16 @@ public class GameManager : MonoBehaviour {
 
 	void Start()
 	{
-		if (SceneManager.GetActiveScene ().name == "Game")
+		if (SceneManager.GetActiveScene().name == "Game")
 		{
-			InitGameScene ();
+			InitGameScene();
 		}
+#if UNITY_ANDROID
+		Application.targetFrameRate = 30;
+#else
 		Application.targetFrameRate = 60;
+#endif
+		StartCoroutine(FPS());
 	}
 
 	void Update()
@@ -49,6 +55,25 @@ public class GameManager : MonoBehaviour {
 			debugPanel.SetActive(!debugPanel.activeInHierarchy);
 		}
 #endif
+	}
+
+	private IEnumerator FPS()
+	{
+		string fps;
+		for (;;)
+		{
+			// Capture frame-per-second
+			int lastFrameCount = Time.frameCount;
+			float lastTime = Time.realtimeSinceStartup;
+			yield return new WaitForSeconds(1.0f);
+			float timeSpan = Time.realtimeSinceStartup - lastTime;
+			int frameCount = Time.frameCount - lastFrameCount;
+
+			// Display it
+
+			fps = string.Format("FPS: {0}", Mathf.RoundToInt(frameCount / timeSpan));
+			fpsDisplay.text = fps;
+		}
 	}
 
 	public void GoToScene(string sceneName)
@@ -96,9 +121,9 @@ public class GameManager : MonoBehaviour {
 		Assert.IsNotNull (playerObj);
 		Player player = playerObj.GetComponentInChildren<Player> ();
 
-		Assert.IsFalse (selectedHero.Equals (""));		// will throw an error if this script tries to
+		Assert.IsFalse (selectedPawn.Equals (""));		// will throw an error if this script tries to
 														// initialize the player without a selected hero
-		player.Init (selectedHero);
+		player.Init (selectedPawn);
 		SoundManager.instance.PlayMusicLoop (map.data.musicLoop, map.data.musicIntro);
 	}
 
@@ -130,15 +155,15 @@ public class GameManager : MonoBehaviour {
 		InitGameScene ();
 	}
 
-	public void SelectHero(HeroData hero)
+	public void SelectHero(Pawn hero)
 	{
-		selectedHero = hero;
+		selectedPawn = hero;
 	}
 
 	public void UpdateScores(int enemiesKilled, int wavesSurvived, int maxCombo)
 	{
-		string heroName = selectedHero.ToString();
-		scoreManager.SubmitScore(heroName, new ScoreManager.Score (enemiesKilled, wavesSurvived, maxCombo));
+		HeroType type = selectedPawn.type;
+		scoreManager.SubmitScore(type, new ScoreManager.Score (enemiesKilled, wavesSurvived, maxCombo));
 		SaveLoad.Save ();
 	}
 
@@ -259,4 +284,4 @@ public class GameManager : MonoBehaviour {
 	}
 
 #endif*/
-}
+	}
