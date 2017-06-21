@@ -1,13 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class ScrollViewSnap : MonoBehaviour {
 
 	public RectTransform panel;		// the panel that holds the content
-	public GameObject[] content;
+	public List<GameObject> content;
 	public RectTransform center;	// the center of the panel
 	public float contentDistance;   // holds the distance between the content
-	public float scrollSpeed = 20f;
+	public float scrollSpeed = 20f;	// how fast the snapping occurs
+	public bool initOnAwake = true;	// set to true if the content is set in the scene, set to false if content is generated via code
+									// WARNING: if set to false, the Init function must be called manually!!
 
 	public GameObject SelectedContent {
 		get {return content [selectedContentIndex];}
@@ -22,7 +25,13 @@ public class ScrollViewSnap : MonoBehaviour {
 
 	void Awake()
 	{
-		distances = new float[content.Length];
+		if (initOnAwake)
+			Init();	
+	}
+
+	public void Init()
+	{
+		distances = new float[content.Count];
 		InitContent ();
 		EvaluateDistances ();
 		/*contentDistance = Mathf.Abs (
@@ -35,10 +44,11 @@ public class ScrollViewSnap : MonoBehaviour {
 	/// </summary>
 	protected virtual void InitContent()
 	{
-		for (int i = 0; i < content.Length; i ++)
+		for (int i = 0; i < content.Count; i ++)
 		{
 			GameObject contentItem = content [i];
 			ScrollViewSnapContent scrollViewContent = contentItem.GetComponent<ScrollViewSnapContent> ();
+			scrollViewContent.SetScrollView(this);
 			// make sure that scrollViewContent is a component on each content item
 			UnityEngine.Assertions.Assert.IsNotNull (scrollViewContent);
 			scrollViewContent.index = i;
@@ -49,7 +59,7 @@ public class ScrollViewSnap : MonoBehaviour {
 	{
 		EvaluateDistances ();
 		float minDistance = int.MaxValue;
-		for (int i = 0; i < content.Length; i ++)
+		for (int i = 0; i < content.Count; i ++)
 		{
 			if (distances[i] < minDistance)
 			{
@@ -79,7 +89,7 @@ public class ScrollViewSnap : MonoBehaviour {
 
 	private void EvaluateDistances()
 	{
-		for (int i = 0; i < content.Length; i ++)
+		for (int i = 0; i < content.Count; i ++)
 		{
 			distances [i] = Mathf.Abs (center.transform.position.x - content[i].transform.position.x);
 //			Debug.Log (content [i].transform.position.x);
@@ -102,8 +112,8 @@ public class ScrollViewSnap : MonoBehaviour {
 	public void ScrollRight()
 	{
 		selectedContentIndex++;
-		if (selectedContentIndex >= content.Length)
-			selectedContentIndex = content.Length - 1;
+		if (selectedContentIndex >= content.Count)
+			selectedContentIndex = content.Count - 1;
 		EndDrag();
 	}
 

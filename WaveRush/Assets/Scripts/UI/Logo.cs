@@ -12,7 +12,7 @@ public class Logo : MonoBehaviour {
 
 	private IEnumerator Shine()
 	{
-		while (true)
+		for (;;)
 		{
 			animPlayer.Play ();
 			yield return new WaitForSeconds (3.0f);

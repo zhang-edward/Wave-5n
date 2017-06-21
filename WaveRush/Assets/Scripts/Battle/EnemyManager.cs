@@ -15,15 +15,16 @@ public class EnemyManager : MonoBehaviour {
 	private List<Enemy> enemies = new List<Enemy>();
 	public List<Enemy> Enemies { get {return enemies;} }
 
-	public EnemyData[] enemyData;
-	public EnemyData data { get; private set; }
+	public StageData[] enemyData;
+	private int level;
+	public StageData data { get; private set; }
 	public MapType chosenMap;
 
 	public EnemyHealthBar bossHealthBar;
 	private BossSpawn bossSpawn;
 	public int shopWave = 3;
 	public int bossWave = 5;
-	public float bossSpawnDelay = 3f;
+	private float bossSpawnDelay = 3f;
 	// public int onBossDifficultyScaleBack = 3;	// subtract this from difficultyCurve on a boss wave
 
 	public GameObject heartPickup;
@@ -42,47 +43,29 @@ public class EnemyManager : MonoBehaviour {
 	public delegate void BossIncoming();
 	public event BossIncoming OnQueueBossMessage;
 
-	void OnEnable()
-	{
-		player.OnPlayerInitialized += Init;
-	}
-
-	void OnDisbled()
-	{
-		player.OnPlayerInitialized -= Init;
-	}
-
-	private void Init()
+	public void Init()
 	{
 		data = GetEnemyData ();
+
 		bossSpawn = map.bossSpawn.GetComponent<BossSpawn> ();
 		StartCoroutine (StartSpawningEnemies ());
 	}
 
-	private EnemyData GetEnemyData()
+	private StageData GetEnemyData()
 	{
-		foreach (EnemyData data in enemyData)
+		foreach (StageData stageData in enemyData)
 		{
-			if (data.mapType == chosenMap)
-				return data;
+			if (stageData.mapType == chosenMap)
+				return stageData;
 		}
 		throw new UnityEngine.Assertions.AssertionException ("EnemyManager.cs:", "EnemyManagerInfo not found");
 	}
 
 	private IEnumerator StartSpawningEnemies()
 	{
-		int prevCount = 0;
-		int count = 0;
-
-		while (true)
+		for (;;)
 		{
 			// all enemies dead
-			count = NumAliveEnemies();
-			if (count != prevCount)
-			{
-				prevCount = count;
-				//print ("Number of enemies still alive: " + count);
-			}
 			if (NumAliveEnemies() <= 0)
 			{
 				if (waveNumber >= 1)
@@ -104,6 +87,7 @@ public class EnemyManager : MonoBehaviour {
 				if (waveNumber % bossWave == 0)
 				{					
 					StartBossIncoming ();
+					level++;
 				}
 				// if it is the wave after a boss wave (just defeated boss), spawn heart pickup
 				if (waveNumber % bossWave == 1 && waveNumber != 1)
@@ -123,16 +107,16 @@ public class EnemyManager : MonoBehaviour {
 		if (OnEnemyWaveSpawned != null)
 			OnEnemyWaveSpawned (waveNumber);
 		// Number of enemies spawning curve (used desmos.com for the graph)
-		int spawningPointsAvailable = DifficultyCurveEquation();
-		List<GameObject> prefabPool = GetPrefabPool();
-
-		for (int i = 0; i < spawningPointsAvailable; i++)
+		int numEnemies = DifficultyCurveEquation();
+		List<GameObject> prefabPool = data.GetSpawnList(waveNumber);
+		for (int i = 0; i < numEnemies; i ++)
 		{
+			int randIndex = Random.Range(0, prefabPool.Count);
 			Vector3 randOpenCell = map.OpenCells [Random.Range (0, map.OpenCells.Count)];
-			SpawnEnemy (prefabPool [Random.Range (0, prefabPool.Count)], randOpenCell);
+			SpawnEnemy(prefabPool[randIndex], randOpenCell);
 		}
 
-		Debug.Log ("Number of enemies in this wave: " + spawningPointsAvailable);
+		Debug.Log ("Number of enemies in this wave: " + numEnemies);
 	}
 
     private int DifficultyCurveEquation()
@@ -141,29 +125,6 @@ public class EnemyManager : MonoBehaviour {
 		float answer = 20 / (1 + Mathf.Pow(1.2f, t)) + 5;
 		return Mathf.RoundToInt(answer);
     }
-
-	/// <summary>
-	/// Gets the list of potential enemies to spawn
-	/// </summary>
-	/// <returns>Prefab pool</returns>
-	private List<GameObject> GetPrefabPool()
-	{
-		List<GameObject> prefabPool = new List<GameObject>();
-		if (waveNumber <= 5)
-		{
-			prefabPool = data.enemyPrefabs1;
-		}
-		else if (5 < waveNumber && waveNumber <= 10)
-		{
-			prefabPool.AddRange(data.enemyPrefabs1);
-			prefabPool.AddRange(data.enemyPrefabs2);
-		}
-		else
-		{
-			prefabPool = data.enemyPrefabs2;
-		}
-		return prefabPool;
-	}
 
 	private void StartBossIncoming()
 	{
@@ -183,7 +144,7 @@ public class EnemyManager : MonoBehaviour {
 		Enemy e = o.GetComponentInChildren<Enemy> ();
 		e.player = player.transform;
 		e.moneyPickupPrefab = moneyPickup;
-		e.Init (pos, map);
+		e.Init (pos, map, level);
 		e.OnEnemyDied += IncrementEnemiesKilled;
 		e.OnEnemyObjectDisabled += RemoveEnemyFromEnemiesList;
 		enemies.Add (e);
@@ -204,7 +165,7 @@ public class EnemyManager : MonoBehaviour {
 
 		Enemy e = o.GetComponentInChildren<Enemy> ();
 		e.spawnMethod = Enemy.SpawnMethod.None;		// no spawn animation
-		e.Init (pos, map);
+		e.Init (pos, map, level);
 		e.moneyPickupPrefab = moneyPickup;
 		e.player = player.transform;
 		enemies.Add (e);
@@ -226,7 +187,7 @@ public class EnemyManager : MonoBehaviour {
 
 		Enemy e = o.GetComponentInChildren<Enemy> ();
 		e.player = player.transform;
-		e.Init (bossSpawn.transform.position, map);
+		e.Init (bossSpawn.transform.position, map, level);
 		e.moneyPickupPrefab = moneyPickup;
 		e.OnEnemyDied += IncrementEnemiesKilled;
 		e.OnEnemyObjectDisabled += RemoveEnemyFromEnemiesList;
@@ -247,13 +208,11 @@ public class EnemyManager : MonoBehaviour {
 			if (e.health > 0)
 				count++;
 		}
-		//print (count);
 		return count;
 	}
 
 	private void RemoveEnemyFromEnemiesList(Enemy e)
 	{
-		//Debug.Log ("Removed " + e);
 		enemies.Remove (e);
 	}
 

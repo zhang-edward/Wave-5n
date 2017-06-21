@@ -24,7 +24,7 @@ public class MageFire : MonoBehaviour
 
 	private IEnumerator DamageEnemiesInRange()
 	{
-		while (true)
+		for (;;)
 		{
 			Collider2D[] cols = Physics2D.OverlapCircleAll (transform.position, radius);
 			foreach (Collider2D col in cols)

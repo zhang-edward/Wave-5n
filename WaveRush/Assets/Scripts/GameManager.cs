@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.Assertions;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour {
 
@@ -13,6 +14,8 @@ public class GameManager : MonoBehaviour {
 	public Pawn selectedPawn;
 	public MapType selectedMap;
 	public GameObject playerObj;
+
+	public StageCollectionData regularStages;
 
 	public ScoreManager scoreManager;
 	public Wallet wallet;
@@ -121,9 +124,10 @@ public class GameManager : MonoBehaviour {
 		Assert.IsNotNull (playerObj);
 		Player player = playerObj.GetComponentInChildren<Player> ();
 
-		Assert.IsFalse (selectedPawn.Equals (""));		// will throw an error if this script tries to
-														// initialize the player without a selected hero
+		Assert.IsFalse(selectedPawn.type == HeroType.Null);		// will throw an error if this script tries to
+																// initialize the player without a selected hero
 		player.Init (selectedPawn);
+		enemyManager.Init();
 		SoundManager.instance.PlayMusicLoop (map.data.musicLoop, map.data.musicIntro);
 	}
 

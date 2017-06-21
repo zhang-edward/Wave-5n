@@ -32,7 +32,6 @@ public class GUIManager : MonoBehaviour {
 		enemyManager.OnEnemyWaveSpawned -= ShowEnemyWaveText;
 		enemyManager.OnEnemyWaveCompleted -= OnEnemyWaveCompletedText;
 		enemyManager.OnQueueBossMessage -= ShowBossIncomingText;
-
 	}
 
 	private void GameOverUI()

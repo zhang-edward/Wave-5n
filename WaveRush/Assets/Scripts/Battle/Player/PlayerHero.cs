@@ -167,7 +167,7 @@ public abstract class PlayerHero : MonoBehaviour {
 		// check cooldown timer
 		if (CooldownTimers[index] > 0)
 		{
-			if (queueActionIfFailed && CooldownTimers [index]< 0.3f)
+			if (queueActionIfFailed && CooldownTimers [index]< 0.1f)
 			{
 				inputAction = input;
 				QueueAction (CooldownTimers [index]);

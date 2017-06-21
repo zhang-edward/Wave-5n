@@ -14,7 +14,7 @@ namespace Unused
 			UpdateArrowVisibility();
 
 			SaveGame.HeroSaveData[] unlockedHeroes = GameManager.instance.saveGame.heroData;
-			for (int i = 0; i < content.Length; i++)
+			for (int i = 0; i < content.Count; i++)
 			{
 				HeroIcon heroIcon = content[i].GetComponent<HeroIcon>();
 				heroIcon.Init(unlockedHeroes[i].unlocked);
@@ -30,7 +30,7 @@ namespace Unused
 		private void UpdateArrowVisibility()
 		{
 			leftArrow.gameObject.SetActive(selectedContentIndex > 0);
-			rightArrow.gameObject.SetActive(selectedContentIndex < content.Length - 1);
+			rightArrow.gameObject.SetActive(selectedContentIndex < content.Count - 1);
 		}
 	}
 }

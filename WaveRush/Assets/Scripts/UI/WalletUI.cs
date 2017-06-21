@@ -18,7 +18,7 @@ public class WalletUI : MonoBehaviour
 
 	private IEnumerator UpdateCounters()
 	{
-		while (true)
+		for (;;)
 		{
 			// update moneyEarnedCounter
 			if (moneyEarnedCounter != wallet.moneyEarned)

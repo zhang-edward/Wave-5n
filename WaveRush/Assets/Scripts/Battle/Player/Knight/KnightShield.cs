@@ -66,7 +66,7 @@ public class KnightShield : HeroPowerUp
 
 	private IEnumerator ChargeRoutine()
 	{
-		while (true)
+		for (;;)
 		{
 			Charge(Time.deltaTime);
 			yield return null;

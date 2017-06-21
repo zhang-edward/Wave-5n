@@ -11,10 +11,10 @@ public class BossEnemy : Enemy
 	protected EnemyManager enemyManager;
 	private ObjectPooler effectPool;
 
-	public override void Init (Vector3 spawnLocation, Map map)
+	public override void Init (Vector3 spawnLocation, Map map, int level)
 	{
 		canBeDisabledOnHit = false;
-		base.Init (spawnLocation, map);
+		base.Init (spawnLocation, map, level);
 		effectPool = ObjectPooler.GetObjectPooler("Effect");
 		enemyManager = GetComponentInParent<EnemyManager> ();
 		CameraControl.instance.secondaryFocus = this.transform;

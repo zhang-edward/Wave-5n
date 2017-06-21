@@ -11,7 +11,7 @@ public class DwarfAbility : EnemyAbility
 
 	private void OnInit()
 	{
-		enemy.maxHealth = (int)((float)enemy.maxHealth * 0.5f);
+		enemy.maxHealth = (int)(enemy.maxHealth * 0.5f);
 		if (enemy.maxHealth <= 0)
 			enemy.maxHealth = 1;
 		enemy.body.moveSpeed *= 1.1f;

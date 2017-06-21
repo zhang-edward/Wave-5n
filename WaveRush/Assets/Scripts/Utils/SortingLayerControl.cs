@@ -22,7 +22,7 @@ public class SortingLayerControl : MonoBehaviour {
 
 	private IEnumerator SetSortingOrderRepeating()
 	{
-		while (true)
+		for (;;)
 		{
 			SetSortingOrder ();
 			yield return null;

@@ -1,4 +1,6 @@
-﻿[System.Serializable]
+﻿using UnityEngine;
+
+[System.Serializable]
 public class Pawn
 {
 	public const int T1_MIN_LEVEL = 1;
@@ -30,5 +32,15 @@ public class Pawn
 	public override string ToString()
 	{
 		return string.Format("[Pawn: type={0}, id={1}, level={2}]", type.ToString(), id, level);
+	}
+
+	public static float DamageEquation(int level)
+	{
+		float answer = (0.08f * Mathf.Pow(level, 2.8f) + 5.3f);
+		if (level >= T2_MIN_LEVEL)
+			answer += 5f;
+		if (level >= T3_MIN_LEVEL)
+			answer += 5f;
+		return answer;
 	}
 }

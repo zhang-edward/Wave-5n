@@ -5,7 +5,7 @@ using System.Collections;
 [RequireComponent(typeof(Button))]
 public class ScrollViewSnapContent : MonoBehaviour {
 
-	public ScrollViewSnap scrollView;
+	private ScrollViewSnap scrollView;
 	public int index { get; set; }
 
 	private Button button;
@@ -15,13 +15,18 @@ public class ScrollViewSnapContent : MonoBehaviour {
 		button = GetComponent<Button> ();
 	}
 
-	void Start()
+	public void SetScrollView(ScrollViewSnap scrollView)
 	{
-		button.onClick.AddListener(OnClick);
+		this.scrollView = scrollView;
+		button.onClick.AddListener(() =>
+		{
+			OnClick();
+		});
 	}
 
-	private void OnClick()
+	protected virtual void OnClick()
 	{
+		print("FUCK!");
 		scrollView.SetSelectedContentIndex (index);
 	}
 }

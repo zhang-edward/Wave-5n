@@ -11,7 +11,7 @@ public class TankAbility : EnemyAbility
 
 	private void OnInit()
 	{
-		enemy.maxHealth = (int)((float)enemy.maxHealth * 2f);
+		enemy.maxHealth = (int)(enemy.maxHealth * 2f);
 		enemy.body.moveSpeed /= 2f;
 		enemy.transform.parent.localScale = Vector3.one * 1.2f;
 	}

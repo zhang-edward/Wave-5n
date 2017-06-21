@@ -32,7 +32,9 @@ public class Enemy : MonoBehaviour, IDamageable {
 	public bool hitDisabled{ get; private set; }
 
 	[Header("Enemy Properties")]
-	public int maxHealth;
+	private int level;
+	public int baseHealth;
+	public int maxHealth { get; set; }
 	public int health { get; private set; }
 	public Vector3 healthBarOffset;
 	public bool canBeDisabledOnHit = true;
@@ -65,7 +67,7 @@ public class Enemy : MonoBehaviour, IDamageable {
 	public event EnemyObjectDisabled OnEnemyObjectDisabled;
 
 
-	public virtual void Init(Vector3 spawnLocation, Map map)
+	public virtual void Init(Vector3 spawnLocation, Map map, int level)
 	{
 		// init sr size values
 		if (!overrideSrSize)
@@ -78,9 +80,11 @@ public class Enemy : MonoBehaviour, IDamageable {
 		DEFAULT_LAYER = body.gameObject.layer;
 		DEFAULT_SPEED = body.moveSpeed;
 
-		this.map = map;			// set map
-		health = maxHealth;		// set stat
-		deathPropPool = ObjectPooler.GetObjectPooler ("DeathProp");	// instantiate set object pooler
+		this.level = level;
+		this.map = map;
+		maxHealth = baseHealth * Mathf.RoundToInt(Pawn.DamageEquation(level));  // calculate health based on level
+		health = maxHealth;
+		deathPropPool = ObjectPooler.GetObjectPooler ("DeathProp");			// instantiate set object pooler
 
 		// init movement and action
 		movementMethod.Init(this, player);		
@@ -221,7 +225,7 @@ public class Enemy : MonoBehaviour, IDamageable {
 	{
 		yield return new WaitForEndOfFrame ();
 		movementMethod.Reset ();
-		while (true)
+		for (;;)
 		{
 			movementMethod.UpdateState ();
 			if (action.CanExecute ())
@@ -261,7 +265,7 @@ public class Enemy : MonoBehaviour, IDamageable {
 
 	protected void SpawnMoneyPickup()
 	{
-		int value = Random.Range (1, maxHealth * 2);
+		int value = Random.Range (1, baseHealth * 2);
 		Instantiate (moneyPickupPrefab, transform.position, Quaternion.identity);
 		moneyPickupPrefab.GetComponent<MoneyPickup> ().value = value;
 	}

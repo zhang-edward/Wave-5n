@@ -65,7 +65,7 @@ public class OgreBoss : BossEnemy {
 	{
 		UnityEngine.Assertions.Assert.IsTrue (body.moveSpeed == DEFAULT_SPEED);
 		//movementMethod = new WalkVicinityState (this);
-		while (true)
+		for (;;)
 		{
 			movementMethod.UpdateState ();
 			if (attackTimer <= 0)
