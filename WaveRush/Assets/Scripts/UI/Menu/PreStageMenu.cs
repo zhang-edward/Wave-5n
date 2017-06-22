@@ -14,15 +14,14 @@ public class PreStageMenu : MonoBehaviour
 
 	public void Init()
 	{
-		foreach(PawnIcon pawnIcon in pawnSelectionView.pawnIcons)
+		foreach (PawnIcon pawnIcon in pawnSelectionView.pawnIcons)
 		{
-			Button button = pawnIcon.GetComponent<Button>();
-			button.onClick.AddListener(() =>
-			{
-				pawnInfoPanel.Init(pawnIcon.pawnData);
+			PawnIconStandard pawnIconStandard = (PawnIconStandard)pawnIcon;
+			pawnIconStandard.onClick = (PawnIconStandard iconData) => {
+				pawnInfoPanel.Init(iconData.pawnData);
 				pawnInfoPanel.gameObject.SetActive(true);
 				GameManager.instance.selectedPawn = pawnIcon.pawnData;
-			});
+			};
 		}
 	}
 }

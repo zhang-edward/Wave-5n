@@ -38,9 +38,9 @@ public class StageSelectView : MonoBehaviour
 		foreach (GameObject o in stageSeriesIcons)
 			o.SetActive(false);
 		int i = 0;
-		foreach (StageSeriesData stageSeriesData in data.stages)
+		foreach (StageSeriesData stageSeriesData in data.series)
 		{
-			if (gm.saveGame.IsStageUnlocked(stageSeriesData.seriesName))
+			if (gm.IsStageUnlocked(stageSeriesData.seriesName))
 			{
 				GameObject o;
 				if (i >= stageSeriesIcons.Count)
@@ -70,8 +70,8 @@ public class StageSelectView : MonoBehaviour
 		{
 			o.SetActive(false);
 		}
-		UnityEngine.Assertions.Assert.IsTrue(gm.saveGame.IsStageUnlocked(stageSeriesData.seriesName));
-		int numStagesUnlocked = gm.saveGame.unlockedStages[stageSeriesData.seriesName];
+		UnityEngine.Assertions.Assert.IsTrue(gm.IsStageUnlocked(stageSeriesData.seriesName));
+		int numStagesUnlocked = gm.NumStagesUnlocked(stageSeriesData.seriesName);
 		int j = 0;
 		for (int i = 0; i < numStagesUnlocked; i ++)
 		{
@@ -106,7 +106,6 @@ public class StageSelectView : MonoBehaviour
 		int siblingIndex = stageIcon.index;
 		placeholder.transform.SetSiblingIndex(siblingIndex);
 		stageIconObj.transform.SetParent(stageIconSelectedFolder, false);
-		print("Selected");
 	}
 
 	public void DeselectStageIcon()
@@ -122,6 +121,5 @@ public class StageSelectView : MonoBehaviour
 		selectedStageIcon.transform.SetParent(stageIconFolder, false);
 		selectedStageIcon.transform.SetSiblingIndex(stageIcon.index);
 		selectedStageIcon = null;
-		print("Deselected");
 	}
 }

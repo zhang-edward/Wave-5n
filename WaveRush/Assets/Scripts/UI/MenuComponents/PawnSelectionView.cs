@@ -72,6 +72,5 @@ public class PawnSelectionView : MonoBehaviour
 		PawnIcon pawnIcon = o.GetComponent<PawnIcon>();
 		pawnIcon.Init(pawn);                                // initialize PawnIcon data
 		pawnIcons.Add(pawnIcon);                            // add this object to the list for future manipulation
-
 	}
 }

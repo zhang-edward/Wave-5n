@@ -11,11 +11,25 @@ public class PawnIconStandard : PawnIcon
 	public Image heroPortraitBorder;
 	public Image heroStars;
 
+	public Button button;       // if it is interactable
+	public delegate void Click(PawnIconStandard iconData);
+	public Click onClick;
+
 	public override void Init(Pawn pawnData)
 	{
 		base.Init(pawnData);
 		// initialize display items
 		heroNameText.text = pawnData.type.ToString();
 		heroLevelText.text = "lv." + pawnData.level.ToString();
+
+		// initialize button interactivity
+		if (button != null)
+			button.onClick.AddListener(() => OnClick());
+	}
+
+	private void OnClick()
+	{
+		if (onClick != null)
+			onClick(this);
 	}
 }
