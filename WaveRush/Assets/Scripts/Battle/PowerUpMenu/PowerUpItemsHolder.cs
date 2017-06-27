@@ -24,10 +24,6 @@ public class PowerUpItemsHolder : MonoBehaviour
 	/// <param name="hero">Hero.</param>
 	public void InitShopItemsList (PlayerHero hero)
 	{
-		/*foreach (GameObject item in universalShopItems)
-		{
-			CreateShopItem (item);
-		}*/
 		// initialize character-specific shop items
 		foreach (HeroPowerUp powerUp in hero.powerUpHolder.powerUps)
 		{
@@ -62,6 +58,10 @@ public class PowerUpItemsHolder : MonoBehaviour
 	/// <param name="count">Number of random shop items to get</param>
 	public void GetRandomShopItems(int count)
 	{
+		foreach (GameObject o in potentialShopItems)
+		{
+			o.SetActive(false);
+		}
 		count = Mathf.Min (count, potentialShopItems.Count);	// if the available shop items < count, only return the number of available shop items
 		for (int i = 0; i < count; i ++)
 		{
@@ -73,45 +73,21 @@ public class PowerUpItemsHolder : MonoBehaviour
 		}
 	}
 
-	public void ResetShopItems()
-	{
-		foreach (GameObject o in potentialShopItems)
-		{
-			o.SetActive (false);
-		}
-	}
-
 	private bool TryEnableRandomShopItem()
 	{
-		int i = Random.Range (0, potentialShopItems.Count);
-		PowerUpItem shopItem = potentialShopItems [i].GetComponent<PowerUpItem>();
+		int i = Random.Range(0, potentialShopItems.Count);
+		PowerUpItem shopItem = potentialShopItems[i].GetComponent<PowerUpItem>();
 		if (!shopItem.gameObject.activeInHierarchy && shopItem.available)
 		{
 			if (shopItem as AddPowerUpItem != null)
 			{
 				AddPowerUpItem addPowerUpItem = (AddPowerUpItem)shopItem;
-				if (!CanEnableShopItem(addPowerUpItem.powerUp.data.tier))
-					return false;
 			}
 			// print ("Enabled " + potentialShopItems [i].GetComponent<ScrollingTextOption>().text);
 			potentialShopItems[i].gameObject.SetActive(true);
 			return true;
 		}
 		return false;
-	}
-
-	private bool CanEnableShopItem(HeroTier tier)
-	{
-		switch (tier)
-		{
-			case HeroTier.tier1:
-				return true;
-			case HeroTier.tier2:
-				return enemyManager.waveNumber >= 5;
-			case HeroTier.tier3:
-				return enemyManager.waveNumber >= 10;
-		}
-		return true;
 	}
 
 	private GameObject CreateShopItem(GameObject prefab)

@@ -8,11 +8,9 @@ public class GUIManager : MonoBehaviour {
 	public GameObject gameUI;
 	public EnemyWaveText enemyWaveText;
 
-	// game over panel
 	[Header("Game Over Panel")]
-	public GameObject gameOverUI;
-	// score report in game over panel
-	public ScoreReport scorePanel;
+	public GameObject gameOverUI;   // game over panel
+	public ScoreReport scorePanel;  // score report in game over panel
 
 	[Header("Data")]
 	public EnemyManager enemyManager;

@@ -5,5 +5,13 @@ using System.Collections.Generic;
 public class StageCollectionData : ScriptableObject
 {
 	public string collectionName;
-	public StageSeriesData[] stages;
+	public StageSeriesData[] series;
+
+	void Awake()
+	{
+		for (int i = 0; i < series.Length; i ++)
+		{
+			series[i].index = i;
+		}
+	}
 }

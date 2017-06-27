@@ -172,11 +172,12 @@ public class Player : MonoBehaviour, IDamageable
 		// Player Died
 		if (health <= 0)
 		{
-			UnityEngine.Assertions.Assert.IsNotNull (OnPlayerDied);
-			OnPlayerDied ();
 			SpawnDeathProps ();
 			transform.parent.gameObject.SetActive (false);
 			SoundManager.instance.PlayImportantSound (deathSound);
+
+			if (OnPlayerDied != null)
+				OnPlayerDied ();
 		}
 		else
 			SoundManager.instance.RandomizeSFX (hurtSound);

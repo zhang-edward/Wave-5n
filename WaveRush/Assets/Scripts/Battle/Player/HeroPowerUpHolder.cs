@@ -20,13 +20,11 @@ public class HeroPowerUpHolder : MonoBehaviour
 		}
 	}
 
-	//public List<HeroPowerUpDictionaryEntry> powerUpPrefabs { get; private set; }			// dictionary database of all available power ups
-	public List<HeroPowerUp> powerUps;                  // list of powerups that are active on the player in the game
-	public int numActivePowerUps;
+	public List<HeroPowerUp> powerUps;	// list of powerups that are available to the player in the game
+	public int numActivePowerUps;		// used only for the powerUpsMeter UI Element
 
 	public delegate void OnPowerUpsChanged();
 	public OnPowerUpsChanged OnPowerUpAdded;
-
 
 	public void Init(Pawn pawnData)
 	{

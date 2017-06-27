@@ -18,7 +18,6 @@ public class StageSeriesIcon : ScrollViewSnapContent
 
 	protected override void OnClick()
 	{
-		print("fuck");
 		if (onClicked != null)
 			onClicked(data);
 		

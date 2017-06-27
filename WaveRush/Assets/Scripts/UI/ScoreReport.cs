@@ -17,22 +17,19 @@ public class ScoreReport : MonoBehaviour {
 		int currentMoney = GameManager.instance.wallet.money;
 		int moneyEarnedNum = GameManager.instance.wallet.moneyEarned;
 
-		GameManager.instance.wallet.MergeEarnedMoney ();
-		GameManager.instance.UpdateScores (enemiesDefeatedNum, wavesSurvivedNum, maxComboNum);
-
-		enemiesDefeated.ReportScore (enemiesDefeatedNum);
+		enemiesDefeated.DisplayNumber (enemiesDefeatedNum);
 		while (!enemiesDefeated.doneUpdating)
 			yield return null;
 		
-		wavesSurvived.ReportScore (wavesSurvivedNum);
+		wavesSurvived.DisplayNumber (wavesSurvivedNum);
 		while (!wavesSurvived.doneUpdating)
 			yield return null;
 		
-		maxCombo.ReportScore (maxComboNum);
+		maxCombo.DisplayNumber (maxComboNum);
 		while (!maxCombo.doneUpdating)
 			yield return null;
 
-		moneyText.ReportScore (currentMoney + moneyEarnedNum); 
-		moneyEarned.ReportScore (0);
+		moneyText.DisplayNumber (currentMoney + moneyEarnedNum); 
+		moneyEarned.DisplayNumber (0);
 	}
 }

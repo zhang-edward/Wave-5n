@@ -7,12 +7,12 @@ using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour {
 
-	public SaveGame saveGame;
-
 	public static GameManager instance;
-	public Image loadingOverlay;
+
+	public SaveGame saveGame;
 	public Pawn selectedPawn;
-	public MapType selectedMap;
+	public int selectedSeriesIndex;
+	public int selectedStageIndex;
 	public GameObject playerObj;
 
 	public StageCollectionData regularStages;
@@ -20,9 +20,14 @@ public class GameManager : MonoBehaviour {
 	public ScoreManager scoreManager;
 	public Wallet wallet;
 
+	[Header("Persistent UI")]
+	public Image loadingOverlay;
 	public GameObject debugPanel;
 	public MessageText debugText;
 	public Text fpsDisplay;
+
+	public delegate void GameStateUpdate();
+	public GameStateUpdate OnSceneLoaded;
 
 	//private bool didInitializeGameScene = false;
 
@@ -33,15 +38,15 @@ public class GameManager : MonoBehaviour {
 		else if (instance != this)
 			Destroy (this.gameObject);
 		DontDestroyOnLoad (this);
+
 		SaveLoad.Load ();
 	}
 
 	void Start()
 	{
-		if (SceneManager.GetActiveScene().name == "Game")
-		{
-			InitGameScene();
-		}
+		if (OnSceneLoaded != null)
+			OnSceneLoaded();
+
 #if UNITY_ANDROID
 		Application.targetFrameRate = 30;
 #else
@@ -91,7 +96,7 @@ public class GameManager : MonoBehaviour {
 	{
 		//Debug.Log ("Loading scene");
 		StartCoroutine(ActivateLoadingScreen ());
-		while (loadingOverlay.color.a <= 0.95f)
+		while (loadingOverlay.color.a < 0.95f)
 			yield return null;
 		AsyncOperation async = SceneManager.LoadSceneAsync (scene);
 		Assert.IsNotNull (async);
@@ -100,38 +105,38 @@ public class GameManager : MonoBehaviour {
 			yield return null;
 		StartCoroutine(DeactivateLoadingScreen ());
 
+		while (loadingOverlay.color.a > 0.5f)
+			yield return null;
 		// On finished scene loading
-		switch (scene)
+		if (OnSceneLoaded != null)
+			OnSceneLoaded();
+		/*switch (scene)
 		{
 		case("Game"):
 			InitGameScene();
 			break;
-		}
-		//Debug.Log ("Scene loaded");
+		}*/
 	}
 
-	private void InitGameScene()
+	// init main game environment
+	/*private void InitGameScene()
 	{
-		// init main game environment
 		Map map = GameObject.Find ("/Game/Map").GetComponent<Map>();
 		EnemyManager enemyManager = GameObject.Find ("/Game/EnemyManager").GetComponent<EnemyManager> ();
-
-		map.chosenMap = selectedMap;
-		map.GenerateMap ();
-		enemyManager.chosenMap = selectedMap;
-
 		playerObj = GameObject.Find ("/Game/Player");
 		Assert.IsNotNull (playerObj);
 		Player player = playerObj.GetComponentInChildren<Player> ();
+		Assert.IsFalse(selectedPawn.type == HeroType.Null);		// will throw an error if this script tries to initialize the player without a selected hero
 
-		Assert.IsFalse(selectedPawn.type == HeroType.Null);		// will throw an error if this script tries to
-																// initialize the player without a selected hero
+		map.chosenMap = selectedStage.mapType;
+		map.GenerateMap ();
 		player.Init (selectedPawn);
-		enemyManager.Init();
-		SoundManager.instance.PlayMusicLoop (map.data.musicLoop, map.data.musicIntro);
-	}
+		enemyManager.Init(selectedStage);
 
-	public void TeleportMaps(MapType newMap)
+		SoundManager.instance.PlayMusicLoop (map.data.musicLoop, map.data.musicIntro);
+	}*/
+
+	/*public void TeleportMaps(MapType newMap)
 	{
 		SaveLoad.Save ();
 		selectedMap = newMap;
@@ -157,11 +162,81 @@ public class GameManager : MonoBehaviour {
 			yield return null;
 		StartCoroutine(DeactivateLoadingScreen ());
 		InitGameScene ();
+	}*/
+
+	// ==========
+	// Stages and Series methods
+	// ==========
+
+	/// <summary>
+	/// Returns the number of stages unlocked for the specified series. Does NOT return the last unlocked index!!
+	/// </summary>
+	/// <returns>The number of stages unlocked.</returns>
+	/// <param name="seriesName">Series name.</param>
+	public int NumStagesUnlocked(string seriesName)
+	{
+		if (!IsSeriesUnlocked(seriesName))
+			return 0;
+
+		// if the series is not the latest, then that means it has been completed
+		if (!GetLatestSeries().seriesName.Equals(seriesName))
+			return GetSeries(seriesName).stages.Length;
+		else
+			return saveGame.latestUnlockedStageIndex + 1;
 	}
 
-	public void SelectHero(Pawn hero)
+	public void UnlockNextStage()
 	{
-		selectedPawn = hero;
+		if (saveGame.latestUnlockedStageIndex < regularStages.series[saveGame.latestUnlockedSeriesIndex].stages.Length)
+			saveGame.latestUnlockedStageIndex++;
+		else
+		{
+			saveGame.latestUnlockedSeriesIndex++;
+			saveGame.latestUnlockedStageIndex = 0;
+		}
+	}
+
+	public StageSeriesData GetLatestSeries()
+	{
+		return regularStages.series[saveGame.latestUnlockedSeriesIndex];
+	}
+
+	public bool IsSeriesUnlocked(string seriesName)
+	{
+		List<StageSeriesData> unlockedSeries = GetAllUnlockedSeries();
+		foreach(StageSeriesData series in unlockedSeries)
+		{
+			if (seriesName.Equals(series.seriesName))
+				return true;
+		}
+		return false;
+	}
+
+	public StageData GetStage(int seriesIndex, int stageIndex)
+	{
+		return regularStages.series[seriesIndex].stages[stageIndex];
+	}
+
+	private List<StageSeriesData> GetAllUnlockedSeries()
+	{
+		List<StageSeriesData> answer = new List<StageSeriesData>();
+		for (int i = 0; i <= saveGame.latestUnlockedSeriesIndex; i ++)
+		{
+			answer.Add(regularStages.series[i]);
+		}
+		return answer;
+	}
+
+	private StageSeriesData GetSeries(string seriesName)
+	{
+		foreach (StageSeriesData series in regularStages.series)
+		{
+			if (series.seriesName.Equals(seriesName))
+			{
+				return series;
+			}
+		}
+		return null;
 	}
 
 	public void UpdateScores(int enemiesKilled, int wavesSurvived, int maxCombo)
@@ -170,6 +245,10 @@ public class GameManager : MonoBehaviour {
 		scoreManager.SubmitScore(type, new ScoreManager.Score (enemiesKilled, wavesSurvived, maxCombo));
 		SaveLoad.Save ();
 	}
+
+	// ==========
+	// Loading Screen
+	// ==========
 
 	private IEnumerator ActivateLoadingScreen()
 	{
@@ -199,6 +278,10 @@ public class GameManager : MonoBehaviour {
 		loadingOverlay.color = finalColor;
 	}
 
+	// ==========
+	// Save and Load
+	// ==========
+
 	public void PrepareSaveFile()
 	{
 		saveGame.highScores = scoreManager.highScores;
@@ -218,74 +301,13 @@ public class GameManager : MonoBehaviour {
 		SaveLoad.Save ();
 	}
 
+	// ==========
+	// Debug Text UI
+	// ==========
+
 	public void DisplayMessage(string message)
 	{
 		debugText.SetColor (Color.white);
 		debugText.Display (message, 1, 2f, 1f);
 	}
-
-	// ========================== DEBUG FUNCTIONS ======================
-/*#if UNITY_EDITOR
-	public void SetMoneyDebugString(string str)
-	{
-		int i = 0;
-		if (int.TryParse (str, out i))
-			SetMoney (i);
-		else
-			Debug.LogWarning ("Error: not an int");
-	}
-
-	public void SetMoneyEarnedDebugString(string str)
-	{
-		int i = 0;
-		if (int.TryParse (str, out i))
-			SetMoneyEarned (i);
-		else
-			Debug.LogWarning ("Error: not an int");
-	}
-
-	public void SetMoney(int amt) 
-	{
-		wallet.SetMoneyDebug (amt);
-	}
-
-	public void SetMoneyEarned (int amt)
-	{
-		wallet.SetEarnedMoneyDebug(amt);
-	}
-
-	public void KillPlayer()
-	{
-		Player plyr = playerObj.GetComponentInChildren<Player> ();
-		plyr.Damage (plyr.health);
-	}
-
-	public void FullChargeSpecial()
-	{
-		Player plyr = playerObj.GetComponentInChildren<Player> ();
-		plyr.hero.IncrementSpecialAbilityCharge (int.MaxValue);
-	}
-
-	public void KillAllEnemies()
-	{
-		EnemyManager enemyManager = GameObject.Find ("/Game/EnemyManager").GetComponent<EnemyManager> ();
-		for (int i = enemyManager.Enemies.Count - 1; i >= 0; i --)
-		{
-			enemyManager.Enemies [i].Damage(enemyManager.Enemies[i].maxHealth);
-		}
-	}
-
-	public void SpawnBoss()
-	{
-		EnemyManager enemyManager = GameObject.Find ("/Game/EnemyManager").GetComponent<EnemyManager> ();
-		enemyManager.SpawnBoss ();
-	}
-
-	public void AddPowerUp(string name)
-	{
-		Player plyr = playerObj.GetComponentInChildren<Player> ();
-		plyr.hero.powerUpHolder.AddPowerUp (name);
-	}
-
-#endif*/
-	}
+}

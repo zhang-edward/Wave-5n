@@ -15,21 +15,18 @@ public class SaveGame
 		public bool unlocked;
 	}
 
-	public int pawnCapacity { private get; set; }				// the total amount of pawns that the player can possess at one time
-	public int numPawns;										// how many pawns the player has
-	public Pawn[] pawns;                                        // the master list of the different pawns the player possesses
+	public int pawnCapacity { private get; set; }	// the total amount of pawns that the player can possess at one time
+	public int numPawns;							// how many pawns the player has
+	public Pawn[] pawns;                            // the master list of the different pawns the player possesses
 
-	public Dictionary<string, int> unlockedStages;      // key = name of the stage seriesression, value = number of stages in that seriesression that have been unlocked
-
+	public int latestUnlockedSeriesIndex;   // the number of series unlocked in the regular collection (main storyline)
+	public int latestUnlockedStageIndex;	// the number of stages unlocked in the current latest series
 
 	public Dictionary<HeroType, ScoreManager.Score> highScores;
 	public Wallet wallet;
 
 	public SaveGame()
 	{
-		unlockedStages = new Dictionary<string, int>();
-		unlockedStages.Add("Gob Forest", 2);
-
 		pawnCapacity = INITIAL_PAWN_CAPACITY;
 		pawns = new Pawn[pawnCapacity];
 
@@ -77,21 +74,5 @@ public class SaveGame
 			}
 		}
 		return false;
-	}
-
-	public bool IsStageUnlocked(string stageName)
-	{
-		if (unlockedStages.ContainsKey(stageName))
-		{
-			if (unlockedStages[stageName] > 0)
-				return true;
-			else
-				return false;
-		}
-		else
-		{
-			unlockedStages.Add(stageName, 0);
-			return false;
-		}
 	}
 }

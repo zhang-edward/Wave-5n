@@ -33,7 +33,7 @@ public class Enemy : MonoBehaviour, IDamageable {
 
 	[Header("Enemy Properties")]
 	private int level;
-	public int baseHealth;
+	public int baseHealth = 1;
 	public int maxHealth { get; set; }
 	public int health { get; private set; }
 	public Vector3 healthBarOffset;

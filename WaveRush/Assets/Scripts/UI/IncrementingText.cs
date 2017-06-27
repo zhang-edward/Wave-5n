@@ -20,7 +20,7 @@ public class IncrementingText : MonoBehaviour {
 		text.text = "0";
 	}
 
-	public void ReportScore(int number)
+	public void DisplayNumber(int number)
 	{
 		numberToReport = number;
 		StartCoroutine (DisplayNumber ());

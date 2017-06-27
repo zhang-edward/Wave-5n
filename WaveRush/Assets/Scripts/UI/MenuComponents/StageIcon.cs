@@ -12,18 +12,18 @@ public class StageIcon : MonoBehaviour
 	public GameObject highlight;		// the shiny border around the window
 	public GameObject highlightMenu;    // a menu with description and play button
 
-	public int index;					// used for the placeholder in StageSelectView
+	public int seriesIndex;
+	public int stageIndex;
 
 	void Start()
 	{
 		highlightButton.onClick.AddListener(() => OnClick());
 	}
 
-	public void Init(StageData stage, int index)
+	public void Init(StageData stage)
 	{
 		stageNameText.text = stage.stageName;
 		stageLevelText.text = stage.level.ToString();
-		this.index = index;
 	}
 
 	private void OnClick()

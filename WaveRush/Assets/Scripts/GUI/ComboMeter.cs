@@ -28,28 +28,33 @@ public class ComboMeter : MonoBehaviour {
 		slider.maxValue = hero.maxComboTimer;
 		text.gameObject.SetActive (false);
 		slider.gameObject.SetActive (false);
+		StartCoroutine(UpdateRoutine());
 	}
 
-	void LateUpdate()
+	private IEnumerator UpdateRoutine()
 	{
-		if (hero.combo > 0)
+		for (;;)
 		{
-			text.gameObject.SetActive (true);
-			slider.gameObject.SetActive (true);
-			text.text = "x" + hero.combo;
-			// on combo changed
-			if (hero.combo != oldCombo)
+			if (hero.combo > 0)
 			{
-				oldCombo = hero.combo;
-				Animate ();
+				text.gameObject.SetActive(true);
+				slider.gameObject.SetActive(true);
+				text.text = "x" + hero.combo;
+				// on combo changed
+				if (hero.combo != oldCombo)
+				{
+					oldCombo = hero.combo;
+					Animate();
+				}
 			}
+			else
+			{
+				text.gameObject.SetActive(false);
+				slider.gameObject.SetActive(false);
+			}
+			slider.value = hero.comboTimer;
+			yield return null;
 		}
-		else
-		{
-			text.gameObject.SetActive (false);
-			slider.gameObject.SetActive (false);
-		}
-		slider.value = hero.comboTimer;
 	}
 
 	private void Animate()

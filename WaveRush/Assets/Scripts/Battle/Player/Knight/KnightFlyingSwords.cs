@@ -51,8 +51,6 @@ public class KnightFlyingSwords : HeroPowerUp
 	{
 		if (numSwords > 0)
 		{
-			if (!indicator.gameObject.activeInHierarchy)
-				Debug.LogError(this.GetType() + ".cs:Indiator effect AnimateOut() activated 2+ times!");
 			if (Random.value < swordAttackChance)
 			{
 				StartCoroutine(ActivateSwordRoutine(e));

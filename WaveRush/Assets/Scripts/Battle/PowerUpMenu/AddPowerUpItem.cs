@@ -16,30 +16,50 @@ public class AddPowerUpItem : PowerUpItem
 		SetHolderGraphic(powerUp.GetComponent<HeroPowerUp>().data.tier);	// set the holder graphic to match the tier level of the power up
 		icon.sprite = powerUp.data.icon;
 		purchaseLimit = powerUp.data.maxStacks + 1;
+		timesPurchased = powerUp.isActive ? powerUp.stacks + 1 : 0;			// ternary operator
 		cost = powerUp.data.cost;
 		GetComponent<ScrollingTextOption> ().text = powerUp.data.description;
 
 		if (powerUp.data.maxStacks == 0)
-			stacksIndicator.transform.parent.gameObject.SetActive (false);
+			stacksIndicator.transform.parent.gameObject.SetActive(false);
+		UpdateAvailablity();
 	}
 
 	void OnEnable()
 	{
-		stacksIndicator.text = ToRomanNumeral(timesPurchased + 1);
+		stacksIndicator.text = ToRomanNumeral(timesPurchased);
 		if (timesPurchased > 0 && !powerUp.data.stackDescription.Equals(""))
 		{
 			GetComponent<ScrollingTextOption> ().text = powerUp.data.stackDescription;
 		}
 	}
 
+	public void UpdateAvailablity()
+	{
+		// if the purchase limit has already been reached
+		if (timesPurchased >= purchaseLimit)
+		{
+			print("item:" + this.powerUp + " has reached max");
+			available = false;
+		}
+		if (timesPurchased >= 1)
+		{
+			print("timesPurchased > 1 for item:" + this.powerUp);
+			foreach (AddPowerUpItem item in unlockable)
+			{
+				print("item:" + item.powerUp + " has been made available");
+				item.available = true;
+				item.UpdateAvailablity();
+			}	
+		}
+
+	}
+
 	public override void Upgrade (Player player)
 	{
 		base.Upgrade (player);
 		player.hero.powerUpHolder.AddPowerUp (powerUp.data.powerUpName);
-		foreach (AddPowerUpItem item in unlockable)
-		{
-			item.available = true;
-		}
+		UpdateAvailablity();
 	}
 
 	public void SetAvailable(bool available)
@@ -49,6 +69,8 @@ public class AddPowerUpItem : PowerUpItem
 
 	private string ToRomanNumeral(int num)
 	{
+		if (num == purchaseLimit)
+			return "MAX";
 		if (num <= 3)
 		{
 			string romNum = "";

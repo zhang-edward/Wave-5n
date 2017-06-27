@@ -61,7 +61,7 @@ public class Map : MonoBehaviour {
 	private void CreateBorder()
 	{
 		GameObject o = Instantiate(data.borderPrefab);
-		o.transform.SetParent(this.transform);
+		o.transform.SetParent(transform);
 	}
 
 	private MapData GetMapInfo()

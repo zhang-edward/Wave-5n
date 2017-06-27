@@ -11,9 +11,15 @@ public class StageData : ScriptableObject
 		public float spawnFrequency = 1.0f;		// if this enemy is selected to spawn, this is the chance that it will spawn
 		public int waveLimit = 1;				// the enemy will only be available to spawn after this wave
 	}
+	[Header("Stage Properties")]
 	public string stageName;
 	public MapType mapType;
 	public int level;
+	[Header("Stage Events")]
+	public int goalWave = 5;                            // what wave the player must reach for the stage to be completed
+	public int shopWave = 3;
+	public int bossWave = 5;
+	[Header("Enemies")]
 	public List<EnemySpawnProperties> enemyPrefabs;  	// set of all enemies spawnable for this stage
 	public List<GameObject> bossPrefabs;   				// bosses
 

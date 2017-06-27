@@ -37,28 +37,25 @@ public class StageSelectView : MonoBehaviour
 
 		foreach (GameObject o in stageSeriesIcons)
 			o.SetActive(false);
-		int i = 0;
-		foreach (StageSeriesData stageSeriesData in data.series)
+		int iconIndex = 0;			// Used to track the number of icons in the scene, and add more if needed 
+		for (int i = 0; i <= gm.saveGame.latestUnlockedSeriesIndex; i ++)
 		{
-			if (gm.IsStageUnlocked(stageSeriesData.seriesName))
+			GameObject o;
+			if (iconIndex >= stageSeriesIcons.Count)
 			{
-				GameObject o;
-				if (i >= stageSeriesIcons.Count)
-				{
-					o = Instantiate(stageSeriesIconPrefab);
-					o.GetComponent<StageSeriesIcon>().onClicked += InitStageSelectionView;
-					stageSeriesIcons.Add(o);
-				}
-				else
-				{
-					o = stageSeriesIcons[i];
-				}
-				stageSeriesScrollView.content.Add(o);
-				o.transform.SetParent(stageSeriesIconFolder, false);
-				o.GetComponent<StageSeriesIcon>().Init(stageSeriesData);
-				o.SetActive(true);
-				i++;
+				o = Instantiate(stageSeriesIconPrefab);
+				o.GetComponent<StageSeriesIcon>().onClicked += InitStageSelectionView;
+				stageSeriesIcons.Add(o);
 			}
+			else
+			{
+				o = stageSeriesIcons[iconIndex];
+			}
+			stageSeriesScrollView.content.Add(o);
+			o.transform.SetParent(stageSeriesIconFolder, false);
+			o.GetComponent<StageSeriesIcon>().Init(gm.regularStages.series[i]);
+			o.SetActive(true);
+			iconIndex++;
 		}
 		stageSeriesScrollView.Init();
 	}
@@ -70,14 +67,15 @@ public class StageSelectView : MonoBehaviour
 		{
 			o.SetActive(false);
 		}
-		UnityEngine.Assertions.Assert.IsTrue(gm.IsStageUnlocked(stageSeriesData.seriesName));
+		UnityEngine.Assertions.Assert.IsTrue(gm.IsSeriesUnlocked(stageSeriesData.seriesName));
 		int numStagesUnlocked = gm.NumStagesUnlocked(stageSeriesData.seriesName);
-		int j = 0;
+		int iconIndex = 0;								// Used to track the number of icons in the scene, and add more if needed 
 		for (int i = 0; i < numStagesUnlocked; i ++)
 		{
 			GameObject o;
-			if (j >= stageIcons.Count)
+			if (iconIndex >= stageIcons.Count)
 			{
+				// Instantiate and initialize a new stage icon prefab
 				o = Instantiate(stageIconPrefab);
 				stageIcons.Add(o);
 				StageIcon icon = o.GetComponent<StageIcon>();
@@ -85,25 +83,34 @@ public class StageSelectView : MonoBehaviour
 			}
 			else
 			{
-				o = stageIcons[j];
+				o = stageIcons[iconIndex];
 			}
 			o.transform.SetParent(stageIconFolder, false);
 			o.SetActive(true);
+
+			StageData stageData = stageSeriesData.stages[i];
 			StageIcon stageIcon = o.GetComponent<StageIcon>();
+			stageIcon.seriesIndex = stageSeriesData.index;
+			stageIcon.stageIndex = i;
 			stageIcon.onClicked = SelectStageIcon;
-			stageIcon.Init(stageSeriesData.stages[i], i);
-			j++;
+			stageIcon.Init(stageData);
+			iconIndex++;
 		}
 	}
 
 	public void SelectStageIcon(GameObject stageIconObj)
 	{
+		selectedStageIcon = stageIconObj;	// store a reference to this object so that the Deselect method has a reference to it later
 		StageIcon stageIcon = stageIconObj.GetComponent<StageIcon>();
+		// Do the actual selection in the GameManager
+		GameManager gm = GameManager.instance;
+		gm.selectedSeriesIndex = stageIcon.seriesIndex;
+		gm.selectedStageIndex = stageIcon.stageIndex;
+		// UI Stuff
 		stageIcon.ExpandHighlightMenu();
-		selectedStageIcon = stageIconObj;
 		stageIconSelectedFolder.gameObject.SetActive(true);
 		placeholder.SetActive(true);
-		int siblingIndex = stageIcon.index;
+		int siblingIndex = stageIcon.stageIndex;
 		placeholder.transform.SetSiblingIndex(siblingIndex);
 		stageIconObj.transform.SetParent(stageIconSelectedFolder, false);
 	}
@@ -119,7 +126,7 @@ public class StageSelectView : MonoBehaviour
 		stageIconSelectedFolder.gameObject.SetActive(false);
 		placeholder.SetActive(false);
 		selectedStageIcon.transform.SetParent(stageIconFolder, false);
-		selectedStageIcon.transform.SetSiblingIndex(stageIcon.index);
+		selectedStageIcon.transform.SetSiblingIndex(stageIcon.stageIndex);
 		selectedStageIcon = null;
 	}
 }

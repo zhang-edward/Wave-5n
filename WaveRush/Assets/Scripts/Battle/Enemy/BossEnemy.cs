@@ -53,7 +53,7 @@ public class BossEnemy : Enemy
 
 	private IEnumerator DeathAnimation()
 	{
-		//print("Start dying");
+		print("Start dying");
 		CameraControl cam = CameraControl.instance;
 		anim.CrossFade ("Dead", 0f);
 		while (OtherBossesDying())
