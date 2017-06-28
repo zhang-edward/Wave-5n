@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using System.Collections.Generic;
 
-public class StageSelectView : MonoBehaviour
+public class StageSelectMenu : MonoBehaviour
 {
 	private GameManager gm;         // store a reference to the GameManager
 	private List<GameObject> stageSeriesIcons = new List<GameObject>();
@@ -24,6 +24,7 @@ public class StageSelectView : MonoBehaviour
 	public Transform stageIconFolder;
 	public Transform stageIconSelectedFolder;
 	public GameObject placeholder;
+	public GameObject highlightMenu;
 
 	void Start()
 	{
@@ -79,7 +80,7 @@ public class StageSelectView : MonoBehaviour
 				o = Instantiate(stageIconPrefab);
 				stageIcons.Add(o);
 				StageIcon icon = o.GetComponent<StageIcon>();
-				icon.highlightMenu.GetComponent<Button>().onClick.AddListener(() => DeselectStageIcon());
+				//icon.highlightMenu.GetComponent<Button>().onClick.AddListener(() => DeselectStageIcon());
 			}
 			else
 			{
@@ -107,6 +108,8 @@ public class StageSelectView : MonoBehaviour
 		gm.selectedSeriesIndex = stageIcon.seriesIndex;
 		gm.selectedStageIndex = stageIcon.stageIndex;
 		// UI Stuff
+		highlightMenu.transform.SetParent(stageIcon.transform, false);
+		stageIcon.highlightMenu = highlightMenu;
 		stageIcon.ExpandHighlightMenu();
 		stageIconSelectedFolder.gameObject.SetActive(true);
 		placeholder.SetActive(true);

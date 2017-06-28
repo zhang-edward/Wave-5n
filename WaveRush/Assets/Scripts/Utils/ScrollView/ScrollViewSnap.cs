@@ -34,9 +34,13 @@ public class ScrollViewSnap : MonoBehaviour {
 		distances = new float[content.Count];
 		InitContent ();
 		EvaluateDistances ();
-		/*contentDistance = Mathf.Abs (
-			content [1].GetComponent<RectTransform> ().anchoredPosition.x -
-			content [0].GetComponent<RectTransform> ().anchoredPosition.x);*/
+		if (content.Count > 1)
+		{
+			contentDistance = Mathf.Abs(
+				content[1].GetComponent<RectTransform>().anchoredPosition.x -
+				content[0].GetComponent<RectTransform>().anchoredPosition.x);
+		}
+		StartCoroutine(UpdateScrollView());
 	}
 
 	/// <summary>
@@ -48,24 +52,31 @@ public class ScrollViewSnap : MonoBehaviour {
 		{
 			GameObject contentItem = content [i];
 			ScrollViewSnapContent scrollViewContent = contentItem.GetComponent<ScrollViewSnapContent> ();
-			scrollViewContent.SetScrollView(this);
 			// make sure that scrollViewContent is a component on each content item
-			UnityEngine.Assertions.Assert.IsNotNull (scrollViewContent);
-			scrollViewContent.index = i;
+			// UnityEngine.Assertions.Assert.IsNotNull (scrollViewContent);
+			if (scrollViewContent != null)
+			{
+				scrollViewContent.SetScrollView(this);
+				scrollViewContent.index = i;
+			}
 		}
 	}
 
-	void Update()
+	IEnumerator UpdateScrollView()
 	{
-		EvaluateDistances ();
-		float minDistance = int.MaxValue;
-		for (int i = 0; i < content.Count; i ++)
+		for (;;)
 		{
-			if (distances[i] < minDistance)
+			EvaluateDistances();
+			float minDistance = int.MaxValue;
+			for (int i = 0; i < content.Count; i++)
 			{
-				minDistance = distances [i];
-				selectedContentIndex = i;
+				if (distances[i] < minDistance)
+				{
+					minDistance = distances[i];
+					selectedContentIndex = i;
+				}
 			}
+			yield return null;
 		}
 	}
 
@@ -92,7 +103,7 @@ public class ScrollViewSnap : MonoBehaviour {
 		for (int i = 0; i < content.Count; i ++)
 		{
 			distances [i] = Mathf.Abs (center.transform.position.x - content[i].transform.position.x);
-//			Debug.Log (content [i].transform.position.x);
+			// Debug.Log (i + ":" + distances[i]);
 		}
 	}
 

@@ -39,12 +39,10 @@ public class AddPowerUpItem : PowerUpItem
 		// if the purchase limit has already been reached
 		if (timesPurchased >= purchaseLimit)
 		{
-			print("item:" + this.powerUp + " has reached max");
 			available = false;
 		}
 		if (timesPurchased >= 1)
 		{
-			print("timesPurchased > 1 for item:" + this.powerUp);
 			foreach (AddPowerUpItem item in unlockable)
 			{
 				print("item:" + item.powerUp + " has been made available");
@@ -69,7 +67,7 @@ public class AddPowerUpItem : PowerUpItem
 
 	private string ToRomanNumeral(int num)
 	{
-		if (num == purchaseLimit)
+		if (num >= purchaseLimit - 1)
 			return "MAX";
 		if (num <= 3)
 		{

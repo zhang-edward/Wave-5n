@@ -4,7 +4,7 @@ using System.Collections;
 
 public class MessageText : MonoBehaviour
 {
-	public bool displaying { get; private set; }
+	public bool displaying;
 	private Text text;
 
 	public delegate void FlashedMessage();

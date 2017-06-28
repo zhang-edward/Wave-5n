@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviour {
 			OnSceneLoaded();
 
 #if UNITY_ANDROID
-		Application.targetFrameRate = 30;
+		Application.targetFrameRate = 60;
 #else
 		Application.targetFrameRate = 60;
 #endif

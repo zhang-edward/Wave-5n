@@ -12,6 +12,8 @@ public class EnemyWaveText : MonoBehaviour {
 	public AudioClip victorySound;
 	public AudioClip warningSound;
 
+	public Coroutine waveRoutine;
+
 	//private bool canDisplayNextMessage = true;
 
 	public ParticleSystem waveCompleteParticles;
@@ -23,7 +25,9 @@ public class EnemyWaveText : MonoBehaviour {
 
 	public void DisplayWaveComplete()
 	{
-		StartCoroutine (DisplayMessageInterrupt("Wave Complete", 
+		if (waveRoutine != null)
+			StopCoroutine(waveRoutine);
+		waveRoutine = StartCoroutine (DisplayMessageInterrupt("Wave Complete", 
 			waveCompleteTextColor,
 			WaveCompleteEffect));
 	}
@@ -51,10 +55,11 @@ public class EnemyWaveText : MonoBehaviour {
 	}
 
 	private IEnumerator DisplayMessageDelayed(string message, Color color, float delay, 
-		MessageText.FlashedMessage callback = null, int numTimes = 1, float persistTime = 1f, float fadeOutTime = 1f)
+		MessageText.FlashedMessage callback = null, int numTimes = 1, float persistTime = 2f, float fadeOutTime = 0.2f)
 	{
 		while (messageText.displaying)
 			yield return null;
+		messageText.displaying = true;
 		yield return new WaitForSecondsRealtime (delay);
 
 		messageText.SetColor (color);
@@ -62,7 +67,7 @@ public class EnemyWaveText : MonoBehaviour {
 	}
 
 	private IEnumerator DisplayMessage(string message, Color color,
-		MessageText.FlashedMessage callback = null, int numTimes = 1, float persistTime = 1f, float fadeOutTime = 1f)
+		MessageText.FlashedMessage callback = null, int numTimes = 1, float persistTime = 2f, float fadeOutTime = 0.2f)
 	{
 		while (messageText.displaying)
 			yield return null;
@@ -73,7 +78,7 @@ public class EnemyWaveText : MonoBehaviour {
 	}
 
 	private IEnumerator DisplayMessageInterrupt(string message, Color color,
-		MessageText.FlashedMessage callback = null, int numTimes = 1, float persistTime = 1f, float fadeOutTime = 1f)
+		MessageText.FlashedMessage callback = null, int numTimes = 1, float persistTime = 2f, float fadeOutTime = 0.2f)
 	{
 		messageText.OnFlashMessage = callback;
 		messageText.SetColor (color);
