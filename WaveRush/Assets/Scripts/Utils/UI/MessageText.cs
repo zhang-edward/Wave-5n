@@ -4,6 +4,36 @@ using System.Collections;
 
 public class MessageText : MonoBehaviour
 {
+	[System.Serializable]
+	public class Message
+	{
+		public string message;
+		public int numTimes = 1;
+		public float persistTime = 2.0f;
+		public float fadeOutTime = 0.2f;
+		public Color color = Color.white;
+
+		public float totalMessageTime {
+			get{
+				return persistTime + fadeOutTime;
+			}
+		}
+
+		public Message(string message, int numTimes, float persistTime, float fadeOutTime, Color color)
+		{
+			this.message = message;
+			this.numTimes = numTimes;
+			this.persistTime = persistTime;
+			this.fadeOutTime = fadeOutTime;
+		}
+
+		public Message(string message)
+		{
+			this.message = message;
+		}
+	}
+		
+
 	public bool displaying;
 	private Text text;
 
@@ -21,10 +51,10 @@ public class MessageText : MonoBehaviour
 		text.color = color;
 	}
 
-	public void Display(string message, int numTimes, float persistTime, float fadeOutTime)
+	public void Display(Message msg)
 	{
 		StopAllCoroutines ();
-		StartCoroutine (FlashMessage (message, numTimes, persistTime, fadeOutTime));
+		StartCoroutine (FlashMessage (msg.message, msg.numTimes, msg.persistTime, msg.fadeOutTime));
 	}
 
 	private IEnumerator FlashMessage(string message, int numTimes, float persistTime, float fadeOutTime)

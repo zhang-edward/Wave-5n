@@ -32,10 +32,10 @@ public class Enemy : MonoBehaviour, IDamageable {
 	public bool hitDisabled{ get; private set; }
 
 	[Header("Enemy Properties")]
-	private int level;
+	protected int level;
 	public int baseHealth = 1;
 	public int maxHealth { get; set; }
-	public int health { get; private set; }
+	public int health { get; protected set; }
 	public Vector3 healthBarOffset;
 	public bool canBeDisabledOnHit = true;
 	public bool invincible = false;
@@ -47,7 +47,7 @@ public class Enemy : MonoBehaviour, IDamageable {
 	[Header("Death Props")]
 	//public Sprite deathSprite;
 	public Sprite[] deathProps;
-	private ObjectPooler deathPropPool;
+	protected ObjectPooler deathPropPool;
 
 	[Header("Behavior")]
 	public MoveState movementMethod;
@@ -93,6 +93,11 @@ public class Enemy : MonoBehaviour, IDamageable {
 		Spawn (spawnLocation);
 	}
 
+	private void OnDrawGizmosSelected()
+	{
+		Gizmos.DrawCube(transform.position + healthBarOffset, new Vector3(1.5f, 0.3f));
+	}
+
 	// ============================== Abilities and Statuses ==============================
 	private void InitAbilities()
 	{
@@ -111,7 +116,7 @@ public class Enemy : MonoBehaviour, IDamageable {
 		abilities.Add (enemyAbility);
 	}
 
-	public void AddStatus(GameObject statusObj)
+	public virtual void AddStatus(GameObject statusObj)
 	{
 		EnemyStatus statusType = statusObj.GetComponent<EnemyStatus> ();
 		// check if this enemy already has this status

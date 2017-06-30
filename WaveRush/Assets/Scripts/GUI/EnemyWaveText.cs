@@ -4,32 +4,49 @@ using System.Collections;
 
 public class EnemyWaveText : MonoBehaviour {
 
-	public MessageText messageText;
-	public Color waveTextColor;
-	public Color waveCompleteTextColor;
-	public Color bossIncomingTextColor;
+	public MessageText.Message waveMsg, bossIncomingMsg, waveCompleteMsg;
 
+	public MessageText messageText;
+
+	public CanvasGroup mainMessageGroup;
+	public SimpleAnimationPlayerImage waveAnim;
 	public AudioClip victorySound;
 	public AudioClip warningSound;
 
-	public Coroutine waveRoutine;
-
-	//private bool canDisplayNextMessage = true;
-
 	public ParticleSystem waveCompleteParticles;
 
-	public void DisplayWaveNumberAfterDelay (int waveNumber, float delay)
+	private bool canDisplayNextMessage = true;
+
+	public void DisplayWaveNumber (int waveNumber)
 	{
-		StartCoroutine (DisplayMessageDelayed ("Wave " + waveNumber, waveTextColor, 1f));
+		waveMsg.message = "Wave " + waveNumber;
+		StartCoroutine (DisplayMessage (waveMsg, WaveEffect, 1.0f));
 	}
 
 	public void DisplayWaveComplete()
 	{
-		if (waveRoutine != null)
-			StopCoroutine(waveRoutine);
-		waveRoutine = StartCoroutine (DisplayMessageInterrupt("Wave Complete", 
-			waveCompleteTextColor,
-			WaveCompleteEffect));
+		StartCoroutine (DisplayMessage(waveCompleteMsg, WaveCompleteEffect, 0f, true));
+	}
+
+	public void DisplayBossIncoming()
+	{
+		StartCoroutine (DisplayMessage(bossIncomingMsg, BossIncomingEffect));
+	}
+
+	private void WaveEffect()
+	{
+		StartCoroutine(WaveEffectRoutine());
+	}
+
+	private IEnumerator WaveEffectRoutine()
+	{
+		waveAnim.gameObject.SetActive(true);
+		waveAnim.Play();
+		yield return new WaitForSecondsRealtime(waveMsg.persistTime);
+		StartCoroutine(FadeOutCanvasGroup(mainMessageGroup, 0.2f));
+		yield return new WaitForSecondsRealtime(0.2f);
+		waveAnim.gameObject.SetActive(false);
+		mainMessageGroup.alpha = 1;
 	}
 
 	private void WaveCompleteEffect()
@@ -39,132 +56,40 @@ public class EnemyWaveText : MonoBehaviour {
 		SoundManager.instance.PlayUISound (victorySound);
 	}
 
-	public void DisplayBossIncoming()
-	{
-		StartCoroutine (DisplayMessage("Warning: Boss Incoming", 
-			bossIncomingTextColor, 
-			BossIncomingEffect, 
-			numTimes: 3, 
-			persistTime: 0.5f, 
-			fadeOutTime: 0.5f));
-	}
-
 	private void BossIncomingEffect()
 	{
 		SoundManager.instance.PlayUISound (warningSound);
 	}
 
-	private IEnumerator DisplayMessageDelayed(string message, Color color, float delay, 
-		MessageText.FlashedMessage callback = null, int numTimes = 1, float persistTime = 2f, float fadeOutTime = 0.2f)
+	private IEnumerator DisplayMessage(MessageText.Message msg, MessageText.FlashedMessage callback = null, float delay = 0, bool interrupt = false)
 	{
-		while (messageText.displaying)
-			yield return null;
-		messageText.displaying = true;
-		yield return new WaitForSecondsRealtime (delay);
-
-		messageText.SetColor (color);
-		messageText.Display (message, numTimes, persistTime, fadeOutTime);
-	}
-
-	private IEnumerator DisplayMessage(string message, Color color,
-		MessageText.FlashedMessage callback = null, int numTimes = 1, float persistTime = 2f, float fadeOutTime = 0.2f)
-	{
-		while (messageText.displaying)
-			yield return null;
-
-		messageText.OnFlashMessage = callback;
-		messageText.SetColor (color);
-		messageText.Display (message, numTimes, persistTime, fadeOutTime);
-	}
-
-	private IEnumerator DisplayMessageInterrupt(string message, Color color,
-		MessageText.FlashedMessage callback = null, int numTimes = 1, float persistTime = 2f, float fadeOutTime = 0.2f)
-	{
-		messageText.OnFlashMessage = callback;
-		messageText.SetColor (color);
-		messageText.Display (message, numTimes, persistTime, fadeOutTime);
-		yield return null;
-	}
-
-	/*private IEnumerator FlashMessage(string message, int numTimes = 1, float fadeOutTime = 1f)
-	{
-		text.text = message;
-		// wait for the current message (if any) to be completed
-		while (!canDisplayNextMessage)
+		if (!interrupt)
 		{
-			Debug.Log ("Blocked by current message!");
-			yield return null;
-		}	
-		// we are currently displaying a message
-		canDisplayNextMessage = false;
-		while (numTimes > 0)
-		{
-			yield return new WaitForSecondsRealtime (1f);
-			text.CrossFadeAlpha (0, fadeOutTime, true);	// fade out
-
-			yield return new WaitForSecondsRealtime (fadeOutTime);
-			numTimes--;
+			while (messageText.displaying || !canDisplayNextMessage)
+				yield return null;
 		}
+
+		canDisplayNextMessage = false;
+		DoMessage(msg, callback);
+		yield return new WaitForSecondsRealtime(msg.totalMessageTime);
 		canDisplayNextMessage = true;
 	}
 
-	private IEnumerator DisplayWaveNum(int waveNumber, float delay)
+	private void DoMessage(MessageText.Message msg, MessageText.FlashedMessage callback)
 	{
-		yield return new WaitForSeconds (delay);
-		text.color = defaultColor;
-		StartCoroutine (FlashMessage ("Wave " + waveNumber));
+		messageText.OnFlashMessage = callback;
+		messageText.SetColor(msg.color);
+		messageText.Display(msg);
 	}
 
-	private IEnumerator FadeAway(Color color, string message)
+	private IEnumerator FadeOutCanvasGroup(CanvasGroup canvasGroup, float fadeTime)
 	{
-		//yield return new WaitUntil (CanDisplayNextMessage);
-
-		text.text = message;
-		canDisplayNextMessage = false;
-		Color initialColor = color;
-		Color finalColor = new Color (color.r, color.b, color.g, 0);
 		float t = 0;
-		text.color = initialColor;
-		yield return new WaitForSeconds (0.5f);
-		while (text.color.a >= 0.05f)
+		while (t < fadeTime)
 		{
 			t += Time.deltaTime;
-			text.color = Color.Lerp (initialColor, finalColor, t);
+			canvasGroup.alpha = Mathf.Lerp(1, 0, t / fadeTime);
 			yield return null;
 		}
-		canDisplayNextMessage = true;
-		//Debug.Log ("Stopped");
-		text.color = finalColor;
-		waveCompleteParticles.gameObject.SetActive (false);
 	}
-
-	private IEnumerator Flash(int numTimes, Color color)
-	{
-		//Debug.Log ("Started Boss");
-		//yield return new WaitUntil (CanDisplayNextMessage);
-		//Debug.Log ("Continuing Boss");
-
-		canDisplayNextMessage = false;
-		Color initialColor = color;
-		Color finalColor = new Color (color.r, color.b, color.g, 0);
-		float t = 0;
-		int timesFlashed = 0;
-		text.color = initialColor;
-		while (timesFlashed < numTimes)
-		{
-			SoundManager.instance.PlayImportantSound (warningSound);
-			while (text.color.a >= 0.05f)
-			{
-				t += Time.deltaTime;
-				text.color = Color.Lerp (initialColor, finalColor, t);
-				yield return null;
-			}
-			timesFlashed++;
-			t = 0;
-			text.color = initialColor;
-		}
-		canDisplayNextMessage = true;
-
-		text.color = finalColor;
-	}*/
 }

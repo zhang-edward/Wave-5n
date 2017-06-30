@@ -58,7 +58,7 @@ public class GUIManager : MonoBehaviour {
 
 	private void ShowEnemyWaveText(int waveNumber)
 	{
-		enemyWaveText.DisplayWaveNumberAfterDelay (waveNumber, 1.0f);
+		enemyWaveText.DisplayWaveNumber (waveNumber);
 	}
 
 	private void OnEnemyWaveCompletedText()

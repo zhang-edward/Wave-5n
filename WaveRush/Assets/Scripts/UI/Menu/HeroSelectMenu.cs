@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class PreStageMenu : MonoBehaviour
+public class HeroSelectMenu : MonoBehaviour
 {
 	public PawnSelectionView pawnSelectionView;
 	public PawnInfoPanel pawnInfoPanel;
@@ -14,6 +14,7 @@ public class PreStageMenu : MonoBehaviour
 
 	public void Init()
 	{
+		print("Initializing HeroSelectMenu!");
 		foreach (PawnIcon pawnIcon in pawnSelectionView.pawnIcons)
 		{
 			PawnIconStandard pawnIconStandard = (PawnIconStandard)pawnIcon;

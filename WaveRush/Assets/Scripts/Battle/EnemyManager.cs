@@ -68,19 +68,21 @@ public class EnemyManager : MonoBehaviour {
 					while (shopNPC.gameObject.activeInHierarchy)
 						yield return null;
 				}
+				// if it is the wave after a boss wave (just defeated boss), spawn heart pickup
+				if (waveNumber % stageData.bossWave == 1 && waveNumber != 1)
+				{
+					Instantiate(heartPickup, map.CenterPosition, Quaternion.identity);
+				}
+
+				StartNextWave();
+
 				// every 'bossWave' waves, spawn a boss
 				if (waveNumber % stageData.bossWave == 0)
 				{					
 					StartBossIncoming (); 
 					level++;
 				}
-				// if it is the wave after a boss wave (just defeated boss), spawn heart pickup
-				if (waveNumber % stageData.bossWave == 1 && waveNumber != 1)
-				{
-					Instantiate (heartPickup, map.CenterPosition, Quaternion.identity);
-				}
 
-				StartNextWave ();
 			}
 			yield return null;
 		}

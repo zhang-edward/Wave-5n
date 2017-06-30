@@ -1,26 +1,17 @@
 fileFormatVersion: 2
-guid: 4b4c6d66d1eec4d2096b85b984d22f33
-timeCreated: 1498693541
+guid: 40fa67a088ec74195ab984b6bba2be3b
+timeCreated: 1498783520
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: WaveText_0
-    21300002: waveText_0
-    21300004: waveText_1
-    21300006: waveText_2
-    21300008: waveText_3
-    21300010: waveText_4
-    21300012: waveText_5
-    21300014: waveText_6
-    21300016: waveText_7
-    21300018: waveText_8
-    21300020: waveText_9
-    21300022: waveText_10
-    21300024: waveText_11
-    21300026: waveText_12
-    21300028: waveText_13
-    21300030: waveText_14
-    21300032: waveText_15
+    21300000: crystal_0
+    21300002: crystal_1
+    21300004: crystal_2
+    21300006: crystal_3
+    21300008: crystal_4
+    21300010: crystal_5
+    21300012: crystal_6
+    21300014: crystal_7
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -41,11 +32,11 @@ TextureImporter:
   generateCubemap: 6
   cubemapConvolution: 0
   seamlessCubemap: 0
-  textureFormat: -2
+  textureFormat: 1
   maxTextureSize: 2048
   textureSettings:
     filterMode: 0
-    aniso: 16
+    aniso: -1
     mipBias: -1
     wrapMode: 1
   nPOTScale: 0
@@ -69,7 +60,7 @@ TextureImporter:
   platformSettings:
   - buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
-    textureFormat: 2
+    textureFormat: -1
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -77,7 +68,7 @@ TextureImporter:
     overridden: 0
   - buildTarget: Standalone
     maxTextureSize: 2048
-    textureFormat: 2
+    textureFormat: -1
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -85,7 +76,7 @@ TextureImporter:
     overridden: 0
   - buildTarget: iPhone
     maxTextureSize: 2048
-    textureFormat: 2
+    textureFormat: -1
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -93,7 +84,7 @@ TextureImporter:
     overridden: 0
   - buildTarget: Android
     maxTextureSize: 2048
-    textureFormat: 2
+    textureFormat: -1
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -103,116 +94,12 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: waveText_0
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 192
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: waveText_1
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 192
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: waveText_2
-      rect:
-        serializedVersion: 2
-        x: 128
-        y: 192
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: waveText_3
-      rect:
-        serializedVersion: 2
-        x: 192
-        y: 192
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: waveText_4
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 128
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: waveText_5
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 128
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: waveText_6
-      rect:
-        serializedVersion: 2
-        x: 128
-        y: 128
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: waveText_7
-      rect:
-        serializedVersion: 2
-        x: 192
-        y: 128
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: waveText_8
+      name: crystal_0
       rect:
         serializedVersion: 2
         x: 0
         y: 64
-        width: 64
+        width: 48
         height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -220,12 +107,12 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: waveText_9
+      name: crystal_1
       rect:
         serializedVersion: 2
-        x: 64
+        x: 48
         y: 64
-        width: 64
+        width: 48
         height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -233,12 +120,12 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: waveText_10
+      name: crystal_2
       rect:
         serializedVersion: 2
-        x: 128
+        x: 96
         y: 64
-        width: 64
+        width: 48
         height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -246,12 +133,12 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: waveText_11
+      name: crystal_3
       rect:
         serializedVersion: 2
-        x: 192
+        x: 144
         y: 64
-        width: 64
+        width: 48
         height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -259,12 +146,12 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: waveText_12
+      name: crystal_4
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 64
+        width: 48
         height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -272,12 +159,12 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: waveText_13
+      name: crystal_5
       rect:
         serializedVersion: 2
-        x: 64
+        x: 48
         y: 0
-        width: 64
+        width: 48
         height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -285,12 +172,12 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: waveText_14
+      name: crystal_6
       rect:
         serializedVersion: 2
-        x: 128
+        x: 96
         y: 0
-        width: 64
+        width: 48
         height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -298,12 +185,12 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: waveText_15
+      name: crystal_7
       rect:
         serializedVersion: 2
-        x: 192
+        x: 144
         y: 0
-        width: 64
+        width: 48
         height: 64
       alignment: 0
       pivot: {x: 0, y: 0}

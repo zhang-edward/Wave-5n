@@ -308,6 +308,6 @@ public class GameManager : MonoBehaviour {
 	public void DisplayMessage(string message)
 	{
 		debugText.SetColor (Color.white);
-		debugText.Display (message, 1, 2f, 1f);
+		debugText.Display (new MessageText.Message(message, 1, 2f, 1f, Color.white));
 	}
 }

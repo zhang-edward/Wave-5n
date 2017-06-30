@@ -6,6 +6,7 @@ public class Pawn
 	public const int T1_MIN_LEVEL = 1;
 	public const int T2_MIN_LEVEL = 5;
 	public const int T3_MIN_LEVEL = 8;
+	public const int MAX_LEVEL = 9;
 
 	public HeroType type;		// the type of the hero
 	public int level;			// the level of the hero
@@ -21,6 +22,13 @@ public class Pawn
 				return HeroTier.tier3;
 			else
 				return 0;
+		}
+	}
+
+	public bool atThresholdLevel {
+		get {
+			return level == T2_MIN_LEVEL - 1 ||
+				level == T3_MIN_LEVEL - 1;
 		}
 	}
 
