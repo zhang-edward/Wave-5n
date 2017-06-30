@@ -1,19 +1,29 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 /// <summary>
 /// Manages overall Battle Scene state
 /// </summary>
 public class BattleSceneManager : MonoBehaviour
 {
+	public static BattleSceneManager instance;
 	GameManager gm;
 
 	public Map map;
 	public EnemyManager enemyManager;
 	public Player player;
+	public GUIManager gui;
+
+	private List<Pawn> acquiredPawns = new List<Pawn>();
 
 	void Awake()
 	{
+		// Make this a singleton
+		if (instance == null)
+			instance = this;
+		else if (instance != this)
+			Destroy(this.gameObject);
+
 		gm = GameManager.instance;
 		gm.OnSceneLoaded += Init;
 		player.OnPlayerDied += UpdateData;
@@ -40,23 +50,46 @@ public class BattleSceneManager : MonoBehaviour
 
 	private void UpdateData()
 	{
+		ScoreReport.ScoreReportData data = new ScoreReport.ScoreReportData(
+			enemiesDefeated: 	enemyManager.enemiesKilled,
+			wavesSurvived: 		enemyManager.waveNumber - 1,
+			maxCombo: 			player.hero.maxCombo,
+			money: 				gm.wallet.money,
+			moneyEarned: 		gm.wallet.moneyEarned);
+		gui.GameOverUI(data);
+
 		if (enemyManager.IsStageComplete() && IsPlayerOnLatestStage())
 		{
 			gm.UnlockNextStage();
 			print("Stage Complete");
 		}
 
+		foreach(Pawn pawn in acquiredPawns)
+		{
+			gm.saveGame.AddPawn(pawn);
+		}
+
 		int enemiesDefeated = enemyManager.enemiesKilled;
 		int wavesSurvived = enemyManager.waveNumber;
 		int maxCombo = player.hero.maxCombo;
 
-		GameManager.instance.wallet.MergeEarnedMoney();
-		GameManager.instance.UpdateScores(enemiesDefeated, wavesSurvived, maxCombo);
+		gm.wallet.MergeEarnedMoney();
+		gm.UpdateScores(enemiesDefeated, wavesSurvived, maxCombo);
+	}
+
+	private void ShowGameOverUI()
+	{
+		
 	}
 
 	private bool IsPlayerOnLatestStage()
 	{
 		return (gm.selectedStageIndex == gm.saveGame.latestUnlockedStageIndex &&
 				gm.selectedSeriesIndex == gm.saveGame.latestUnlockedSeriesIndex);
+	}
+
+	public void AddPawn(Pawn pawn)
+	{
+		acquiredPawns.Add(pawn);
 	}
 }

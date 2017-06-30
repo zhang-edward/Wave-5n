@@ -4,32 +4,43 @@ using System.Collections;
 
 public class ScoreReport : MonoBehaviour {
 
+	public class ScoreReportData
+	{
+		public int enemiesDefeated, wavesSurvived, maxCombo;
+		public int money, moneyEarned;
+		public ScoreReportData (int enemiesDefeated, int wavesSurvived, int maxCombo, int money, int moneyEarned)
+		{
+			this.enemiesDefeated = enemiesDefeated;
+			this.wavesSurvived = wavesSurvived;
+			this.maxCombo = maxCombo;
+			this.money = money;
+			this.moneyEarned = moneyEarned;
+		}
+	}
+
 	public IncrementingText enemiesDefeated, wavesSurvived, maxCombo;
 	public IncrementingText moneyText, moneyEarned;
 
-	public void ReportScore(int enemiesDefeatedNum, int wavesSurvivedNum, int maxComboNum)
+	public void ReportScore(ScoreReportData data)
 	{
-		StartCoroutine (ReportScoreTimed (enemiesDefeatedNum, wavesSurvivedNum, maxComboNum));
+		StartCoroutine (ReportScoreTimed (data));
 	}
 
-	private IEnumerator ReportScoreTimed(int enemiesDefeatedNum, int wavesSurvivedNum, int maxComboNum)
+	private IEnumerator ReportScoreTimed(ScoreReportData data)
 	{
-		int currentMoney = GameManager.instance.wallet.money;
-		int moneyEarnedNum = GameManager.instance.wallet.moneyEarned;
-
-		enemiesDefeated.DisplayNumber (enemiesDefeatedNum);
+		enemiesDefeated.DisplayNumber (data.enemiesDefeated);
 		while (!enemiesDefeated.doneUpdating)
 			yield return null;
 		
-		wavesSurvived.DisplayNumber (wavesSurvivedNum);
+		wavesSurvived.DisplayNumber (data.wavesSurvived);
 		while (!wavesSurvived.doneUpdating)
 			yield return null;
 		
-		maxCombo.DisplayNumber (maxComboNum);
+		maxCombo.DisplayNumber (data.maxCombo);
 		while (!maxCombo.doneUpdating)
 			yield return null;
 
-		moneyText.DisplayNumber (currentMoney + moneyEarnedNum); 
+		moneyText.DisplayNumber (data.money + data.moneyEarned); 
 		moneyEarned.DisplayNumber (0);
 	}
 }

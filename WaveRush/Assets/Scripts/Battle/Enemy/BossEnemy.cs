@@ -40,8 +40,11 @@ public class BossEnemy : Enemy
 	protected override IEnumerator MoveState()
 	{
 		if (dying)
+		{
 			Die();
-		return base.MoveState();
+			yield break;
+		}
+		yield return base.MoveState();
 	}
 
 	public override void Damage(int amt)

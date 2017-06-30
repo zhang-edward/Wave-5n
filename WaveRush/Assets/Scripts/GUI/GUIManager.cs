@@ -18,7 +18,6 @@ public class GUIManager : MonoBehaviour {
 
 	void OnEnable()
 	{
-		player.OnPlayerDied += GameOverUI;
 		enemyManager.OnEnemyWaveSpawned += ShowEnemyWaveText;
 		enemyManager.OnEnemyWaveCompleted += OnEnemyWaveCompletedText;
 		enemyManager.OnQueueBossMessage += ShowBossIncomingText;
@@ -26,34 +25,27 @@ public class GUIManager : MonoBehaviour {
 
 	void OnDisabled()
 	{
-		player.OnPlayerDied -= GameOverUI;
 		enemyManager.OnEnemyWaveSpawned -= ShowEnemyWaveText;
 		enemyManager.OnEnemyWaveCompleted -= OnEnemyWaveCompletedText;
 		enemyManager.OnQueueBossMessage -= ShowBossIncomingText;
 	}
 
-	private void GameOverUI()
+	public void GameOverUI(ScoreReport.ScoreReportData data)
 	{
-		Invoke ("InitGameOverUI", 1.0f);
+		StartCoroutine(GameOverUIRoutine(data));
 	}
 
-	private void InitGameOverUI()
+	private IEnumerator GameOverUIRoutine(ScoreReport.ScoreReportData data)
 	{
+		yield return new WaitForSeconds(1f);
 		gameUI.SetActive (false);
 		gameOverUI.GetComponent<Animator> ().SetTrigger ("In");
-		scorePanel.moneyText.text.text = GameManager.instance.wallet.money.ToString();
-		scorePanel.moneyEarned.text.text = GameManager.instance.wallet.moneyEarned.ToString();
+		scorePanel.moneyText.text.text = data.money.ToString();
+		scorePanel.moneyEarned.text.text = data.moneyEarned.ToString();
 
 		gameOverUI.SetActive (true);
-		Invoke("ReportScore", 0.5f);	
-	}
-
-	private void ReportScore()
-	{
-		scorePanel.ReportScore (
-			enemyManager.enemiesKilled, 
-			enemyManager.waveNumber - 1, 
-			player.hero.maxCombo);
+		yield return new WaitForSeconds(0.5f);
+		scorePanel.ReportScore(data);
 	}
 
 	private void ShowEnemyWaveText(int waveNumber)
