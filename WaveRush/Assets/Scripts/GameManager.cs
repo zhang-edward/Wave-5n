@@ -47,11 +47,7 @@ public class GameManager : MonoBehaviour {
 		if (OnSceneLoaded != null)
 			OnSceneLoaded();
 
-#if UNITY_ANDROID
 		Application.targetFrameRate = 60;
-#else
-		Application.targetFrameRate = 60;
-#endif
 		StartCoroutine(FPS());
 	}
 

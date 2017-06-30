@@ -25,7 +25,13 @@ public abstract class PlayerHero : MonoBehaviour {
 
 	[Header("PlayerHero Properties")]
 	public int maxHealth;
-	public int damage;
+	public int baseDamage;
+	public int damage {
+		get {
+			return Mathf.RoundToInt(baseDamage * damageMultiplier);
+		}
+	}
+	public float damageMultiplier { get; set; }
 
 	[HideInInspector]
 	public HeroPowerUpHolder powerUpHolder;
@@ -129,6 +135,8 @@ public abstract class PlayerHero : MonoBehaviour {
 		this.body = body;
 		this.anim = anim;
 		this.player = player;
+		damageMultiplier = 1f;
+		baseDamage = Mathf.RoundToInt(Pawn.DamageEquation(heroData.level));
 		// init cooldownMultipliers
 		cooldownMultipliers = new float[cooldownTime.Length];
 		for(int i = 0; i < cooldownTime.Length; i ++)

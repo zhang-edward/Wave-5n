@@ -164,6 +164,7 @@ public class EnemyManager : MonoBehaviour {
 
 		Enemy e = o.GetComponentInChildren<Enemy> ();
 		InitEnemy(e, bossSpawn.transform.position);
+		e.OnEnemyObjectDisabled += RemoveEnemyFromBossesList;
 
 		bossHealthBar.Init (e);
 		bossHealthBar.abilityIconBar.GetComponent<UIFollow> ().Init(o.transform, e.healthBarOffset);
@@ -208,6 +209,12 @@ public class EnemyManager : MonoBehaviour {
 	private void RemoveEnemyFromEnemiesList(Enemy e)
 	{
 		enemies.Remove (e);
+	}
+
+	// Used as an event listener
+	private void RemoveEnemyFromBossesList(Enemy e)
+	{
+		bosses.Remove((BossEnemy)e);
 	}
 
 	// Used as an event listener

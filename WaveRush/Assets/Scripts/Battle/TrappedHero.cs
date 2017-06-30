@@ -3,6 +3,10 @@ using System.Collections;
 
 public class TrappedHero : Enemy
 {
+	[Header("TrappedHero-Specific")]
+	public SimpleAnimation deathEffect;
+	private ObjectPooler effectPool;
+
 	public override void Init(Vector3 spawnLocation, Map map, int level)
 	{
 		// init default values
@@ -14,6 +18,8 @@ public class TrappedHero : Enemy
 		maxHealth = baseHealth * Mathf.RoundToInt(Pawn.DamageEquation(level));  // calculate health based on level
 		health = maxHealth;
 		deathPropPool = ObjectPooler.GetObjectPooler("DeathProp");          // instantiate set object pooler
+		effectPool = ObjectPooler.GetObjectPooler("Effect");
+
 
 		StartCoroutine(AnimateIn(spawnLocation));
 	}
@@ -43,17 +49,54 @@ public class TrappedHero : Enemy
 	}
 
 	public override void Die()
-	{ 
-		SpawnDeathProps();
-		transform.parent.gameObject.SetActive(false);
-		Destroy(transform.parent.gameObject, 1.0f);
-
+	{
+		RemoveEnemyFromList();
+		invincible = true;
 		Pawn pawn = PawnGenerator.GenerateCrystalDrop(level);
-		/*int numHeroTypes = System.Enum.GetNames(typeof(HeroType)).Length;
-		//HeroType type = (HeroType)Enum.GetValues(typeof(HeroType)).GetValue(UnityEngine.Random.Range(1, numHeroTypes));
-		Pawn pawn = new Pawn();
-		pawn.level = UnityEngine.Random.Range(0, 10);
-		pawn.type = HeroType.Knight;//type;*/
 		BattleSceneManager.instance.AddPawn(pawn);
+		StartCoroutine(DieRoutine());
+	}
+
+	protected override void SpawnDeathProps()
+	{
+		foreach (Sprite sprite in deathProps)
+		{
+			GameObject o = deathPropPool.GetPooledObject();
+			Rigidbody2D rb2d = o.GetComponent<Rigidbody2D>();
+			o.GetComponent<TempObject>().Init(
+				Quaternion.Euler(new Vector3(0, 0, 360f)),
+				this.transform.position + new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f)),
+				sprite);
+			rb2d.AddTorque(Random.Range(-50f, 50f));
+			rb2d.AddForce(new Vector2(
+				Random.value - 0.5f,
+				Random.value - 0.5f),
+				ForceMode2D.Impulse);
+		}
+	}
+
+	private IEnumerator DieRoutine()
+	{
+		anim.CrossFade("Die", 0f);
+		yield return new WaitForSeconds(0.5f);
+		SpawnDeathProps();
+		Destroy(transform.parent.gameObject, 1.0f);
+		PlayEffect(deathEffect, transform.position, 0.2f);
+		yield return new WaitForSeconds(0.2f);
+		CameraControl.instance.StartShake(0.2f, 0.05f);
+		transform.parent.gameObject.SetActive(false);
+	}
+
+	private void PlayEffect(SimpleAnimation toPlay, Vector3 position, float fadeOutTime)
+	{
+		GameObject o = effectPool.GetPooledObject();
+		SimpleAnimationPlayer anim = o.GetComponent<SimpleAnimationPlayer>();
+		TempObject tempObj = o.GetComponent<TempObject>();
+		tempObj.info = new TempObjectInfo(true, 0f, toPlay.TimeLength - fadeOutTime, fadeOutTime, new Color(1, 1, 1, 0.8f));
+		anim.anim = toPlay;
+		tempObj.Init(Quaternion.identity,
+					 position,
+					 toPlay.frames[0]);
+		anim.Play();
 	}
 }

@@ -220,14 +220,14 @@ public class KnightHero : PlayerHero {
 				Enemy e = col.gameObject.GetComponentInChildren<Enemy> ();
 				if (!hitEnemies.Contains (e) && hitEnemies.Count < MAX_HIT)
 				{
-					SoundManager.instance.RandomizeSFX (hitSounds[Random.Range(0, hitSounds.Length)]);
-					DamageEnemy (e);
+					if (DamageEnemy (e))
+						SoundManager.instance.RandomizeSFX (hitSounds[Random.Range(0, hitSounds.Length)]);
 				}
 			}
 		}
 	}
 
-	public void DamageEnemy(Enemy e)
+	public bool DamageEnemy(Enemy e)
 	{
 		//e.AddStatus(Instantiate(StatusEffectContainer.instance.GetStatus("Weakness")));
 		if (!e.invincible && e.health > 0 && !hitEnemies.Contains(e))
@@ -242,7 +242,9 @@ public class KnightHero : PlayerHero {
 				0);
 			player.TriggerOnEnemyDamagedEvent(damage);
 			player.TriggerOnEnemyLastHitEvent (e);
+			return true;
 		}
+		return false;
 	}
 
 	public void PlaySpecialAbilityEffect()

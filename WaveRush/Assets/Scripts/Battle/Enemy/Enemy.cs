@@ -250,7 +250,7 @@ public class Enemy : MonoBehaviour, IDamageable {
 	}
 
 	// ============================== Death ==============================
-	protected void SpawnDeathProps()
+	protected virtual void SpawnDeathProps()
 	{
 		foreach (Sprite sprite in deathProps)
 		{
@@ -331,5 +331,11 @@ public class Enemy : MonoBehaviour, IDamageable {
 	public void DecreaseHealth(int amt)
 	{
 		health -= amt;
+	}
+
+	protected void RemoveEnemyFromList()
+	{
+		if (OnEnemyObjectDisabled != null)
+			OnEnemyObjectDisabled(this);
 	}
 }

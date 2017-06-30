@@ -39,8 +39,9 @@ public class BossEnemy : Enemy
 
 	protected override IEnumerator MoveState()
 	{
-		if (dying)
+		if (dying || health <= 0)
 		{
+			print("Boss dying from moveState");
 			Die();
 			yield break;
 		}
@@ -81,8 +82,10 @@ public class BossEnemy : Enemy
 	{
 		foreach (BossEnemy boss in enemyManager.bosses)
 		{
-			if (boss.dying)
+			if (boss.dying && boss != this)
+			{
 				return true;
+			}
 		}
 		return false;
 	}

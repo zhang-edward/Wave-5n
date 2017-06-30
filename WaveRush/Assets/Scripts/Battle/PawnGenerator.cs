@@ -27,7 +27,10 @@ public class PawnGenerator
 
 	private static int GetLevelFromCrystalLevel(int level)
 	{
-		int[] probabilityTable = PAWN_CRYSTAL_DROP_PROBABILITY_TABLE[level];
+		int index = level - 1;
+		if (index < 0) 
+			index = 0;
+		int[] probabilityTable = PAWN_CRYSTAL_DROP_PROBABILITY_TABLE[index];
 		// Method similar to inverse cumulative distribution function: 
 		// https://stackoverflow.com/questions/9956486/distributed-probability-random-number-generator
 		int total = SumArray(probabilityTable);

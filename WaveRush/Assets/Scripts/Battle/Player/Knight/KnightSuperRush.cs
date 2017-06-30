@@ -52,7 +52,7 @@ public class KnightSuperRush : HeroPowerUp
 		// Effects
 		PlayRushEffect();
 		// Player properties
-		knight.damage = 2;
+		knight.damageMultiplier *= 2f;
 		knight.rushHitBoxOn = true;
 		knight.body.moveSpeed = knight.baseRushMoveSpeed * 1.3f;
 		knight.body.Move(playerHero.player.dir.normalized);
@@ -67,7 +67,7 @@ public class KnightSuperRush : HeroPowerUp
 
 	private void ResetRushAbility()
 	{
-		knight.damage = 1;
+		knight.damageMultiplier *= 0.5f;
 		knight.ResetRushAbility ();
 	}
 

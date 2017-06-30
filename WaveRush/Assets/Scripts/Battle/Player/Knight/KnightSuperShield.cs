@@ -61,7 +61,7 @@ public class KnightSuperShield : HeroPowerUp
 		bool enemyHit = false;
 		int numEnemiesHit = 0;
 		Collider2D[] cols = Physics2D.OverlapCircleAll(transform.position, areaAttackRange);
-		knight.damage = 2;
+		knight.damageMultiplier *= 2f;
 		foreach (Collider2D col in cols)
 		{
 			if (col.CompareTag("Enemy"))
@@ -76,7 +76,7 @@ public class KnightSuperShield : HeroPowerUp
 				}
 			}
 		}
-		knight.damage = 1;
+		knight.damageMultiplier *= 0.5f;
 		if (enemyHit)
 			SoundManager.instance.RandomizeSFX(knight.hitSounds[Random.Range(0, knight.hitSounds.Length)]);
 
