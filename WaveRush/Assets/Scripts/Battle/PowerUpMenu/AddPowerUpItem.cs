@@ -56,7 +56,7 @@ public class AddPowerUpItem : PowerUpItem
 	public override void Upgrade (Player player)
 	{
 		base.Upgrade (player);
-		player.hero.powerUpHolder.AddPowerUp (powerUp.data.powerUpName);
+		player.hero.powerUpManager.AddPowerUp (powerUp.data.powerUpName);
 		UpdateAvailablity();
 	}
 

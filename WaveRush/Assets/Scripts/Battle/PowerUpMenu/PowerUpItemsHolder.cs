@@ -18,14 +18,17 @@ public class PowerUpItemsHolder : MonoBehaviour
 	public ScrollingText scrollingText;
 	public ToggleGroup toggleGroup;
 
+	private HeroPowerUpManager powerUpManager;
+
 	/// <summary>
 	/// Initialize the list of shop items that can be potentially available to the player
 	/// </summary>
 	/// <param name="hero">Hero.</param>
 	public void InitShopItemsList (PlayerHero hero)
 	{
+		powerUpManager = hero.powerUpManager;
 		// initialize character-specific shop items
-		foreach (HeroPowerUp powerUp in hero.powerUpHolder.powerUps)
+		foreach (HeroPowerUp powerUp in powerUpManager.powerUps)
 		{
 			if (powerUp.data.isRoot)		// if this powerup is not dependent on another powerup (has no parent to be unlocked first)
 				CreateAddPowerUpShopItem (powerUp);
@@ -99,6 +102,11 @@ public class PowerUpItemsHolder : MonoBehaviour
 		o.SetActive (false);
 		potentialShopItems.Add (o);
 		return o;
+	}
+
+	public int NumUpgradesLeft()
+	{
+		return powerUpManager.GetNumUpgradesLeft();
 	}
 }
 

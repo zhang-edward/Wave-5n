@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 using System;
 
@@ -6,71 +7,44 @@ public class DebugCheatMenu : MonoBehaviour
 {
 	GameManager gm;
 
+	public GameObject battleSceneDebugOptions;
+	public GameObject menuSceneDebugOptions;
+
+	private Player player;
+	private EnemyManager enemyManager;
+
+
 	void Start()
 	{
 		gm = GameManager.instance;
+		gm.OnSceneLoaded += UpdateDebugMenuOptions;
+		UpdateDebugMenuOptions();
 	}
 
-	// ========================== DEBUG FUNCTIONS ======================
-	public void SetMoneyDebugString(string str)
+	void UpdateDebugMenuOptions()
 	{
-		int i = 0;
-		if (int.TryParse(str, out i))
-			SetMoney(i);
-		else
-			Debug.LogWarning("Error: not an int");
-	}
-
-	public void SetMoneyEarnedDebugString(string str)
-	{
-		int i = 0;
-		if (int.TryParse(str, out i))
-			SetMoneyEarned(i);
-		else
-			Debug.LogWarning("Error: not an int");
-	}
-
-	public void SetMoney(int amt)
-	{
-		gm.wallet.SetMoneyDebug(amt);
-	}
-
-	public void SetMoneyEarned(int amt)
-	{
-		gm.wallet.SetEarnedMoneyDebug(amt);
-	}
-
-	public void KillPlayer()
-	{
-		Player plyr = GameObject.Find("/Game/Player").GetComponentInChildren<Player>();
-		plyr.Damage(plyr.health);
-	}
-
-	public void FullChargeSpecial()
-	{
-		Player plyr = GameObject.Find("/Game/Player").GetComponentInChildren<Player>();
-		plyr.hero.IncrementSpecialAbilityCharge(int.MaxValue);
-	}
-
-	public void KillAllEnemies()
-	{
-		EnemyManager enemyManager = GameObject.Find("/Game/EnemyManager").GetComponent<EnemyManager>();
-		for (int i = enemyManager.Enemies.Count - 1; i >= 0; i--)
+		bool isBattleSceneOpen = SceneManager.GetActiveScene().name.Equals("Game");
+		battleSceneDebugOptions.SetActive(isBattleSceneOpen);
+		menuSceneDebugOptions.SetActive(!isBattleSceneOpen);
+		if (isBattleSceneOpen)
 		{
-			enemyManager.Enemies[i].Damage(enemyManager.Enemies[i].maxHealth);
+			player = GameObject.Find("/Game/Player").GetComponentInChildren<Player>();
+			enemyManager = GameObject.Find("/Game/EnemyManager").GetComponent<EnemyManager>();
+
 		}
 	}
 
-	public void SpawnBoss()
+	// ==========
+	// Menu Scene Options
+	// ==========
+	public void SetMoneyDebugString(string amt)
 	{
-		EnemyManager enemyManager = GameObject.Find("/Game/EnemyManager").GetComponent<EnemyManager>();
-		enemyManager.SpawnBoss();
+		gm.wallet.SetMoneyDebug(Convert.ToInt32(amt));
 	}
 
-	public void AddPowerUp(string name)
+	public void SetMoneyEarnedDebugString(string amt)
 	{
-		Player plyr = gm.playerObj.GetComponentInChildren<Player>();
-		plyr.hero.powerUpHolder.AddPowerUp(name);
+		gm.wallet.SetMoneyDebug(Convert.ToInt32(amt));
 	}
 
 	public void SaveGame()
@@ -79,12 +53,12 @@ public class DebugCheatMenu : MonoBehaviour
 		SaveLoad.Save();
 	}
 
-	public void AddNewPawn()
+	public void AddNewPawn(string level)
 	{
 		int numHeroTypes = Enum.GetNames(typeof(HeroType)).Length;
 		//HeroType type = (HeroType)Enum.GetValues(typeof(HeroType)).GetValue(UnityEngine.Random.Range(1, numHeroTypes));
 		Pawn pawn = new Pawn();
-		pawn.level = UnityEngine.Random.Range(0, 10);
+		pawn.level = Convert.ToInt32(level);
 		pawn.type = HeroType.Knight;//type;
 		GameManager.instance.saveGame.AddPawn(pawn);
 		SaveLoad.Save();
@@ -94,4 +68,41 @@ public class DebugCheatMenu : MonoBehaviour
 	{
 		GameManager.instance.DeleteSaveData();
 	}
+
+	// ==========
+	// Battle Scene Options
+	// ==========
+	public void KillPlayer()
+	{
+		player.Damage(player.health);
+	}
+
+	public void HealPlayer()
+	{
+		player.Heal(player.health);
+	}
+
+	public void FullChargeSpecial()
+	{
+		player.hero.IncrementSpecialAbilityCharge(int.MaxValue);
+	}
+
+	public void KillAllEnemies()
+	{
+		for (int i = enemyManager.Enemies.Count - 1; i >= 0; i--)
+		{
+			enemyManager.Enemies[i].Damage(enemyManager.Enemies[i].maxHealth);
+		}
+	}
+
+	public void SpawnBoss()
+	{
+		enemyManager.SpawnBoss();
+	}
+
+	public void AddPowerUp(string name)
+	{
+		player.hero.powerUpManager.AddPowerUp(name);
+	}
+
 }

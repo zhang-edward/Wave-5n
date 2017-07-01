@@ -9,11 +9,12 @@ public class GameManager : MonoBehaviour {
 
 	public static GameManager instance;
 
+	[Header("Save Game")]
 	public SaveGame saveGame;
+	[Header("Selected Items for Battle Scene")]
 	public Pawn selectedPawn;
 	public int selectedSeriesIndex;
 	public int selectedStageIndex;
-	public GameObject playerObj;
 
 	public StageCollectionData regularStages;
 

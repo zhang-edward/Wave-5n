@@ -5,7 +5,7 @@ using UnityEngine;
 public class PowerUpsMeter : MonoBehaviour {
 
 	public Player player;
-	private HeroPowerUpHolder powerUpHolder;
+	private HeroPowerUpManager powerUpHolder;
 
 	public List<PowerUpIcon> powerUpIcons = new List<PowerUpIcon>();
 	public GameObject powerUpIconPrefab;
@@ -17,9 +17,9 @@ public class PowerUpsMeter : MonoBehaviour {
 
 	private void Init()
 	{
-		powerUpHolder = player.hero.powerUpHolder;
+		powerUpHolder = player.hero.powerUpManager;
 		UpdatePowerUpsMeter ();
-		player.hero.powerUpHolder.OnPowerUpAdded += UpdatePowerUpsMeter;
+		player.hero.powerUpManager.OnPowerUpAdded += UpdatePowerUpsMeter;
 	}
 
 	private void UpdatePowerUpsMeter()
@@ -42,6 +42,6 @@ public class PowerUpsMeter : MonoBehaviour {
 	void OnDisable()
 	{
 		player.OnPlayerInitialized -= Init;
-		player.hero.powerUpHolder.OnPowerUpAdded -= UpdatePowerUpsMeter;
+		player.hero.powerUpManager.OnPowerUpAdded -= UpdatePowerUpsMeter;
 	}
 }

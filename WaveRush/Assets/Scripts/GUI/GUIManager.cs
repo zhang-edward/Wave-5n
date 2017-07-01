@@ -9,9 +9,10 @@ public class GUIManager : MonoBehaviour {
 	public EnemyWaveText enemyWaveText;
 
 	[Header("Game Over Panel")]
-	public GameObject gameOverUI;   // game over panel
-	public ScoreReport scorePanel;  // score report in game over panel
+	public GameObject gameOverUI;   	// game over panel
+	public ScoreReport scorePanel;  	// score report in game over panel
 	public GameObject stageClearPanel;
+	public GameObject upgradeButton;	// button for upgrading the player character
 
 	[Header("Data")]
 	public EnemyManager enemyManager;
@@ -61,6 +62,17 @@ public class GUIManager : MonoBehaviour {
 		yield return new WaitForSeconds(1.0f);
 		GameManager.instance.GoToScene("MainMenu");
 		yield return null;
+	}
+
+	public void DisplayIntroMessage()
+	{
+		MessageText.Message introMessage = new MessageText.Message
+			(enemyManager.stageData.stageName,
+			  1,
+			  3.0f,
+			  1.0f,
+			 Color.white);
+		enemyWaveText.DisplayCustomMessage(introMessage);
 	}
 
 	private void ShowEnemyWaveText(int waveNumber)

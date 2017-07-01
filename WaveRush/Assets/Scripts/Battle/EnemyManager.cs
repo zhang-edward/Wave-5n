@@ -20,10 +20,13 @@ public class EnemyManager : MonoBehaviour {
 
 	public EnemyHealthBar bossHealthBar;
 	private BossSpawn bossSpawn;
-	private float bossSpawnDelay = 3f;
+	private float bossSpawnDelay = 8f;
+	private bool hasBossSpawned = true;
 
 	public GameObject heartPickup;
 	public GameObject moneyPickup;
+	public GameObject upgradePickup;
+	public GameObject trappedHeroPrefab;
 
 	public int waveNumber { get; private set; }
 	private int difficultyCurve = 0;	// number to determine the number of enemies to spawn
@@ -48,10 +51,12 @@ public class EnemyManager : MonoBehaviour {
 
 	private IEnumerator StartSpawningEnemies()
 	{
+		// Wait for GUIManager to display its first message
+		yield return new WaitForSeconds(3f);
 		for (;;)
 		{
 			// all enemies dead
-			if (NumAliveEnemies() <= 0)
+			if (NumAliveEnemies() <= 0 && hasBossSpawned)
 			{
 				if (waveNumber >= 1)
 				{
@@ -62,27 +67,26 @@ public class EnemyManager : MonoBehaviour {
 				// spawn shop every 3 waves after wave 5
 				if (waveNumber % stageData.shopWave == 0 && waveNumber > 1)
 				{
+					if (player.hero.powerUpManager.GetNumUpgradesLeft() > 0)
+						Instantiate(upgradePickup, map.CenterPosition, Quaternion.identity);
 					// spawn shop npc before the boss
-					shopNPC.Appear ();
 					// wait for shopNPC to disappear
-					while (shopNPC.gameObject.activeInHierarchy)
-						yield return null;
+					/*while (shopNPC.gameObject.activeInHierarchy)
+						yield return null;*/
 				}
 				// if it is the wave after a boss wave (just defeated boss), spawn heart pickup
 				if (waveNumber % stageData.bossWave == 1 && waveNumber != 1)
 				{
 					Instantiate(heartPickup, map.CenterPosition, Quaternion.identity);
 				}
-
 				StartNextWave();
-
 				// every 'bossWave' waves, spawn a boss
 				if (waveNumber % stageData.bossWave == 0)
-				{					
-					StartBossIncoming (); 
+				{
+					StartBossIncoming();
+					hasBossSpawned = false;
 					level++;
 				}
-
 			}
 			yield return null;
 		}
@@ -158,6 +162,8 @@ public class EnemyManager : MonoBehaviour {
 
 	public void SpawnBoss()
 	{
+		SpawnTrappedHeroes();
+		hasBossSpawned = true;
 		bossSpawn.PlayAnimation ();
 		GameObject o = Instantiate (stageData.bossPrefabs [Random.Range (0, stageData.bossPrefabs.Count)]);
 		o.transform.SetParent (transform);
@@ -171,9 +177,17 @@ public class EnemyManager : MonoBehaviour {
 		bosses.Add ((BossEnemy)e);
 	}
 
+	public void SpawnTrappedHeroes()
+	{
+		// Spawn a trapped hero
+		int numTrappedHeroesToSpawn = Random.Range(1, 3);
+		for (int i = 0; i < numTrappedHeroesToSpawn; i++)
+			SpawnEnemy(trappedHeroPrefab, map.OpenCells[Random.Range(0, map.OpenCells.Count)]);
+	}
+
 	public bool IsStageComplete()
 	{
-		return waveNumber >= stageData.bossWave; 
+		return waveNumber > stageData.goalWave; 
 	}
 
 	/* ==========

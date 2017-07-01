@@ -34,7 +34,7 @@ public abstract class PlayerHero : MonoBehaviour {
 	public float damageMultiplier { get; set; }
 
 	[HideInInspector]
-	public HeroPowerUpHolder powerUpHolder;
+	public HeroPowerUpManager powerUpManager;
 
 	[Space]
 	public Sprite[] deathProps;
@@ -131,7 +131,7 @@ public abstract class PlayerHero : MonoBehaviour {
 
 	public virtual void Init(EntityPhysics body, Animator anim, Player player, Pawn heroData)
 	{
-		powerUpHolder = GetComponent<HeroPowerUpHolder> ();
+		powerUpManager = GetComponent<HeroPowerUpManager> ();
 		this.body = body;
 		this.anim = anim;
 		this.player = player;
@@ -144,7 +144,7 @@ public abstract class PlayerHero : MonoBehaviour {
 			cooldownMultipliers [i] = 1;
 		}
 		player.maxHealth = maxHealth;
-		powerUpHolder.Init (heroData);
+		powerUpManager.Init (heroData);
 		player.OnPlayerDamaged += ResetCombo;
 		player.OnEnemyDamaged += IncrementCombo;
 		player.OnEnemyDamaged += IncrementSpecialAbilityCharge;

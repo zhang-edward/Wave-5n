@@ -33,6 +33,11 @@ public class EnemyWaveText : MonoBehaviour {
 		StartCoroutine (DisplayMessage(bossIncomingMsg, BossIncomingEffect));
 	}
 
+	public void DisplayCustomMessage(MessageText.Message message)
+	{
+		StartCoroutine(DisplayMessage(message));
+	}
+
 	private void WaveEffect()
 	{
 		StartCoroutine(WaveEffectRoutine());

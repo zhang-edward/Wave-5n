@@ -10,7 +10,6 @@ public class PowerUpMenu : MonoBehaviour
 
 	[Header("Shop Items")]
 	public int numShopItems = 3;
-	public int numUpgrades = 2;
 	private int upgradesLeft;
 	private List<PowerUpItem> items = new List<PowerUpItem>();
 	public PowerUpItem selectedItem {
@@ -22,7 +21,9 @@ public class PowerUpMenu : MonoBehaviour
 		}
 	}
 	[Header("Set by Prefab")]
-	public Button upgradeButton;
+	public Button confirmButton;		// Button which confirms the upgrade
+	public GameObject upgradeButton;    // Button which opens this menu
+	public Text numUpgradesText; 		// Text indicating how many upgrades are left
 
 	private PowerUpItemsHolder itemsHolder;
 	private Animator animator;
@@ -32,21 +33,31 @@ public class PowerUpMenu : MonoBehaviour
 		itemsHolder = GetComponent<PowerUpItemsHolder> ();
 		animator = GetComponent<Animator> ();
 		player.OnPlayerInitialized += InitShopItemsHolder;
+		player.OnPlayerUpgradesUpdated += (numUpgrades) => {
+			upgradesLeft += numUpgrades;
+			if (upgradesLeft > itemsHolder.NumUpgradesLeft())
+				upgradesLeft = itemsHolder.NumUpgradesLeft();
+			
+			numUpgradesText.text = upgradesLeft.ToString();
+			if (upgradesLeft > 0)
+			{
+				upgradeButton.SetActive(true);
+			}
+		};
 	}
 
-	// get a list of potential shop items (create addPowerUpItems from the player's hero)
+	// Get a list of potential shop items (create addPowerUpItems from the player's hero)
 	private void InitShopItemsHolder()
 	{
 		itemsHolder.InitShopItemsList (player.hero);
-		upgradesLeft = numUpgrades;
 	}
 
-	// instantiate a random selection of shop items from the potential items list
+	// Instantiate a random selection of shop items from the potential items list
 	public void GetShopItems()
 	{
-		// set up the shop items holder
+		// Set up the shop items holder
 		itemsHolder.GetRandomShopItems (numShopItems);
-		// get the active shop items and add them to the list
+		// Get the active shop items and add them to the list
 		foreach (GameObject o in itemsHolder.potentialShopItems)
 		{
 			if (o.activeInHierarchy)
@@ -63,20 +74,22 @@ public class PowerUpMenu : MonoBehaviour
 	{
 		ResetToggles ();
 		animator.SetTrigger ("In");
-		upgradeButton.interactable = true;
+		confirmButton.interactable = true;
 		// Hard override input for player
 		player.input.enabled = false;
 
-		upgradesLeft = numUpgrades;
+		print("Upgrades left:" + itemsHolder.NumUpgradesLeft());
 	}
 
 	public void AnimateOut()
 	{
 		animator.SetTrigger ("Out");
-		upgradeButton.interactable = false;
+		confirmButton.interactable = false;
 		// Hard override input for player
 		player.input.enabled = true;
-		shopNPC.Disappear ();
+		if (upgradesLeft <= 0)
+			upgradeButton.SetActive(false);
+		// shopNPC.Disappear ();
 	}
 
 	private void ResetToggles()

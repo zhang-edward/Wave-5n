@@ -18,6 +18,9 @@ public class Player : MonoBehaviour, IDamageable
 	public event PlayerLifecycleEvent OnPlayerDied;
 	public event PlayerLifecycleEvent OnPlayerWillDie;
 
+	public delegate void PlayerUpgradesUpdated(int numUpgrades);
+	public event PlayerUpgradesUpdated OnPlayerUpgradesUpdated;
+
 	[HideInInspector]
 	public float DEFAULT_SPEED;
 
@@ -277,6 +280,12 @@ public class Player : MonoBehaviour, IDamageable
 		Time.timeScale = 0.2f;
 		yield return new WaitForSeconds (time);
 		Time.timeScale = 1f;
+	}
+
+	public void AddUpgrades(int numUpgrades)
+	{
+		if (OnPlayerUpgradesUpdated != null)
+			OnPlayerUpgradesUpdated(numUpgrades);
 	}
 }
 
