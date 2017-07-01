@@ -23,12 +23,19 @@ public class ScrollViewSnap : MonoBehaviour {
 	public delegate void EndedDrag ();
 	public event EndedDrag OnEndDrag;
 
+
 	void Awake()
 	{
 		if (initOnAwake)
-			Init();	
+			StartCoroutine(InitAfter1Frame());  // Due to some buggy shit with anchoredPositions in layouts at the start
 	}
 
+	IEnumerator InitAfter1Frame()
+	{
+		yield return new WaitForEndOfFrame();
+		Init();
+	}
+	
 	public void Init()
 	{
 		distances = new float[content.Count];

@@ -11,6 +11,7 @@ public class GUIManager : MonoBehaviour {
 	[Header("Game Over Panel")]
 	public GameObject gameOverUI;   // game over panel
 	public ScoreReport scorePanel;  // score report in game over panel
+	public GameObject stageClearPanel;
 
 	[Header("Data")]
 	public EnemyManager enemyManager;
@@ -46,6 +47,20 @@ public class GUIManager : MonoBehaviour {
 		gameOverUI.SetActive (true);
 		yield return new WaitForSeconds(0.5f);
 		scorePanel.ReportScore(data);
+	}
+
+	public void TryShowStageCompleteView()
+	{
+		StartCoroutine(StageCompleteViewRoutine());
+	}
+
+	private IEnumerator StageCompleteViewRoutine()
+	{
+		if (enemyManager.IsStageComplete())
+			stageClearPanel.SetActive(true);
+		yield return new WaitForSeconds(1.0f);
+		GameManager.instance.GoToScene("MainMenu");
+		yield return null;
 	}
 
 	private void ShowEnemyWaveText(int waveNumber)

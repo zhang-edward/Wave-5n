@@ -14,7 +14,7 @@ public class BattleSceneManager : MonoBehaviour
 	public Player player;
 	public GUIManager gui;
 
-	private List<Pawn> acquiredPawns = new List<Pawn>();
+	public List<Pawn> acquiredPawns { get; private set; }
 
 	void Awake()
 	{
@@ -24,6 +24,7 @@ public class BattleSceneManager : MonoBehaviour
 		else if (instance != this)
 			Destroy(this.gameObject);
 
+		acquiredPawns = new List<Pawn>();
 		gm = GameManager.instance;
 		gm.OnSceneLoaded += Init;
 		player.OnPlayerDied += UpdateData;
@@ -75,11 +76,6 @@ public class BattleSceneManager : MonoBehaviour
 
 		gm.wallet.MergeEarnedMoney();
 		gm.UpdateScores(enemiesDefeated, wavesSurvived, maxCombo);
-	}
-
-	private void ShowGameOverUI()
-	{
-		
 	}
 
 	private bool IsPlayerOnLatestStage()

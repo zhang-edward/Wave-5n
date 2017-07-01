@@ -42,13 +42,13 @@ public class DebugCheatMenu : MonoBehaviour
 
 	public void KillPlayer()
 	{
-		Player plyr = gm.playerObj.GetComponentInChildren<Player>();
+		Player plyr = GameObject.Find("/Game/Player").GetComponentInChildren<Player>();
 		plyr.Damage(plyr.health);
 	}
 
 	public void FullChargeSpecial()
 	{
-		Player plyr = gm.playerObj.GetComponentInChildren<Player>();
+		Player plyr = GameObject.Find("/Game/Player").GetComponentInChildren<Player>();
 		plyr.hero.IncrementSpecialAbilityCharge(int.MaxValue);
 	}
 
