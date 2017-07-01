@@ -46,7 +46,7 @@ public class MoneyPickup : MonoBehaviour
 			rb2d.velocity = dir * distance * 5;
 			if (distance <= 1.0)
 			{
-				GameManager.instance.wallet.Earn (value, false);
+				BattleSceneManager.instance.AddMoney(value);
 				SoundManager.instance.PlaySingle (coinPickupSound);
 				Destroy (gameObject);
 			}

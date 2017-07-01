@@ -13,6 +13,7 @@ public class ScrollingText : MonoBehaviour {
 	public string text;		// text to display in the text box
 
 	private AudioSource audioSource;
+	private bool textIsScrolling;
 
 	void Awake()
 	{
@@ -47,15 +48,23 @@ public class ScrollingText : MonoBehaviour {
 
 	IEnumerator AnimateText()
 	{
-		bool playSound = true;
+		textIsScrolling = true;
+		StartCoroutine(PlaySound());
 		for (int i = 0; i < CountNonMarkupCharacters(text) + 1; i++)
 		{
 			textBox.text = ParseRichTextForTypewriter(i, text);
-			if (playSound)
-				audioSource.Play();
-			playSound = !playSound;
-			yield return new WaitForSeconds(.03f);
+			yield return new WaitForSecondsRealtime(.01f);
 		}
+		textIsScrolling = false;
+	}
+
+	IEnumerator PlaySound()
+	{
+		while (textIsScrolling)
+		{
+			audioSource.Play();
+			yield return new WaitForSecondsRealtime(0.05f);
+		}		
 	}
 
 	/// <summary>
@@ -98,7 +107,9 @@ public class ScrollingText : MonoBehaviour {
 			int endIndex = str.IndexOf ('>', startIndex);
 			int length = endIndex - startIndex + 1;
 			answer += str.Substring (startIndex, length);
+			i += length;
 		}
+		answer += START_INVISIBLE_TAG + str.Substring(i) + END_INVISIBLE_TAG;	// prevents "text jumping"
 		return answer;
 	}
 

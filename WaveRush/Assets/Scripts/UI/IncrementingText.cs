@@ -7,6 +7,8 @@ public class IncrementingText : MonoBehaviour {
 
 	public Text text;
 	public int numberToReport;
+
+	public bool alterPitch = true;
 	public AudioClip blipSound;
 	public AudioSource audioSrc;
 
@@ -31,7 +33,6 @@ public class IncrementingText : MonoBehaviour {
 		doneUpdating = false;
 		//Debug.Log ("moneyEarned: " + text.text);
 		int incrementer = int.Parse(text.text.ToString());
-		yield return new WaitForSeconds (1.0f);
 		while (incrementer != numberToReport)
 		{
 			if (Mathf.Abs(numberToReport - incrementer) > 50)
@@ -42,16 +43,22 @@ public class IncrementingText : MonoBehaviour {
 			{
 				incrementer += ((int)Mathf.Sign (numberToReport - incrementer));
 			}
-			
+			if (audioSrc != null)
+				PlayAudio(incrementer);
 			text.text = incrementer.ToString ();
-			pitch = ((float)incrementer / numberToReport) + 0.5f;
-			audioSrc.pitch = pitch;
-			audioSrc.clip = blipSound;
-			audioSrc.Play ();
+
 			yield return new WaitForSeconds (0.03f);
 		}
 		doneUpdating = true;
 		yield return null;
+	}
+
+	private void PlayAudio(int incrementer)
+	{
+		pitch = ((float)incrementer / numberToReport) + 0.5f;
+		audioSrc.pitch = pitch;
+		audioSrc.clip = blipSound;
+		audioSrc.Play();
 	}
 
 	void Update()

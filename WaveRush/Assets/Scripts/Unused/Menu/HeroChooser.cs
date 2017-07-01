@@ -79,7 +79,7 @@
 		{
 			HeroIcon hero = heroIconsView.SelectedContent.GetComponent<HeroIcon>();
 			Wallet wallet = GameManager.instance.wallet;
-			if (wallet.TrySpend(hero.cost))
+			if (wallet.TrySpendMoney(hero.cost))
 			{
 				hero.Unlock();
 				UpdateHeroInfoPanel();

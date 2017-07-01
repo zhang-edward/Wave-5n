@@ -77,8 +77,9 @@ public class PowerUpMenu : MonoBehaviour
 		confirmButton.interactable = true;
 		// Hard override input for player
 		player.input.enabled = false;
+		player.SetPause(true);
 
-		print("Upgrades left:" + itemsHolder.NumUpgradesLeft());
+		//print("Upgrades left:" + itemsHolder.NumUpgradesLeft());
 	}
 
 	public void AnimateOut()
@@ -87,9 +88,9 @@ public class PowerUpMenu : MonoBehaviour
 		confirmButton.interactable = false;
 		// Hard override input for player
 		player.input.enabled = true;
+		player.SetPause(false);
 		if (upgradesLeft <= 0)
 			upgradeButton.SetActive(false);
-		// shopNPC.Disappear ();
 	}
 
 	private void ResetToggles()
@@ -107,7 +108,6 @@ public class PowerUpMenu : MonoBehaviour
 			return;
 		selectedItem.Upgrade (player);
 		ResetToggles();
-		
 		upgradesLeft--;
 		if (upgradesLeft <= 0)
 		{
@@ -117,6 +117,7 @@ public class PowerUpMenu : MonoBehaviour
 		{
 			RefreshItems();
 		}
+		numUpgradesText.text = upgradesLeft.ToString();
 	}
 }
 

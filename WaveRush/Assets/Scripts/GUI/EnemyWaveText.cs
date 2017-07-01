@@ -47,9 +47,9 @@ public class EnemyWaveText : MonoBehaviour {
 	{
 		waveAnim.gameObject.SetActive(true);
 		waveAnim.Play();
-		yield return new WaitForSecondsRealtime(waveMsg.persistTime);
+		yield return new WaitForSeconds(waveMsg.persistTime);
 		StartCoroutine(FadeOutCanvasGroup(mainMessageGroup, 0.2f));
-		yield return new WaitForSecondsRealtime(0.2f);
+		yield return new WaitForSeconds(0.2f);
 		waveAnim.gameObject.SetActive(false);
 		mainMessageGroup.alpha = 1;
 	}
@@ -76,7 +76,7 @@ public class EnemyWaveText : MonoBehaviour {
 
 		canDisplayNextMessage = false;
 		DoMessage(msg, callback);
-		yield return new WaitForSecondsRealtime(msg.totalMessageTime);
+		yield return new WaitForSeconds(msg.totalMessageTime);
 		canDisplayNextMessage = true;
 	}
 

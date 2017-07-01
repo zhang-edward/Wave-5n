@@ -14,7 +14,9 @@ public class BattleSceneManager : MonoBehaviour
 	public Player player;
 	public GUIManager gui;
 
-	public List<Pawn> acquiredPawns { get; private set; }
+	public List<Pawn> acquiredPawns { get; private set; }   // pawns acquired this session
+	public int moneyEarned { get; private set; } 			// money earned in this session
+	public int soulsEarned { get; private set; }			// souls earned in this session
 
 	void Awake()
 	{
@@ -57,7 +59,7 @@ public class BattleSceneManager : MonoBehaviour
 			wavesSurvived: 		enemyManager.waveNumber - 1,
 			maxCombo: 			player.hero.maxCombo,
 			money: 				gm.wallet.money,
-			moneyEarned: 		gm.wallet.moneyEarned);
+			moneyEarned: 		moneyEarned);
 		gui.GameOverUI(data);
 
 		if (enemyManager.IsStageComplete() && IsPlayerOnLatestStage())
@@ -76,7 +78,7 @@ public class BattleSceneManager : MonoBehaviour
 		int wavesSurvived = enemyManager.waveNumber;
 		int maxCombo = player.hero.maxCombo;
 
-		gm.wallet.MergeEarnedMoney();
+		gm.wallet.AddMoney(moneyEarned);
 		gm.UpdateScores(enemiesDefeated, wavesSurvived, maxCombo);
 	}
 
@@ -89,5 +91,17 @@ public class BattleSceneManager : MonoBehaviour
 	public void AddPawn(Pawn pawn)
 	{
 		acquiredPawns.Add(pawn);
+	}
+
+	public void AddMoney(int amt)
+	{
+		moneyEarned += amt;
+		gui.UpdateMoney(moneyEarned);
+	}
+
+	public void AddSouls(int amt)
+	{
+		soulsEarned += amt;
+		gui.UpdateSouls(soulsEarned);
 	}
 }

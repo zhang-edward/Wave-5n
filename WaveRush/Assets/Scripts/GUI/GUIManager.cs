@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class GUIManager : MonoBehaviour {
@@ -7,6 +8,9 @@ public class GUIManager : MonoBehaviour {
 	[Header("GUI")]
 	public GameObject gameUI;
 	public EnemyWaveText enemyWaveText;
+	public Text waveIndicatorText;
+	public IncrementingText moneyEarnedText;
+	public IncrementingText soulsEarnedText;
 
 	[Header("Game Over Panel")]
 	public GameObject gameOverUI;   	// game over panel
@@ -37,31 +41,9 @@ public class GUIManager : MonoBehaviour {
 		StartCoroutine(GameOverUIRoutine(data));
 	}
 
-	private IEnumerator GameOverUIRoutine(ScoreReport.ScoreReportData data)
-	{
-		yield return new WaitForSeconds(1f);
-		gameUI.SetActive (false);
-		gameOverUI.GetComponent<Animator> ().SetTrigger ("In");
-		scorePanel.moneyText.text.text = data.money.ToString();
-		scorePanel.moneyEarned.text.text = data.moneyEarned.ToString();
-
-		gameOverUI.SetActive (true);
-		yield return new WaitForSeconds(0.5f);
-		scorePanel.ReportScore(data);
-	}
-
 	public void TryShowStageCompleteView()
 	{
 		StartCoroutine(StageCompleteViewRoutine());
-	}
-
-	private IEnumerator StageCompleteViewRoutine()
-	{
-		if (enemyManager.IsStageComplete())
-			stageClearPanel.SetActive(true);
-		yield return new WaitForSeconds(1.0f);
-		GameManager.instance.GoToScene("MainMenu");
-		yield return null;
 	}
 
 	public void DisplayIntroMessage()
@@ -75,8 +57,31 @@ public class GUIManager : MonoBehaviour {
 		enemyWaveText.DisplayCustomMessage(introMessage);
 	}
 
+	private IEnumerator GameOverUIRoutine(ScoreReport.ScoreReportData data)
+	{
+		yield return new WaitForSeconds(1f);
+		gameUI.SetActive(false);
+		gameOverUI.GetComponent<Animator>().SetTrigger("In");
+		scorePanel.moneyText.text.text = data.money.ToString();
+		scorePanel.moneyEarned.text.text = data.moneyEarned.ToString();
+
+		gameOverUI.SetActive(true);
+		yield return new WaitForSeconds(0.5f);
+		scorePanel.ReportScore(data);
+	}
+
+	private IEnumerator StageCompleteViewRoutine()
+	{
+		if (enemyManager.IsStageComplete())
+			stageClearPanel.SetActive(true);
+		yield return new WaitForSeconds(1.0f);
+		GameManager.instance.GoToScene("MainMenu");
+		yield return null;
+	}
+
 	private void ShowEnemyWaveText(int waveNumber)
 	{
+		waveIndicatorText.text = waveNumber.ToString();
 		enemyWaveText.DisplayWaveNumber (waveNumber);
 	}
 
@@ -88,5 +93,15 @@ public class GUIManager : MonoBehaviour {
 	private void ShowBossIncomingText()
 	{
 		enemyWaveText.DisplayBossIncoming ();
+	}
+
+	public void UpdateMoney(int num)
+	{
+		moneyEarnedText.DisplayNumber(num);
+	}
+
+	public void UpdateSouls(int num)
+	{
+		soulsEarnedText.DisplayNumber(num);
 	}
 } 

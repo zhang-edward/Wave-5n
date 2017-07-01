@@ -10,7 +10,7 @@ public class SimpleAnimationPlayerImage : MonoBehaviour {
 	private int frameIndex;
 
 	public bool playOnStart = false;
-	public bool isPlaying;
+	public bool isPlaying { get; private set; }
 	public bool looping;
 
 	public void Start()

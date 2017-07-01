@@ -67,10 +67,10 @@ public class MessageText : MonoBehaviour
 			text.canvasRenderer.SetAlpha (1);
 			if (OnFlashMessage != null)
 				OnFlashMessage ();
-			yield return new WaitForSecondsRealtime (persistTime);
+			yield return new WaitForSeconds (persistTime);
 			text.CrossFadeAlpha (0, fadeOutTime, true);	// fade out
 
-			yield return new WaitForSecondsRealtime (fadeOutTime + 0.1f);
+			yield return new WaitForSeconds (fadeOutTime + 0.1f);
 			numTimes--;
 		}
 		displaying = false;

@@ -23,7 +23,7 @@ namespace Unused
 		private void UnlockHero()
 		{
 			Wallet wallet = GameManager.instance.wallet;
-			if (wallet.TrySpend(hero.cost))
+			if (wallet.TrySpendMoney(hero.cost))
 			{
 				hero.Unlock();
 				chooser.UpdateHeroInfoPanel();

@@ -4,49 +4,50 @@ using System.Collections;
 [System.Serializable]
 public class Wallet
 {
-	public int money { get; private set; }			// amount of money
-	public int moneyEarned { get; private set; }	// amount of money earned this round (if currently in-game)
+	public int money { get; private set; }
+	public int souls { get; private set; }
 
-	public bool TrySpend(int amt)
+	public bool TrySpendMoney(int amt)
 	{
-		if (moneyEarned >= amt)
+		if (money > amt)
 		{
-			moneyEarned -= amt;
+			money -= amt;
 			return true;
 		}
-		else if (moneyEarned + money >= amt)
+		return false;
+	}
+
+	public bool TrySpendSouls(int amt)
+	{
+		if (souls > amt)
 		{
-			money -= (amt - moneyEarned);
-			moneyEarned = 0;
+			souls -= amt;
 			return true;
 		}
-		else
-			return false;
+		return false;
 	}
 
-	public void Earn(int amt, bool addDirect)
+	public void AddMoney(int amt)
 	{
-		if (addDirect)
-			money += amt;
-		else
-			moneyEarned += amt;
+		money += amt;
 	}
 
-	public void MergeEarnedMoney()
+	public void AddSouls(int amt)
 	{
-		money += moneyEarned;
-		moneyEarned = 0;
+		souls += amt;
 	}
 
+	// ==========
 	// DEBUG
+	// ==========
 	public void SetMoneyDebug(int amt)
 	{
 		money = amt;
 	}
 
-	public void SetEarnedMoneyDebug(int amt)
+	public void SetSoulsDebug(int amt)
 	{
-		moneyEarned = amt;
+		souls = amt;
 	}
 }
 
