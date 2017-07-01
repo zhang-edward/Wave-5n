@@ -95,7 +95,7 @@ public class Enemy : MonoBehaviour, IDamageable {
 
 	private void OnDrawGizmosSelected()
 	{
-		Gizmos.DrawCube(transform.position + healthBarOffset, new Vector3(1.5f, 0.3f));
+		Gizmos.DrawWireCube(transform.position + healthBarOffset, new Vector3(1f, 0.3f));
 	}
 
 	// ============================== Abilities and Statuses ==============================

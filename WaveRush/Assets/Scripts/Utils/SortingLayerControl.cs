@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[ExecuteInEditMode]
 public class SortingLayerControl : MonoBehaviour {
 
 	public bool updating = false;
-	public bool isPivotInMiddle = true;
+	public bool usingCustomPivot = false;
+	public float customPivot;
 	SpriteRenderer sr;
 
 	// Use this for initialization
@@ -20,6 +22,21 @@ public class SortingLayerControl : MonoBehaviour {
 			SetSortingOrder ();
 	}
 
+	private void OnDrawGizmosSelected()
+	{
+		if (usingCustomPivot)
+		{
+			Vector3 customPivotPosition = transform.position + (Vector3.up * customPivot);
+			Gizmos.DrawWireSphere(customPivotPosition, 0.2f);
+		}
+		else
+		{
+			float offset = sr.bounds.size.y / 2;
+			Vector3 customPivotPosition = transform.position + (Vector3.down * offset);
+			Gizmos.DrawWireSphere(customPivotPosition, 0.2f);
+		}
+	}
+
 	private IEnumerator SetSortingOrderRepeating()
 	{
 		for (;;)
@@ -31,9 +48,12 @@ public class SortingLayerControl : MonoBehaviour {
 
 	private void SetSortingOrder()
 	{
-		float offset = 0;
-		if (isPivotInMiddle)
+		float offset;
+		if (!usingCustomPivot)
 			offset = sr.bounds.size.y / 2;
+		else
+			offset = -customPivot;
+			
 		sr.sortingOrder = (int)((transform.position.y - offset) * -100);
 	}
 }
