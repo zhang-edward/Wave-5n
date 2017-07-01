@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class HeroPowerUpHolder : MonoBehaviour
+public class HeroPowerUpManager : MonoBehaviour
 {
 	private PlayerHero hero;
 	[System.Serializable]
@@ -19,12 +19,11 @@ public class HeroPowerUpHolder : MonoBehaviour
 			powerUpPrefab = prefab;
 		}
 	}
-
 	public List<HeroPowerUp> powerUps;	// list of powerups that are available to the player in the game
 	public int numActivePowerUps;		// used only for the powerUpsMeter UI Element
-
 	public delegate void OnPowerUpsChanged();
 	public OnPowerUpsChanged OnPowerUpAdded;
+
 
 	public void Init(Pawn pawnData)
 	{
@@ -80,6 +79,18 @@ public class HeroPowerUpHolder : MonoBehaviour
 		// send event
 		if (OnPowerUpAdded != null)
 			OnPowerUpAdded();
+	}
+
+	public int GetNumUpgradesLeft()
+	{
+		int answer = 0;
+		foreach (HeroPowerUp powerUp in powerUps)
+		{
+			if (!powerUp.isActive)
+				answer++;
+			answer += powerUp.data.maxStacks - powerUp.stacks;
+		}
+		return answer;
 	}
 }
 

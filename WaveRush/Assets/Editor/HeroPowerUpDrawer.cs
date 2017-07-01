@@ -1,7 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-[CustomPropertyDrawer(typeof(HeroPowerUpHolder.HeroPowerUpDictionaryEntry))]
+[CustomPropertyDrawer(typeof(HeroPowerUpManager.HeroPowerUpDictionaryEntry))]
 public class HeroPowerUpHolderDrawer : PropertyDrawer
 {
 	public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)

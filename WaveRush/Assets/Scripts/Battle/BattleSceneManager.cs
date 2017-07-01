@@ -43,6 +43,7 @@ public class BattleSceneManager : MonoBehaviour
 		map.GenerateMap();
 		player.Init(pawn);	
 		enemyManager.Init(stage);
+		gui.DisplayIntroMessage();
 
 		SoundManager.instance.PlayMusicLoop(map.data.musicLoop, map.data.musicIntro);   // Plays the game music, looped
 
@@ -65,6 +66,7 @@ public class BattleSceneManager : MonoBehaviour
 			print("Stage Complete");
 		}
 
+		gm.saveGame.RemovePawn(gm.selectedPawn.id);
 		foreach(Pawn pawn in acquiredPawns)
 		{
 			gm.saveGame.AddPawn(pawn);
