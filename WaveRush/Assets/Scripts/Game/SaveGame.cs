@@ -17,8 +17,8 @@ public class SaveGame
 
 	public int pawnCapacity { private get; set; }	// the total amount of pawns that the player can possess at one time
 	public int numPawns;							// how many pawns the player has
-	public Pawn[] pawns;                            // the master list of the different pawns the player possesses
-	public Pawn[] extraPawns;					// a list of extra pawns acquired - must be empty to enter battle
+	public Pawn[] pawns { get; private set; }		// the master list of the different pawns the player possesses
+	public Pawn[] extraPawns { get; private set; }	// a list of extra pawns acquired - must be empty to enter battle
 
 	public int latestUnlockedSeriesIndex;   // the number of series unlocked in the regular collection (main storyline)
 	public int latestUnlockedStageIndex;	// the number of stages unlocked in the current latest series

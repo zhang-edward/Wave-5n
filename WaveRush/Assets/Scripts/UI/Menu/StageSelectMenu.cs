@@ -26,8 +26,10 @@ public class StageSelectMenu : MonoBehaviour
 	public GameObject placeholder;
 	public GameObject highlightMenu;
 
-	void Start()
+	void OnEnable()
 	{
+		DeselectStageIcon();
+		stageSelectionView.SetActive(false);
 		InitStageSeriesSelectionView();
 	}
 

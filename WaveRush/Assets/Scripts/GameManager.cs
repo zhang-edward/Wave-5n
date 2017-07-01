@@ -15,12 +15,10 @@ public class GameManager : MonoBehaviour {
 	public Pawn selectedPawn;
 	public int selectedSeriesIndex;
 	public int selectedStageIndex;
-
+	[Header("Data")]
 	public StageCollectionData regularStages;
-
 	public ScoreManager scoreManager;
 	public Wallet wallet;
-
 	[Header("Persistent UI")]
 	public Image loadingOverlay;
 	public GameObject debugPanel;

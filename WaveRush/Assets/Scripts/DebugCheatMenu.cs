@@ -13,24 +13,21 @@ public class DebugCheatMenu : MonoBehaviour
 	private Player player;
 	private EnemyManager enemyManager;
 
-
-	void Start()
+	void OnEnable()
 	{
 		gm = GameManager.instance;
-		gm.OnSceneLoaded += UpdateDebugMenuOptions;
 		UpdateDebugMenuOptions();
 	}
 
 	void UpdateDebugMenuOptions()
 	{
 		bool isBattleSceneOpen = SceneManager.GetActiveScene().name.Equals("Game");
-		battleSceneDebugOptions.SetActive(isBattleSceneOpen);
 		menuSceneDebugOptions.SetActive(!isBattleSceneOpen);
+		battleSceneDebugOptions.SetActive(isBattleSceneOpen);
 		if (isBattleSceneOpen)
 		{
 			player = GameObject.Find("/Game/Player").GetComponentInChildren<Player>();
 			enemyManager = GameObject.Find("/Game/EnemyManager").GetComponent<EnemyManager>();
-
 		}
 	}
 

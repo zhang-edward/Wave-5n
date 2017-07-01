@@ -17,8 +17,9 @@ public class PawnFusionMenu : MonoBehaviour
 	public GameObject highlightMenu;
 	public Button selectButton, infoButton;
 
-	void Start()
+	void Awake()
 	{
+		pawnSelectionView.Init();
 		// Clicking on the fuseMatIcons deselects that pawn for fusion
 		fuseMatIcon1.onClick = (iconData) =>
 		{
@@ -34,8 +35,12 @@ public class PawnFusionMenu : MonoBehaviour
 			numSelected--;
 			UpdatePawnSelectionViewInteractability();
 		};
+	}
+
+	void OnEnable()
+	{
 		// Clicking on a pawn in the pawnSelectionView brings up the highlight menu
-		pawnSelectionView.Init();
+		pawnSelectionView.Refresh();
 		foreach (PawnIcon pawnIcon in pawnSelectionView.pawnIcons)
 		{
 			PawnIconStandard icon = (PawnIconStandard)pawnIcon;
@@ -46,13 +51,13 @@ public class PawnFusionMenu : MonoBehaviour
 				highlightMenu.transform.SetParent(iconData.transform, false);
 			};
 		}
+	}
+
+	private void OnDisable()
+	{
 		Reset();
 	}
 
-	void Init()
-	{
-
-	}
 
 	public void Reset()
 	{
@@ -62,8 +67,10 @@ public class PawnFusionMenu : MonoBehaviour
 		fuseMatIcon1.gameObject.SetActive(false);
 		fuseMatIcon2.gameObject.SetActive(false);
 		resultIcon.gameObject.SetActive(false);
+		highlightMenu.SetActive(false);
 		numSelected = 0;
 		UpdatePawnSelectionViewInteractability();
+		pawnSelectionView.Refresh();
 	}
 
 	private void UpdatePawnSelectionViewInteractability()
@@ -108,6 +115,7 @@ public class PawnFusionMenu : MonoBehaviour
 
 	public void ConfirmResult()
 	{
+		print("Refreshing page");
 		pawnSelectionView.Refresh();
 		Reset();
 	}
