@@ -23,7 +23,13 @@ public class AnimationSet
 	{
 		AnimationSetAnim animation = animDictionary[name];
 		player.anim = animation;
+		player.ignoreTimeScaling = animation.ignoreTimeScale;
 		player.looping = animation.looping;
 		player.Play();
+	}
+
+	public AnimationSetAnim GetAnimation(string name)
+	{
+		return animDictionary[name];
 	}
 }

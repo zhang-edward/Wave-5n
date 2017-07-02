@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CameraControl : MonoBehaviour {
+public class CameraControl : MonoBehaviour
+{
 
 	public static CameraControl instance;
 	public Camera cam;
@@ -12,14 +13,17 @@ public class CameraControl : MonoBehaviour {
 	public SpriteRenderer screenFlash;
 	public SpriteRenderer screenOverlay;
 
+	private Coroutine flashRoutine;
+	private Coroutine overlayRoutine;
+
 	void Awake()
 	{
 		if (instance == null)
 			instance = this;
 		else if (instance != this)
-			Destroy (this.gameObject);
+			Destroy(this.gameObject);
 
-		player = GameObject.Find ("/Game/Player").GetComponentInChildren<Player> ();
+		player = GameObject.Find("/Game/Player").GetComponentInChildren<Player>();
 		cam.orthographicSize = 5;
 
 		focus = player.transform;
@@ -27,22 +31,22 @@ public class CameraControl : MonoBehaviour {
 
 		float height = cam.orthographicSize * 2.0f;
 		float width = height * Screen.width / Screen.height;
-		screenFlash.transform.localScale = new Vector3 (width, height, 1);
-		screenFlash.color = new Color (1, 1, 1, 0);
-		screenOverlay.transform.localScale = new Vector3 (width, height, 1);
-		screenOverlay.color = new Color (1, 1, 1, 0);
+		screenFlash.transform.localScale = new Vector3(width, height, 1);
+		screenFlash.color = new Color(1, 1, 1, 0);
+		screenOverlay.transform.localScale = new Vector3(width, height, 1);
+		screenOverlay.color = new Color(1, 1, 1, 0);
 	}
 
 	void Update()
 	{
 		if (secondaryFocus != null)
 		{
-			Vector3 target = Vector3.Lerp (focus.position, secondaryFocus.position, 0.2f);
-			transform.position = Vector3.Lerp (transform.position, target, Time.deltaTime * 8f);
+			Vector3 target = Vector3.Lerp(focus.position, secondaryFocus.position, 0.2f);
+			transform.position = Vector3.Lerp(transform.position, target, Time.deltaTime * 8f);
 		}
 		else
 		{
-			transform.position = Vector3.Lerp (transform.position, focus.position, Time.deltaTime * 8f);
+			transform.position = Vector3.Lerp(transform.position, focus.position, Time.deltaTime * 8f);
 		}
 	}
 
@@ -70,17 +74,17 @@ public class CameraControl : MonoBehaviour {
 
 	private void OnEnemyDamaged(float strength)
 	{
-		StartShake (0.05f,  0.2f);
+		StartShake(0.05f, 0.2f);
 	}
 
 	private void OnPlayerDamaged(int damage)
 	{
-		StartFlashColor (new Color(1, 0, 0, 1));
+		StartFlashColor(Color.red, 0.4f, 0, 0, 0.4f);
 	}
 
 	public void StartShake(float time, float magnitude)
 	{
-		StartCoroutine (CameraShake (time, magnitude));
+		StartCoroutine(CameraShake(time, magnitude));
 	}
 
 	private IEnumerator CameraShake(float time, float magnitude)
@@ -90,46 +94,80 @@ public class CameraControl : MonoBehaviour {
 			time -= Time.deltaTime;
 			float randX = UtilMethods.RandSign() * magnitude;
 			float randY = UtilMethods.RandSign() * magnitude;
-		
+
 			cam.transform.localPosition = new Vector3(randX, randY, -10);
 			yield return null;
 		}
-		cam.transform.localPosition = new Vector3 (0, 0, -10);
+		cam.transform.localPosition = new Vector3(0, 0, -10);
 	}
 
-	public void StartFlashColor(Color color, float time = 0.4f)
+	// ==========
+	// Flash
+	// ==========
+	public void StartFlashColor(Color color, float a = 1f, float fadeInTime = 1.0f, float persistTime = 1.0f, float fadeOutTime = 1.0f)
 	{
-		StartCoroutine(FlashColor(color, time));
+		if (flashRoutine != null)
+			StopCoroutine(flashRoutine);
+		flashRoutine = StartCoroutine(FlashColor(color, a, fadeInTime, persistTime, fadeOutTime));
 	}
 
-	private IEnumerator FlashColor(Color color, float time)
+	private IEnumerator FlashColor(Color color, float a, float fadeInTime = 1.0f, float persistTime = 1.0f, float fadeOutTime = 1.0f)
 	{
-		screenFlash.color = color;
-		float t = time;
-		while (t > 0)
+		if (fadeInTime > 0)
 		{
-			t -= Time.deltaTime;
-			screenFlash.color = new Color (color.r, color.b, color.g, t);
-			yield return null;
+			StartCoroutine(FadeIn(screenFlash, color, a, fadeInTime));
+			yield return new WaitForSeconds(fadeInTime);
 		}
+		screenFlash.color = new Color(color.r, color.g, color.b, a);
+		yield return new WaitForSeconds(persistTime);
+		if (fadeOutTime > 0)
+		{
+			StartCoroutine(FadeOut(screenFlash, fadeOutTime));
+			yield return new WaitForSeconds(fadeOutTime);
+		}
+		screenFlash.color = new Color(color.r, color.g, color.b, 0);
 	}
 
-	public void SetOverlayColor(Color color, float a)
+	// ==========
+	// Overlay
+	// ==========
+	public void SetOverlayColor(Color color, float a, float fadeInTime = 1.0f)
 	{
-		StartCoroutine (FadeOverlayColor (color, a));
+		if (overlayRoutine != null)
+			StopCoroutine(overlayRoutine);
+		overlayRoutine = StartCoroutine(FadeIn(screenOverlay, color, a, fadeInTime));
 	}
 
-	private IEnumerator FadeOverlayColor(Color color, float a)
+	public void DisableOverlay(float fadeOutTime)
 	{
-		screenOverlay.color = new Color(color.r, color.g, color.b, 0);
+		if (overlayRoutine != null)
+			StopCoroutine(overlayRoutine);
+		overlayRoutine = StartCoroutine(FadeOut(screenOverlay, fadeOutTime));
+	}
+
+	private IEnumerator FadeIn(SpriteRenderer sr, Color color, float a, float time)
+	{
+		sr.color = new Color(color.r, color.g, color.b, 0);
 		float t = 0f;
-		while (t < 1f)
+		while (t < time)
 		{
 			t += Time.deltaTime;
-			screenOverlay.color = new Color (color.r, color.g, color.b, Mathf.Lerp(screenOverlay.color.a, a, t));
+			sr.color = new Color(color.r, color.g, color.b, Mathf.Lerp(sr.color.a, a, t / time));
 			yield return null;
 		}
-		screenOverlay.color = new Color(color.r, color.g, color.b, a);
+		sr.color = new Color(color.r, color.g, color.b, a);
+	}
 
+	private IEnumerator FadeOut(SpriteRenderer sr, float time)
+	{
+		Color color = sr.color;
+		float t = 0f;
+		while (t < time)
+		{
+			t += Time.deltaTime;
+			sr.color = new Color(color.r, color.g, color.b, Mathf.Lerp(sr.color.a, 0, t / time));
+			yield return null;
+		}
+		sr.color = new Color(color.r, color.g, color.b, 0);
 	}
 }

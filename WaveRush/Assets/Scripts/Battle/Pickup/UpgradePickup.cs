@@ -7,9 +7,10 @@ public class UpgradePickup : MonoBehaviour
 	{
 		if (col.CompareTag("Player"))
 		{
+			//Debug.Break();
 			Player player = col.GetComponentInChildren<Player>();
 			player.AddUpgrades(2);
-			CameraControl.instance.StartFlashColor(Color.white);
+			CameraControl.instance.StartFlashColor(Color.white, 0.4f, 0, 0, 1f);
 			Destroy(gameObject);
 		}
 	}

@@ -44,7 +44,7 @@ public class KnightMassStun : HeroPowerUp
 		SoundManager.instance.RandomizeSFX(effectSound);
 		float delay = massStunExplosionAnim.SecondsPerFrame * 9f; // wait until frame 9
 		yield return new WaitForSeconds(delay);
-		CameraControl.instance.StartFlashColor(Color.white, 0.1f);
+		CameraControl.instance.StartFlashColor(Color.white, 1, 0, 0.1f, 0.5f);
 		SoundManager.instance.RandomizeSFX(attackSound);
 		AreaAttack();
 	}

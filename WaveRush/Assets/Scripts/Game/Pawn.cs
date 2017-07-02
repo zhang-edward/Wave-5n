@@ -9,7 +9,6 @@ public class Pawn
 	public const int MAX_LEVEL = 9;
 
 	public HeroType type;		// the type of the hero
-	public HeroData data;		// contains all data about thie hero
 	public int level;           // the level of the hero
 	public int id { get; private set; }
 
@@ -37,7 +36,6 @@ public class Pawn
 	public Pawn(HeroType type)
 	{
 		this.type = type;
-		data = DataManager.GetHeroData(type);
 	}
 
 	public void SetID(int id)
@@ -63,6 +61,7 @@ public class Pawn
 	public AnimationSet GetAnimationSet()
 	{
 		AnimationSet answer;
+		HeroData data = DataManager.GetHeroData(type);
 		switch(tier)
 		{
 			case HeroTier.tier1:

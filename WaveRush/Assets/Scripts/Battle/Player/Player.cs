@@ -271,7 +271,7 @@ public class Player : MonoBehaviour, IDamageable
 	private IEnumerator TempSlowDown(float time)
 	{
 		Time.timeScale = 0.2f;
-		yield return new WaitForSeconds (time);
+		yield return new WaitForSecondsRealtime (time);
 		Time.timeScale = 1f;
 	}
 

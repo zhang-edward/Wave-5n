@@ -67,7 +67,7 @@ public class KnightSuperShield : HeroPowerUp
 			if (col.CompareTag("Enemy"))
 			{
 				numEnemiesHit++;
-				if (numEnemiesHit < KnightHero.MAX_HIT)
+				if (numEnemiesHit < knight.maxHit)
 				{
 					Enemy e = col.gameObject.GetComponentInChildren<Enemy>();
 					e.AddStatus(Instantiate(StatusEffectContainer.instance.GetStatus("Stun")));

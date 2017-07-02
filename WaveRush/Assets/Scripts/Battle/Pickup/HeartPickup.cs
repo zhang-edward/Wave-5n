@@ -10,7 +10,7 @@ public class HeartPickup : MonoBehaviour {
 			Player player = col.GetComponentInChildren<Player> ();
 			UnityEngine.Assertions.Assert.IsNotNull (player);
 			player.HealEffect (4, true);
-			CameraControl.instance.StartFlashColor (Color.white);
+			CameraControl.instance.StartFlashColor (Color.white, 0.4f, 0, 0, 1f);
 			Destroy (gameObject);
 		}
 	}
