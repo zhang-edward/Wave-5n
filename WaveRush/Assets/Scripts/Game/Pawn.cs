@@ -9,7 +9,8 @@ public class Pawn
 	public const int MAX_LEVEL = 9;
 
 	public HeroType type;		// the type of the hero
-	public int level;			// the level of the hero
+	public HeroData data;		// contains all data about thie hero
+	public int level;           // the level of the hero
 	public int id { get; private set; }
 
 	public HeroTier tier {
@@ -32,6 +33,13 @@ public class Pawn
 		}
 	}
 
+
+	public Pawn(HeroType type)
+	{
+		this.type = type;
+		data = DataManager.GetHeroData(type);
+	}
+
 	public void SetID(int id)
 	{
 		this.id = id;
@@ -49,6 +57,26 @@ public class Pawn
 			answer += 5f;
 		if (level >= T3_MIN_LEVEL)
 			answer += 5f;
+		return answer;
+	}
+
+	public AnimationSet GetAnimationSet()
+	{
+		AnimationSet answer;
+		switch(tier)
+		{
+			case HeroTier.tier1:
+				answer = data.t1Skin;
+				break;
+			case HeroTier.tier2:
+				answer = data.t2Skin;
+				break;
+			case HeroTier.tier3:
+				answer = data.t3Skin;
+				break;
+			default:
+				throw new UnityEngine.Assertions.AssertionException("Pawn.cs", "Pawn is out of the level range?");
+		}
 		return answer;
 	}
 }

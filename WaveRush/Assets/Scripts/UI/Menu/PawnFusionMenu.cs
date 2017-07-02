@@ -187,8 +187,7 @@ public class PawnFusionMenu : MonoBehaviour
 		else
 			level = pawn2.level + 1;
 		// Make the new pawn
-		Pawn pawn = new Pawn();
-		pawn.type = pawn1.type;
+		Pawn pawn = new Pawn(pawn1.type);
 		pawn.level = level;
 		return pawn;
 	}

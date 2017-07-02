@@ -9,10 +9,13 @@ public class SimpleAnimationPlayer : MonoBehaviour {
 	private int frameIndex;
 
 	public bool playOnStart = false;
-	public bool isPlaying;
 	public bool looping;
+	public bool ignoreTimeScaling;
+	public bool isPlaying { get; private set; }
 
 	public bool destroyOnFinish;
+
+	private Coroutine playAnimRoutine;
 
 	void Awake()
 	{
@@ -28,21 +31,22 @@ public class SimpleAnimationPlayer : MonoBehaviour {
 		//sr.sprite = anim.frames [0];
 	}
 
-	public void Play()
+	public virtual void Play()
 	{
 		UnityEngine.Assertions.Assert.IsNotNull (anim);
 		Reset ();
-		StartCoroutine("PlayAnim");
+		playAnimRoutine = StartCoroutine(PlayAnim());
 	}
 
 	public void Reset()
 	{
 		frameIndex = 0;
 		sr.sprite = anim.frames[0];
-		StopAllCoroutines ();
+		if (playAnimRoutine != null)
+			StopCoroutine (playAnimRoutine);
 	}
 
-	private IEnumerator PlayAnim()
+	protected virtual IEnumerator PlayAnim()
 	{
 		isPlaying = true;
 		while (frameIndex < anim.frames.Length)
@@ -55,7 +59,10 @@ public class SimpleAnimationPlayer : MonoBehaviour {
 				if (frameIndex >= anim.frames.Length)
 					frameIndex = 0;
 			}
-			yield return new WaitForSeconds(anim.SecondsPerFrame);
+			if (ignoreTimeScaling)
+				yield return new WaitForSecondsRealtime(anim.SecondsPerFrame);
+			else
+				yield return new WaitForSeconds(anim.SecondsPerFrame);
 		}
 		isPlaying = false;
 		if (destroyOnFinish)

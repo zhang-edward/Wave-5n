@@ -6,7 +6,7 @@ using System;
 public class SimpleAnimation {
 
 	public Sprite[] frames;
-	public int fps = 10;
+	public float fps = 10;
 	public float SecondsPerFrame {
 		get {
 			return 1.0f / (float)fps;

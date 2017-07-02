@@ -65,7 +65,7 @@ public class NinjaTripleStar : HeroPowerUp
 		// Sound
 		SoundManager.instance.RandomizeSFX (ninja.shootSound);
 		// Animation
-		ninja.anim.SetBool ("Attack", true);
+		ninja.anim.Play ("Throw");
 
 		for (int i = 0; i < 3; i ++)
 		{
@@ -82,7 +82,7 @@ public class NinjaTripleStar : HeroPowerUp
 		}
 
 		ninja.body.moveSpeed = ninja.player.DEFAULT_SPEED;
-		ninja.anim.SetBool("Attack", false);
+		ninja.anim.Play("Throw");
 	}
 }
 

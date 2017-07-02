@@ -35,10 +35,10 @@ public class MageHero : PlayerHero {
 	//private float tapHoldTime;
 	//private const float minTapHoldTime = 0.2f;
 
-	public override void Init(EntityPhysics body, Animator anim, Player player, Pawn heroData)
+	public override void Init(EntityPhysics body, Player player, Pawn heroData)
 	{
 		cooldownTimers = new float[2];
-		base.Init (body, anim, player, heroData);
+		base.Init (body, player, heroData);
 		map = GameObject.Find ("Map").GetComponent<Map>();
 		projectilePool = (RuntimeObjectPooler)projectilePrefab.GetComponent<Projectile>().GetObjectPooler();
 
@@ -84,8 +84,7 @@ public class MageHero : PlayerHero {
 		// Sound
 		SoundManager.instance.RandomizeSFX (shootSound);
 		// Animation
-		anim.SetBool ("Charge", false);
-		anim.SetBool ("Attack", true);
+		anim.Play ("Shoot");
 
 		// actual projectile stuff
 		GameObject fireballObj = projectilePool.GetPooledObject ();
@@ -108,8 +107,6 @@ public class MageHero : PlayerHero {
 	public void ResetShootFireball()
 	{
 		body.moveSpeed = player.DEFAULT_SPEED;
-		anim.SetBool("Attack", false);
-		anim.SetTrigger ("Move");
 	}
 
 	public void StartTeleport()
@@ -126,7 +123,7 @@ public class MageHero : PlayerHero {
 		// Sound
 		SoundManager.instance.RandomizeSFX (teleportOutSound);
 		// Animation
-		anim.SetTrigger ("TeleOut");
+		anim.Play ("TeleOut");
 		// Set properties
 		player.isInvincible = true;
 		player.input.isInputEnabled = false;
@@ -135,8 +132,10 @@ public class MageHero : PlayerHero {
 			OnMageTeleportOut();
 		// Wait for end of animation
 		yield return new WaitForEndOfFrame ();		// wait for the animation state to update before continuing
-		while (anim.GetCurrentAnimatorStateInfo (0).IsName ("TeleportOut"))
+		while (anim.player.isPlaying)
 			yield return null;
+		// Animation
+		anim.Play("TeleIn");
 		// Sound
 		SoundManager.instance.RandomizeSFX (teleportInSound);
 		// (animation triggers automatically)
@@ -151,7 +150,7 @@ public class MageHero : PlayerHero {
 			OnMageTeleportIn ();
 		// Wait for end of animation
 		yield return new WaitForEndOfFrame ();		// wait for the animation state to update before continuing
-		while (anim.GetCurrentAnimatorStateInfo (0).IsName ("TeleportIn"))
+		while (anim.player.isPlaying)
 			yield return null;
 		// reset properties
 		player.isInvincible = false;

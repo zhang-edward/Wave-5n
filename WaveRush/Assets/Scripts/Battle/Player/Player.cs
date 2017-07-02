@@ -28,9 +28,9 @@ public class Player : MonoBehaviour, IDamageable
 
 	[Header("Entity Base Values")]
 	public SpriteRenderer sr;
+	public AnimationSetPlayer animPlayer;
 	public PlayerInput input;
 	public EntityPhysics body;
-	public Animator anim;
 
 	[Header("Player Ability")]
 	public PlayerHero hero;
@@ -75,7 +75,6 @@ public class Player : MonoBehaviour, IDamageable
 	public void Init(Pawn heroData)
 	{
 		InitPlayerHero (heroData);
-		anim.runtimeAnimatorController = hero.animatorController;
 		health = maxHealth;
 
 		if (OnPlayerInitialized != null)
@@ -95,7 +94,7 @@ public class Player : MonoBehaviour, IDamageable
 				GameObject o = Instantiate(prefab, transform.position, Quaternion.identity) as GameObject;
 				o.transform.SetParent(this.transform);
 				hero = o.GetComponent<PlayerHero>();
-				hero.Init(body, anim, this, heroData);
+				hero.Init(body, this, heroData);
 				return;
 			}
 		}
@@ -109,14 +108,8 @@ public class Player : MonoBehaviour, IDamageable
 	/// <returns>The state.</returns>
 	private IEnumerator SpawnState()
 	{
-		// Make sure the player animator has a state named "Spawn"
-		UnityEngine.Assertions.Assert.IsTrue(anim.HasState(0, Animator.StringToHash("Spawn")));
-		anim.CrossFade ("Spawn", 0f);
-
-		yield return new WaitForEndOfFrame ();		// wait for the animation state to update before continuing
-		while (anim.GetCurrentAnimatorStateInfo (0).IsName ("Spawn"))
-			yield return null;
-		
+		//print("Spawned");
+		yield return null;
 		input.isInputEnabled = true;
 	}
 

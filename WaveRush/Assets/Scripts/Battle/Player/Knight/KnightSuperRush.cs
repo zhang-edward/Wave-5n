@@ -48,7 +48,7 @@ public class KnightSuperRush : HeroPowerUp
 		// Sound
 		SoundManager.instance.RandomizeSFX (knight.rushSound);
 		// Animation
-		knight.anim.SetBool ("Attacking", true);
+		knight.anim.Play ("Rush");
 		// Effects
 		PlayRushEffect();
 		// Player properties

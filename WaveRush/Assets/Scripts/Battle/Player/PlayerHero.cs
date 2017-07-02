@@ -15,8 +15,6 @@ public abstract class PlayerHero : MonoBehaviour {
 	public Player player;
 	[HideInInspector]
 	public EntityPhysics body;
-	[HideInInspector]
-	public Animator anim;
 
 	[Header("Ability Icons")]
 	public Sprite[] icons;
@@ -32,14 +30,14 @@ public abstract class PlayerHero : MonoBehaviour {
 		}
 	}
 	public float damageMultiplier { get; set; }
+	[Header("Animations/Skins")]
+	public AnimationSet anim;
 
 	[HideInInspector]
 	public HeroPowerUpManager powerUpManager;
 
 	[Space]
 	public Sprite[] deathProps;
-	[Space]
-	public RuntimeAnimatorController animatorController;
 
 	public int combo { get; private set; }
 	public int maxCombo { get; private set; }
@@ -129,12 +127,15 @@ public abstract class PlayerHero : MonoBehaviour {
 		inputAction ();
 	}
 
-	public virtual void Init(EntityPhysics body, Animator anim, Player player, Pawn heroData)
+	public virtual void Init(EntityPhysics body, Player player, Pawn heroData)
 	{
 		powerUpManager = GetComponent<HeroPowerUpManager> ();
 		this.body = body;
-		this.anim = anim;
 		this.player = player;
+
+		anim = heroData.GetAnimationSet();
+		anim.Init(player.animPlayer);
+		anim.player.Init();
 		damageMultiplier = 1f;
 		baseDamage = Mathf.RoundToInt(Pawn.DamageEquation(heroData.level));
 		// init cooldownMultipliers

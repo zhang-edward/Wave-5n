@@ -49,7 +49,7 @@ public class KnightSuperShield : HeroPowerUp
 		// Sound
 		SoundManager.instance.RandomizeSFX(areaAttackSound);
 		// Animation
-		knight.anim.SetTrigger("AreaAttack");
+		knight.anim.Play("AreaAttack");
 		// Effects
 		shieldEffect.SetActive(true);
 		// Properties

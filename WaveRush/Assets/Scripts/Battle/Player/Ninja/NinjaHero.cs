@@ -33,10 +33,10 @@ public class NinjaHero : PlayerHero {
 	public event NinjaActivatedAbility OnNinjaThrewStar;
 	public event NinjaActivatedAbility OnNinjaDash;
 
-	public override void Init(EntityPhysics body, Animator anim, Player player, Pawn heroData)
+	public override void Init(EntityPhysics body, Player player, Pawn heroData)
 	{
 		cooldownTimers = new float[2];
-		base.Init (body, anim, player, heroData);
+		base.Init (body, player, heroData);
 		projectilePool = (RuntimeObjectPooler)projectilePrefab.GetComponent<Projectile>().GetObjectPooler();
 
 		onSwipe = DashAttack;
@@ -92,7 +92,7 @@ public class NinjaHero : PlayerHero {
 		// Sound
 		SoundManager.instance.RandomizeSFX (shootSound);
 		// Animation
-		anim.SetBool ("Attack", true);
+		anim.Play ("Throw");
 		// Player properties
 		Vector2 dir = player.dir.normalized;
 		GameObject o = InitNinjaStar (dir);
@@ -129,7 +129,6 @@ public class NinjaHero : PlayerHero {
 	public void ResetAbility()
 	{
 		body.moveSpeed = player.DEFAULT_SPEED;
-		anim.SetBool("Attack", false);
 	}
 
 	private IEnumerator DashAttackRoutine()
@@ -139,11 +138,13 @@ public class NinjaHero : PlayerHero {
 		// Sound
 		SoundManager.instance.RandomizeSFX(dashOutSound);
 		// Animation
-		anim.SetTrigger ("DashOut");
+		anim.Play ("DashOut");
 		yield return new WaitForEndOfFrame ();		// wait for the animation state to update before continuing
-		while (anim.GetCurrentAnimatorStateInfo (0).IsName ("DashOut"))
+		while (anim.player.isPlaying)
 			yield return null;
 
+		// Animation
+		anim.Play("DashIn");
 		// Sound
 		SoundManager.instance.RandomizeSFX(slashSound);
 		// (Animation plays automatically)
@@ -160,7 +161,7 @@ public class NinjaHero : PlayerHero {
 			OnNinjaDash ();
 
 		yield return new WaitForEndOfFrame ();		// wait for the animation state to update before continuing
-		while (anim.GetCurrentAnimatorStateInfo (0).IsName ("DashIn"))
+		while (anim.player.isPlaying)
 			yield return null;
 		player.input.isInputEnabled = true;
 	}

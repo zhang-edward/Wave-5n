@@ -42,10 +42,10 @@ public class KnightHero : PlayerHero {
 		Gizmos.DrawWireSphere (transform.position, 1f);
 	}
 
-	public override void Init (EntityPhysics body, Animator anim, Player player, Pawn heroData)
+	public override void Init (EntityPhysics body, Player player, Pawn heroData)
 	{
 		cooldownTimers = new float[2];
-		base.Init (body, anim, player, heroData);
+		base.Init (body, player, heroData);
 		effectPool = ObjectPooler.GetObjectPooler("Effect");
 		// handle input
 		onSwipe = RushAbility;
@@ -62,7 +62,8 @@ public class KnightHero : PlayerHero {
 		// Sound
 		SoundManager.instance.RandomizeSFX (rushSound);
 		// Animation
-		anim.SetBool ("Attacking", true);
+		//anim.SetBool ("Attacking", true);
+		anim.Play("Rush");
 		// Effects
 		PlayRushEffect ();
 		// Player properties
@@ -80,7 +81,8 @@ public class KnightHero : PlayerHero {
 	public void ResetRushAbility()
 	{
 		// Animation
-		anim.SetBool ("Attacking", false);
+		//anim.SetBool ("Attacking", false);
+		anim.Play("Default");
 		// Player Properties
 		hitEnemies.Clear ();	// reset hit list
 		rushHitBoxOn = false;
@@ -97,7 +99,8 @@ public class KnightHero : PlayerHero {
 		// Sound
 		SoundManager.instance.RandomizeSFX (areaAttackSound);
 		// Animation
-		anim.SetTrigger ("AreaAttack");
+		//anim.SetTrigger ("AreaAttack");
+		anim.Play("AreaAttack");
 		// Effects
 		areaAttackEffect.SetActive(true);
 		// Properties
@@ -137,7 +140,8 @@ public class KnightHero : PlayerHero {
 	public void ResetAreaAttackAbility()
 	{
 		hitEnemies.Clear ();
-		anim.SetBool ("AreaAttack", false);
+		//anim.SetBool ("AreaAttack", false);
+		//animationSet.Play("Default", true);
 		player.input.isInputEnabled = true;
 	}
 

@@ -3,8 +3,7 @@ public class DataManager : MonoBehaviour
 {
 	public static DataManager instance;
 
-	public HeroPowerUpListData[] powerUpList;   // power up info for every hero
-	public HeroDescriptionData[] heroDescriptions;
+	public HeroData[] heroData;   // power up info for every hero
 
 	void Awake()
 	{
@@ -15,19 +14,31 @@ public class DataManager : MonoBehaviour
 		DontDestroyOnLoad(this);
 	}
 
-	public static HeroPowerUpListData GetPowerUpListData(HeroType heroName)
+	public static HeroData GetHeroData(HeroType heroType)
 	{
-		foreach (HeroPowerUpListData data in instance.powerUpList)
+		foreach (HeroData data in instance.heroData)
 		{
-			if (data.heroName == heroName)
+			if (data.heroType == heroType)
 				return data;
 		}
 		throw new UnityEngine.Assertions.AssertionException
+							 (instance.GetType() + ".cs",
+							  "Could not find data for hero with name " + heroType.ToString() + "!");
+	} 
+
+	public static HeroPowerUpListData GetPowerUpListData(HeroType heroType)
+	{
+		foreach (HeroData data in instance.heroData)
+		{
+			if (data.heroType == heroType)
+				return data.powerUpData;
+		}
+		throw new UnityEngine.Assertions.AssertionException
 		                     (instance.GetType() + ".cs",
-							  "Could not find data for hero with name " + heroName.ToString() + "!");
+							  "Could not find data for hero with name " + heroType.ToString() + "!");
 	}
 
-	public static HeroDescriptionData GetDescriptionData(HeroType type)
+	/*public static HeroDescriptionData GetDescriptionData(HeroType type)
 	{
 		foreach (HeroDescriptionData data in instance.heroDescriptions)
 		{
@@ -37,5 +48,5 @@ public class DataManager : MonoBehaviour
 		throw new UnityEngine.Assertions.AssertionException
 							 (instance.GetType() + ".cs",
 							  "Could not find data for hero with name " + type.ToString() + "!");
-	}
+	}*/
 }
