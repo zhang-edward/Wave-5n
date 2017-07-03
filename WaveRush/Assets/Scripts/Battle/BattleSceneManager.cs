@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 
 /// <summary>
@@ -13,6 +14,7 @@ public class BattleSceneManager : MonoBehaviour
 	public EnemyManager enemyManager;
 	public Player player;
 	public GUIManager gui;
+	public DialogueView dialogueView;
 
 	public List<Pawn> acquiredPawns { get; private set; }   // pawns acquired this session
 	public int moneyEarned { get; private set; } 			// money earned in this session
@@ -35,6 +37,11 @@ public class BattleSceneManager : MonoBehaviour
 	// Init main game environment
 	private void Init()
 	{
+		StartCoroutine(InitRoutine());
+	}
+
+	private IEnumerator InitRoutine()
+	{
 		// Get data from GameManager
 		Pawn pawn = gm.selectedPawn;
 		StageData stage = gm.GetStage(gm.selectedSeriesIndex, gm.selectedStageIndex);
@@ -43,13 +50,18 @@ public class BattleSceneManager : MonoBehaviour
 		print("Map:" + map);
 		map.chosenMap = stage.mapType;
 		map.GenerateMap();
-		player.Init(pawn);	
+		player.Init(pawn);
+
+		// Do dialogue before starting the game
+		if (stage.dialogueSets.Length > 0)
+			dialogueView.Init(stage.dialogueSets);
+		while (dialogueView.dialoguePlaying)
+			yield return null;
+		
 		enemyManager.Init(stage);
 		gui.DisplayIntroMessage();
 
-		SoundManager.instance.PlayMusicLoop(map.data.musicLoop, map.data.musicIntro);   // Plays the game music, looped
-
-		gm.OnSceneLoaded -= Init;	// Remove the listener because it is only run once per scene
+		gm.OnSceneLoaded -= Init;   // Remove the listener because it is only run once per scene
 	}
 
 	private void UpdateData()

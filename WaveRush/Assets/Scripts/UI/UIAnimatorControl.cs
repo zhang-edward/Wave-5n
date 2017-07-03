@@ -1,14 +1,26 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 public class UIAnimatorControl : MonoBehaviour
 {
-	private Animator animator;
-	public bool isOutByDefault;		// whether this ui element should be transitioned out by default
+	private Animator anim;
 
 	void Awake()
 	{
-		animator = GetComponent<Animator>();
-		if (isOutByDefault)
-			animator.SetTrigger("DefaultOut");
+		anim = GetComponent<Animator>();
+	}
+
+	public void AnimateOut()
+	{
+		StartCoroutine(AnimateOutRoutine());
+	}
+
+	private IEnumerator AnimateOutRoutine()
+	{
+		anim.CrossFade("Out", 0);
+		yield return new WaitForEndOfFrame();
+		while (anim.GetCurrentAnimatorStateInfo(0).IsName("Out"))
+			yield return null;
+		gameObject.SetActive(false);
 	}
 }

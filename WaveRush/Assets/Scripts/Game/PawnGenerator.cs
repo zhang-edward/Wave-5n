@@ -29,6 +29,8 @@ public class PawnGenerator
 		int index = level - 1;
 		if (index < 0) 
 			index = 0;
+		if (index > 8)
+			index = 8;
 		int[] probabilityTable = PAWN_CRYSTAL_DROP_PROBABILITY_TABLE[index];
 		// Method similar to inverse cumulative distribution function: 
 		// https://stackoverflow.com/questions/9956486/distributed-probability-random-number-generator

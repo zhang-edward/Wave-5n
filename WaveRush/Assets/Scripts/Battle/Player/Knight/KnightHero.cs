@@ -14,7 +14,9 @@ public class KnightHero : PlayerHero {
 	public GameObject areaAttackEffect;
 	public Sprite hitEffect;
 	public float areaAttackRange = 2.0f;
-	private bool activatedSpecialAbility = false;
+	private bool specialActivated = false;
+	private bool specialCharging = false;
+	private bool areaAttackShieldOn = false;
 
 	public float baseRushMoveSpeed = 9f;
 	public float rushMoveSpeedMultiplier = 1;
@@ -22,14 +24,15 @@ public class KnightHero : PlayerHero {
 	[HideInInspector]
 	public bool rushHitBoxOn = false;
 	[Header("Animation")]
-	public SimpleAnimation specialAbilityActivationAnim;
-	public IndicatorEffect specialAbilityIndicator;
+	public SimpleAnimation specialHitAnim;
+	public SimpleAnimationPlayer specialChargeAnim;
 	[Header("Audio")]
 	public AudioClip rushSound;
 	public AudioClip[] hitSounds;
+	public AudioClip[] specialHitSounds;
 	public AudioClip areaAttackSound;
-	public AudioClip powerUpSound;
-	public AudioClip powerDownSound;
+	public AudioClip specialRushSound;
+	public AudioClip specialRushChargeInitial;
 
 	private List<Enemy> hitEnemies = new List<Enemy>();     // list of the enemies that the player has hit during the rush ability
 
@@ -62,7 +65,7 @@ public class KnightHero : PlayerHero {
 		ResetCooldownTimer (0);
 
 		// Sound
-		SoundManager.instance.RandomizeSFX (rushSound);
+		sound.RandomizeSFX (rushSound);
 		// Animation
 		//anim.SetBool ("Attacking", true);
 		anim.Play("Rush");
@@ -99,13 +102,14 @@ public class KnightHero : PlayerHero {
 			return;
 		ResetCooldownTimer (1);
 		// Sound
-		SoundManager.instance.RandomizeSFX (areaAttackSound);
+		sound.RandomizeSFX (areaAttackSound);
 		// Animation
 		//anim.SetTrigger ("AreaAttack");
 		anim.Play("AreaAttack");
 		// Effects
 		areaAttackEffect.SetActive(true);
 		// Properties
+		areaAttackShieldOn = true;
 		player.isInvincible = true;
 		player.input.isInputEnabled = false;
 		player.sr.color = new Color (0.8f, 0.8f, 0.8f);
@@ -129,7 +133,7 @@ public class KnightHero : PlayerHero {
 			}
 		}
 		if (enemyHit)
-			SoundManager.instance.RandomizeSFX (hitSounds[Random.Range(0, hitSounds.Length)]);
+			sound.RandomizeSFX (hitSounds[Random.Range(0, hitSounds.Length)]);
 		
 		// Reset Ability
 		Invoke ("ResetAreaAttackAbility", 0.5f);
@@ -149,17 +153,18 @@ public class KnightHero : PlayerHero {
 
 	public void ResetInvincibility()
 	{
+		areaAttackShieldOn = false;
 		areaAttackEffect.GetComponent<IndicatorEffect> ().AnimateOut ();
 
 		player.sr.color = Color.white;
-		if (!activatedSpecialAbility)
+		if (!specialActivated)
 			player.isInvincible = false;
 	}
 
 	/*private void ResetSpecialAbility()
 	{
 		// Sound
-		SoundManager.instance.PlayImportantSound(powerDownSound);
+		sound.PlayImportantSound(powerDownSound);
 		// Effects
 		specialAbilityIndicator.AnimateOut();
 		// Reset Stats
@@ -178,11 +183,11 @@ public class KnightHero : PlayerHero {
 
 	public override void SpecialAbility ()
 	{
-		if (specialAbilityCharge < specialAbilityChargeCapacity || activatedSpecialAbility)
+		if (specialAbilityCharge < specialAbilityChargeCapacity || specialActivated)
 			return;
 		/*
 		// Sound
-		SoundManager.instance.PlayImportantSound(powerUpSound);
+		sound.PlayImportantSound(powerUpSound);
 		// Effect
 		PlaySpecialAbilityEffect();
 		specialAbilityIndicator.gameObject.SetActive(true);
@@ -198,85 +203,116 @@ public class KnightHero : PlayerHero {
 		// CameraControl.instance.SetOverlayColor (Color.red, 0.3f);
 		Invoke ("ResetSpecialAbility", 10f);
 		*/
-		specialAbilityChargeRoutine = StartCoroutine(SpecialAbilityCharge());
-		if (onSpecialAbility != null)
-			onSpecialAbility();
+		if (specialCharging)
+		{
+			if (specialAbilityChargeRoutine != null)
+				StopCoroutine(specialAbilityChargeRoutine);
+			ResetSpecialAbilityRoutine();
+		}
+		else
+		{
+			specialAbilityChargeRoutine = StartCoroutine(SpecialAbilityCharge());
+		}
 	}
 
 	private IEnumerator SpecialAbilityCharge()
 	{
+		CancelInvoke();
+		if (areaAttackShieldOn)
+			ResetInvincibility();
 		Time.timeScale = 0.2f;
+		// Player Properties
 		player.isInvincible = true;
+		specialCharging = true;
 		player.input.isInputEnabled = false;
-		body.Move(Vector2.zero);
+		// Animation
 		anim.Play("Special");
+		specialChargeAnim.Play();
+		// Sound
+		sound.RandomizeSFX(specialRushChargeInitial);
+		// Camera Control
 		CameraControl.instance.SetOverlayColor(Color.black, 0.4f, 1.0f);
 		CameraControl.instance.screenOverlay.sortingLayerName = "TerrainObjects";
 		while (anim.player.isPlaying)
 			yield return null;
+		// Player Properties
 		player.isInvincible = false;
 		player.input.isInputEnabled = true;
-		onSwipe = SpecialRush;
+		// Animation
 		anim.Play("SpecialPersist");
+		// Set onSwipe
+		onSwipe = SpecialRush;
 		yield return new WaitForSecondsRealtime(3.0f);
+		// Animation
 		anim.Play("Default");
 		ResetSpecialAbilityRoutine();
 	}
 
 	private void ResetSpecialAbilityRoutine()
 	{
-		CameraControl.instance.screenOverlay.sortingLayerName = "Default";
 		Time.timeScale = 1f;
-		CameraControl.instance.DisableOverlay(0f);
+		// Player Properties
+		specialCharging = false;
+		player.isInvincible = false;
+		player.input.isInputEnabled = true;
+		// Camera
+		CameraControl.instance.screenOverlay.sortingLayerName = "Default";
+		CameraControl.instance.DisableOverlay(1f);
+		// Reset onSwipe
 		onSwipe = RushAbility;
 	}
 
 	private void SpecialRush()
 	{
-		activatedSpecialAbility = true;
 		ResetSpecialAbilityRoutine();
+		// Event call
+		if (onSpecialAbility != null)
+			onSpecialAbility();
 		Time.timeScale = 1f;
 		StopCoroutine(specialAbilityChargeRoutine);
 		// Sound
-		SoundManager.instance.RandomizeSFX(rushSound);
-		// Animation
-		//anim.SetBool ("Attacking", true);
-		anim.Play("Rush");
-		// Effects
-		PlayRushEffect();
+		sound.RandomizeSFX(specialRushSound);
 		// Player properties
 		maxHit = 15;
 		rushHitBoxOn = true;
+		specialActivated = true;
 		player.isInvincible = true;
 		player.input.isInputEnabled = false;
-		GetComponent<CircleCollider2D>().radius = 3f;
+		GetComponent<CircleCollider2D>().radius = 3f;       // Make hitbox huge
+		damageMultiplier *= 1.5f;
 		body.moveSpeed = baseRushMoveSpeed * 1.5f;
+		// Body Movement
 		body.Move(player.dir.normalized);
+		// Animation
+		anim.Play("Rush");
+		PlayRushEffect();
+		// Debug
 		Debug.DrawRay(transform.position, player.dir, Color.red, 0.5f);
-		// reset ability
+		// Reset ability
 		Invoke("ResetSpecialAbility", baseRushDuration * 2.5f);
 	}
 
 	public void ResetSpecialAbility()
 	{
 		// Animation
-		//anim.SetBool ("Attacking", false);
 		anim.Play("Default");
 		// Player Properties
-		hitEnemies.Clear(); // reset hit list
+		maxHit = 5;
 		rushHitBoxOn = false;
-		GetComponent<CircleCollider2D>().radius = 0.5f;
-		body.moveSpeed = player.DEFAULT_SPEED;
-		player.input.isInputEnabled = true;
+		specialActivated = false;
 		player.isInvincible = false;
-		activatedSpecialAbility = false;
+		player.input.isInputEnabled = true;
+		GetComponent<CircleCollider2D>().radius = 0.5f;
+		damageMultiplier /= 1.5f;
+		body.moveSpeed = player.DEFAULT_SPEED;
+		hitEnemies.Clear(); // Reset hit list
 		specialAbilityCharge = 0;
 	}
 
 	private void PlayRushEffect()
 	{
-		GameObject effectObject = activatedSpecialAbility ? specialRushEffect : rushEffect;
-		float duration = activatedSpecialAbility ? baseRushDuration * 2 : baseRushDuration;
+		GameObject effectObject = specialActivated ? specialRushEffect : rushEffect;
+		float duration = specialActivated ? baseRushDuration * 2 : baseRushDuration;
 
 		TempObject effect = effectObject.GetComponent<TempObject>();
 		SimpleAnimationPlayer animPlayer = effectObject.GetComponent<SimpleAnimationPlayer> ();
@@ -302,8 +338,12 @@ public class KnightHero : PlayerHero {
 				{
 					if (DamageEnemy(e))
 					{
-						SoundManager.instance.RandomizeSFX(hitSounds[Random.Range(0, hitSounds.Length)]);
-						if (activatedSpecialAbility)
+						if (specialActivated)
+							sound.RandomizeSFX(specialHitSounds[Random.Range(0, specialHitSounds.Length)]);
+						else
+							sound.RandomizeSFX(hitSounds[Random.Range(0, hitSounds.Length)]);
+
+						if (specialActivated)
 							player.StartTempSlowDown(0.3f);
 					}
 				}
@@ -318,12 +358,10 @@ public class KnightHero : PlayerHero {
 		{
 			e.Damage (damage);
 			hitEnemies.Add (e);
-			player.effectPool.GetPooledObject().GetComponent<TempObject>().Init(
-				Quaternion.Euler(new Vector3(0, 0, Random.Range(0, 360f))),
-				Vector3.Lerp (transform.position, e.transform.position, 0.5f), 
-				hitEffect,
-				true,
-				0);
+			if (specialActivated)
+				PlayEffect(e.transform.position, specialHitAnim);
+			else
+				HitEffect(e.transform.position);
 			player.TriggerOnEnemyDamagedEvent(damage);
 			player.TriggerOnEnemyLastHitEvent (e);
 			return true;
@@ -331,16 +369,26 @@ public class KnightHero : PlayerHero {
 		return false;
 	}
 
-	public void PlaySpecialAbilityEffect()
+	private void HitEffect(Vector3 position)
+	{
+		player.effectPool.GetPooledObject().GetComponent<TempObject>().Init(
+				Quaternion.Euler(new Vector3(0, 0, Random.Range(0, 360f))),
+				Vector3.Lerp(transform.position, position, 0.5f),
+				hitEffect,
+				true,
+				0);
+	}
+
+	private void PlayEffect(Vector3 position, SimpleAnimation simpleAnim)
 	{
 		GameObject o = effectPool.GetPooledObject();
-		SimpleAnimationPlayer anim = o.GetComponent<SimpleAnimationPlayer>();
+		SimpleAnimationPlayer animPlayer = o.GetComponent<SimpleAnimationPlayer>();
 		TempObject tempObj = o.GetComponent<TempObject>();
-		tempObj.info = new TempObjectInfo(true, 0f, specialAbilityActivationAnim.TimeLength, 0, new Color(1, 1, 1, 0.8f));
-		anim.anim = specialAbilityActivationAnim;
-		tempObj.Init(Quaternion.identity,
-					 transform.position,
-		             specialAbilityActivationAnim.frames[0]);
-		anim.Play();
+		tempObj.info = new TempObjectInfo(true, 0f, simpleAnim.TimeLength, 0);
+		animPlayer.anim = simpleAnim;
+		tempObj.Init(Quaternion.Euler(0, 0, Random.Range(0, 360)),
+					 position,
+				 specialHitAnim.frames[0]);
+		animPlayer.Play();
 	}
 }

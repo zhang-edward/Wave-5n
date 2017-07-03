@@ -80,7 +80,7 @@ public class DebugCheatMenu : MonoBehaviour
 
 	public void FullChargeSpecial()
 	{
-		player.hero.IncrementSpecialAbilityCharge(int.MaxValue);
+		player.hero.IncrementSpecialAbilityChargeByAmt(player.hero.specialAbilityChargeCapacity);
 	}
 
 	public void KillAllEnemies()

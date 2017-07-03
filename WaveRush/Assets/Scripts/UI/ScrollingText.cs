@@ -43,7 +43,13 @@ public class ScrollingText : MonoBehaviour {
 		{
 			StopAllCoroutines ();
 			textBox.text = text;
+			textIsScrolling = false;
 		}
+	}
+
+	public bool IsTextScrolling()
+	{
+		return textIsScrolling;
 	}
 
 	IEnumerator AnimateText()
@@ -109,7 +115,27 @@ public class ScrollingText : MonoBehaviour {
 			answer += str.Substring (startIndex, length);
 			i += length;
 		}
-		answer += START_INVISIBLE_TAG + str.Substring(i) + END_INVISIBLE_TAG;	// prevents "text jumping"
+		answer += START_INVISIBLE_TAG + CleanText(str.Substring(i)) + END_INVISIBLE_TAG;	// prevents "text jumping"
+		return answer;
+	}
+
+	private string CleanText(string str)
+	{
+		string answer = "";
+		int i = 0;                          // substring index
+
+		while (i < str.Length)   // continue until we have reached char index 'i', excluding markup
+		{
+			if (str[i] == '<')
+			{
+				int endOfTagIndex = str.IndexOf('>', i);        // skip to the end of the tag
+				i = endOfTagIndex + 1;
+				if (i >= str.Length)
+					break;
+			}
+			answer += str[i];
+			i++;
+		}
 		return answer;
 	}
 

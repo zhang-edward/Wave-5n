@@ -44,7 +44,7 @@ public class EnemyManager : MonoBehaviour {
 	public void Init(StageData data)
 	{
 		this.stageData = data;
-
+		this.level = data.level;
 		bossSpawn = map.bossSpawn.GetComponent<BossSpawn> ();
 		StartCoroutine (StartSpawningEnemies ());
 	}
@@ -179,10 +179,24 @@ public class EnemyManager : MonoBehaviour {
 
 	public void SpawnTrappedHeroes()
 	{
-		// Spawn a trapped hero
-		int numTrappedHeroesToSpawn = Random.Range(1, 3);
-		for (int i = 0; i < numTrappedHeroesToSpawn; i++)
-			SpawnEnemy(trappedHeroPrefab, map.OpenCells[Random.Range(0, map.OpenCells.Count)]);
+		List<Vector3> positions = new List<Vector3>();
+		float offset = 3f;
+		positions.Add(Vector3.right * offset);
+		positions.Add(Vector3.left * offset);
+		positions.Add(Vector3.up * offset);
+		positions.Add(Vector3.down * offset);
+
+		float spawnChance = 1.0f;
+		for (int i = 0; i < 4; i ++)
+		{
+			if (Random.value < spawnChance)
+			{
+				int randIndex = Random.Range(0, positions.Count);
+				SpawnEnemy(trappedHeroPrefab, bossSpawn.transform.position + positions[randIndex]);
+				positions.RemoveAt(randIndex);
+				spawnChance *= 0.35f;
+			}
+		}
 	}
 
 	public bool IsStageComplete()

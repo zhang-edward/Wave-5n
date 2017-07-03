@@ -61,11 +61,10 @@ public class GUIManager : MonoBehaviour {
 	{
 		yield return new WaitForSeconds(1f);
 		gameUI.SetActive(false);
-		gameOverUI.GetComponent<Animator>().SetTrigger("In");
+		gameOverUI.SetActive(true);
 		scorePanel.moneyText.text.text = data.money.ToString();
 		scorePanel.moneyEarned.text.text = data.moneyEarned.ToString();
 
-		gameOverUI.SetActive(true);
 		yield return new WaitForSeconds(0.5f);
 		scorePanel.ReportScore(data);
 	}

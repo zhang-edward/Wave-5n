@@ -8,7 +8,6 @@ public class MageHero : PlayerHero {
 	public ObjectPooler effectPool;
 	public RuntimeObjectPooler projectilePool;
 	[Space]
-	public Sprite projectileSprite;
 	public Sprite hitEffect;
 	public Map map;
 	public GameObject projectilePrefab;
@@ -38,9 +37,9 @@ public class MageHero : PlayerHero {
 	public override void Init(EntityPhysics body, Player player, Pawn heroData)
 	{
 		cooldownTimers = new float[2];
-		base.Init (body, player, heroData);
 		map = GameObject.Find ("Map").GetComponent<Map>();
 		projectilePool = (RuntimeObjectPooler)projectilePrefab.GetComponent<Projectile>().GetObjectPooler();
+		base.Init (body, player, heroData);
 
 		onSwipe = ShootFireball;
 		onTap = StartTeleport;
@@ -90,7 +89,9 @@ public class MageHero : PlayerHero {
 		GameObject fireballObj = projectilePool.GetPooledObject ();
 		Vector2 dir = player.dir.normalized;
 		Projectile fireball = fireballObj.GetComponent<Projectile> ();
+		fireball.GetComponentInChildren<AreaDamageAction>().damage = damage;
  		fireball.Init (transform.position, dir);
+		
 
 		// recoil
 		body.Move (dir);	// set the sprites flipX to the correct direction
@@ -131,7 +132,6 @@ public class MageHero : PlayerHero {
 		if (OnMageTeleportOut != null)
 			OnMageTeleportOut();
 		// Wait for end of animation
-		yield return new WaitForEndOfFrame ();		// wait for the animation state to update before continuing
 		while (anim.player.isPlaying)
 			yield return null;
 		// Animation
@@ -149,7 +149,6 @@ public class MageHero : PlayerHero {
 		if (OnMageTeleportIn != null)
 			OnMageTeleportIn ();
 		// Wait for end of animation
-		yield return new WaitForEndOfFrame ();		// wait for the animation state to update before continuing
 		while (anim.player.isPlaying)
 			yield return null;
 		// reset properties

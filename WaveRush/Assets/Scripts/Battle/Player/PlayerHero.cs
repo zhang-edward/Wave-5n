@@ -15,6 +15,7 @@ public abstract class PlayerHero : MonoBehaviour {
 	public Player player;
 	[HideInInspector]
 	public EntityPhysics body;
+	protected SoundManager sound;
 
 	[Header("Ability Icons")]
 	public Sprite[] icons;
@@ -132,12 +133,14 @@ public abstract class PlayerHero : MonoBehaviour {
 		powerUpManager = GetComponent<HeroPowerUpManager> ();
 		this.body = body;
 		this.player = player;
+		sound = SoundManager.instance;
 
 		anim = heroData.GetAnimationSet();
 		anim.Init(player.animPlayer);
 		anim.player.Init();
 		damageMultiplier = 1f;
 		baseDamage = Mathf.RoundToInt(Pawn.DamageEquation(heroData.level));
+		print(damage);
 		// init cooldownMultipliers
 		cooldownMultipliers = new float[cooldownTime.Length];
 		for(int i = 0; i < cooldownTime.Length; i ++)
@@ -194,11 +197,20 @@ public abstract class PlayerHero : MonoBehaviour {
 
 	public void IncrementSpecialAbilityCharge(float amt)
 	{
-		specialAbilityCharge += amt * chargeMultiplier;
+		specialAbilityCharge += 1 * chargeMultiplier;
 		if (specialAbilityCharge >= specialAbilityChargeCapacity)
 		{
 			specialAbilityCharge = specialAbilityChargeCapacity;
 		}
+	}
+
+	public void IncrementSpecialAbilityChargeByAmt(float amt)
+	{
+		specialAbilityCharge += amt;
+		if (specialAbilityCharge >= specialAbilityChargeCapacity)
+		{
+			specialAbilityCharge = specialAbilityChargeCapacity;
+		}	
 	}
 
 	private void IncrementCombo(float amt)

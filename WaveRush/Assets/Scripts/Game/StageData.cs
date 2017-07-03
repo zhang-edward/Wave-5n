@@ -11,6 +11,7 @@ public class StageData : ScriptableObject
 		public float spawnFrequency = 1.0f;		// if this enemy is selected to spawn, this is the chance that it will spawn
 		public int waveLimit = 1;				// the enemy will only be available to spawn after this wave
 	}
+	public DialogueSet[] dialogueSets;
 	[Header("Stage Properties")]
 	public string stageName;
 	public MapType mapType;
