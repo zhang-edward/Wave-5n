@@ -32,12 +32,12 @@ public class ScoreReport : MonoBehaviour {
 		while (!enemiesDefeated.doneUpdating)
 			yield return null;
 		
-		wavesSurvived.DisplayNumber (data.wavesSurvived);
-		while (!wavesSurvived.doneUpdating)
-			yield return null;
-		
 		maxCombo.DisplayNumber (data.maxCombo);
 		while (!maxCombo.doneUpdating)
+			yield return null;
+
+		wavesSurvived.DisplayNumber(data.wavesSurvived);
+		while (!wavesSurvived.doneUpdating)
 			yield return null;
 
 		moneyText.DisplayNumber (data.money + data.moneyEarned); 

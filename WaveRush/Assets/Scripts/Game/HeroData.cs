@@ -9,5 +9,5 @@ public class HeroData : ScriptableObject
 	[TextArea]
 	public string heroDescription, ability1Description, ability2Description, specialDescription;
 	public AnimationSet t1Skin, t2Skin, t3Skin;
-
+	public Sprite[] icons;
 }

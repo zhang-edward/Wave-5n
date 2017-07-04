@@ -55,15 +55,19 @@ public class Player : MonoBehaviour, IDamageable
 
 	[Header("Effects")]
 	public ParticleSystem healEffect;
+	public SimpleAnimation deathEffect;
 
 	[Header("Audio")]
 	public AudioClip hurtSound;
 	public AudioClip deathSound;
+	public AudioClip poofSound;
 
 	[HideInInspector]
 	public ObjectPooler deathPropPool;
 	[HideInInspector]
 	public ObjectPooler effectPool;
+
+
 	void Start()
 	{
 		deathPropPool = ObjectPooler.GetObjectPooler ("DeathProp");
@@ -168,15 +172,32 @@ public class Player : MonoBehaviour, IDamageable
 		// Player Died
 		if (health <= 0)
 		{
-			SpawnDeathProps ();
-			transform.parent.gameObject.SetActive (false);
-			SoundManager.instance.PlayImportantSound (deathSound);
-
-			if (OnPlayerDied != null)
-				OnPlayerDied ();
+			//SpawnDeathProps ();
+			StartCoroutine(Die());
 		}
 		else
 			SoundManager.instance.RandomizeSFX (hurtSound);
+	}
+
+	private IEnumerator Die()
+	{
+		SoundManager.instance.RandomizeSFX(deathSound);
+
+		CameraControl.instance.SetOverlayColor(Color.black, 0.4f, 1.0f);
+		sr.sortingLayerName = "UI";
+		Time.timeScale = 0f;
+		yield return new WaitForSecondsRealtime(1.5f);
+		PlayDeathEffect(transform.position);
+		CameraControl.instance.StartFlashColor(Color.white, 0.4f, 0, 0, 1f);
+		SoundManager.instance.RandomizeSFX(poofSound);
+		sr.enabled = false;
+		yield return new WaitForSecondsRealtime(2.0f);
+		print("God here");
+		Time.timeScale = 1f;
+		CameraControl.instance.DisableOverlay(1.0f);
+		transform.parent.gameObject.SetActive(false);
+		if (OnPlayerDied != null)
+			OnPlayerDied();
 	}
 
 	/// <summary>
@@ -279,6 +300,21 @@ public class Player : MonoBehaviour, IDamageable
 	{
 		if (OnPlayerUpgradesUpdated != null)
 			OnPlayerUpgradesUpdated(numUpgrades);
+	}
+
+	private void PlayDeathEffect(Vector3 position)
+	{
+		GameObject o = effectPool.GetPooledObject();
+		SimpleAnimationPlayer animPlayer = o.GetComponent<SimpleAnimationPlayer>();
+		TempObject tempObj = o.GetComponent<TempObject>();
+		tempObj.GetComponent<SpriteRenderer>().sortingLayerName = "UI";
+		tempObj.info = new TempObjectInfo(true, 0f, deathEffect.TimeLength, 0);
+		animPlayer.anim = deathEffect;
+		tempObj.Init(Quaternion.identity,
+					 position,
+		             deathEffect.frames[0]);
+		animPlayer.ignoreTimeScaling = true;
+		animPlayer.Play();
 	}
 }
 

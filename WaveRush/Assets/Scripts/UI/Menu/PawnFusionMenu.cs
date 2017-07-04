@@ -46,6 +46,7 @@ public class PawnFusionMenu : MonoBehaviour
 			PawnIconStandard icon = (PawnIconStandard)pawnIcon;
 			icon.onClick = (iconData) =>
 			{
+				highlightMenu.SetActive(false);		// Disable then enable so the animation plays
 				highlightedIcon = iconData;
 				highlightMenu.SetActive(true);
 				highlightMenu.transform.SetParent(iconData.transform, false);

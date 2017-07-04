@@ -68,7 +68,7 @@ public class BattleSceneManager : MonoBehaviour
 	{
 		ScoreReport.ScoreReportData data = new ScoreReport.ScoreReportData(
 			enemiesDefeated: 	enemyManager.enemiesKilled,
-			wavesSurvived: 		enemyManager.waveNumber - 1,
+			wavesSurvived: 		Mathf.Max(enemyManager.waveNumber - 1, 0),
 			maxCombo: 			player.hero.maxCombo,
 			money: 				gm.wallet.money,
 			moneyEarned: 		moneyEarned);

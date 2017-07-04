@@ -17,8 +17,9 @@ public class DeathSpawnAbility : EnemyAbility {
 
 	public void SpawnChildren()
 	{
+		CreateChild();
 		//Debug.Log ("doing this");
-		for (int i = 0; i < numToSpawn; i ++)
+		for (int i = 0; i < numToSpawn - 1; i ++)
 		{
 			Invoke ("CreateChild", Random.Range (0, 0.5f));
 		}

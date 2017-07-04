@@ -116,14 +116,14 @@ public class CameraControl : MonoBehaviour
 		if (fadeInTime > 0)
 		{
 			StartCoroutine(FadeIn(screenFlash, color, a, fadeInTime));
-			yield return new WaitForSeconds(fadeInTime);
+			yield return new WaitForSecondsRealtime(fadeInTime);
 		}
 		screenFlash.color = new Color(color.r, color.g, color.b, a);
-		yield return new WaitForSeconds(persistTime);
+		yield return new WaitForSecondsRealtime(persistTime);
 		if (fadeOutTime > 0)
 		{
 			StartCoroutine(FadeOut(screenFlash, fadeOutTime));
-			yield return new WaitForSeconds(fadeOutTime);
+			yield return new WaitForSecondsRealtime(fadeOutTime);
 		}
 		screenFlash.color = new Color(color.r, color.g, color.b, 0);
 	}
@@ -151,7 +151,7 @@ public class CameraControl : MonoBehaviour
 		float t = 0f;
 		while (t < time)
 		{
-			t += Time.deltaTime;
+			t += Time.unscaledDeltaTime;
 			sr.color = new Color(color.r, color.g, color.b, Mathf.Lerp(sr.color.a, a, t / time));
 			yield return null;
 		}
@@ -164,7 +164,7 @@ public class CameraControl : MonoBehaviour
 		float t = 0f;
 		while (t < time)
 		{
-			t += Time.deltaTime;
+			t += Time.unscaledDeltaTime;
 			sr.color = new Color(color.r, color.g, color.b, Mathf.Lerp(sr.color.a, 0, t / time));
 			yield return null;
 		}

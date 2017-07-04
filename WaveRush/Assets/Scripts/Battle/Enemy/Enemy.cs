@@ -32,7 +32,7 @@ public class Enemy : MonoBehaviour, IDamageable {
 	public bool hitDisabled{ get; private set; }
 
 	[Header("Enemy Properties")]
-	protected int level;
+	public int level;
 	public int baseHealth = 1;
 	public int maxHealth { get; set; }
 	public int health { get; protected set; }
@@ -118,6 +118,8 @@ public class Enemy : MonoBehaviour, IDamageable {
 
 	public virtual void AddStatus(GameObject statusObj)
 	{
+		if (invincible)
+			return;
 		EnemyStatus statusType = statusObj.GetComponent<EnemyStatus> ();
 		// check if this enemy already has this status
 		EnemyStatus existingStatus = GetStatus (statusType);
@@ -186,6 +188,7 @@ public class Enemy : MonoBehaviour, IDamageable {
 	protected virtual IEnumerator AnimateIn(Vector3 target)
 	{
 		body.transform.position = target;
+		invincible = true;
 		//UnityEngine.Assertions.Assert.IsTrue(anim.HasState(0, Animator.StringToHash("Spawn")));
 		if (anim.HasState(0, Animator.StringToHash("Spawn")))
 			anim.CrossFade ("Spawn", 0f);
@@ -193,7 +196,7 @@ public class Enemy : MonoBehaviour, IDamageable {
 		yield return new WaitForEndOfFrame ();		// wait for the animation state to update before continuing
 		while (anim.GetCurrentAnimatorStateInfo (0).IsName ("Spawn"))
 			yield return null;
-
+		invincible = false;
 		StartCoroutine (DEFAULT_STATE);
 	}
 
@@ -317,6 +320,8 @@ public class Enemy : MonoBehaviour, IDamageable {
 	public virtual void Heal (int amt)
 	{
 		health += amt;
+		if (health > maxHealth)
+			health = maxHealth;
 	}
 
 	protected virtual void OnTriggerEnter2D(Collider2D col)

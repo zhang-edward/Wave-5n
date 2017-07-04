@@ -388,7 +388,7 @@ public class KnightHero : PlayerHero {
 		animPlayer.anim = simpleAnim;
 		tempObj.Init(Quaternion.Euler(0, 0, Random.Range(0, 360)),
 					 position,
-				 specialHitAnim.frames[0]);
+		             simpleAnim.frames[0]);
 		animPlayer.Play();
 	}
 }

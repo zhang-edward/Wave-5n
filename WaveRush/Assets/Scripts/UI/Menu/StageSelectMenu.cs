@@ -1,5 +1,6 @@
 ﻿﻿﻿﻿using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 using System.Collections.Generic;
 
 public class StageSelectMenu : MonoBehaviour
@@ -18,6 +19,7 @@ public class StageSelectMenu : MonoBehaviour
 	public Text stageSeriesNameText;
 	public Transform stageSeriesIconFolder;
 	public ScrollViewSnap stageSeriesScrollView;
+	public GameObject leftButton, rightButton;
 
 	[Header("Stage Select View")]
 	public GameObject stageSelectionView;
@@ -30,6 +32,11 @@ public class StageSelectMenu : MonoBehaviour
 	{
 		DeselectStageIcon();
 		stageSelectionView.SetActive(false);
+		StartCoroutine(UpdateScrollButtonsVisibility());
+	}
+
+	void Awake()
+	{
 		InitStageSeriesSelectionView();
 	}
 
@@ -60,7 +67,23 @@ public class StageSelectMenu : MonoBehaviour
 			o.SetActive(true);
 			iconIndex++;
 		}
+		StartCoroutine(InitScrollViewAfter1Frame());
+	}
+
+	private IEnumerator InitScrollViewAfter1Frame()
+	{
+		yield return new WaitForEndOfFrame();
 		stageSeriesScrollView.Init();
+	}
+
+	private IEnumerator UpdateScrollButtonsVisibility()
+	{
+		for (;;)
+		{
+			leftButton.SetActive(stageSeriesScrollView.selectedContentIndex > 0);
+			rightButton.SetActive(stageSeriesScrollView.selectedContentIndex < stageSeriesScrollView.content.Count - 1);
+			yield return null;
+		}
 	}
 
 	public void InitStageSelectionView(StageSeriesData stageSeriesData)
