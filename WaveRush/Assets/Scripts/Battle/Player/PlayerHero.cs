@@ -140,7 +140,6 @@ public abstract class PlayerHero : MonoBehaviour {
 		anim.player.Init();
 		damageMultiplier = 1f;
 		baseDamage = Mathf.RoundToInt(Pawn.DamageEquation(heroData.level));
-		print(damage);
 		// init cooldownMultipliers
 		cooldownMultipliers = new float[cooldownTime.Length];
 		for(int i = 0; i < cooldownTime.Length; i ++)

@@ -8,11 +8,10 @@ public class WalkVicinityState : MoveState
 		Wait
 	}
 	private State state = State.Walk;
-
 	private Animator anim;
-
 	private Vector3 target;
-	private float waitTimer;	// how long this entity should wait, once it has reached its destination
+	private float waitTimer;    // how long this entity should wait, once it has reached its destination
+	private Map map;
 
 	public float waitTime = 1.0f;
 	public float walkRadius = 1.0f;
@@ -20,6 +19,7 @@ public class WalkVicinityState : MoveState
 	public override void Init (Enemy e, Transform player)
 	{
 		base.Init (e, player);
+		map = e.map;
 		anim = e.anim;
 	}
 
@@ -44,9 +44,14 @@ public class WalkVicinityState : MoveState
 
 	private void ToWalkState()
 	{
-		target = (Vector2)(player.position) + new Vector2(
-				Random.Range(-walkRadius, walkRadius),
-				Random.Range(-walkRadius, walkRadius));		// add a random offset;
+		bool targetWithinMap = false;
+		while (!targetWithinMap)
+		{
+			target = (Vector2)(player.position) + new Vector2(
+					Random.Range(-walkRadius, walkRadius),
+					Random.Range(-walkRadius, walkRadius));     // add a random offset;
+			targetWithinMap = map.WithinOpenCells(target);
+		}
 		state = State.Walk;
 //		print("moving");
 	}

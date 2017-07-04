@@ -188,7 +188,6 @@ public class Enemy : MonoBehaviour, IDamageable {
 	protected virtual IEnumerator AnimateIn(Vector3 target)
 	{
 		body.transform.position = target;
-		invincible = true;
 		//UnityEngine.Assertions.Assert.IsTrue(anim.HasState(0, Animator.StringToHash("Spawn")));
 		if (anim.HasState(0, Animator.StringToHash("Spawn")))
 			anim.CrossFade ("Spawn", 0f);
@@ -196,7 +195,6 @@ public class Enemy : MonoBehaviour, IDamageable {
 		yield return new WaitForEndOfFrame ();		// wait for the animation state to update before continuing
 		while (anim.GetCurrentAnimatorStateInfo (0).IsName ("Spawn"))
 			yield return null;
-		invincible = false;
 		StartCoroutine (DEFAULT_STATE);
 	}
 
@@ -233,6 +231,7 @@ public class Enemy : MonoBehaviour, IDamageable {
 	{
 		yield return new WaitForEndOfFrame ();
 		movementMethod.Reset ();
+		//print("Updating whatever moveState is: " + movementMethod);
 		for (;;)
 		{
 			movementMethod.UpdateState ();
@@ -248,7 +247,8 @@ public class Enemy : MonoBehaviour, IDamageable {
 	private void ToMoveState()
 	{
 		anim.CrossFade ("default", 0f);
-		StopAllCoroutines ();		// stops any duplicate MoveStates that may have been started concurrently
+		StopAllCoroutines ();       // stops any duplicate MoveStates that may have been started concurrently
+//		print("To move state");
 		StartCoroutine ("MoveState");
 	}
 

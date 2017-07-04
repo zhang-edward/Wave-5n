@@ -99,12 +99,24 @@ public class EnemyManager : MonoBehaviour {
 			OnEnemyWaveSpawned (waveNumber);
 		// Number of enemies spawning curve (used desmos.com for the graph)
 		int numEnemies = DifficultyCurveEquation();
-		List<GameObject> prefabPool = stageData.GetSpawnList(waveNumber);
-		for (int i = 0; i < numEnemies; i ++)
+		List<StageData.EnemySpawnProperties> prefabPool = stageData.GetSpawnList(waveNumber);
+		int i = 0;
+		int debugCounter = 0;
+		while (i < numEnemies && debugCounter < 1000)
 		{
 			int randIndex = Random.Range(0, prefabPool.Count);
-			Vector3 randOpenCell = map.OpenCells [Random.Range (0, map.OpenCells.Count)];
-			SpawnEnemy(prefabPool[randIndex], randOpenCell);
+			StageData.EnemySpawnProperties enemyProp = prefabPool[randIndex];
+			if (Random.value < enemyProp.spawnFrequency)
+			{
+				Vector3 randOpenCell = map.OpenCells[Random.Range(0, map.OpenCells.Count)];
+				SpawnEnemy(enemyProp.prefab, randOpenCell);
+				i++;
+			}
+			debugCounter++;
+			if (debugCounter > 1000)
+			{
+				Debug.LogError("Took 1000+ tries to spawn an enemy!!");
+			}
 		}
 
 		Debug.Log ("Number of enemies in this wave: " + numEnemies);

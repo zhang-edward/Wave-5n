@@ -35,7 +35,7 @@ public class PawnGenerator
 		// Method similar to inverse cumulative distribution function: 
 		// https://stackoverflow.com/questions/9956486/distributed-probability-random-number-generator
 		int total = SumArray(probabilityTable);
-		int random = Random.Range(0, total + 1);
+		int random = Random.Range(0, total);
 		int cumulativeChecker = 0;
 		for (int i = 0; i < probabilityTable.Length; i ++)
 		{

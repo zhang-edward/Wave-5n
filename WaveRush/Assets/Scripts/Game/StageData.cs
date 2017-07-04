@@ -26,15 +26,15 @@ public class StageData : ScriptableObject
 
 
 	// retrieve the list of available enemies for spawning based on the amount of points available
-	public List<GameObject> GetSpawnList(int waveNumber)
+	public List<EnemySpawnProperties> GetSpawnList(int waveNumber)
 	{
-		List<GameObject> answer = new List<GameObject>();
+		List<EnemySpawnProperties> answer = new List<EnemySpawnProperties>();
 		foreach (EnemySpawnProperties enemyProp in enemyPrefabs)
 		{
 			Enemy enemy = enemyProp.prefab.GetComponentInChildren<Enemy>();
 			if (enemyProp.waveLimit <= waveNumber)
 			{
-				answer.Add(enemyProp.prefab);
+				answer.Add(enemyProp);
 			}
 		}
 		return answer;
