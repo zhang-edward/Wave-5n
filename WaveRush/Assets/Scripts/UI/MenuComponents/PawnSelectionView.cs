@@ -19,7 +19,17 @@ public class PawnSelectionView : MonoBehaviour
 
 	public void Refresh()
 	{
-		this.pawns = GameManager.instance.saveGame.pawns;	// retrieve the correct data
+		Pawn[] pawnsArr = GameManager.instance.saveGame.pawns;  // retrieve the correct data
+		Pawn[] extraPawnsArr = GameManager.instance.saveGame.extraPawns;
+		pawns = new Pawn[pawnsArr.Length + extraPawnsArr.Length];
+		for (int i = 0; i < pawnsArr.Length; i ++)
+		{
+			pawns[i] = pawnsArr[i];
+		}
+		for (int i = 0; i < extraPawnsArr.Length; i ++)
+		{
+			pawns[i + pawnsArr.Length] = extraPawnsArr[i];
+		}
 		foreach (PawnIcon icon in pawnIcons)
 			icon.gameObject.SetActive(false);
 		int j = 0;									// track the pawnIcons list position
@@ -42,21 +52,81 @@ public class PawnSelectionView : MonoBehaviour
 		}
 	}
 
+
+	/// <summary>
+	/// Sorts the list of pawnIcons by the hero type, and also by level within each hero type.
+	/// Also sets the sibling index so the order is rendered in any layout groups. Uses insertion sort.
+	/// </summary>
 	public void SortByHeroType()
 	{
-		int numHeroTypes = System.Enum.GetNames(typeof(HeroType)).Length;	// get the number of hero types
-		for (int heroType = 0; heroType < numHeroTypes; heroType++)			// for each hero type, find each pawn of that type in the list and add it to the beginning
+		for (int i = 1; i < pawnIcons.Count; i ++)
 		{
-			for (int i = 0; i < pawnIcons.Count; i ++)
+			PawnIcon x = pawnIcons[i];
+			int j = i - 1;
+			while (j >= 0 && CompareHeroAndLevel(pawnIcons[j].pawnData, x.pawnData) < 0)
 			{
-				if (pawnIcons[i].pawnData.type == (HeroType)heroType)
-				{
-					pawnIcons.Insert(0, pawnIcons[i]);
-					pawnIcons.RemoveAt(i);
-				}
+				pawnIcons[j + 1] = pawnIcons[j];
+				j--;
+			}
+			pawnIcons[j + 1] = x;
+		}
+
+		for (int i = 0; i < pawnIcons.Count; i ++)		// set the hierarchy position of each pawnIcon
+		{
+			pawnIcons[i].transform.SetSiblingIndex(i);
+		}
+	}
+
+	/// <summary>
+	/// Compares the hero type and level of two pawns.
+	/// </summary>
+	/// <returns> less than 0 if pawn1 has a lower level or heroType than pawn2, 0 if they are the same hero and level
+	/// and greater than 0 if pawn1 has a higher level or heroType than pawn2. </returns>
+	/// <param name="pawn1">Pawn1.</param>
+	/// <param name="pawn2">Pawn2.</param>
+	private int CompareHeroAndLevel(Pawn pawn1, Pawn pawn2)
+	{
+		if (pawn1.type == pawn2.type)
+		{
+			if (pawn1.level < pawn2.level)
+			{
+				return -1;
+			}
+			else if (pawn1.level > pawn2.level)
+			{
+				return 1;
+			}
+			else
+			{
+				return 0;
 			}
 		}
-		for (int i = 0; i < pawnIcons.Count; i ++)		// set the hierarchy position of each pawnIcon
+		else
+		{
+			return pawn1.type.CompareTo(pawn2.type);
+		}
+	}
+
+
+	/// <summary>
+	/// Sorts the list of pawnIcons by level.
+	/// Also sets the sibling index so the order is rendered in any layout groups. Uses insertion sort.
+	/// </summary>
+	public void SortByLevel()
+	{
+		for (int i = 1; i < pawnIcons.Count; i++)
+		{
+			PawnIcon x = pawnIcons[i];
+			int j = i - 1;
+			while (j >= 0 && pawnIcons[j].pawnData.level < x.pawnData.level)
+			{
+				pawnIcons[j + 1] = pawnIcons[j];
+				j--;
+			}
+			pawnIcons[j + 1] = x;
+		}
+
+		for (int i = 0; i < pawnIcons.Count; i++)       // set the hierarchy position of each pawnIcon
 		{
 			pawnIcons[i].transform.SetSiblingIndex(i);
 		}
@@ -64,7 +134,6 @@ public class PawnSelectionView : MonoBehaviour
 
 
 	// ==== Helper methods ====
-
 	private void AddNewPawnIcon(Pawn pawn)
 	{
 		GameObject o = Instantiate(pawnIconPrefab);

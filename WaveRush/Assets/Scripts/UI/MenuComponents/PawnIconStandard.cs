@@ -61,9 +61,17 @@ public class PawnIconStandard : PawnIcon
 
 	private void InitOptionalElements()
 	{
-		if (heroStars != null && pawnData.level > 0)
+		if (heroStars != null)
 		{
-			heroStars.sprite = starSprites[pawnData.level - 1];
+			if (pawnData.level == 0)
+			{
+				heroStars.color = Color.clear;
+			}
+			else
+			{
+				heroStars.color = Color.white;
+				heroStars.sprite = starSprites[pawnData.level - 1];
+			}
 		}
 		if (panels.Length > 0)
 		{
