@@ -4,24 +4,22 @@ namespace EnemyActions
 {
 	public class PlayerInRangeCondition : EnemyCondition
 	{
+		public float min = 0;
 		public float range;
 
 		public override bool Check()
 		{
-			Collider2D[] cols = Physics2D.OverlapCircleAll(e.transform.position, range);
-			foreach (Collider2D col in cols)
-			{
-				if (col.CompareTag("Player"))
-				{
-					return true;
-				}
-			}
-			return false;
+			float dist = Vector3.Distance(transform.position, player.position);
+			return dist < range && dist > min;
 		}
 
 
 		void OnDrawGizmosSelected()
 		{
+			Gizmos.color = Color.cyan;
+			Gizmos.DrawWireSphere(transform.position, min);
+
+			Gizmos.color = Color.blue;
 			Gizmos.DrawWireSphere(transform.position, range);
 		}
 	}

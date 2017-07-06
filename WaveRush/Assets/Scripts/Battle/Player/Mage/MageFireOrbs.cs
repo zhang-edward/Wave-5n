@@ -3,7 +3,7 @@
 public class MageFireOrbs : HeroPowerUp
 {
 	private int maxOrbs = 3;
-	private int orbRequirement = 30;
+	private int orbRequirement = 2;
 	public int orbsActive { get; private set; }
 	public IndicatorEffect[] orbs;
 
@@ -17,7 +17,6 @@ public class MageFireOrbs : HeroPowerUp
 	public override void Stack()
 	{
 		base.Stack();
-		orbRequirement -= 10;
 		maxOrbs++;
 	}
 
@@ -31,7 +30,7 @@ public class MageFireOrbs : HeroPowerUp
 
 	private void ActivateOrb()
 	{
-		if (orbsActive >= 5)
+		if (orbsActive >= maxOrbs)
 			return;
 
 		orbs[orbsActive].gameObject.SetActive(true);

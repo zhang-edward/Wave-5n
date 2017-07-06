@@ -19,10 +19,10 @@ public class WeaknessStatus : EnemyStatus
 	protected override IEnumerator Effect()
 	{
 		anim.Play();
-		enemy.OnEnemyDamaged += DoubleDamage;
+		enemy.OnEnemyDamaged += AdditionalDamage;
 		while (timer > 0)
 			yield return null;
-		enemy.OnEnemyDamaged -= DoubleDamage;
+		enemy.OnEnemyDamaged -= AdditionalDamage;
 		Deactivate();
 	}
 
@@ -32,9 +32,9 @@ public class WeaknessStatus : EnemyStatus
 		timer = duration;
 	}
 
-	private void DoubleDamage(int amt)
+	private void AdditionalDamage(int amt)
 	{
-		enemy.DecreaseHealth(amt);
+		enemy.DecreaseHealth(Mathf.RoundToInt(amt * 0.5f));
 		PlayEffect();
 	}
 

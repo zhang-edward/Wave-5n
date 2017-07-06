@@ -9,6 +9,7 @@ public class MageFire : MonoBehaviour
 	public float radius;
 	public float interval;
 	public float lifetime;
+	public int damage;
 
 	void Start()
 	{
@@ -34,7 +35,7 @@ public class MageFire : MonoBehaviour
 					Enemy e = col.GetComponentInChildren<Enemy> ();
 					if (!e.invincible)
 					{
-						e.Damage (1);
+						e.Damage (damage);
 						effectPool.GetPooledObject ().GetComponent<TempObject> ().Init (
 							Quaternion.Euler (new Vector3 (0, 0, Random.Range (0, 360f))),
 							e.transform.position, 

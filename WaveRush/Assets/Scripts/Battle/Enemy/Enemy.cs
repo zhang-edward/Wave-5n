@@ -82,7 +82,7 @@ public class Enemy : MonoBehaviour, IDamageable {
 
 		this.level = level;
 		this.map = map;
-		maxHealth = baseHealth * Mathf.RoundToInt(Pawn.DamageEquation(level));  // calculate health based on level
+		maxHealth = EnemyHealthEquation(level, baseHealth);  // calculate health based on level
 		health = maxHealth;
 		deathPropPool = ObjectPooler.GetObjectPooler ("DeathProp");			// instantiate set object pooler
 
@@ -342,5 +342,10 @@ public class Enemy : MonoBehaviour, IDamageable {
 	{
 		if (OnEnemyObjectDisabled != null)
 			OnEnemyObjectDisabled(this);
+	}
+
+	private static int EnemyHealthEquation(int level, int baseHealth)
+	{
+		return Mathf.RoundToInt(baseHealth * (Pawn.DamageEquation(level)) * (Mathf.Sqrt(level) / 2));
 	}
 }

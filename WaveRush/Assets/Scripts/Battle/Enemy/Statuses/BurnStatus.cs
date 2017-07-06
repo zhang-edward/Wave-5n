@@ -7,6 +7,7 @@ public class BurnStatus : EnemyStatus
 	public float fireSpreadRange = 1.5f;
 	public int spreadLevel = 2;
 	public int numSpreads = 2;
+	public int damage = 1;
 	public AudioClip[] applySounds;
 
 	protected override IEnumerator Effect ()
@@ -28,9 +29,9 @@ public class BurnStatus : EnemyStatus
 			{
 				SpreadFire ();
 			}
-			yield return null;
+			enemy.Damage (damage);
+			yield return new WaitForSeconds(Random.Range(0.1f, 0.3f));
 		}
-		enemy.Damage (1);
 
 		Deactivate();
 		yield return null;

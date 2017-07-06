@@ -30,6 +30,9 @@ public class MageFieryImpact : HeroPowerUp
 	private void CreateFireZone()
 	{
 		if (Random.value < createFireChance)
-			Instantiate (mageFirePrefab, transform.position, Quaternion.identity);
+		{
+			GameObject o = Instantiate(mageFirePrefab, transform.position, Quaternion.identity);
+			o.GetComponent<MageFire>().damage = Mathf.RoundToInt(mage.damage * 0.5f);
+		}
 	}
 }

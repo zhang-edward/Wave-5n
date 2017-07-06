@@ -198,7 +198,7 @@ public class EnemyManager : MonoBehaviour {
 		positions.Add(Vector3.up * offset);
 		positions.Add(Vector3.down * offset);
 
-		float spawnChance = 1.0f;
+		float spawnChance = 0.6f;
 		for (int i = 0; i < 4; i ++)
 		{
 			if (Random.value < spawnChance)
@@ -206,7 +206,11 @@ public class EnemyManager : MonoBehaviour {
 				int randIndex = Random.Range(0, positions.Count);
 				SpawnEnemy(trappedHeroPrefab, bossSpawn.transform.position + positions[randIndex]);
 				positions.RemoveAt(randIndex);
-				spawnChance *= 0.35f;
+				spawnChance *= 0.4f;
+			}
+			else
+			{
+				break;
 			}
 		}
 	}

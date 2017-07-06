@@ -102,7 +102,7 @@ public class KnightFlyingSwords : HeroPowerUp
 
 		yield return new WaitForSeconds(frame6time);
 
-		e.Damage(4);
+		e.Damage(knight.damage * 3);
 		CameraControl.instance.StartShake(0.2f, 0.05f);
 		SoundManager.instance.RandomizeSFX(swordLandSounds[Random.Range(0, swordLandSounds.Length)]);
 

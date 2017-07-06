@@ -4,6 +4,7 @@ using System.Collections;
 public class FireTrailEmitter : MonoBehaviour
 {
 	public GameObject fireTrailPrefab;
+	public int damage;
 
 	void Start()
 	{
@@ -19,6 +20,7 @@ public class FireTrailEmitter : MonoBehaviour
 	{
 		GameObject o = Instantiate (fireTrailPrefab, transform.position, Quaternion.identity) as GameObject;
 		o.transform.SetParent (ObjectPooler.GetObjectPooler ("Effect").transform);
+		o.GetComponent<MageFire>().damage = damage;
 	}
 }
 

@@ -35,6 +35,7 @@ public class MageMeteorStrike : HeroPowerUp
 
 		Vector3 target = (Vector3)playerHero.player.dir + transform.position;
 		GameObject meteorObj = projectilePool.GetPooledObject();
+		meteorObj.GetComponentInChildren<AreaDamageAction>().damage = Mathf.RoundToInt(mage.damage * 4f);
 		Vector2 spawnPos = (Vector2)target + new Vector2(Random.Range(-3f, 3f), 10);
 		Vector2 dir = (Vector2)target - spawnPos;
 		Projectile meteor = meteorObj.GetComponent<Projectile>();

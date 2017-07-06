@@ -49,6 +49,8 @@ public class IndicatorEffect : MonoBehaviour
 
 	public void AnimateOut()
 	{
+		if (!gameObject.activeInHierarchy)
+			return;
 		animatingOut = true;
 	}
 

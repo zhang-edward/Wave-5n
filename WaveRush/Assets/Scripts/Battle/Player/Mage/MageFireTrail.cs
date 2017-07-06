@@ -39,6 +39,7 @@ public class MageFireTrail : HeroPowerUp
 			fireTrailReadyIndicator.SetActive (false);
 
 			GameObject o = Instantiate (fireTrailEmitterPrefab);
+			o.GetComponent<FireTrailEmitter>().damage = Mathf.RoundToInt(mage.damage * 0.5f);
 			o.transform.position = fireballObj.transform.position;
 			o.transform.SetParent (fireballObj.transform);
 			percentActivated = 0f;

@@ -47,7 +47,6 @@ public class KnightThornShield : HeroPowerUp
 			if (col.CompareTag("Enemy"))
 			{
 				Enemy e = col.gameObject.GetComponentInChildren<Enemy>();
-				e.Damage(1);
 
 				GameObject stun = Instantiate(StatusEffectContainer.instance.GetStatus("Stun"));
 				e.AddStatus(stun.gameObject);

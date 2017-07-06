@@ -64,7 +64,7 @@ public class MageEruption : HeroPowerUp
 		yield return new WaitForSeconds(frame11time);
 
 		SoundManager.instance.RandomizeSFX(eruptionSounds[Random.Range(0, eruptionSounds.Length)]);
-		e.Damage(3);
+		e.Damage(Mathf.RoundToInt(mage.damage * 2.5f));
 		CameraControl.instance.StartShake(0.2f, 0.05f);
 	}
 
