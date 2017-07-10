@@ -135,12 +135,15 @@ public class PawnFusionMenu : MonoBehaviour
 		}
 		Pawn pawn1 = selectedIcons[0].GetComponent<PawnIcon>().pawnData;
 		Pawn pawn2 = selectedIcons[1].GetComponent<PawnIcon>().pawnData;
+		Debug.Log("Pawn1:" + pawn1 +
+		  "\nPawn2:" + pawn2);
+
 		if (CheckCanFusePawns(pawn1, pawn2))
 		{
 			Pawn pawn = GetFusedPawn(pawn1, pawn2);
 			saveGame.RemovePawn(pawn1.id);
 			saveGame.RemovePawn(pawn2.id);
-			saveGame.AddPawn(pawn);
+			saveGame.AddPawn(pawn, true, 100);
 			SaveLoad.Save();
 			fuseMatIcon1.gameObject.SetActive(false);
 			fuseMatIcon2.gameObject.SetActive(false);
@@ -152,8 +155,6 @@ public class PawnFusionMenu : MonoBehaviour
 	// NOTE: Order of the condition checks here matters!
 	public bool CheckCanFusePawns(Pawn pawn1, Pawn pawn2)
 	{
-		Debug.Log("Pawn1:" + pawn1 +
-				  "\nPawn2:" + pawn2);
 		if (pawn1.type != pawn2.type)
 		{
 			Debug.LogWarning("Heroes must be the same type!");

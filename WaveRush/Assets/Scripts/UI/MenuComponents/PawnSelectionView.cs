@@ -50,6 +50,7 @@ public class PawnSelectionView : MonoBehaviour
 				j++;
 			}
 		}
+		SortByHeroType();
 	}
 
 
@@ -125,7 +126,6 @@ public class PawnSelectionView : MonoBehaviour
 			}
 			pawnIcons[j + 1] = x;
 		}
-
 		for (int i = 0; i < pawnIcons.Count; i++)       // set the hierarchy position of each pawnIcon
 		{
 			pawnIcons[i].transform.SetSiblingIndex(i);

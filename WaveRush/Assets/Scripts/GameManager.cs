@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour {
 
 	public static GameManager instance;
 
+	[Header("Realtime Timer")]
+	public RealtimeTimerManager timerManager;
 	[Header("Save Game")]
 	public SaveGame saveGame;
 	[Header("Selected Items for Battle Scene")]
@@ -28,17 +30,45 @@ public class GameManager : MonoBehaviour {
 	public delegate void GameStateUpdate();
 	public GameStateUpdate OnSceneLoaded;
 
-	//private bool didInitializeGameScene = false;
 
 	void Awake()
 	{
 		if (instance == null)
 			instance = this;
 		else if (instance != this)
-			Destroy (this.gameObject);
+		{
+			Destroy(this.gameObject);
+			return;		// Don't execute any of the following code if this is not the singleton instance
+		}
 		DontDestroyOnLoad (this);
 
 		SaveLoad.Load ();
+		InitRealtimeTimers();
+	}
+
+	public void InitRealtimeTimers()
+	{
+		timerManager.AddTimer("Debug", saveGame.debugTimer);
+		foreach (Pawn pawn in saveGame.pawns)
+		{
+			if (pawn != null && pawn.unlockTime > 0)
+			{
+				timerManager.AddTimer("Pawn:" + pawn.id, pawn.unlockTime);
+			}
+		}
+		foreach (Pawn pawn in saveGame.extraPawns)
+		{
+			if (pawn != null && pawn.unlockTime > 0)
+			{
+				timerManager.AddTimer("Pawn:" + pawn.id, pawn.unlockTime);
+			}
+		}
+		timerManager.UpdateTimersSinceLastClosed();
+	}
+
+	public void ScheduleSimple()
+	{
+		Assets.SimpleAndroidNotifications.NotificationManager.Send(System.TimeSpan.FromSeconds(5), "Simple notification", "Customize icon and color", new Color(1, 0.3f, 0.15f));
 	}
 
 	void Start()
@@ -48,6 +78,7 @@ public class GameManager : MonoBehaviour {
 
 		Application.targetFrameRate = 60;
 		StartCoroutine(FPS());
+		ScheduleSimple();
 	}
 
 	void Update()
@@ -58,6 +89,50 @@ public class GameManager : MonoBehaviour {
 			debugPanel.SetActive(!debugPanel.activeInHierarchy);
 		}
 #endif
+	}
+
+	private void OnApplicationFocus(bool focus)
+	{
+		if (!focus)
+		{
+			Debug.Log("Pause");
+			PlayerPrefs.SetString(RealtimeTimerManager.LAST_CLOSED_KEY, System.DateTime.Now.ToString());
+			SaveTimers();
+		}
+		else
+		{
+			Debug.Log("Resume");
+			timerManager.UpdateTimersSinceLastClosed();
+		}
+	}
+
+	private void SaveTimers()
+	{
+		foreach (Pawn pawn in saveGame.pawns)
+		{
+			if (pawn != null && pawn.unlockTime > 0)
+			{
+				RealtimeTimer timer = timerManager.GetTimer("Pawn:" + pawn.id);
+				pawn.unlockTime = timer.timer;
+			}
+		}
+		foreach (Pawn pawn in saveGame.extraPawns)
+		{
+			if (pawn != null && pawn.unlockTime > 0)
+			{
+				RealtimeTimer timer = timerManager.GetTimer("Pawn:" + pawn.id);
+				pawn.unlockTime = timer.timer;
+			}
+		}
+		SaveLoad.Save();
+	}
+
+	private void OnApplicationQuit()
+	{
+		PlayerPrefs.SetString(RealtimeTimerManager.LAST_CLOSED_KEY, System.DateTime.Now.ToString());
+		saveGame.debugTimer = timerManager.GetTimer("Debug").timer;
+		SaveTimers();
+		SaveLoad.Save();
 	}
 
 	private IEnumerator FPS()
@@ -105,59 +180,7 @@ public class GameManager : MonoBehaviour {
 		// On finished scene loading
 		if (OnSceneLoaded != null)
 			OnSceneLoaded();
-		/*switch (scene)
-		{
-		case("Game"):
-			InitGameScene();
-			break;
-		}*/
 	}
-
-	// init main game environment
-	/*private void InitGameScene()
-	{
-		Map map = GameObject.Find ("/Game/Map").GetComponent<Map>();
-		EnemyManager enemyManager = GameObject.Find ("/Game/EnemyManager").GetComponent<EnemyManager> ();
-		playerObj = GameObject.Find ("/Game/Player");
-		Assert.IsNotNull (playerObj);
-		Player player = playerObj.GetComponentInChildren<Player> ();
-		Assert.IsFalse(selectedPawn.type == HeroType.Null);		// will throw an error if this script tries to initialize the player without a selected hero
-
-		map.chosenMap = selectedStage.mapType;
-		map.GenerateMap ();
-		player.Init (selectedPawn);
-		enemyManager.Init(selectedStage);
-
-		SoundManager.instance.PlayMusicLoop (map.data.musicLoop, map.data.musicIntro);
-	}*/
-
-	/*public void TeleportMaps(MapType newMap)
-	{
-		SaveLoad.Save ();
-		selectedMap = newMap;
-		StartCoroutine ("Teleport");
-	}
-
-	private IEnumerator Teleport()
-	{
-		Color initialColor = Color.clear;
-		Color finalColor = Color.white;
-		float t = 0;
-		while (loadingOverlay.color.a < 0.95f)
-		{
-			loadingOverlay.color = Color.Lerp (initialColor, finalColor, t * 4);
-			t += Time.deltaTime;
-			yield return null;
-		}
-		loadingOverlay.color = finalColor;
-		AsyncOperation async = SceneManager.LoadSceneAsync ("Game");
-		Assert.IsNotNull (async);
-
-		while (!async.isDone)
-			yield return null;
-		StartCoroutine(DeactivateLoadingScreen ());
-		InitGameScene ();
-	}*/
 
 	// ==========
 	// Stages and Series methods

@@ -12,7 +12,10 @@ public class PawnIconStandard : PawnIcon
 	public Text heroLevelText;
 	public bool levelInShortFormat;
 	public Image heroPortrait;
+	public TimerView timerView;
+	public bool showTimer = true;
 	[Header("Optional UI Elements")]
+	public GameObject highlight;
 	public Image heroPortraitBorder;
 	public Image heroStars;
 	public Image[] panels;
@@ -20,6 +23,8 @@ public class PawnIconStandard : PawnIcon
 	public Button button;       // if it is interactable
 	public delegate void Click(PawnIconStandard iconData);
 	public Click onClick;
+
+	private bool initialized = false;
 
 	void Awake()
 	{
@@ -51,6 +56,25 @@ public class PawnIconStandard : PawnIcon
 				break;
 		}
 		InitOptionalElements();
+		initialized = true;
+	}
+
+	void Update()
+	{
+		if (!initialized)
+			return;
+		if (timerView != null && showTimer)
+		{
+			if (timerView.timer == null || timerView.timer.timer <= 0)
+			{
+				timerView.gameObject.SetActive(false);
+				button.interactable = true;
+			}
+			else
+			{
+				button.interactable = false;
+			}	
+		}
 	}
 
 	private void OnClick()
@@ -69,8 +93,11 @@ public class PawnIconStandard : PawnIcon
 			}
 			else
 			{
+				int index = pawnData.level - 1;
+				if (index > 8)
+					index = 8;
 				heroStars.color = Color.white;
-				heroStars.sprite = starSprites[pawnData.level - 1];
+				heroStars.sprite = starSprites[index];
 			}
 		}
 		if (panels.Length > 0)
@@ -86,6 +113,15 @@ public class PawnIconStandard : PawnIcon
 				case HeroTier.tier3:
 					SetPanels(panelTierSprites[2]);
 					break;
+			}
+		}
+
+		if (timerView != null)
+		{
+			timerView.gameObject.SetActive(showTimer);
+			if (pawnData.unlockTime > 0 && showTimer)
+			{
+				timerView.timer = GameManager.instance.timerManager.GetTimer("Pawn:" + pawnData.id);
 			}
 		}
 	}

@@ -25,6 +25,7 @@ public class SaveGame
 
 	public Dictionary<HeroType, ScoreManager.Score> highScores;
 	public Wallet wallet;
+	public float debugTimer = 10000;
 
 	public SaveGame()
 	{
@@ -63,13 +64,18 @@ public class SaveGame
 		return null;
 	}
 
-	public bool AddPawn(Pawn pawn, bool overflow = true)
+	public bool AddPawn(Pawn pawn, bool overflow = true, float unlockTime = 0)
 	{
-		for (int i = 0; i < pawns.Length; i ++)
+		for (int i = 0; i < pawns.Length; i++)
 		{
 			if (pawns[i] == null)
 			{
 				pawn.SetID(i);
+				pawn.unlockTime = unlockTime;
+				if (unlockTime > 0)
+				{
+					GameManager.instance.timerManager.AddTimer("Pawn:" + i, unlockTime);
+				}
 				pawns[i] = pawn;
 				Debug.Log("New Pawn:" + pawn);
 				return true;
@@ -119,6 +125,17 @@ public class SaveGame
 			{
 				Debug.Log("Removed Pawn:" + pawns[id]);
 				pawns[id] = null;
+				if (HasExtraPawns())
+				{
+					int i = 0;
+					while (i < extraPawns.Length && extraPawns[i] == null)
+					{
+						i++;
+					}
+					Debug.Log("Extra pawn filled slot:" + extraPawns[i]);
+					AddPawn(extraPawns[i]);
+					extraPawns[i] = null;
+				}
 				return true;
 			}
 			else
@@ -130,7 +147,7 @@ public class SaveGame
 		{
 			if (extraPawns[id] != null)
 			{
-				Debug.Log("Removed Pawn:" + extraPawns[id]);
+				Debug.Log("Removed Pawn (Extra):" + extraPawns[id]);
 				extraPawns[id] = null;
 				return true;
 			}
@@ -139,5 +156,15 @@ public class SaveGame
 				return false;
 			}
 		}
+	}
+
+	public bool HasExtraPawns()
+	{
+		for (int i = 0; i < extraPawns.Length; i++)
+		{
+			if (extraPawns[i] != null)
+				return true;
+		}
+		return false;
 	}
 }

@@ -11,6 +11,7 @@ public class Pawn
 	public HeroType type;		// the type of the hero
 	public int level;           // the level of the hero
 	public int id { get; private set; }
+	public float unlockTime;	// time, in realTime seconds, for which this hero is unlocked
 
 	public HeroTier tier {
 		get {
@@ -31,7 +32,6 @@ public class Pawn
 				level == T3_MIN_LEVEL - 1;
 		}
 	}
-
 
 	public Pawn(HeroType type)
 	{
