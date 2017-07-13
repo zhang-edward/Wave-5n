@@ -50,6 +50,7 @@ public class PawnRetireMenu : MonoBehaviour
 		for (int i = selectedIcons.Count - 1; i >= 0; i --)
 		{
 			PawnIcon icon = selectedIcons[i];
+			print(icon + ": " + icon.pawnData);
 			GameManager.instance.saveGame.RemovePawn(icon.pawnData.id);
 			DeselectIcon(icon);
 		}

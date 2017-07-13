@@ -26,7 +26,7 @@ public class PawnGenerator
 
 	private static int GetLevelFromCrystalLevel(int level)
 	{
-		int index = level - 1;
+		int index = level - 3;
 		if (index < 0) 
 			index = 0;
 		if (index > 8)

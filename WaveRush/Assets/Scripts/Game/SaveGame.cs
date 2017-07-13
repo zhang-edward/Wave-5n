@@ -77,7 +77,7 @@ public class SaveGame
 					GameManager.instance.timerManager.AddTimer("Pawn:" + i, unlockTime);
 				}
 				pawns[i] = pawn;
-				Debug.Log("New Pawn:" + pawn);
+				Debug.Log("New Pawn:" + pawn + " with unlock time:" + unlockTime);
 				return true;
 			}
 		}

@@ -29,4 +29,9 @@ public class TimerView : MonoBehaviour
 			
 		return "" + digitHours + hours + ":" + digitMinutes + minutes + ":" + digitSeconds + seconds;
 	}
+
+	public bool TimerDone()
+	{
+		return timer.timer <= 0;
+	}
 }

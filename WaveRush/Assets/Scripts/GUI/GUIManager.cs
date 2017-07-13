@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 
 public class GUIManager : MonoBehaviour {
 
@@ -16,7 +17,8 @@ public class GUIManager : MonoBehaviour {
 	public GameObject gameOverUI;   	// game over panel
 	public ScoreReport scorePanel;  	// score report in game over panel
 	public GameObject stageClearPanel;
-	public GameObject upgradeButton;	// button for upgrading the player character
+	public GameObject upgradeButton;    // button for upgrading the player character
+	public HeroesRescuedMenu heroesRescuedMenu;
 
 	[Header("Data")]
 	public EnemyManager enemyManager;
@@ -55,6 +57,11 @@ public class GUIManager : MonoBehaviour {
 			  1.0f,
 			 Color.white);
 		enemyWaveText.DisplayCustomMessage(introMessage);
+	}
+
+	public void InitializeHeroesRescuedMenu()
+	{
+		heroesRescuedMenu.Init(BattleSceneManager.instance.acquiredPawns);
 	}
 
 	private IEnumerator GameOverUIRoutine(ScoreReport.ScoreReportData data)

@@ -10,31 +10,76 @@ public class HeroesRescuedMenu : MonoBehaviour
 
 	private List<GameObject> pawnIcons = new List<GameObject>();
 
-	public void Init()
+	public void Init(List<Pawn> acquiredPawns)
 	{
-		List<Pawn> acquiredPawns = BattleSceneManager.instance.acquiredPawns;
-		foreach (Pawn pawn in acquiredPawns)
+		int j = 0;	// track the pawnIcons list position
+		for (int i = 0; i < acquiredPawns.Count; i++)      // iterate through the master list of pawns (may contain holes)
 		{
-			GameObject o = Instantiate(pawnIconPrefab);
-			o.transform.SetParent(content, false);
-			o.SetActive(false);
-			PawnIconStandard pawnIcon = o.GetComponent<PawnIconStandard>();
-			pawnIcon.Init(pawn);
-			pawnIcon.onClick = (iconData) => {
-				infoPanel.gameObject.SetActive(true);
-				infoPanel.Init(iconData.pawnData);
-			};
-			pawnIcons.Add(o);
+			Pawn pawn = acquiredPawns[i];
+			if (pawn != null)
+			{
+				if (j >= pawnIcons.Count)	// if we need more pawn icons, add new ones to the list
+				{
+					AddNewPawnIcon(pawn);
+				}
+				else
+				{
+					PawnIconStandard pawnIcon = pawnIcons[j].GetComponent<PawnIconStandard>();
+					pawnIcon.Init(pawn);
+					pawnIcon.onClick = (iconData) =>
+					{
+						infoPanel.gameObject.SetActive(true);
+						infoPanel.Init(iconData.pawnData);
+					};
+				}
+				j++;
+			}
 		}
-		StartCoroutine(AnimateIn());
+		StartCoroutine(AnimateIn(acquiredPawns.Count));
 	}
 
-	private IEnumerator AnimateIn()
+	public bool AllIconsRevealed()
+	{
+		foreach (GameObject obj in pawnIcons)
+		{
+			PawnIconReveal pawnIcon = obj.GetComponent<PawnIconReveal>();
+			if (!pawnIcon.revealed)
+				return false;
+		}
+		return true;
+	}
+
+	private void AddNewPawnIcon(Pawn pawn)
+	{
+		GameObject o = Instantiate(pawnIconPrefab);
+		o.transform.SetParent(content, false);
+		o.SetActive(false);
+		PawnIconStandard pawnIcon = o.GetComponent<PawnIconStandard>();
+		pawnIcon.Init(pawn);
+		pawnIcon.onClick = (iconData) =>
+		{
+			infoPanel.gameObject.SetActive(true);
+			infoPanel.Init(iconData.pawnData);
+		};
+		pawnIcons.Add(o);
+
+	}
+
+	private IEnumerator AnimateIn(int numToShow)
+	{
+		for (int i = 0; i < numToShow; i ++)
+		{
+			GameObject o = pawnIcons[i];
+			o.SetActive(true);
+			yield return new WaitForSeconds(0.2f);
+		}
+	}
+
+	public void Reset()
 	{
 		foreach (GameObject o in pawnIcons)
 		{
-			o.SetActive(true);
-			yield return new WaitForSeconds(0.2f);
+			o.SetActive(false);
 		}
 	}
 }

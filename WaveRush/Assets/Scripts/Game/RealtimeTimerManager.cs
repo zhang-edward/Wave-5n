@@ -28,7 +28,10 @@ public class RealtimeTimerManager : MonoBehaviour
 		o.transform.SetParent(this.transform);
 		RealtimeTimer timer = o.GetComponent<RealtimeTimer>();
 		timer.Init(key, time);
-		timers.Add(key, timer);
+		if (timers.ContainsKey(key))
+			timers[key] = timer;
+		else
+			timers.Add(key, timer);
 	}
 
 	public RealtimeTimer GetTimer(string key)

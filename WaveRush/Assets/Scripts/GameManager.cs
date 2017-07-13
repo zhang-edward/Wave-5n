@@ -95,13 +95,13 @@ public class GameManager : MonoBehaviour {
 	{
 		if (!focus)
 		{
-			Debug.Log("Pause");
+			//Debug.Log("Pause");
 			PlayerPrefs.SetString(RealtimeTimerManager.LAST_CLOSED_KEY, System.DateTime.Now.ToString());
 			SaveTimers();
 		}
 		else
 		{
-			Debug.Log("Resume");
+			//Debug.Log("Resume");
 			timerManager.UpdateTimersSinceLastClosed();
 		}
 	}

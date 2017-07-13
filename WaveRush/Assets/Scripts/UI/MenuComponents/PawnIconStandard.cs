@@ -63,9 +63,9 @@ public class PawnIconStandard : PawnIcon
 	{
 		if (!initialized)
 			return;
-		if (timerView != null && showTimer)
+		if (showTimer)
 		{
-			if (timerView.timer == null || timerView.timer.timer <= 0)
+			if (timerView.timer == null || timerView.TimerDone())
 			{
 				timerView.gameObject.SetActive(false);
 				button.interactable = true;
@@ -118,10 +118,15 @@ public class PawnIconStandard : PawnIcon
 
 		if (timerView != null)
 		{
-			timerView.gameObject.SetActive(showTimer);
 			if (pawnData.unlockTime > 0 && showTimer)
 			{
+				timerView.gameObject.SetActive(true);
 				timerView.timer = GameManager.instance.timerManager.GetTimer("Pawn:" + pawnData.id);
+			}
+			else
+			{
+				timerView.gameObject.SetActive(false);
+				timerView.timer = null;
 			}
 		}
 	}

@@ -273,9 +273,12 @@ public class Enemy : MonoBehaviour, IDamageable {
 
 	protected void SpawnMoneyPickup()
 	{
-		int value = Random.Range (baseHealth / 2, baseHealth * 2);
-		Instantiate (moneyPickupPrefab, transform.position, Quaternion.identity);
-		moneyPickupPrefab.GetComponent<MoneyPickup> ().value = value;
+		int rangeValue = (int)Mathf.Sqrt(maxHealth);
+		int moneyValue = Random.Range (rangeValue / 2, rangeValue * 2);
+		GameObject o = Instantiate (moneyPickupPrefab, transform.position, Quaternion.identity) as GameObject;
+		MoneyPickup moneyPickup = o.GetComponent<MoneyPickup>();
+		moneyPickup.value = moneyValue;
+		moneyPickup.Init(player);
 	}
 
 	// ===== IDamageable methods ===== //
