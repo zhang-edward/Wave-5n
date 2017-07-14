@@ -41,7 +41,7 @@ public class ScoreReport : MonoBehaviour {
 		wavesSurvived.DisplayNumber(data.wavesSurvived);
 		while (!wavesSurvived.doneUpdating)
 			yield return null;
-
+		
 		moneyText.DisplayNumber (data.money + data.moneyEarned); 
 		moneyEarned.DisplayNumber (0);
 
