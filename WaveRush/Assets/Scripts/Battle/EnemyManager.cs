@@ -6,6 +6,7 @@ public class EnemyManager : MonoBehaviour {
 
 	private const float DIFFICULTY_CURVE = 5f;
 
+	[Header("Set from Scene Hierarchy")]
 	public Player player;
 	public int enemiesKilled { get; private set; }
 	public Map map;
@@ -23,14 +24,16 @@ public class EnemyManager : MonoBehaviour {
 	private float bossSpawnDelay = 8f;
 	private bool hasBossSpawned = true;
 
+	[Header("Pickups and Prefabs")]
 	public GameObject heartPickup;
-	public GameObject moneyPickup;
 	public GameObject upgradePickup;
+	public GameObject moneyPickup;
+	public GameObject soulPickup;
 	public GameObject trappedHeroPrefab;
 
 	public int waveNumber { get; private set; }
 	private int difficultyCurve = 0;	// number to determine the number of enemies to spawn
-	public ShopNPC shopNPC;
+	//public ShopNPC shopNPC;
 
 	public List<BossEnemy> bosses;
 
@@ -183,10 +186,12 @@ public class EnemyManager : MonoBehaviour {
 		Enemy e = o.GetComponentInChildren<Enemy> ();
 		InitEnemy(e, bossSpawn.transform.position);
 		e.OnEnemyObjectDisabled += RemoveEnemyFromBossesList;
+		BossEnemy boss = (BossEnemy)e;
+		boss.soulPickupPrefab = soulPickup;
 
 		bossHealthBar.Init (e);
 		bossHealthBar.abilityIconBar.GetComponent<UIFollow> ().Init(o.transform, e.healthBarOffset);
-		bosses.Add ((BossEnemy)e);
+		bosses.Add (boss);
 	}
 
 	public void SpawnTrappedHeroes()

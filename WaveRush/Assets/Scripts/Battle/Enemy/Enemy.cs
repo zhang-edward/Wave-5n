@@ -214,7 +214,7 @@ public class Enemy : MonoBehaviour, IDamageable {
 		yield return new WaitForSeconds (time);
 
 		//yield return new WaitForSeconds (0.2f);
-		UnityEngine.Assertions.Assert.IsTrue(anim.HasState(0, Animator.StringToHash("default")));
+		//UnityEngine.Assertions.Assert.IsTrue(anim.HasState(0, Animator.StringToHash("default")));
 		anim.CrossFade ("default", 0f);
 
 		hitDisabled = false;

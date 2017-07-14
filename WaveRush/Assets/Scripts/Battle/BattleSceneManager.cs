@@ -71,7 +71,10 @@ public class BattleSceneManager : MonoBehaviour
 			wavesSurvived: 		Mathf.Max(enemyManager.waveNumber - 1, 0),
 			maxCombo: 			player.hero.maxCombo,
 			money: 				gm.wallet.money,
-			moneyEarned: 		moneyEarned);
+			moneyEarned: 		moneyEarned,
+			souls: 				gm.wallet.souls,
+			soulsEarned:		soulsEarned
+		);
 		gui.GameOverUI(data);
 
 		if (enemyManager.IsStageComplete() && IsPlayerOnLatestStage())

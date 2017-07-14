@@ -3,6 +3,8 @@ using System.Collections;
 
 public class BossEnemy : Enemy
 {
+	[HideInInspector]
+	public GameObject soulPickupPrefab;
 	[Header("Boss Attributes")]
 	public AudioClip deathSound;
 	public SimpleAnimation deathEffect;
@@ -10,10 +12,12 @@ public class BossEnemy : Enemy
 
 	protected EnemyManager enemyManager;
 	private ObjectPooler effectPool;
+	private int numSouls;
 
 	public override void Init (Vector3 spawnLocation, Map map, int level)
 	{
 		canBeDisabledOnHit = false;
+		numSouls = SoulsFormula(level);
 		base.Init (spawnLocation, map, level);
 		effectPool = ObjectPooler.GetObjectPooler("Effect");
 		enemyManager = GetComponentInParent<EnemyManager> ();
@@ -74,8 +78,19 @@ public class BossEnemy : Enemy
 		dying = false;
 		cam.secondaryFocus = null;
 		cam.ResetFocus ();
+		SpawnSouls();
 		base.Die ();
+
 		yield return null;
+	}
+
+	private void SpawnSouls()
+	{
+		for (int i = 0; i < numSouls; i++)
+		{
+			GameObject o = Instantiate(soulPickupPrefab, transform.position, Quaternion.identity) as GameObject;
+			o.GetComponent<SoulPickup>().Init(player);
+		}
 	}
 
 	private bool OtherBossesDying()
@@ -101,6 +116,16 @@ public class BossEnemy : Enemy
 					 position,
 					 toPlay.frames[0]);
 		anim.Play();
+	}
+
+	private static int SoulsFormula(int level)
+	{
+		if (level < Pawn.T2_MIN_LEVEL)
+			return 1;
+		else if (level < Pawn.T3_MIN_LEVEL)
+			return Random.Range(1, 3);
+		else
+			return Random.Range(2, 4);
 	}
 }
 

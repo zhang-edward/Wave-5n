@@ -71,6 +71,8 @@ public class GUIManager : MonoBehaviour {
 		gameOverUI.SetActive(true);
 		scorePanel.moneyText.text.text = data.money.ToString();
 		scorePanel.moneyEarned.text.text = data.moneyEarned.ToString();
+		scorePanel.soulsText.text.text = data.souls.ToString();
+		scorePanel.soulsEarned.text.text = data.soulsEarned.ToString();
 
 		yield return new WaitForSeconds(0.5f);
 		scorePanel.ReportScore(data);

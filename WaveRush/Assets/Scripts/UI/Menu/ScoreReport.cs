@@ -7,19 +7,21 @@ public class ScoreReport : MonoBehaviour {
 	public class ScoreReportData
 	{
 		public int enemiesDefeated, wavesSurvived, maxCombo;
-		public int money, moneyEarned;
-		public ScoreReportData (int enemiesDefeated, int wavesSurvived, int maxCombo, int money, int moneyEarned)
+		public int money, moneyEarned, souls, soulsEarned;
+		public ScoreReportData (int enemiesDefeated, int wavesSurvived, int maxCombo, int money, int moneyEarned, int souls, int soulsEarned)
 		{
 			this.enemiesDefeated = enemiesDefeated;
 			this.wavesSurvived = wavesSurvived;
 			this.maxCombo = maxCombo;
 			this.money = money;
 			this.moneyEarned = moneyEarned;
+			this.souls = souls;
+			this.soulsEarned = soulsEarned;
 		}
 	}
 
 	public IncrementingText enemiesDefeated, wavesSurvived, maxCombo;
-	public IncrementingText moneyText, moneyEarned;
+	public IncrementingText moneyText, moneyEarned, soulsText, soulsEarned;
 
 	public void ReportScore(ScoreReportData data)
 	{
@@ -42,5 +44,8 @@ public class ScoreReport : MonoBehaviour {
 
 		moneyText.DisplayNumber (data.money + data.moneyEarned); 
 		moneyEarned.DisplayNumber (0);
+
+		soulsText.DisplayNumber(data.souls + data.soulsEarned);
+		soulsEarned.DisplayNumber(0);
 	}
 }
