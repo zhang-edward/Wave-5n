@@ -27,6 +27,7 @@ public class SaveGame
 	public Wallet wallet;
 	public float debugTimer = 10000;
 
+
 	public SaveGame()
 	{
 		pawnCapacity = INITIAL_PAWN_CAPACITY;

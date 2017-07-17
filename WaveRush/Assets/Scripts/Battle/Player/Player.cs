@@ -192,7 +192,6 @@ public class Player : MonoBehaviour, IDamageable
 		SoundManager.instance.RandomizeSFX(poofSound);
 		sr.enabled = false;
 		yield return new WaitForSecondsRealtime(2.0f);
-		print("God here");
 		Time.timeScale = 1f;
 		CameraControl.instance.DisableOverlay(1.0f);
 		transform.parent.gameObject.SetActive(false);

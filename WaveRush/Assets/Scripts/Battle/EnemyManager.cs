@@ -39,10 +39,10 @@ public class EnemyManager : MonoBehaviour {
 
 	public delegate void EnemyWaveSpawned (int waveNumber);
 	public event EnemyWaveSpawned OnEnemyWaveSpawned;
-	public delegate void EnemyWaveCompleted ();
-	public event EnemyWaveCompleted OnEnemyWaveCompleted;
-	public delegate void BossIncoming();
-	public event BossIncoming OnQueueBossMessage;
+	public delegate void EnemyManagerEvent ();
+	public event EnemyManagerEvent OnEnemyWaveCompleted;
+	public event EnemyManagerEvent OnQueueBossMessage;
+	public event EnemyManagerEvent OnEnemyDefeated;
 
 	public void Init(StageData data)
 	{
@@ -269,6 +269,8 @@ public class EnemyManager : MonoBehaviour {
 	// Used as an event listener
 	private void IncrementEnemiesKilled()
 	{
-		enemiesKilled++;	
+		enemiesKilled++;
+		if (OnEnemyDefeated != null)
+			OnEnemyDefeated();
 	}
 }

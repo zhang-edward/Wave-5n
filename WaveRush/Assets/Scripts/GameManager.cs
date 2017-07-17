@@ -7,10 +7,14 @@ using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour {
 
+	public const string BattleSceneName = "Game";
+
 	public static GameManager instance;
 
 	[Header("Realtime Timer")]
 	public RealtimeTimerManager timerManager;
+	[Header("Quest Manager")]
+	public QuestManager questManager;
 	[Header("Save Game")]
 	public SaveGame saveGame;
 	[Header("Selected Items for Battle Scene")]
@@ -44,6 +48,7 @@ public class GameManager : MonoBehaviour {
 
 		SaveLoad.Load ();
 		InitRealtimeTimers();
+		questManager.Init();
 	}
 
 	public void InitRealtimeTimers()

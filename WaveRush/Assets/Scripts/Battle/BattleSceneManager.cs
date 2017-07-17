@@ -18,7 +18,10 @@ public class BattleSceneManager : MonoBehaviour
 
 	public List<Pawn> acquiredPawns { get; private set; }   // pawns acquired this session
 	public int moneyEarned { get; private set; } 			// money earned in this session
-	public int soulsEarned { get; private set; }			// souls earned in this session
+	public int soulsEarned { get; private set; }            // souls earned in this session
+
+	public delegate void BattleSceneEvent();
+	public BattleSceneEvent OnStageCompleted;
 
 	void Awake()
 	{
@@ -77,10 +80,14 @@ public class BattleSceneManager : MonoBehaviour
 		);
 		gui.GameOverUI(data);
 
-		if (enemyManager.IsStageComplete() && IsPlayerOnLatestStage())
+		if (enemyManager.IsStageComplete())
 		{
-			gm.UnlockNextStage();
-			print("Stage Complete");
+			if (OnStageCompleted != null)
+				OnStageCompleted();
+			if (IsPlayerOnLatestStage())
+			{
+				gm.UnlockNextStage();
+			}
 		}
 
 		gm.saveGame.RemovePawn(gm.selectedPawn.id);
