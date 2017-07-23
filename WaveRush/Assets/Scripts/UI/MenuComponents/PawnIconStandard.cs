@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using System.Collections.Generic;
 
 public class PawnIconStandard : PawnIcon
@@ -8,8 +9,8 @@ public class PawnIconStandard : PawnIcon
 	public Sprite[] panelTierSprites;
 	public Sprite[] starSprites;
 	[Header("Card UI Elements")]
-	public Text heroNameText;
-	public Text heroLevelText;
+	public TMP_Text heroNameText;
+	public TMP_Text heroLevelText;
 	public bool levelInShortFormat;
 	public Image heroPortrait;
 	public TimerView timerView;

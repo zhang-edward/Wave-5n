@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -9,7 +10,9 @@ public class GUIManager : MonoBehaviour {
 	[Header("GUI")]
 	public GameObject gameUI;
 	public EnemyWaveText enemyWaveText;
-	public Text waveIndicatorText;
+	public TMP_Text waveIndicatorText;
+	public TMP_Text moneyText;
+	public TMP_Text soulsText;
 	public IncrementingText moneyEarnedText;
 	public IncrementingText soulsEarnedText;
 
@@ -29,6 +32,9 @@ public class GUIManager : MonoBehaviour {
 		enemyManager.OnEnemyWaveSpawned += ShowEnemyWaveText;
 		enemyManager.OnEnemyWaveCompleted += OnEnemyWaveCompletedText;
 		enemyManager.OnQueueBossMessage += ShowBossIncomingText;
+		Wallet wallet = GameManager.instance.wallet;
+		moneyText.text = wallet.money.ToString();
+		soulsText.text = wallet.souls.ToString();
 	}
 
 	void OnDisabled()

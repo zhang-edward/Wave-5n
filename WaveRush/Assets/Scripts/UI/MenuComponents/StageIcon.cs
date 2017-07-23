@@ -1,13 +1,14 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class StageIcon : MonoBehaviour
 {
 	public delegate void OnClicked(GameObject obj);
 	public OnClicked onClicked;
 
-	public Text stageNameText;
-	public Text stageLevelText;
+	public TMP_Text stageNameText;
+	public TMP_Text stageLevelText;
 	public Button highlightButton;      // the button that the user presses to expand the highlight menu
 	public GameObject highlight;		// the shiny border around the window
 	public GameObject highlightMenu;    // a menu with description and play button

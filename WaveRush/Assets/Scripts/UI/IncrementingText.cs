@@ -1,25 +1,28 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using System.Collections;
 using System;
 
 public class IncrementingText : MonoBehaviour {
 
-	public Text text;
-	public int numberToReport;
-
+	public TMP_Text text { get; private set; }
 	public bool alterPitch = true;
 	public AudioClip blipSound;
 	public AudioSource audioSrc;
+	public int initialValue;
 
-	public bool doneUpdating = true;
+	public bool doneUpdating { get; private set; }
 
+	private int numberToReport;
 	private float pitch;
 
 	void Awake()
 	{
+		text = GetComponent<TMP_Text>();
 		audioSrc = GetComponent<AudioSource> ();
-		text.text = "0";
+		text.text = initialValue.ToString();
+		doneUpdating = true;
 	}
 
 	public void DisplayNumber(int number)
@@ -55,8 +58,11 @@ public class IncrementingText : MonoBehaviour {
 
 	private void PlayAudio(int incrementer)
 	{
-		pitch = ((float)incrementer / numberToReport) + 0.5f;
-		audioSrc.pitch = pitch;
+		if (alterPitch)
+		{
+			pitch = ((float)incrementer / numberToReport) + 0.5f;
+			audioSrc.pitch = pitch;
+		}
 		audioSrc.clip = blipSound;
 		audioSrc.Play();
 	}

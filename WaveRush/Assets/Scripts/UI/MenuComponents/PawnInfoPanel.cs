@@ -1,12 +1,13 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using System.Collections;
 
 public class PawnInfoPanel : MonoBehaviour
 {
 	public PawnIconStandard pawnIcon;
-	public Text damageText, healthText, livesText;
-	public Text infoText;
+	public TMP_Text damageText, healthText, livesText;
+	public TMP_Text infoText;
 
 	public void Init(Pawn pawn)
 	{

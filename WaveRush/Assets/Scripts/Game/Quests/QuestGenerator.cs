@@ -4,7 +4,7 @@ using Quests;
 
 public class QuestGenerator
 {
-	//public Quest GenerateQuest()
-	//{
-	//}
+	/*public Quest GenerateQuest()
+	{
+	}*/
 }

@@ -5,7 +5,7 @@ using System.Collections;
 public class TimerView : MonoBehaviour
 {
 	public RealtimeTimer timer;
-	public Text text;
+	public TMPro.TMP_Text text;
 
 	void Update()
 	{

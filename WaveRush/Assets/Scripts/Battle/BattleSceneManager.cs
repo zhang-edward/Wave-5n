@@ -101,6 +101,7 @@ public class BattleSceneManager : MonoBehaviour
 		int maxCombo = player.hero.maxCombo;
 
 		gm.wallet.AddMoney(moneyEarned);
+		gm.wallet.AddSouls(soulsEarned);
 		gm.UpdateScores(enemiesDefeated, wavesSurvived, maxCombo);
 	}
 

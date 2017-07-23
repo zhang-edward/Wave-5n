@@ -17,7 +17,7 @@ public class PawnFusionMenu : MonoBehaviour
 	public GameObject highlightMenu;
 	public Button selectButton, infoButton;
 
-	void Awake()
+	public void Init()
 	{
 		pawnSelectionView.Init();
 		// Clicking on the fuseMatIcons deselects that pawn for fusion

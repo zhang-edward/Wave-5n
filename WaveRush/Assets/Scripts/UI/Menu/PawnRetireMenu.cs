@@ -8,10 +8,9 @@ public class PawnRetireMenu : MonoBehaviour
 	public PawnSelectionView pawnSelectionView;
 	private List<PawnIcon> selectedIcons = new List<PawnIcon>();
 
-	void Awake()
+	public void Init()
 	{
 		pawnSelectionView.Init();
-
 	}
 
 	void OnEnable()

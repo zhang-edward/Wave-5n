@@ -83,7 +83,7 @@ public class GameManager : MonoBehaviour {
 
 		Application.targetFrameRate = 60;
 		StartCoroutine(FPS());
-		ScheduleSimple();
+		//ScheduleSimple();
 	}
 
 	void Update()
@@ -280,7 +280,7 @@ public class GameManager : MonoBehaviour {
 		float t = 0;
 		while (loadingOverlay.color.a < 0.95f)
 		{
-			loadingOverlay.color = Color.Lerp (initialColor, finalColor, t * 4);
+			loadingOverlay.color = Color.Lerp (initialColor, finalColor, t * 8);
 			t += Time.deltaTime;
 			yield return null;
 		}
