@@ -7,6 +7,7 @@ namespace EnemyActions
 	{
 		private CameraControl cam;
 		public float time, magnitude;
+		public bool horizontal, vertical = true;
 
 		public override void Init(Enemy e, OnActionStateChanged onActionFinished)
 		{
@@ -17,12 +18,12 @@ namespace EnemyActions
 		public override void Execute()
 		{
 			base.Execute();
-			cam.StartShake(time, magnitude);
+			cam.StartShake(time, magnitude, vertical, horizontal);
 		}
 
 		public override void Interrupt()
 		{
-			cam.StartShake(0, 0);
+			cam.StartShake(0, 0, false, false);
 		}
 	}
 }

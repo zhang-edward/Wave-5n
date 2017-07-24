@@ -65,7 +65,7 @@ public class MageEruption : HeroPowerUp
 
 		SoundManager.instance.RandomizeSFX(eruptionSounds[Random.Range(0, eruptionSounds.Length)]);
 		e.Damage(Mathf.RoundToInt(mage.damage * 2.5f));
-		CameraControl.instance.StartShake(0.2f, 0.05f);
+		CameraControl.instance.StartShake(0.2f, 0.05f, true, false);
 	}
 
 	private void PlayEffect(SimpleAnimation toPlay, Vector3 position, float fadeOutTime)

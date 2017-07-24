@@ -74,7 +74,7 @@ public class CameraControl : MonoBehaviour
 
 	private void OnEnemyDamaged(float strength)
 	{
-		StartShake(0.05f, 0.2f);
+		StartShake(0.05f, 0.2f, true, true);
 	}
 
 	private void OnPlayerDamaged(int damage)
@@ -82,18 +82,22 @@ public class CameraControl : MonoBehaviour
 		StartFlashColor(Color.red, 0.4f, 0, 0, 0.4f);
 	}
 
-	public void StartShake(float time, float magnitude)
+	public void StartShake(float time, float magnitude, bool vertical, bool horizontal)
 	{
-		StartCoroutine(CameraShake(time, magnitude));
+		StartCoroutine(CameraShake(time, magnitude, vertical, horizontal));
 	}
 
-	private IEnumerator CameraShake(float time, float magnitude)
+	private IEnumerator CameraShake(float time, float magnitude, bool vertical, bool horizontal)
 	{
 		while (time > 0)
 		{
 			time -= Time.deltaTime;
-			float randX = UtilMethods.RandSign() * magnitude;
-			float randY = UtilMethods.RandSign() * magnitude;
+			float randX = 0;
+			float randY = 0;
+			if (horizontal)
+				randX = UtilMethods.RandSign() * magnitude;
+			if (vertical)
+				randY = UtilMethods.RandSign() * magnitude;
 
 			cam.transform.localPosition = new Vector3(randX, randY, -10);
 			yield return null;

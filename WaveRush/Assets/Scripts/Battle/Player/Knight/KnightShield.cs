@@ -46,7 +46,6 @@ public class KnightShield : HeroPowerUp
 		knight.player.Heal (amt / 2);
 		shielded = false;
 		effect.GetComponent<IndicatorEffect> ().AnimateOut ();
-		CameraControl.instance.StartShake (0.1f, 0.05f);
 		SoundManager.instance.RandomizeSFX(breakSound);
 
 		if (OnShieldBreak != null)

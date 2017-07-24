@@ -84,7 +84,7 @@ public class TrappedHero : Enemy
 		Destroy(transform.parent.gameObject, 1.0f);
 		PlayEffect(deathEffect, transform.position, 0.2f);
 		yield return new WaitForSeconds(0.2f);
-		CameraControl.instance.StartShake(0.2f, 0.05f);
+		CameraControl.instance.StartShake(0.2f, 0.05f, false, true);
 		yield return new WaitForSeconds(0.5f);
 		PlayEffect(trappedHeroPickupEffect, transform.position, 0.5f);
 		transform.parent.gameObject.SetActive(false);

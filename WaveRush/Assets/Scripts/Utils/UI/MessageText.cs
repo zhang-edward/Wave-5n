@@ -1,5 +1,6 @@
 ﻿﻿using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using System.Collections;
 
 public class MessageText : MonoBehaviour
@@ -35,7 +36,7 @@ public class MessageText : MonoBehaviour
 		
 
 	public bool displaying;
-	private Text text;
+	private TMP_Text text;
 
 	public delegate void FlashedMessage();
 	public FlashedMessage OnFlashMessage;
@@ -43,7 +44,7 @@ public class MessageText : MonoBehaviour
 	// Use this for initialization
 	void Awake ()
 	{
-		text = GetComponent<Text> ();
+		text = GetComponent<TMP_Text> ();
 	}
 
 	public void SetColor(Color color)

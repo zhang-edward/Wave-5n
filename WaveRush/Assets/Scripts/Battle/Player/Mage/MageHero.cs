@@ -55,7 +55,7 @@ public class MageHero : PlayerHero {
 
 		CameraControl.instance.StartFlashColor (Color.white);
 		CameraControl.instance.SetOverlayColor (new Color(1, 0.2f, 0), 0.2f);
-		CameraControl.instance.StartShake (0.3f, 0.05f);
+		CameraControl.instance.StartShake (0.3f, 0.05f, true, true);
 
 		if (OnMageSpecialAbility != null)
 			OnMageSpecialAbility();

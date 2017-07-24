@@ -63,7 +63,7 @@ public class NinjaHero : PlayerHero {
 		cooldownMultipliers[1] *= 0.3f;
 
 		// Effects
-		CameraControl.instance.StartShake (0.3f, 0.05f);
+		CameraControl.instance.StartShake (0.3f, 0.05f, true, true);
 		CameraControl.instance.StartFlashColor (Color.white);
 		CameraControl.instance.SetOverlayColor (Color.red, 0.3f);
 		Invoke ("ResetSpecialAbility", 5.0f);

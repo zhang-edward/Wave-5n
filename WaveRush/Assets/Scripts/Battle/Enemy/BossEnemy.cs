@@ -73,7 +73,7 @@ public class BossEnemy : Enemy
 		float delay = deathEffect.SecondsPerFrame * 3f;
 		yield return new WaitForSeconds(delay);
 		SoundManager.instance.RandomizeSFX (deathSound);
-		cam.StartShake (0.5f, 0.05f);
+		cam.StartShake (0.5f, 0.05f, false, true);
 		cam.StartFlashColor (Color.white, 1, 0, 0, 1);
 		dying = false;
 		cam.secondaryFocus = null;
