@@ -8,7 +8,7 @@ public class ScrollingText : MonoBehaviour {
 	public const string START_INVISIBLE_TAG = "<color=#00000000>";
 	public const string END_INVISIBLE_TAG = "</color>";
 
-	public Text textBox;
+	public Text textBox { get; private set; }
 	public string defaultText;
 	public string text;		// text to display in the text box
 
@@ -17,6 +17,7 @@ public class ScrollingText : MonoBehaviour {
 
 	void Awake()
 	{
+		textBox = GetComponent<Text>();
 		audioSource = GetComponent<AudioSource> ();
 	}
 
