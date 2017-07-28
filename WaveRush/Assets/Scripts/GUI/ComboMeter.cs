@@ -35,6 +35,7 @@ public class ComboMeter : MonoBehaviour {
 	{
 		for (;;)
 		{
+			//print("hero:" + hero.combo);
 			if (hero.combo > 0)
 			{
 				text.gameObject.SetActive(true);

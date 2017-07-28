@@ -3,7 +3,7 @@
 public class MageFireOrbs : HeroPowerUp
 {
 	private int maxOrbs = 3;
-	private int orbRequirement = 2;
+	private int orbRequirement = 10;
 	public int orbsActive { get; private set; }
 	public IndicatorEffect[] orbs;
 
@@ -22,7 +22,7 @@ public class MageFireOrbs : HeroPowerUp
 
 	private void UpdateCombo(float num)
 	{
-		if (playerHero.combo % orbRequirement == 0)
+		if (playerHero.combo != 0 && playerHero.combo % orbRequirement == 0)
 		{
 			ActivateOrb();
 		}
@@ -42,7 +42,7 @@ public class MageFireOrbs : HeroPowerUp
 		if (orbsActive <= 0)
 			return;
 
-		playerHero.player.Heal(amt / 2);
+		playerHero.player.Heal(Mathf.CeilToInt(amt / 2f));
 		DeactivateOrb();
 	}
 

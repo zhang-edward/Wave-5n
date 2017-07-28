@@ -1,18 +1,28 @@
 ﻿using UnityEngine;
+using PlayerAbilities;
 using System.Collections;
 
 public class KnightSuperRush : HeroPowerUp
 {
 	private KnightHero knight;
-	private float activateChance = 0.2f;
+	private bool activated;
+	private float chargeSpeed = 0.5f;
 
-	public GameObject rushEffect;
+	public RushAbility rushAbility;
+	public IndicatorEffect chargeEffect;
+	public PlayerHero.InputAction storedOnSwipe;
 
 	public override void Activate(PlayerHero hero)
 	{
 		base.Activate (hero);
 		this.knight = (KnightHero)hero;
-		knight.OnKnightRush += ActivateSuperRush;
+		rushAbility.Init(hero.player, knight.DamageEnemy);
+		knight.onTapHoldDown += ActivateSuperRush;
+		knight.onTapRelease += () =>
+		{
+			knight.anim.Play("Default");
+			chargeEffect.gameObject.SetActive(false);
+		};
 		percentActivated = 0f;
 	}
 
@@ -25,16 +35,23 @@ public class KnightSuperRush : HeroPowerUp
 	public override void Stack ()
 	{
 		base.Stack ();
-		activateChance += 0.08f;
+		chargeSpeed += 0.2f;
 	}
 
 	private void ActivateSuperRush()
 	{
-		if (Random.value < activateChance)
+		if (activated)
+			return;
+		knight.anim.Play("SpecialPersist");
+		percentActivated += chargeSpeed * Time.deltaTime;
+		chargeEffect.gameObject.SetActive(true);
+		if (percentActivated >= 1.0f)
 		{
-			knight.onSwipe -= knight.RushAbility;
-			knight.onSwipe += SuperRush;
+			chargeEffect.AnimateOut();
 			percentActivated = 1f;
+			activated = true;
+			storedOnSwipe = knight.onSwipe;
+			knight.onSwipe = SuperRush;	
 		}
 	}
 
@@ -44,46 +61,17 @@ public class KnightSuperRush : HeroPowerUp
 		if (!knight.IsCooledDown (0, true, playerHero.HandleSwipe))
 			return;
 		knight.ResetCooldownTimer (0);
-
-		// Sound
-		SoundManager.instance.RandomizeSFX (knight.rushSound);
-		// Animation
-		knight.anim.Play ("Rush");
-		// Effects
-		PlayRushEffect();
-		// Player properties
 		knight.damageMultiplier *= 2f;
-		knight.rushHitBoxOn = true;
-		knight.body.moveSpeed = knight.baseRushMoveSpeed * 1.3f;
-		knight.body.Move(playerHero.player.dir.normalized);
-		// Debug.DrawRay (transform.position, playerHero.player.dir, Color.red, 0.5f);
-		// reset ability
-		Invoke ("ResetRushAbility", knight.baseRushDuration * 1.3f);
-
-		knight.onSwipe -= SuperRush;
-		knight.onSwipe += knight.RushAbility;
+		rushAbility.Execute();
+		knight.onSwipe = storedOnSwipe;
 		percentActivated = 0f;
+		activated = false;
+		Invoke("ResetRushAbility", rushAbility.duration);
 	}
 
 	private void ResetRushAbility()
 	{
 		knight.damageMultiplier *= 0.5f;
-		knight.ResetRushAbility ();
-	}
-
-	private void PlayRushEffect()
-	{
-		TempObject effect = rushEffect.GetComponent<TempObject> ();
-		SimpleAnimationPlayer animPlayer = rushEffect.GetComponent<SimpleAnimationPlayer> ();
-
-		Vector2 dir = playerHero.player.dir;
-		float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-		TempObjectInfo info = new TempObjectInfo ();
-		info.targetColor = new Color (1, 1, 1, 0.5f);
-		info.lifeTime = knight.baseRushDuration;
-		info.fadeOutTime = 0.1f;
-		effect.Init (Quaternion.Euler (new Vector3 (0, 0, angle)), transform.position, animPlayer.anim.frames [0], info);
-		animPlayer.Play ();
 	}
 }
 

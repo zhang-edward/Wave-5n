@@ -17,10 +17,10 @@ public class KnightComboRush : HeroPowerUp
 	{
 		float newMultiplier = 1f;
 		if (playerHero.combo > 0)
-			newMultiplier = 1f / (0.0075f * (playerHero.combo + 133));		// graph with Desmos.com
+			newMultiplier = 1f / (0.008f * (playerHero.combo + 133));		// graph with Desmos.com
 		//print (newMultiplier);
-		if (newMultiplier < 0.8f)
-			newMultiplier = 0.8f;
+		if (newMultiplier < 0.7f)
+			newMultiplier = 0.7f;
 		for (int i = 0; i < playerHero.cooldownMultipliers.Length; i ++)
 		{
 			float dMultiplier = newMultiplier / multiplier;

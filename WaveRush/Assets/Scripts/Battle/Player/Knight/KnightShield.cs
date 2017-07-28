@@ -43,7 +43,7 @@ public class KnightShield : HeroPowerUp
 		if (!shielded)
 			return;
 
-		knight.player.Heal (amt / 2);
+		knight.player.Heal (Mathf.CeilToInt(amt / 2f));
 		shielded = false;
 		effect.GetComponent<IndicatorEffect> ().AnimateOut ();
 		SoundManager.instance.RandomizeSFX(breakSound);

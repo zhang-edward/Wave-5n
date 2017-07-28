@@ -56,7 +56,7 @@ public class MageEruption : HeroPowerUp
 
 	private IEnumerator Eruption(Enemy e)
 	{
-		float frame11time = eruptionAnim.SecondsPerFrame * 11f; // time before the sword rises up in the animation
+		float frame11time = eruptionAnim.SecondsPerFrame * 11f;
 		StunEnemy(e, frame11time);
 		PlayEffect(eruptionAnim, e.transform.position, 0.3f);
 

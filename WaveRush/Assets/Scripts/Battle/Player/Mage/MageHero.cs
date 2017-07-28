@@ -1,19 +1,20 @@
 using UnityEngine;
+using PlayerAbilities;
 using Projectiles;
 using System.Collections;
 
 public class MageHero : PlayerHero {
 
-	[Header("Class-Specific")]
-	public ObjectPooler effectPool;
-	public RuntimeObjectPooler projectilePool;
-	[Space]
+	[HideInInspector]public ObjectPooler effectPool;
+	[HideInInspector]public RuntimeObjectPooler projectilePool;
+	[Header("Abilities")]
+	public ShootProjectileAbility shootProjectileAbility;
 	public Sprite hitEffect;
 	public Map map;
 	public GameObject projectilePrefab;
-	private bool activatedSpecialAbility;
-	public MageFire mageFirePrefab;
-
+	private bool specialActivated;
+	private AnimationSet defaultAnim;
+	public AnimationSet magmaFormAnim;
 	[Header("Audio")]
 	public AudioClip shootSound;
 	public AudioClip teleportOutSound;
@@ -26,53 +27,22 @@ public class MageHero : PlayerHero {
 	public event MageAbilityActivated OnMageTeleportOut;
 	public event MageAbilityActivated OnMageSpecialAbility;
 
+	public Coroutine specialAbilityChargeRoutine;
+
 	public delegate void MageCreatedObject (GameObject o);
 	public event MageCreatedObject OnMageShotFireball;
 
-	//private float chargeTime;
-	//private bool sprayingFire;
-	//private float tapHoldTime;
-	//private const float minTapHoldTime = 0.2f;
 
 	public override void Init(EntityPhysics body, Player player, Pawn heroData)
 	{
 		cooldownTimers = new float[2];
 		map = GameObject.Find ("Map").GetComponent<Map>();
 		projectilePool = (RuntimeObjectPooler)projectilePrefab.GetComponent<Projectile>().GetObjectPooler();
+		shootProjectileAbility.Init(player, projectilePool);
 		base.Init (body, player, heroData);
 
 		onSwipe = ShootFireball;
 		onTap = StartTeleport;
-	}
-
-	public override void SpecialAbility ()
-	{
-		if (specialAbilityCharge < specialAbilityChargeCapacity || activatedSpecialAbility)
-			return;
-		// Sound
-		SoundManager.instance.PlayImportantSound(powerUpSound);
-		activatedSpecialAbility = true;
-
-		CameraControl.instance.StartFlashColor (Color.white);
-		CameraControl.instance.SetOverlayColor (new Color(1, 0.2f, 0), 0.2f);
-		CameraControl.instance.StartShake (0.3f, 0.05f, true, true);
-
-		if (OnMageSpecialAbility != null)
-			OnMageSpecialAbility();
-
-		Invoke ("ResetSpecialAbility", 10.0f);
-	}
-		
-	private void ResetSpecialAbility()
-	{
-		// Sound
-		SoundManager.instance.PlayImportantSound(powerDownSound);
-
-		activatedSpecialAbility = false;
-		specialAbilityCharge = 0;
-
-		CameraControl.instance.StartFlashColor (Color.white);
-		CameraControl.instance.SetOverlayColor (Color.clear, 0f);
 	}
 
 	private void ShootFireball()
@@ -80,18 +50,10 @@ public class MageHero : PlayerHero {
 		if (!IsCooledDown (0, true, HandleSwipe))
 			return;
 		ResetCooldownTimer (0);
-		// Sound
-		SoundManager.instance.RandomizeSFX (shootSound);
-		// Animation
-		anim.Play ("Shoot");
 
-		// actual projectile stuff
-		GameObject fireballObj = projectilePool.GetPooledObject ();
 		Vector2 dir = player.dir.normalized;
-		Projectile fireball = fireballObj.GetComponent<Projectile> ();
+		Projectile fireball = shootProjectileAbility.ShootProjectile(dir);
 		fireball.GetComponentInChildren<AreaDamageAction>().damage = damage;
- 		fireball.Init (transform.position, dir);
-		
 
 		// recoil
 		body.Move (dir);	// set the sprites flipX to the correct direction
@@ -99,7 +61,7 @@ public class MageHero : PlayerHero {
 
 		// event
 		if (OnMageShotFireball != null)
-			OnMageShotFireball (fireballObj);
+			OnMageShotFireball (fireball.gameObject);
 
 		// Reset the ability
 		Invoke ("ResetShootFireball", 0.5f);
@@ -121,39 +83,47 @@ public class MageHero : PlayerHero {
 	private IEnumerator Teleport()
 	{
 		ResetCooldownTimer (1);
-		// Sound
-		SoundManager.instance.RandomizeSFX (teleportOutSound);
-		// Animation
-		anim.Play ("TeleOut");
-		// Set properties
-		player.isInvincible = true;
-		player.input.isInputEnabled = false;
-		// event trigger
-		if (OnMageTeleportOut != null)
-			OnMageTeleportOut();
+		TeleportOut();
 		// Wait for end of animation
 		while (anim.player.isPlaying)
 			yield return null;
-		// Animation
-		anim.Play("TeleIn");
-		// Sound
-		SoundManager.instance.RandomizeSFX (teleportInSound);
-		// (animation triggers automatically)
-		// Set position
-		player.transform.parent.position = (Vector3)player.dir + player.transform.parent.position;
-		// do area attack
-		AreaAttack ();
-		if (activatedSpecialAbility)
-			CreateFire ();
-		// event trigger
-		if (OnMageTeleportIn != null)
-			OnMageTeleportIn ();
+		TeleportIn();
 		// Wait for end of animation
 		while (anim.player.isPlaying)
 			yield return null;
 		// reset properties
 		player.isInvincible = false;
 		player.input.isInputEnabled = true;
+	}
+
+	private void TeleportOut()
+	{
+		// Sound
+		SoundManager.instance.RandomizeSFX(teleportOutSound);
+		// Animation
+		anim.Play("TeleOut");
+		// Set properties
+		player.isInvincible = true;
+		player.input.isInputEnabled = false;
+		// event trigger
+		if (OnMageTeleportOut != null)
+			OnMageTeleportOut();
+	}
+
+	private void TeleportIn()
+	{
+		// Animation
+		anim.Play("TeleIn");
+		// Sound
+		SoundManager.instance.RandomizeSFX(teleportInSound);
+		// (animation triggers automatically)
+		// Set position
+		player.transform.parent.position = (Vector3)player.dir + player.transform.parent.position;
+		// do area attack
+		AreaAttack();
+		// event trigger
+		if (OnMageTeleportIn != null)
+			OnMageTeleportIn();
 	}
 
 	private void AreaAttack()
@@ -169,12 +139,16 @@ public class MageHero : PlayerHero {
 		}
 	}
 
-	private void CreateFire()
+	public override void SpecialAbility()
 	{
-		Instantiate (mageFirePrefab, transform.position, Quaternion.identity);
+		if (specialAbilityCharge < specialAbilityChargeCapacity || specialActivated)
+			return;
+		anim = magmaFormAnim;
+		anim.Play("Default");
+
 	}
 
-	// damage an enemy and spawn an effect
+	// Damage an enemy and spawn an effect
 	private void DamageEnemy(Enemy e)
 	{
 		if (!e.invincible && e.health > 0)

@@ -8,7 +8,7 @@ public class MageFirestorm : HeroPowerUp
 
 	private MageHero mage;
 	private RuntimeObjectPooler originalProjectilePool;
-	private RuntimeObjectPooler projectilePool;
+	private RuntimeObjectPooler firestormPool;
 	private float activateChance = 0.15f;
 	private bool activated = false;
 
@@ -17,7 +17,7 @@ public class MageFirestorm : HeroPowerUp
 		base.Activate(hero);
 		mage = (MageHero)hero;
 		originalProjectilePool = mage.projectilePool;
-		projectilePool = (RuntimeObjectPooler)firestormPrefab.GetComponent<Projectile>().GetObjectPooler();
+		firestormPool = (RuntimeObjectPooler)firestormPrefab.GetComponent<Projectile>().GetObjectPooler();
 		mage.OnMageShotFireball += TryActivateAbility;
 	}
 
@@ -37,7 +37,7 @@ public class MageFirestorm : HeroPowerUp
 
 	public void ActivateFirestorm()
 	{
-		mage.projectilePool = projectilePool;
+		mage.shootProjectileAbility.SetProjectile(firestormPool);
 		activated = true;
 		indicator.gameObject.SetActive(true);
 		print("Activated");
