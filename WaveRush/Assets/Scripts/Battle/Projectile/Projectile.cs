@@ -8,7 +8,6 @@ namespace Projectiles
 		protected Rigidbody2D rb2d;
 		protected SpriteRenderer sr;
 		protected SimpleAnimationPlayer animator;
-		protected ObjectPooler effectPool;
 		protected ObjectPooler projectilePool;
 		protected BoxCollider2D box;
 
@@ -49,7 +48,7 @@ namespace Projectiles
 
 		void Start()
 		{
-			effectPool = ObjectPooler.GetObjectPooler("Effect");
+			
 		}
 
 		void OnDrawGizmosSelected()

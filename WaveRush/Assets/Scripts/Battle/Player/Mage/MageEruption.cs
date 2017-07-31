@@ -4,7 +4,6 @@ using System.Collections;
 public class MageEruption : HeroPowerUp
 {
 	private const float RADIUS = 4f;
-	private ObjectPooler effectPool;
 	private float activateChance = 0.5f;
 	private MageHero mage;
 
@@ -16,7 +15,7 @@ public class MageEruption : HeroPowerUp
 
 	void Awake()
 	{
-		effectPool = ObjectPooler.GetObjectPooler("Effect");
+		
 	}
 
 	public override void Activate(PlayerHero hero)
@@ -58,7 +57,7 @@ public class MageEruption : HeroPowerUp
 	{
 		float frame11time = eruptionAnim.SecondsPerFrame * 11f;
 		StunEnemy(e, frame11time);
-		PlayEffect(eruptionAnim, e.transform.position, 0.3f);
+		EffectPooler.PlayEffect(eruptionAnim, e.transform.position, false, 0.3f);
 
 		SoundManager.instance.RandomizeSFX(groundBreakSounds[Random.Range(0, groundBreakSounds.Length)]);
 		yield return new WaitForSeconds(frame11time);
@@ -66,19 +65,6 @@ public class MageEruption : HeroPowerUp
 		SoundManager.instance.RandomizeSFX(eruptionSounds[Random.Range(0, eruptionSounds.Length)]);
 		e.Damage(Mathf.RoundToInt(mage.damage * 2.5f));
 		CameraControl.instance.StartShake(0.2f, 0.05f, true, false);
-	}
-
-	private void PlayEffect(SimpleAnimation toPlay, Vector3 position, float fadeOutTime)
-	{
-		GameObject o = effectPool.GetPooledObject();
-		SimpleAnimationPlayer anim = o.GetComponent<SimpleAnimationPlayer>();
-		TempObject tempObj = o.GetComponent<TempObject>();
-		tempObj.info = new TempObjectInfo(true, 0f, toPlay.TimeLength - fadeOutTime, fadeOutTime, new Color(1, 1, 1, 0.8f));
-		anim.anim = toPlay;
-		tempObj.Init(Quaternion.identity,
-					 position,
-					 toPlay.frames[0]);
-		anim.Play();
 	}
 
 	private void StunEnemy(Enemy e, float time)

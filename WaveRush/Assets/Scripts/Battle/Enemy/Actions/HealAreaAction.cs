@@ -13,8 +13,6 @@ namespace EnemyActions
 		[Header("Animation")]
 		public SimpleAnimation healEffect;
 
-		private ObjectPooler effectPool;
-
 		private void OnDrawGizmosSelected()
 		{
 			Gizmos.DrawWireSphere(transform.position, radius);
@@ -23,7 +21,6 @@ namespace EnemyActions
 		public override void Init(Enemy e, OnActionStateChanged onActionFinished)
 		{
 			base.Init(e, onActionFinished);
-			effectPool = ObjectPooler.GetObjectPooler("Effect");
 		}
 
 		protected override void Action()
@@ -41,7 +38,7 @@ namespace EnemyActions
 						//Debug.Log("Healing");
 						enemy.Heal(Mathf.RoundToInt(HealAmt()));
 						numHealed++;
-						PlayEffect(enemy.transform.position);
+						EffectPooler.PlayEffect(healEffect, enemy.transform.position);
 						if (numHealed >= maxNumHealed)
 							break;
 					}
@@ -56,19 +53,6 @@ namespace EnemyActions
 		private float HealAmt()
 		{
 			return baseHealAmt * Pawn.DamageEquation(e.level);
-		}
-
-		private void PlayEffect(Vector3 position)
-		{
-			GameObject o = effectPool.GetPooledObject();
-			SimpleAnimationPlayer anim = o.GetComponent<SimpleAnimationPlayer>();
-			TempObject tempObj = o.GetComponent<TempObject>();
-			tempObj.info = new TempObjectInfo(true, 0f, healEffect.TimeLength, 0, new Color(1, 1, 1, 0.8f));
-			anim.anim = healEffect;
-			tempObj.Init(Quaternion.identity,
-						 position,
-			             healEffect.frames[0]);
-			anim.Play();
 		}
 	}
 }

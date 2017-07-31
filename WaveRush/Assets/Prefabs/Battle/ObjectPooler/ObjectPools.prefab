@@ -56,7 +56,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 442532}
-  - component: {fileID: 11476926}
+  - component: {fileID: 114074000508224860}
   m_Layer: 0
   m_Name: EffectPool
   m_TagString: Untagged
@@ -103,7 +103,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 448138}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &442532
 Transform:
@@ -116,7 +116,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 448138}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &448138
 Transform:
@@ -128,8 +128,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 431702}
   - {fileID: 442532}
+  - {fileID: 431702}
   - {fileID: 457742}
   - {fileID: 409888}
   - {fileID: 4546843768849712}
@@ -197,22 +197,6 @@ MonoBehaviour:
   pooledObject: {fileID: 131056, guid: 079536e7a356d4ded91c6517425ff583, type: 2}
   poolAmount: 10
   willGrow: 1
---- !u!114 &11476926
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 198026}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30266fa4d197c4d6da2eb67596fcf8f7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isGlobal: 1
-  poolType: Effect
-  pooledObject: {fileID: 104496, guid: 129339fe82dfd43a99510fdac2a46e42, type: 2}
-  poolAmount: 5
-  willGrow: 1
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -253,6 +237,22 @@ Transform:
   m_Father: {fileID: 448138}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114074000508224860
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 198026}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d29e234fb15a4645a0a9c6effd67e27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isGlobal: 1
+  poolType: Effect
+  pooledObject: {fileID: 104496, guid: 129339fe82dfd43a99510fdac2a46e42, type: 2}
+  poolAmount: 10
+  willGrow: 1
 --- !u!114 &114125884120365056
 MonoBehaviour:
   m_ObjectHideFlags: 1

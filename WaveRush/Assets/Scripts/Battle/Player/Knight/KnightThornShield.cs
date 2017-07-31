@@ -5,7 +5,6 @@ public class KnightThornShield : HeroPowerUp
 {
 	private float radius = 2;
 	private KnightShield shieldPowerUp;
-	private ObjectPooler effectPool;
 	private Vector3 shieldBreakPos;
 
 	[Header("Animations")]
@@ -18,7 +17,7 @@ public class KnightThornShield : HeroPowerUp
 	public override void Activate(PlayerHero hero)
 	{
 		base.Activate(hero);
-		effectPool = ObjectPooler.GetObjectPooler("Effect");
+		
 		shieldPowerUp = hero.GetComponentInChildren<KnightShield>();
 		shieldPowerUp.OnShieldBreak += ThornShield;
 	}
@@ -30,7 +29,7 @@ public class KnightThornShield : HeroPowerUp
 
 	private IEnumerator ThornShieldRoutine()
 	{
-		PlayEffect();
+		EffectPooler.PlayEffect(thornShieldAnim, transform.position);
 		shieldBreakPos = transform.position;
 		SoundManager.instance.RandomizeSFX(effectSound);
 		float delay = thornShieldAnim.SecondsPerFrame * 9f; // wait until frame 9
@@ -50,34 +49,8 @@ public class KnightThornShield : HeroPowerUp
 
 				GameObject stun = Instantiate(StatusEffectContainer.instance.GetStatus("Stun"));
 				e.AddStatus(stun.gameObject);
-				PlayHitEffect(e.transform.position);
+				EffectPooler.PlayEffect(hitAnim, e.transform.position, true);
 			}
 		}
-	}
-
-	private void PlayEffect()
-	{
-		GameObject o = effectPool.GetPooledObject();
-		SimpleAnimationPlayer anim = o.GetComponent<SimpleAnimationPlayer>();
-		TempObject tempObj = o.GetComponent<TempObject>();
-		tempObj.info = new TempObjectInfo(true, 0f, thornShieldAnim.TimeLength, 0, new Color(1, 1, 1, 0.8f));
-		anim.anim = thornShieldAnim;
-		tempObj.Init(Quaternion.identity,
-					 transform.position,
-			     thornShieldAnim.frames[0]);
-		anim.Play();
-	}
-
-	private void PlayHitEffect(Vector3 position)
-	{
-		GameObject o = effectPool.GetPooledObject();
-		SimpleAnimationPlayer anim = o.GetComponent<SimpleAnimationPlayer>();
-		TempObject tempObj = o.GetComponent<TempObject>();
-		tempObj.info = new TempObjectInfo(true, 0f, hitAnim.TimeLength, 0);
-		anim.anim = hitAnim;
-		tempObj.Init(Quaternion.Euler(0, 0, Random.Range(0, 360)),
-					 position,
-			     hitAnim.frames[0]);
-		anim.Play();
 	}
 }

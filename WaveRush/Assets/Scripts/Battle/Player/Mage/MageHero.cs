@@ -1,26 +1,33 @@
-using UnityEngine;
+﻿using UnityEngine;
 using PlayerAbilities;
 using Projectiles;
 using System.Collections;
 
 public class MageHero : PlayerHero {
 
-	[HideInInspector]public ObjectPooler effectPool;
 	[HideInInspector]public RuntimeObjectPooler projectilePool;
 	[Header("Abilities")]
+	public RushAbility specialRushAbility;
 	public ShootProjectileAbility shootProjectileAbility;
-	public Sprite hitEffect;
-	public Map map;
+	[Header("Prefabs")]
+	public SimpleAnimation hitEffect;
 	public GameObject projectilePrefab;
+	private float teleportRange = 4.0f;
 	private bool specialActivated;
+	private float specialRushCooldown = 0.5f;
+	private float specialRushCooldowntimer = 0;
 	private AnimationSet defaultAnim;
-	public AnimationSet magmaFormAnim;
 	[Header("Audio")]
+	public AudioClip specialHitSound;
 	public AudioClip shootSound;
 	public AudioClip teleportOutSound;
 	public AudioClip teleportInSound;
 	public AudioClip powerUpSound;
 	public AudioClip powerDownSound;
+	[Header("Etc")]
+	public Map map;
+	public AnimationSet magmaFormAnim;
+	public SimpleAnimationPlayer transformEffect;
 
 	public delegate void MageAbilityActivated();
 	public event MageAbilityActivated OnMageTeleportIn;
@@ -39,8 +46,10 @@ public class MageHero : PlayerHero {
 		map = GameObject.Find ("Map").GetComponent<Map>();
 		projectilePool = (RuntimeObjectPooler)projectilePrefab.GetComponent<Projectile>().GetObjectPooler();
 		shootProjectileAbility.Init(player, projectilePool);
+		specialRushAbility.Init(player, DamageEnemySpecial);
 		base.Init (body, player, heroData);
 
+		defaultAnim = anim;
 		onSwipe = ShootFireball;
 		onTap = StartTeleport;
 	}
@@ -76,8 +85,14 @@ public class MageHero : PlayerHero {
 	{
 		if (!IsCooledDown (1))
 			return;
-		if (map.WithinOpenCells(player.transform.position + (Vector3)player.dir))
+		if (CanTeleport(player.transform.position + (Vector3)player.dir))
 			StartCoroutine (Teleport ());
+	}
+
+	private bool CanTeleport(Vector3 dest)
+	{
+		return Vector3.Distance(dest, player.transform.position) < teleportRange &&
+			          map.WithinOpenCells(dest);
 	}
 
 	private IEnumerator Teleport()
@@ -141,11 +156,70 @@ public class MageHero : PlayerHero {
 
 	public override void SpecialAbility()
 	{
+		StartCoroutine(SpecialAbilityRoutine());	
+	}
+
+	private IEnumerator SpecialAbilityRoutine()
+	{
 		if (specialAbilityCharge < specialAbilityChargeCapacity || specialActivated)
-			return;
+			yield break;
+		specialActivated = true;
+		transformEffect.gameObject.SetActive(true);
+		transformEffect.Play();
+		sound.PlaySingle(powerUpSound);
+		CameraControl.instance.StartShake(0.2f, 0.05f, true, false);
+		player.isInvincible = true;
+		yield return new WaitForSeconds(transformEffect.anim.TimeLength - 0.3f);
+
+		magmaFormAnim.Init(player.animPlayer);
 		anim = magmaFormAnim;
 		anim.Play("Default");
+		onSwipe = SpecialRush;
+		onTap = null;
+		while (transformEffect.isPlaying)
+			yield return null;
+		transformEffect.gameObject.SetActive(false);
 
+		yield return new WaitForSeconds(10f);
+		sound.PlaySingle(powerDownSound);
+		ResetSpecialAbility();
+	}
+
+	public void SpecialRush()
+	{
+		if (specialRushCooldowntimer > 0)
+			return;
+		specialRushCooldowntimer = specialRushCooldown;
+
+		specialRushAbility.Execute();
+	}
+
+	public void ResetSpecialAbility()
+	{
+		defaultAnim.Init(player.animPlayer);
+		anim = defaultAnim;
+		anim.Play("Default");
+		onSwipe = ShootFireball;
+		onTap = StartTeleport;
+		specialActivated = false;
+		player.isInvincible = false;
+		specialAbilityCharge = 0;
+	}
+
+	protected override void Update()
+	{
+		base.Update();
+		if (specialRushCooldowntimer > 0)
+			specialRushCooldowntimer -= Time.deltaTime;
+	}
+
+	private void DamageEnemySpecial(Enemy e)
+	{
+		if (!e.invincible && e.health > 0)
+		{
+			sound.RandomizeSFX(specialHitSound);
+			DamageEnemy(e);
+		}
 	}
 
 	// Damage an enemy and spawn an effect
@@ -154,14 +228,7 @@ public class MageHero : PlayerHero {
 		if (!e.invincible && e.health > 0)
 		{
 			e.Damage (damage);
-			player.effectPool.GetPooledObject ().GetComponent<TempObject> ().Init (
-				Quaternion.Euler (new Vector3 (0, 0, Random.Range (0, 360f))),
-				e.transform.position, 
-				hitEffect,
-				true,
-				0,
-				0.2f,
-				1.0f);
+			EffectPooler.PlayEffect(hitEffect, e.transform.position, true, 0.2f);
 
 			player.TriggerOnEnemyDamagedEvent(damage);
 			player.TriggerOnEnemyLastHitEvent (e);

@@ -11,7 +11,6 @@ public class BossEnemy : Enemy
 	public bool dying { get; private set; }
 
 	protected EnemyManager enemyManager;
-	private ObjectPooler effectPool;
 	private int numSouls;
 
 	public override void Init (Vector3 spawnLocation, Map map, int level)
@@ -19,7 +18,6 @@ public class BossEnemy : Enemy
 		canBeDisabledOnHit = false;
 		numSouls = SoulsFormula(level);
 		base.Init (spawnLocation, map, level);
-		effectPool = ObjectPooler.GetObjectPooler("Effect");
 		enemyManager = GetComponentInParent<EnemyManager> ();
 		CameraControl.instance.secondaryFocus = this.transform;
 	}
@@ -69,7 +67,7 @@ public class BossEnemy : Enemy
 		dying = true;
 		cam.SetFocus (this.transform);
 		yield return new WaitForSeconds(1f);
-		PlayEffect(deathEffect, transform.position, 0f);
+		EffectPooler.PlayEffect(deathEffect, transform.position);
 		float delay = deathEffect.SecondsPerFrame * 3f;
 		yield return new WaitForSeconds(delay);
 		SoundManager.instance.RandomizeSFX (deathSound);
@@ -103,19 +101,6 @@ public class BossEnemy : Enemy
 			}
 		}
 		return false;
-	}
-
-	private void PlayEffect(SimpleAnimation toPlay, Vector3 position, float fadeOutTime)
-	{
-		GameObject o = effectPool.GetPooledObject();
-		SimpleAnimationPlayer anim = o.GetComponent<SimpleAnimationPlayer>();
-		TempObject tempObj = o.GetComponent<TempObject>();
-		tempObj.info = new TempObjectInfo(true, 0f, toPlay.TimeLength - fadeOutTime, fadeOutTime, new Color(1, 1, 1, 0.8f));
-		anim.anim = toPlay;
-		tempObj.Init(Quaternion.identity,
-					 position,
-					 toPlay.frames[0]);
-		anim.Play();
 	}
 
 	private static int SoulsFormula(int level)

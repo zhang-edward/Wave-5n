@@ -64,14 +64,10 @@ public class Player : MonoBehaviour, IDamageable
 
 	[HideInInspector]
 	public ObjectPooler deathPropPool;
-	[HideInInspector]
-	public ObjectPooler effectPool;
-
 
 	void Start()
 	{
 		deathPropPool = ObjectPooler.GetObjectPooler ("DeathProp");
-		effectPool = ObjectPooler.GetObjectPooler ("Effect");
 		DEFAULT_SPEED = body.moveSpeed;
 		input.isInputEnabled = false;
 	}
@@ -303,7 +299,7 @@ public class Player : MonoBehaviour, IDamageable
 
 	private void PlayDeathEffect(Vector3 position)
 	{
-		GameObject o = effectPool.GetPooledObject();
+		GameObject o = EffectPooler.instance.GetPooledObject();
 		SimpleAnimationPlayer animPlayer = o.GetComponent<SimpleAnimationPlayer>();
 		TempObject tempObj = o.GetComponent<TempObject>();
 		tempObj.GetComponent<SpriteRenderer>().sortingLayerName = "UI";

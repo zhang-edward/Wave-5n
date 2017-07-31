@@ -3,15 +3,13 @@ using System.Collections;
 
 public class WeaknessStatus : EnemyStatus
 {
-	private ObjectPooler effectPool;
-
 	public SimpleAnimationPlayer anim;
 	public SimpleAnimation hitAnim;
 
 	public override void Init(Enemy enemy)
 	{
 		base.Init(enemy);
-		effectPool = ObjectPooler.GetObjectPooler("Effect");
+		
 		anim.transform.localScale = enemy.srSize * 0.8f;
 		anim.transform.localPosition = enemy.healthBarOffset * 0.5f;
 	}
@@ -35,19 +33,6 @@ public class WeaknessStatus : EnemyStatus
 	private void AdditionalDamage(int amt)
 	{
 		enemy.DecreaseHealth(Mathf.RoundToInt(amt * 0.5f));
-		PlayEffect();
-	}
-
-	private void PlayEffect()
-	{
-		GameObject o = effectPool.GetPooledObject();
-		SimpleAnimationPlayer anim = o.GetComponent<SimpleAnimationPlayer>();
-		TempObject tempObj = o.GetComponent<TempObject>();
-		tempObj.info = new TempObjectInfo(true, 0f, hitAnim.TimeLength, 0);
-		anim.anim = hitAnim;
-		tempObj.Init(Quaternion.Euler(0, 0, Random.Range(0, 360)),
-		             transform.position,
-					 hitAnim.frames[0]);
-		anim.Play();
+		EffectPooler.PlayEffect(hitAnim, transform.position, true);
 	}
 }

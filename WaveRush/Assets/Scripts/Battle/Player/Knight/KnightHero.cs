@@ -5,8 +5,6 @@ using System.Collections.Generic;
 
 public class KnightHero : PlayerHero {
 
-	private ObjectPooler effectPool;
-
 	[Header("Abilities")]
 	public RushAbility rushAbility;
 	public RushAbility specialRushAbility;
@@ -42,7 +40,6 @@ public class KnightHero : PlayerHero {
 	public override void Init (EntityPhysics body, Player player, Pawn heroData)
 	{
 		cooldownTimers = new float[2];
-		effectPool = ObjectPooler.GetObjectPooler("Effect");
 		base.Init (body, player, heroData);
 		InitAbilities();
 		// handle input
@@ -192,9 +189,9 @@ public class KnightHero : PlayerHero {
 		{
 			e.Damage (damage);
 			if (specialActivated)
-				PlayEffect(e.transform.position, specialHitAnim);
+				EffectPooler.PlayEffect(specialHitAnim, e.transform.position);
 			else
-				PlayEffect(e.transform.position, hitEffect);
+				EffectPooler.PlayEffect(hitEffect, e.transform.position);
 			player.TriggerOnEnemyDamagedEvent(damage);
 			player.TriggerOnEnemyLastHitEvent (e);
 
@@ -206,18 +203,5 @@ public class KnightHero : PlayerHero {
 			if (specialActivated)
 				player.StartTempSlowDown(0.3f);
 		}
-	}
-
-	private void PlayEffect(Vector3 position, SimpleAnimation simpleAnim)
-	{
-		GameObject o = effectPool.GetPooledObject();
-		SimpleAnimationPlayer animPlayer = o.GetComponent<SimpleAnimationPlayer>();
-		TempObject tempObj = o.GetComponent<TempObject>();
-		tempObj.info = new TempObjectInfo(true, 0f, simpleAnim.TimeLength, 0);
-		animPlayer.anim = simpleAnim;
-		tempObj.Init(Quaternion.Euler(0, 0, Random.Range(0, 360)),
-					 position,
-		             simpleAnim.frames[0]);
-		animPlayer.Play();
 	}
 }

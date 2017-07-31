@@ -4,7 +4,6 @@ using System.Collections;
 public class KnightMassStun : HeroPowerUp
 {
 	private KnightHero knight;
-	private ObjectPooler effectPool;
 	private Vector3 explosionPos;
 
 	[Header("Audio")]
@@ -17,7 +16,7 @@ public class KnightMassStun : HeroPowerUp
 	public override void Activate(PlayerHero hero)
 	{
 		base.Activate(hero);
-		effectPool = ObjectPooler.GetObjectPooler("Effect");
+		
 		this.knight = (KnightHero)hero;
 		knight.onSpecialAbility += MassStun;
 	}
@@ -39,7 +38,7 @@ public class KnightMassStun : HeroPowerUp
 
 	private IEnumerator MassStunRoutine()
 	{
-		PlayEffect();
+		EffectPooler.PlayEffect(massStunExplosionAnim, transform.position);
 		explosionPos = transform.position;
 		SoundManager.instance.RandomizeSFX(effectSound);
 		float delay = massStunExplosionAnim.SecondsPerFrame * 9f; // wait until frame 9
@@ -61,35 +60,9 @@ public class KnightMassStun : HeroPowerUp
 				GameObject stun = Instantiate(StatusEffectContainer.instance.GetStatus("Stun"));
 				stun.GetComponent<StunStatus>().duration = 10f;
 				e.AddStatus(stun.gameObject);
-				PlayHitEffect(e.transform.position);
+				EffectPooler.PlayEffect(hitAnim, e.transform.position);
 			}
 		}
-	}
-
-	private void PlayEffect()
-	{
-		GameObject o = effectPool.GetPooledObject();
-		SimpleAnimationPlayer anim = o.GetComponent<SimpleAnimationPlayer>();
-		TempObject tempObj = o.GetComponent<TempObject>();
-		tempObj.info = new TempObjectInfo(true, 0f, massStunExplosionAnim.TimeLength, 0, new Color(1, 1, 1, 0.8f));
-		anim.anim = massStunExplosionAnim;
-		tempObj.Init(Quaternion.identity,
-					 transform.position,
-				 massStunExplosionAnim.frames[0]);
-		anim.Play();
-	}
-
-	private void PlayHitEffect(Vector3 position)
-	{
-		GameObject o = effectPool.GetPooledObject();
-		SimpleAnimationPlayer anim = o.GetComponent<SimpleAnimationPlayer>();
-		TempObject tempObj = o.GetComponent<TempObject>();
-		tempObj.info = new TempObjectInfo(true, 0f, hitAnim.TimeLength, 0);
-		anim.anim = hitAnim;
-		tempObj.Init(Quaternion.Euler(0, 0, Random.Range(0, 360)),
-					 position,
-				 hitAnim.frames[0]);
-		anim.Play();
 	}
 }
 

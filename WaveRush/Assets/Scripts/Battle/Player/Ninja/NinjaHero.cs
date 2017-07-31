@@ -214,18 +214,7 @@ public class NinjaHero : PlayerHero {
 		if (!e.invincible && e.health > 0)
 		{
 			e.Damage (damage);
-			TempObject o = player.effectPool.GetPooledObject ().GetComponent<TempObject> ();
-			SimpleAnimationPlayer anim = o.GetComponent<SimpleAnimationPlayer> ();
-			anim.anim = hitEffect;
-			o.Init (
-				Quaternion.Euler (new Vector3 (0, 0, Random.Range (0, 360f))),
-				e.transform.position, 
-				hitEffect.frames[0],
-				true,
-				0,
-				0.2f);
-			anim.Play ();
-			
+			EffectPooler.PlayEffect(hitEffect, e.transform.position, true, 0.2f);
 
 			player.TriggerOnEnemyDamagedEvent(damage);
 			player.TriggerOnEnemyLastHitEvent (e);

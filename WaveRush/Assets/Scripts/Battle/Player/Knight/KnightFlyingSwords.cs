@@ -5,7 +5,6 @@ using System.Collections.Generic;
 public class KnightFlyingSwords : HeroPowerUp
 {
 	private KnightHero knight;
-	private ObjectPooler effectPool;
 	private int numSwords;
 
 	private float addSwordChance = 0.05f;
@@ -21,10 +20,6 @@ public class KnightFlyingSwords : HeroPowerUp
 	public AudioClip swordRiseSound;
 	public AudioClip[] swordLandSounds;
 
-	void Awake()
-	{
-		effectPool = ObjectPooler.GetObjectPooler("Effect");
-	}
 
 	public override void Activate(PlayerHero hero)
 	{
@@ -70,7 +65,7 @@ public class KnightFlyingSwords : HeroPowerUp
 		float frame7time = addSwordAnim.SecondsPerFrame * 7f; // time before the sword rises up in the animation
 		StunEnemy(e, frame7time);
 
-		PlayEffect(addSwordAnim, e.transform.position, 0.3f);
+		EffectPooler.PlayEffect(addSwordAnim, e.transform.position, false, 0.3f);
 		SoundManager.instance.RandomizeSFX(portalOpenSound);
 
 		yield return new WaitForSeconds(frame7time);
@@ -97,7 +92,7 @@ public class KnightFlyingSwords : HeroPowerUp
 
 		yield return new WaitForSeconds(delay);
 
-		PlayEffect(swordAttackAnim, e.transform.position, 0.3f);
+		EffectPooler.PlayEffect(swordAttackAnim, e.transform.position, false, 0.3f);
 		SoundManager.instance.RandomizeSFX(portalOpenSound);
 
 		yield return new WaitForSeconds(frame6time);
@@ -116,19 +111,6 @@ public class KnightFlyingSwords : HeroPowerUp
 		StunStatus stun = Instantiate(StatusEffectContainer.instance.GetStatus("Stun")).GetComponent<StunStatus>();
 		stun.duration = time;
 		e.AddStatus(stun.gameObject);
-	}
-
-	private void PlayEffect(SimpleAnimation toPlay, Vector3 position, float fadeOutTime)
-	{
-		GameObject o = effectPool.GetPooledObject();
-		SimpleAnimationPlayer anim = o.GetComponent<SimpleAnimationPlayer>();
-		TempObject tempObj = o.GetComponent<TempObject>();
-		tempObj.info = new TempObjectInfo(true, 0f, toPlay.TimeLength - fadeOutTime, fadeOutTime, new Color(1, 1, 1, 0.8f));
-		anim.anim = toPlay;
-		tempObj.Init(Quaternion.identity,
-		             position,
-		             toPlay.frames[0]);
-		anim.Play();
 	}
 }
 

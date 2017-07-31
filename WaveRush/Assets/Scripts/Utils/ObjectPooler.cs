@@ -15,15 +15,20 @@ public class ObjectPooler : MonoBehaviour {
 
 	void Awake()
 	{
+		Init();
+	}
+
+	protected virtual void Init()
+	{
 		if (isGlobal)
-			AddSelfToGlobalList ();
-		pooledObjects = new List<GameObject> ();
-		for (int i = 0; i < poolAmount; i ++)
+			AddSelfToGlobalList();
+		pooledObjects = new List<GameObject>();
+		for (int i = 0; i < poolAmount; i++)
 		{
-			GameObject obj = Instantiate (pooledObject) as GameObject;
-			obj.transform.SetParent (this.transform);
-			obj.SetActive (false);
-			pooledObjects.Add (obj);
+			GameObject obj = Instantiate(pooledObject) as GameObject;
+			obj.transform.SetParent(this.transform);
+			obj.SetActive(false);
+			pooledObjects.Add(obj);
 		}
 	}
 

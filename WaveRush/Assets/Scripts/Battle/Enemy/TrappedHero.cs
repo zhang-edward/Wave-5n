@@ -6,7 +6,6 @@ public class TrappedHero : Enemy
 	[Header("TrappedHero-Specific")]
 	public SimpleAnimation deathEffect;
 	public SimpleAnimation trappedHeroPickupEffect;
-	private ObjectPooler effectPool;
 
 	public override void Init(Vector3 spawnLocation, Map map, int level)
 	{
@@ -19,7 +18,7 @@ public class TrappedHero : Enemy
 		maxHealth = baseHealth * Mathf.RoundToInt(Pawn.DamageEquation(level));  // calculate health based on level
 		health = maxHealth;
 		deathPropPool = ObjectPooler.GetObjectPooler("DeathProp");          // instantiate set object pooler
-		effectPool = ObjectPooler.GetObjectPooler("Effect");
+		
 
 
 		StartCoroutine(AnimateIn(spawnLocation));
@@ -82,24 +81,11 @@ public class TrappedHero : Enemy
 		yield return new WaitForSeconds(0.5f);
 		SpawnDeathProps();
 		Destroy(transform.parent.gameObject, 1.0f);
-		PlayEffect(deathEffect, transform.position, 0.2f);
+		EffectPooler.PlayEffect(deathEffect, transform.position, false, 0.2f);
 		yield return new WaitForSeconds(0.2f);
 		CameraControl.instance.StartShake(0.2f, 0.05f, false, true);
 		yield return new WaitForSeconds(0.5f);
-		PlayEffect(trappedHeroPickupEffect, transform.position, 0.5f);
+		EffectPooler.PlayEffect(trappedHeroPickupEffect, transform.position, false, 0.5f);
 		transform.parent.gameObject.SetActive(false);
-	}
-
-	private void PlayEffect(SimpleAnimation toPlay, Vector3 position, float fadeOutTime)
-	{
-		GameObject o = effectPool.GetPooledObject();
-		SimpleAnimationPlayer animPlayer = o.GetComponent<SimpleAnimationPlayer>();
-		TempObject tempObj = o.GetComponent<TempObject>();
-		tempObj.info = new TempObjectInfo(true, 0f, toPlay.TimeLength - fadeOutTime, fadeOutTime, new Color(1, 1, 1, 0.8f));
-		animPlayer.anim = toPlay;
-		tempObj.Init(Quaternion.identity,
-					 position,
-					 toPlay.frames[0]);
-		animPlayer.Play();
 	}
 }
