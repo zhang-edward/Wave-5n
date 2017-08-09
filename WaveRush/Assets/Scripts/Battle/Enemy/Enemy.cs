@@ -307,6 +307,31 @@ public class Enemy : MonoBehaviour, IDamageable {
 		}
 	}
 
+	public virtual void Damage(int amt, bool disable)
+	{
+		if (invincible)
+			return;
+		health -= amt;
+		if (OnEnemyDamaged != null)
+			OnEnemyDamaged(amt);
+		if (health > 0)
+		{
+			if (canBeDisabledOnHit && !hitDisabled && disable)
+			{
+				action.TryInterrupt();
+				// Stop all states
+				StopAllCoroutines();
+				StartCoroutine(HitDisableState(0.05f, 3f));
+			}
+			sr.color = Color.red;
+			Invoke("ResetColor", 0.2f);
+		}
+		else
+		{
+			Die();
+		}
+	}
+
 	public virtual void Die()
 	{
 		if (OnEnemyDied != null)

@@ -11,6 +11,7 @@ public class MageHero : PlayerHero {
 	public ShootProjectileAbility shootProjectileAbility;
 	[Header("Prefabs")]
 	public SimpleAnimation hitEffect;
+	public SimpleAnimation specialHitEffect;
 	public GameObject projectilePrefab;
 	private float teleportRange = 4.0f;
 	private bool specialActivated;
@@ -23,11 +24,13 @@ public class MageHero : PlayerHero {
 	public AudioClip teleportOutSound;
 	public AudioClip teleportInSound;
 	public AudioClip powerUpSound;
+	public AudioClip transformSound;
 	public AudioClip powerDownSound;
 	[Header("Etc")]
 	public Map map;
 	public AnimationSet magmaFormAnim;
 	public SimpleAnimationPlayer transformEffect;
+	public IndicatorEffect teleportIndicator;
 
 	public delegate void MageAbilityActivated();
 	public event MageAbilityActivated OnMageTeleportIn;
@@ -85,23 +88,26 @@ public class MageHero : PlayerHero {
 	{
 		if (!IsCooledDown (1))
 			return;
+		player.dir = Vector2.ClampMagnitude(player.dir, teleportRange);
 		if (CanTeleport(player.transform.position + (Vector3)player.dir))
 			StartCoroutine (Teleport ());
 	}
 
 	private bool CanTeleport(Vector3 dest)
 	{
-		return Vector3.Distance(dest, player.transform.position) < teleportRange &&
-			          map.WithinOpenCells(dest);
+		return map.WithinOpenCells(dest);
 	}
 
 	private IEnumerator Teleport()
 	{
 		ResetCooldownTimer (1);
 		TeleportOut();
+		teleportIndicator.transform.position = transform.position + (Vector3)player.dir;
+		teleportIndicator.gameObject.SetActive(true);
 		// Wait for end of animation
 		while (anim.player.isPlaying)
 			yield return null;
+		teleportIndicator.gameObject.SetActive(false);
 		TeleportIn();
 		// Wait for end of animation
 		while (anim.player.isPlaying)
@@ -169,8 +175,8 @@ public class MageHero : PlayerHero {
 		sound.PlaySingle(powerUpSound);
 		CameraControl.instance.StartShake(0.2f, 0.05f, true, false);
 		player.isInvincible = true;
-		yield return new WaitForSeconds(transformEffect.anim.TimeLength - 0.3f);
-
+		yield return new WaitForSeconds(transformEffect.anim.SecondsPerFrame * 9f);
+		sound.PlaySingle(transformSound);
 		magmaFormAnim.Init(player.animPlayer);
 		anim = magmaFormAnim;
 		anim.Play("Default");
@@ -179,6 +185,9 @@ public class MageHero : PlayerHero {
 		while (transformEffect.isPlaying)
 			yield return null;
 		transformEffect.gameObject.SetActive(false);
+
+		if (OnMageSpecialAbility != null)
+			OnMageSpecialAbility();
 
 		yield return new WaitForSeconds(10f);
 		sound.PlaySingle(powerDownSound);
@@ -228,7 +237,10 @@ public class MageHero : PlayerHero {
 		if (!e.invincible && e.health > 0)
 		{
 			e.Damage (damage);
-			EffectPooler.PlayEffect(hitEffect, e.transform.position, true, 0.2f);
+			if (specialActivated)
+				EffectPooler.PlayEffect(specialHitEffect, e.transform.position, true);
+			else
+				EffectPooler.PlayEffect(hitEffect, e.transform.position, true, 0.2f);
 
 			player.TriggerOnEnemyDamagedEvent(damage);
 			player.TriggerOnEnemyLastHitEvent (e);

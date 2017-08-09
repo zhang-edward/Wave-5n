@@ -6,7 +6,6 @@ namespace EnemyActions
 {
 	public class CreateHitZoneAction : EnemyAction
 	{
-
 		public PlayerDetectionCircle hitZone;
 		public int damage;
 

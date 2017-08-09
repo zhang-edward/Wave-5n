@@ -29,7 +29,7 @@ public class BurnStatus : EnemyStatus
 			{
 				SpreadFire ();
 			}
-			enemy.Damage (damage);
+			enemy.Damage (damage, false);
 			yield return new WaitForSeconds(Random.Range(0.1f, 0.3f));
 		}
 

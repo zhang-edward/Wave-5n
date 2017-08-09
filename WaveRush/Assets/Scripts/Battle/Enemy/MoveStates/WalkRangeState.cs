@@ -60,7 +60,7 @@ public class WalkRangeState : MoveState
 		}
 		if (debugCounter >= 20)
 		{
-			Debug.LogError("Took 10000+ tries to find a position!");
+			Debug.LogError("Took 20+ tries to find a position!");
 		}
 		state = State.Walk;
 	}

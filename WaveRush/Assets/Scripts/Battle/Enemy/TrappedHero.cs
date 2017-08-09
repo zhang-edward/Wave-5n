@@ -6,6 +6,9 @@ public class TrappedHero : Enemy
 	[Header("TrappedHero-Specific")]
 	public SimpleAnimation deathEffect;
 	public SimpleAnimation trappedHeroPickupEffect;
+	public AudioClip damageSound;
+	public AudioClip deathSound;
+	public AudioClip acquireHeroSound;
 
 	public override void Init(Vector3 spawnLocation, Map map, int level)
 	{
@@ -36,6 +39,7 @@ public class TrappedHero : Enemy
 		{
 			sr.color = Color.red;
 			Invoke("ResetColor", 0.2f);
+			SoundManager.instance.RandomizeSFX(damageSound);
 		}
 		else
 		{
@@ -84,8 +88,10 @@ public class TrappedHero : Enemy
 		EffectPooler.PlayEffect(deathEffect, transform.position, false, 0.2f);
 		yield return new WaitForSeconds(0.2f);
 		CameraControl.instance.StartShake(0.2f, 0.05f, false, true);
+		SoundManager.instance.RandomizeSFX(deathSound);
 		yield return new WaitForSeconds(0.5f);
 		EffectPooler.PlayEffect(trappedHeroPickupEffect, transform.position, false, 0.5f);
 		transform.parent.gameObject.SetActive(false);
+		SoundManager.instance.RandomizeSFX(acquireHeroSound);
 	}
 }

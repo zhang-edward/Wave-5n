@@ -65,7 +65,7 @@ public class EnemyHealthBar : MonoBehaviour {
 	{
 		slider.value = enemy.health;
 		SetFillAreaColor ();
-		if (!enemy.gameObject.activeInHierarchy)
+		if (enemy == null || !enemy.gameObject.activeInHierarchy)
 		{
 			gameObject.SetActive (false);
 			abilityIconBar.SetActive (false);

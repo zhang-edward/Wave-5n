@@ -45,7 +45,7 @@ public class MageFirestorm : HeroPowerUp
 
 	public void DeactivateFirestorm()
 	{
-		mage.projectilePool = originalProjectilePool;
+		mage.shootProjectileAbility.SetProjectile(originalProjectilePool);
 		activated = false;
 		indicator.AnimateOut();
 		print("Deactivated");

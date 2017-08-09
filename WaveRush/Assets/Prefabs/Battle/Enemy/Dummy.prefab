@@ -756,7 +756,7 @@ Animator:
   m_GameObject: {fileID: 1566669849752340}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 2b57091cf7e6d44eabc2fc21563d02d7, type: 2}
+  m_Controller: {fileID: 9100000, guid: 99d3aad8389ae41e6b34c5c2f9516f5b, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -776,7 +776,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   updating: 1
-  usingCustomPivot: 0
+  usingCustomPivot: 1
   customPivot: 0
 --- !u!114 &114012286068271782
 MonoBehaviour:
@@ -840,6 +840,8 @@ MonoBehaviour:
   interruptable: 1
   time: 1
   magnitude: 0.05
+  horizontal: 0
+  vertical: 1
 --- !u!114 &114040565291949198
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -855,6 +857,8 @@ MonoBehaviour:
   interruptable: 0
   time: 0.2
   magnitude: 0.05
+  horizontal: 0
+  vertical: 1
 --- !u!114 &114044452027969696
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1349,8 +1353,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: c970dbddb61b646458481aa6db45d54d, type: 3}
+  m_SortingOrder: -160
+  m_Sprite: {fileID: 21300000, guid: 2ac80cb58f398465c95c8181808da226, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

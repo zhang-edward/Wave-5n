@@ -4,6 +4,7 @@ public class PlayerDetectionCircle : MonoBehaviour
 {
 	public Enemy e;
 	public float radius;
+	public bool dynamic;
 	private Vector3 pos;
 
 	void Awake()
@@ -13,6 +14,8 @@ public class PlayerDetectionCircle : MonoBehaviour
 
 	void Update()
 	{
+		if (dynamic)
+			return;
 		if (e.sr.flipX)
 			transform.localPosition = new Vector3(pos.x * -1, pos.y);
 		else
