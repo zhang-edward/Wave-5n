@@ -1,0 +1,244 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1406115474512498}
+  m_IsPrefabParent: 1
+--- !u!1 &1266637578699554
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4025261229374178}
+  - component: {fileID: 114387021104264688}
+  - component: {fileID: 114840648860622832}
+  m_Layer: 0
+  m_Name: Actions
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1406115474512498
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4309569284570568}
+  - component: {fileID: 212455470835771606}
+  - component: {fileID: 50346982864545192}
+  - component: {fileID: 114364846179474200}
+  - component: {fileID: 114391763346366288}
+  - component: {fileID: 61928926479796164}
+  m_Layer: 0
+  m_Name: EntRock
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4025261229374178
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1266637578699554}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4309569284570568}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4309569284570568
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1406115474512498}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 4025261229374178}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!50 &50346982864545192
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1406115474512498}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!61 &61928926479796164
+BoxCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1406115474512498}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Size: {x: 1.5, y: 1.5}
+--- !u!114 &114364846179474200
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1406115474512498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 156c45bcbbf2d43608faff0bcf743aea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  projectileName: EntRock
+  speed: 10
+  setAngle: 1
+  target: Player
+  lifeTime: 0
+  destroyOnCollide: 0
+  size: {x: 0.5, y: 0.5}
+  projectileAnim:
+    frames:
+    - {fileID: 21300000, guid: 68113769a8abe48ffb43b1050245b655, type: 3}
+    - {fileID: 21300002, guid: 68113769a8abe48ffb43b1050245b655, type: 3}
+    - {fileID: 21300004, guid: 68113769a8abe48ffb43b1050245b655, type: 3}
+    - {fileID: 21300006, guid: 68113769a8abe48ffb43b1050245b655, type: 3}
+    - {fileID: 21300008, guid: 68113769a8abe48ffb43b1050245b655, type: 3}
+    - {fileID: 21300010, guid: 68113769a8abe48ffb43b1050245b655, type: 3}
+    - {fileID: 21300012, guid: 68113769a8abe48ffb43b1050245b655, type: 3}
+    - {fileID: 21300014, guid: 68113769a8abe48ffb43b1050245b655, type: 3}
+    fps: 10
+--- !u!114 &114387021104264688
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1266637578699554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc1e4d77cdc85454491877d8a46fd5f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventTrigger: 3
+  interval: 0
+  randomAngle: 0
+  anim:
+    frames:
+    - {fileID: 21300000, guid: 10d37167901744b24a2395e6c45831e4, type: 3}
+    - {fileID: 21300002, guid: 10d37167901744b24a2395e6c45831e4, type: 3}
+    - {fileID: 21300004, guid: 10d37167901744b24a2395e6c45831e4, type: 3}
+    - {fileID: 21300006, guid: 10d37167901744b24a2395e6c45831e4, type: 3}
+    - {fileID: 21300008, guid: 10d37167901744b24a2395e6c45831e4, type: 3}
+    - {fileID: 21300010, guid: 10d37167901744b24a2395e6c45831e4, type: 3}
+    - {fileID: 21300012, guid: 10d37167901744b24a2395e6c45831e4, type: 3}
+    - {fileID: 21300014, guid: 10d37167901744b24a2395e6c45831e4, type: 3}
+    - {fileID: 21300016, guid: 10d37167901744b24a2395e6c45831e4, type: 3}
+    - {fileID: 21300018, guid: 10d37167901744b24a2395e6c45831e4, type: 3}
+    - {fileID: 21300020, guid: 10d37167901744b24a2395e6c45831e4, type: 3}
+    - {fileID: 21300022, guid: 10d37167901744b24a2395e6c45831e4, type: 3}
+    fps: 10
+  effectInfo:
+    isSelfDeactivating: 1
+    fadeInTime: 0
+    lifeTime: 1
+    fadeOutTime: 0.2
+    targetColor: {r: 1, g: 1, b: 1, a: 1}
+--- !u!114 &114391763346366288
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1406115474512498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e50dff18d55f54c55abd525251724237, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sr: {fileID: 0}
+  anim:
+    frames: []
+    fps: 10
+  playOnStart: 0
+  looping: 0
+  ignoreTimeScaling: 0
+  destroyOnFinish: 0
+--- !u!114 &114840648860622832
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1266637578699554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5c105c5fdfa14f03ab126ada4a88965, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventTrigger: 3
+  interval: 0
+  radius: 2
+  damage: 4
+--- !u!212 &212455470835771606
+SpriteRenderer:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1406115474512498}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 21300000, guid: 68113769a8abe48ffb43b1050245b655, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0

@@ -11,7 +11,7 @@ namespace EnemyActions
 
 		public override void Init(Enemy e, OnActionStateChanged onActionFinished)
 		{
-			base.Init(e, null);
+			base.Init(e, onActionFinished);
 			cam = CameraControl.instance;
 		}
 

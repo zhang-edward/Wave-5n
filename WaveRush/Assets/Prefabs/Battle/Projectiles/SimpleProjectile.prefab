@@ -21,9 +21,9 @@ GameObject:
   - component: {fileID: 4810455327113310}
   - component: {fileID: 212805619383591188}
   - component: {fileID: 50160575909312720}
-  - component: {fileID: 61874244805509182}
   - component: {fileID: 114344050113153888}
   - component: {fileID: 114048183070045198}
+  - component: {fileID: 61712793199173414}
   m_Layer: 0
   m_Name: SimpleProjectile
   m_TagString: Untagged
@@ -39,7 +39,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4794310350074214}
-  - component: {fileID: 114129262061370474}
+  - component: {fileID: 114304803051353034}
   m_Layer: 0
   m_Name: Actions
   m_TagString: Untagged
@@ -94,7 +94,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!61 &61874244805509182
+--- !u!61 &61712793199173414
 BoxCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -103,7 +103,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
@@ -127,7 +127,7 @@ MonoBehaviour:
   looping: 0
   ignoreTimeScaling: 0
   destroyOnFinish: 0
---- !u!114 &114129262061370474
+--- !u!114 &114304803051353034
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -138,9 +138,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 087b8236c7c0341a2a93120abc950eea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eventTrigger: 2
+  eventTrigger: 1
   interval: 0
-  damage: 2
+  damage: 0
 --- !u!114 &114344050113153888
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -156,7 +156,7 @@ MonoBehaviour:
   speed: 0
   setAngle: 1
   target: Player
-  lifeTime: 8
+  lifeTime: 0
   destroyOnCollide: 0
   size: {x: 0.5, y: 0.5}
   projectileAnim:
