@@ -21,6 +21,7 @@ namespace EnemyActions
 		public override void Init(Enemy e, OnActionStateChanged onActionFinished)
 		{
 			base.Init(e, onActionFinished);
+			e.healable = false;					// healers cannot heal other healers
 		}
 
 		protected override void Action()
@@ -33,7 +34,7 @@ namespace EnemyActions
 				if (col.CompareTag("Enemy"))
 				{
 					Enemy enemy = col.GetComponentInChildren<Enemy>();
-					if (enemy != this.e)
+					if (enemy != this.e && enemy.healable)
 					{
 						//Debug.Log("Healing");
 						enemy.Heal(Mathf.RoundToInt(HealAmt()));

@@ -6,7 +6,6 @@ namespace EnemyActions
 {
 	public class ShootAction : EnemyAction
 	{
-
 		protected Animator anim;
 		protected EntityPhysics body;
 		protected ObjectPooler projectilePool;

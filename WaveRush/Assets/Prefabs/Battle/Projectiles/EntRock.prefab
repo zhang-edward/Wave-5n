@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4025261229374178}
   - component: {fileID: 114387021104264688}
   - component: {fileID: 114840648860622832}
+  - component: {fileID: 114940886295636052}
   m_Layer: 0
   m_Name: Actions
   m_TagString: Untagged
@@ -154,18 +155,18 @@ MonoBehaviour:
   randomAngle: 0
   anim:
     frames:
-    - {fileID: 21300000, guid: 10d37167901744b24a2395e6c45831e4, type: 3}
-    - {fileID: 21300002, guid: 10d37167901744b24a2395e6c45831e4, type: 3}
-    - {fileID: 21300004, guid: 10d37167901744b24a2395e6c45831e4, type: 3}
-    - {fileID: 21300006, guid: 10d37167901744b24a2395e6c45831e4, type: 3}
-    - {fileID: 21300008, guid: 10d37167901744b24a2395e6c45831e4, type: 3}
-    - {fileID: 21300010, guid: 10d37167901744b24a2395e6c45831e4, type: 3}
-    - {fileID: 21300012, guid: 10d37167901744b24a2395e6c45831e4, type: 3}
-    - {fileID: 21300014, guid: 10d37167901744b24a2395e6c45831e4, type: 3}
-    - {fileID: 21300016, guid: 10d37167901744b24a2395e6c45831e4, type: 3}
-    - {fileID: 21300018, guid: 10d37167901744b24a2395e6c45831e4, type: 3}
-    - {fileID: 21300020, guid: 10d37167901744b24a2395e6c45831e4, type: 3}
-    - {fileID: 21300022, guid: 10d37167901744b24a2395e6c45831e4, type: 3}
+    - {fileID: 21300000, guid: 42f417295c07640e69594ee438f72946, type: 3}
+    - {fileID: 21300002, guid: 42f417295c07640e69594ee438f72946, type: 3}
+    - {fileID: 21300004, guid: 42f417295c07640e69594ee438f72946, type: 3}
+    - {fileID: 21300006, guid: 42f417295c07640e69594ee438f72946, type: 3}
+    - {fileID: 21300008, guid: 42f417295c07640e69594ee438f72946, type: 3}
+    - {fileID: 21300010, guid: 42f417295c07640e69594ee438f72946, type: 3}
+    - {fileID: 21300012, guid: 42f417295c07640e69594ee438f72946, type: 3}
+    - {fileID: 21300014, guid: 42f417295c07640e69594ee438f72946, type: 3}
+    - {fileID: 21300016, guid: 42f417295c07640e69594ee438f72946, type: 3}
+    - {fileID: 21300018, guid: 42f417295c07640e69594ee438f72946, type: 3}
+    - {fileID: 21300020, guid: 42f417295c07640e69594ee438f72946, type: 3}
+    - {fileID: 21300022, guid: 42f417295c07640e69594ee438f72946, type: 3}
     fps: 10
   effectInfo:
     isSelfDeactivating: 1
@@ -207,6 +208,21 @@ MonoBehaviour:
   interval: 0
   radius: 2
   damage: 4
+--- !u!114 &114940886295636052
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1266637578699554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b27e5b79946364236b77e7bf08160075, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventTrigger: 3
+  interval: 0
+  clips:
+  - {fileID: 8300000, guid: 0ffcd0607de17406abe22e61f66ee346, type: 3}
 --- !u!212 &212455470835771606
 SpriteRenderer:
   m_ObjectHideFlags: 1

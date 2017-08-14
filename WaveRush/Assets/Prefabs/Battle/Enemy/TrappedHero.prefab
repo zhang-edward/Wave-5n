@@ -207,6 +207,7 @@ MonoBehaviour:
   anim: {fileID: 95460444255775716}
   level: 0
   baseHealth: 20
+  healable: 1
   healthBarOffset: {x: 0, y: 2, z: 0}
   canBeDisabledOnHit: 1
   invincible: 0
@@ -279,6 +280,7 @@ MonoBehaviour:
     fps: 15
   damageSound: {fileID: 8300000, guid: 3946823efe134471d881231d1ac6f81c, type: 3}
   deathSound: {fileID: 8300000, guid: 55e84d70ec02741b6a7161cf3290a3e1, type: 3}
+  acquireHeroSound: {fileID: 0}
 --- !u!114 &114384456574109376
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -336,9 +338,9 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -179
   m_Sprite: {fileID: 21300000, guid: 40fa67a088ec74195ab984b6bba2be3b, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.5882353}
   m_FlipX: 0
   m_FlipY: 0
 --- !u!212 &212551062600862310

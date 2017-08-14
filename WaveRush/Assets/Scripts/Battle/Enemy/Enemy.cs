@@ -36,6 +36,7 @@ public class Enemy : MonoBehaviour, IDamageable {
 	public int baseHealth = 1;
 	public int maxHealth { get; set; }
 	public int health { get; protected set; }
+	public bool healable = true;
 	public Vector3 healthBarOffset;
 	public bool canBeDisabledOnHit = true;
 	public bool invincible = false;

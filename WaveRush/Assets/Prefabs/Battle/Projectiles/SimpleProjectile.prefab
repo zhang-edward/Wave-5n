@@ -103,7 +103,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
@@ -119,7 +119,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e50dff18d55f54c55abd525251724237, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sr: {fileID: 0}
+  sr: {fileID: 212805619383591188}
   anim:
     frames: []
     fps: 10
@@ -156,7 +156,7 @@ MonoBehaviour:
   speed: 0
   setAngle: 1
   target: Player
-  lifeTime: 0
+  lifeTime: 8
   destroyOnCollide: 0
   size: {x: 0.5, y: 0.5}
   projectileAnim:
