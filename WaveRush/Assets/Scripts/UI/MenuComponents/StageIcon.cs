@@ -24,7 +24,7 @@ public class StageIcon : MonoBehaviour
 	public void Init(StageData stage)
 	{
 		stageNameText.text = stage.stageName;
-		stageLevelText.text = stage.level.ToString();
+		stageLevelText.text = "lv" + stage.level.ToString();
 	}
 
 	private void OnClick()

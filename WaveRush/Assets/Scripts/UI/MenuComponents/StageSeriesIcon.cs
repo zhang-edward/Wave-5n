@@ -20,6 +20,10 @@ public class StageSeriesIcon : ScrollViewSnapContent
 	{
 		if (onClicked != null)
 			onClicked(data);
-		
+	}
+
+	public StageSeriesData GetData()
+	{
+		return data;
 	}
 }

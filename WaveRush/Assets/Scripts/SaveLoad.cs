@@ -13,7 +13,7 @@ public class SaveLoad
 		FileStream file = File.Create (Application.persistentDataPath + "/save.gd");
 		bf.Serialize(file, GameManager.instance.saveGame);
 		file.Close();
-		Debug.Log ("Saved Data");
+		//Debug.Log ("Saved Data");
 		//GameManager.instance.DisplayMessage ("Saved Data");
 	}
 

@@ -32,7 +32,6 @@ namespace EnemyActions
 			{
 				if (action.CanExecute())
 				{
-					print(action);
 					action.Execute();
 					return;
 				}

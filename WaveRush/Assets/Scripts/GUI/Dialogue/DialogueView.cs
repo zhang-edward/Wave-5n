@@ -23,10 +23,21 @@ public class DialogueView : MonoBehaviour
 	private IEnumerator DisplayDialogues()
 	{
 		dialoguePlaying = true;
+
+		// Initialize view
+		DialogueSet dialogueSet = dialogueSets[0];
+		nameText.text = dialogueSet.character.characterName;
+		nameText.color = dialogueSet.character.nameColor;
+		dialogueText.textBox.color = dialogueSet.character.textColor;
+		speakerImage.anim = dialogueSet.character.GetExpression(dialogueSet.dialogues[0].expression);
+		speakerImage.Play();
+
+		yield return new WaitForSeconds(1.0f);      // Wait for UI to animate in
+
 		int i = 0;
 		while (i < dialogueSets.Length)
 		{
-			DialogueSet dialogueSet = dialogueSets[i];
+			dialogueSet = dialogueSets[i];
 			nameText.text = dialogueSet.character.characterName;
 			nameText.color = dialogueSet.character.nameColor;
 			dialogueText.textBox.color = dialogueSet.character.textColor;
@@ -39,7 +50,7 @@ public class DialogueView : MonoBehaviour
 				willAcceptScreenPress = false;
 				while (dialogueText.IsTextScrolling())
 					yield return null;
-				yield return new WaitForSeconds(0.5f);		// so the player does not accidentally skip things
+				yield return new WaitForSeconds(0.2f);		// Prevents the player from accidentally skipping things
 				willAcceptScreenPress = true;
 				while (!proceed)
 					yield return null;
@@ -56,7 +67,6 @@ public class DialogueView : MonoBehaviour
 	{
 		if (d.expression != "")
 		{
-			print("New expression: " + d.expression);
 			speakerImage.anim = dSet.character.GetExpression(d.expression);
 			speakerImage.Play();
 		}

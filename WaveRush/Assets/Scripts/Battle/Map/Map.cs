@@ -23,6 +23,8 @@ public class Map : MonoBehaviour {
 		get { return openCells; }
 	}
 
+	public SpriteRenderer[] borderSprites;
+	public SpriteRenderer[] cornerBorderSprites;
 	public const int size = 20;
 	public float bgPropsBufferMin = 2;
 	public float bgPropsBufferMax = 8;
@@ -52,16 +54,23 @@ public class Map : MonoBehaviour {
 	public void GenerateMap()
 	{
 		data = GetMapInfo ();
-		CreateBorder();
+
+		SetBorderSprite();
 		GetIntegerMaps ();
 		InitSpriteMap ();
 		CreateMap ();
 	}
-
-	private void CreateBorder()
+	
+	private void SetBorderSprite()
 	{
-		GameObject o = Instantiate(data.borderPrefab);
-		o.transform.SetParent(transform);
+		foreach (SpriteRenderer sr in borderSprites)
+		{
+			sr.sprite = data.borderSprite;
+		}
+		foreach(SpriteRenderer sr in cornerBorderSprites)
+		{
+			sr.sprite = data.cornerBorderSprite;
+		}
 	}
 
 	private MapData GetMapInfo()

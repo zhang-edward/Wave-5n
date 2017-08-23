@@ -5,6 +5,7 @@ public class HeroSelectMenu : MonoBehaviour
 {
 	public PawnSelectionView pawnSelectionView;
 	public PawnInfoPanel pawnInfoPanel;
+	public StageIcon selectedStageIcon;
 
 	void Start()
 	{
@@ -24,5 +25,12 @@ public class HeroSelectMenu : MonoBehaviour
 				GameManager.instance.selectedPawn = pawnIcon.pawnData;
 			};
 		}
+	}
+
+	void OnEnable()
+	{
+		GameManager gm = GameManager.instance;
+		StageData selectedStage = gm.GetStage(gm.selectedSeriesIndex, gm.selectedStageIndex);
+		selectedStageIcon.Init(selectedStage);
 	}
 }

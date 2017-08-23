@@ -21,8 +21,6 @@ public class TrappedHero : Enemy
 		maxHealth = baseHealth * Mathf.RoundToInt(Pawn.DamageEquation(level));  // calculate health based on level
 		health = maxHealth;
 		deathPropPool = ObjectPooler.GetObjectPooler("DeathProp");          // instantiate set object pooler
-		
-
 
 		StartCoroutine(AnimateIn(spawnLocation));
 	}
@@ -79,17 +77,17 @@ public class TrappedHero : Enemy
 		}
 	}
 
-	private IEnumerator DieRoutine()
+	protected virtual IEnumerator DieRoutine()
 	{
 		anim.CrossFade("Die", 0f);
 		yield return new WaitForSeconds(0.5f);
 		SpawnDeathProps();
 		Destroy(transform.parent.gameObject, 1.0f);
-		EffectPooler.PlayEffect(deathEffect, transform.position, false, 0.2f);
+		EffectPooler.PlayEffect(deathEffect, transform.position, false, 0f);
 		yield return new WaitForSeconds(0.2f);
 		CameraControl.instance.StartShake(0.2f, 0.05f, false, true);
 		SoundManager.instance.RandomizeSFX(deathSound);
-		yield return new WaitForSeconds(0.5f);
+		yield return new WaitForSeconds(0.3f);
 		EffectPooler.PlayEffect(trappedHeroPickupEffect, transform.position, false, 0.5f);
 		transform.parent.gameObject.SetActive(false);
 		SoundManager.instance.RandomizeSFX(acquireHeroSound);

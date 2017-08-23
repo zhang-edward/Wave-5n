@@ -20,8 +20,8 @@ public class ScrollViewSnap : MonoBehaviour {
 	//private bool dragging = false;	// whether the user is dragging the scrollview
 	public int selectedContentIndex { get; private set; }	// index of the content to snap to
 
-	public delegate void EndedDrag ();
-	public event EndedDrag OnEndDrag;
+	public delegate void SelectedContentChanged ();
+	public event SelectedContentChanged OnSelectedContentChanged;
 
 
 	void Awake()
@@ -116,8 +116,8 @@ public class ScrollViewSnap : MonoBehaviour {
 
 	public virtual void EndDrag()
 	{
-		if (OnEndDrag != null)
-			OnEndDrag();
+		if (OnSelectedContentChanged != null)
+			OnSelectedContentChanged();
 		StartLerpToContent ();
 	}
 

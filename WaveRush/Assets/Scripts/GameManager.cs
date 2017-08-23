@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour {
 
 	public const string BattleSceneName = "Game";
 
+	public const float LOADING_SCREEN_SPEED = 12; 
 	public static GameManager instance;
 
 	[Header("Realtime Timer")]
@@ -210,7 +211,7 @@ public class GameManager : MonoBehaviour {
 
 	public void UnlockNextStage()
 	{
-		if (saveGame.latestUnlockedStageIndex < regularStages.series[saveGame.latestUnlockedSeriesIndex].stages.Length)
+		if (saveGame.latestUnlockedStageIndex < regularStages.series[saveGame.latestUnlockedSeriesIndex].stages.Length - 1)
 			saveGame.latestUnlockedStageIndex++;
 		else
 		{
@@ -280,7 +281,7 @@ public class GameManager : MonoBehaviour {
 		float t = 0;
 		while (loadingOverlay.color.a < 0.95f)
 		{
-			loadingOverlay.color = Color.Lerp (initialColor, finalColor, t * 8);
+			loadingOverlay.color = Color.Lerp (initialColor, finalColor, t * LOADING_SCREEN_SPEED / 2);
 			t += Time.deltaTime;
 			yield return null;
 		}
@@ -294,7 +295,7 @@ public class GameManager : MonoBehaviour {
 		float t = 0;
 		while (loadingOverlay.color.a > 0.05f)
 		{
-			loadingOverlay.color = Color.Lerp (initialColor, finalColor, t * 8);
+			loadingOverlay.color = Color.Lerp (initialColor, finalColor, t * LOADING_SCREEN_SPEED);
 			t += Time.deltaTime;
 			yield return null;
 		}

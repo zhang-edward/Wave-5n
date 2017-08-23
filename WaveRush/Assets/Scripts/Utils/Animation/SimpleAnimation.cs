@@ -17,4 +17,9 @@ public class SimpleAnimation {
 			return frames.Length * (float)SecondsPerFrame;
 		}
 	}
+
+	public float GetSecondsUntilFrame(int frame)
+	{
+		return frame * SecondsPerFrame;
+	}
 }

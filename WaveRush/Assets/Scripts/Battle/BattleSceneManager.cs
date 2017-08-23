@@ -58,9 +58,13 @@ public class BattleSceneManager : MonoBehaviour
 		// Do dialogue before starting the game
 		if (stage.dialogueSets.Length > 0)
 			dialogueView.Init(stage.dialogueSets);
+		player.input.enabled = false;
+		gui.enemyWaveText.gameObject.SetActive(false);
 		while (dialogueView.dialoguePlaying)
 			yield return null;
-		
+
+		player.input.enabled = true;
+		gui.enemyWaveText.gameObject.SetActive(true);
 		enemyManager.Init(stage);
 		gui.DisplayIntroMessage();
 

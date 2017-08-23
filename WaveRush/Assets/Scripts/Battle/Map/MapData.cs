@@ -12,7 +12,8 @@ public class MapData : ScriptableObject
 	public GameObject bossSpawnPrefab;
 	[Header("Background")]
 	public GameObject[] edgeProps;
-	public GameObject borderPrefab;
+	public Sprite borderSprite;
+	public Sprite cornerBorderSprite;
 	public Color bgColor;
 
 	[Header("Music")]

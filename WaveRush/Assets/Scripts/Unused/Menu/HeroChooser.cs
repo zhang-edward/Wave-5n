@@ -31,12 +31,12 @@
 
 		void OnEnable()
 		{
-			heroIconsView.OnEndDrag += UpdateHeroInfoPanel;
+			heroIconsView.OnSelectedContentChanged += UpdateHeroInfoPanel;
 		}
 
 		void OnDisabled()
 		{
-			heroIconsView.OnEndDrag -= UpdateHeroInfoPanel;
+			heroIconsView.OnSelectedContentChanged -= UpdateHeroInfoPanel;
 		}
 
 		public void UpdateHeroInfoPanel()

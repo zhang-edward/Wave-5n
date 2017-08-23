@@ -91,7 +91,7 @@ public class CameraControl : MonoBehaviour
 	{
 		while (time > 0)
 		{
-			time -= Time.deltaTime;
+			time -= Time.unscaledDeltaTime;
 			float randX = 0;
 			float randY = 0;
 			if (horizontal)

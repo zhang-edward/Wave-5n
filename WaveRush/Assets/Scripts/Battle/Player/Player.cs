@@ -58,9 +58,11 @@ public class Player : MonoBehaviour, IDamageable
 	public SimpleAnimation deathEffect;
 
 	[Header("Audio")]
+	private SoundManager sound;
 	public AudioClip hurtSound;
-	public AudioClip deathSound;
-	public AudioClip poofSound;
+	public AudioClip gameOverSound;
+	public AudioClip heartBreakBuildUpSound;
+	public AudioClip heartBreakSound;
 
 	[HideInInspector]
 	public ObjectPooler deathPropPool;
@@ -70,6 +72,7 @@ public class Player : MonoBehaviour, IDamageable
 		deathPropPool = ObjectPooler.GetObjectPooler ("DeathProp");
 		DEFAULT_SPEED = body.moveSpeed;
 		input.isInputEnabled = false;
+		sound = SoundManager.instance;
 	}
 
 	public void Init(Pawn heroData)
@@ -168,29 +171,30 @@ public class Player : MonoBehaviour, IDamageable
 		// Player Died
 		if (health <= 0)
 		{
-			//SpawnDeathProps ();
-			StartCoroutine(Die());
+			StartCoroutine(DieRoutine());
 		}
 		else
-			SoundManager.instance.RandomizeSFX (hurtSound);
+			sound.RandomizeSFX (hurtSound);
 	}
 
-	private IEnumerator Die()
+	private IEnumerator DieRoutine()
 	{
-		SoundManager.instance.RandomizeSFX(deathSound);
+		sound.RandomizeSFX(gameOverSound);
 
 		CameraControl.instance.SetOverlayColor(Color.black, 0.4f, 1.0f);
 		sr.sortingLayerName = "UI";
 		Time.timeScale = 0f;
-		yield return new WaitForSecondsRealtime(1.5f);
+		yield return new WaitForSecondsRealtime(0.5f);
 		PlayDeathEffect(transform.position);
-		CameraControl.instance.StartFlashColor(Color.white, 0.4f, 0, 0, 1f);
-		SoundManager.instance.RandomizeSFX(poofSound);
+		sound.PlaySingle(heartBreakBuildUpSound);
 		sr.enabled = false;
-		yield return new WaitForSecondsRealtime(2.0f);
+		yield return new WaitForSecondsRealtime(deathEffect.GetSecondsUntilFrame(10));
+		CameraControl.instance.StartFlashColor(Color.white, 0.4f, 0, 0, 1f);
+		sound.RandomizeSFX(heartBreakSound);
+		yield return new WaitForSecondsRealtime(1.0f);
+		transform.parent.gameObject.SetActive(false);
 		Time.timeScale = 1f;
 		CameraControl.instance.DisableOverlay(1.0f);
-		transform.parent.gameObject.SetActive(false);
 		if (OnPlayerDied != null)
 			OnPlayerDied();
 	}
@@ -303,7 +307,7 @@ public class Player : MonoBehaviour, IDamageable
 		SimpleAnimationPlayer animPlayer = o.GetComponent<SimpleAnimationPlayer>();
 		TempObject tempObj = o.GetComponent<TempObject>();
 		tempObj.GetComponent<SpriteRenderer>().sortingLayerName = "UI";
-		tempObj.info = new TempObjectInfo(true, 0f, deathEffect.TimeLength, 0);
+		tempObj.info = new TempObjectInfo(true, 0f, deathEffect.TimeLength - 2f, 1f);
 		animPlayer.anim = deathEffect;
 		tempObj.Init(Quaternion.identity,
 					 position,
@@ -312,4 +316,3 @@ public class Player : MonoBehaviour, IDamageable
 		animPlayer.Play();
 	}
 }
-

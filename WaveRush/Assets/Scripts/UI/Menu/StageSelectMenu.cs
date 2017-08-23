@@ -1,4 +1,5 @@
 ﻿﻿﻿﻿using UnityEngine;
+using TMPro;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ public class StageSelectMenu : MonoBehaviour
 	public GameObject stageIconPrefab;
 
 	[Header("Stage Series Select View")]
-	public Text stageSeriesNameText;
+	public TMP_Text stageSeriesNameText;
 	public Transform stageSeriesIconFolder;
 	public ScrollViewSnap stageSeriesScrollView;
 	public GameObject leftButton, rightButton;
@@ -33,6 +34,9 @@ public class StageSelectMenu : MonoBehaviour
 		DeselectStageIcon();
 		stageSelectionView.SetActive(false);
 		StartCoroutine(UpdateScrollButtonsVisibility());
+		stageSeriesScrollView.OnSelectedContentChanged += () => {
+			stageSeriesNameText.text = stageSeriesScrollView.SelectedContent.GetComponent<StageSeriesIcon>().GetData().seriesName;
+		};
 	}
 
 	void Awake()
@@ -67,6 +71,7 @@ public class StageSelectMenu : MonoBehaviour
 			o.SetActive(true);
 			iconIndex++;
 		}
+		stageSeriesNameText.text = stageSeriesScrollView.SelectedContent.GetComponent<StageSeriesIcon>().GetData().seriesName;
 		StartCoroutine(InitScrollViewAfter1Frame());
 	}
 
