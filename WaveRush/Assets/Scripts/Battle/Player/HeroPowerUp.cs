@@ -28,7 +28,7 @@ public abstract class HeroPowerUp : MonoBehaviour
 	public virtual void Stack() 
 	{
 		stacks++;
-		Assert.IsFalse (stacks > data.maxStacks);
+		//Assert.IsFalse (stacks > data.maxStacks);
 	}
 }
 

@@ -41,6 +41,7 @@ public class DialogueView : MonoBehaviour
 			nameText.text = dialogueSet.character.characterName;
 			nameText.color = dialogueSet.character.nameColor;
 			dialogueText.textBox.color = dialogueSet.character.textColor;
+			dialogueText.SetScrollAudio(dialogueSet.character.voice);
 
 			int j = 0;
 			while (j < dialogueSet.dialogues.Length)

@@ -18,7 +18,7 @@ public class StageData : ScriptableObject
 	public int level;
 	[Header("Stage Events")]
 	public int goalWave = 5;                            // what wave the player must reach for the stage to be completed
-	public int shopWave = 3;
+	//public int shopWave = 3;
 	public int bossWave = 5;
 	[Header("Enemies")]
 	public List<EnemySpawnProperties> enemyPrefabs;  	// set of all enemies spawnable for this stage

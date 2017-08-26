@@ -31,6 +31,7 @@ public class GUIManager : MonoBehaviour {
 	{
 		enemyManager.OnEnemyWaveSpawned += ShowEnemyWaveText;
 		enemyManager.OnEnemyWaveCompleted += OnEnemyWaveCompletedText;
+		enemyManager.OnStageCompleted += OnStageCompletedText;
 		enemyManager.OnQueueBossMessage += ShowBossIncomingText;
 		Wallet wallet = GameManager.instance.wallet;
 		moneyText.text = wallet.money.ToString();
@@ -41,6 +42,7 @@ public class GUIManager : MonoBehaviour {
 	{
 		enemyManager.OnEnemyWaveSpawned -= ShowEnemyWaveText;
 		enemyManager.OnEnemyWaveCompleted -= OnEnemyWaveCompletedText;
+		enemyManager.OnStageCompleted -= OnStageCompletedText;
 		enemyManager.OnQueueBossMessage -= ShowBossIncomingText;
 	}
 
@@ -102,6 +104,11 @@ public class GUIManager : MonoBehaviour {
 	private void OnEnemyWaveCompletedText()
 	{
 		enemyWaveText.DisplayWaveComplete ();
+	}
+
+	private void OnStageCompletedText()
+	{
+		enemyWaveText.DisplayStageComplete();
 	}
 
 	private void ShowBossIncomingText()

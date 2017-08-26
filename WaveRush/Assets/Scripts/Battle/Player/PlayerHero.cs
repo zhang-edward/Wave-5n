@@ -153,6 +153,13 @@ public abstract class PlayerHero : MonoBehaviour {
 		player.OnEnemyDamaged += IncrementSpecialAbilityCharge;
 	}
 
+	private IEnumerator Spawn()
+	{
+		EffectPooler.PlayEffect(player.spawnEffect, transform.position);
+		yield return new WaitForSeconds(player.spawnEffect.GetSecondsUntilFrame(10));
+
+	}
+
 	protected virtual void Update()
 	{
 		if (cooldownTimers != null)

@@ -17,6 +17,7 @@ public class DialogueCharacter : ScriptableObject
 	public Color textColor = Color.white;
 	public Color nameColor = Color.white;
 	public CharacterExpression[] expressions;
+	public AudioClip voice;
 
 	public SimpleAnimation GetExpression(string name)
 	{

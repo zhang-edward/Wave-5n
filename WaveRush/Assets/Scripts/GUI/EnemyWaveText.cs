@@ -4,13 +4,14 @@ using System.Collections;
 
 public class EnemyWaveText : MonoBehaviour {
 
-	public MessageText.Message waveMsg, bossIncomingMsg, waveCompleteMsg;
+	public MessageText.Message waveMsg, bossIncomingMsg, waveCompleteMsg, stageCompleteMsg;
 
 	public MessageText messageText;
 
 	public CanvasGroup mainMessageGroup;
 	public SimpleAnimationPlayerImage waveAnim;
-	public AudioClip victorySound;
+	public AudioClip waveCompleteSound;
+	public AudioClip stageCompleteSound;
 	public AudioClip warningSound;
 
 	public ParticleSystem waveCompleteParticles;
@@ -26,6 +27,11 @@ public class EnemyWaveText : MonoBehaviour {
 	public void DisplayWaveComplete()
 	{
 		StartCoroutine (DisplayMessage(waveCompleteMsg, WaveCompleteEffect, 0f, true));
+	}
+
+	public void DisplayStageComplete()
+	{
+		StartCoroutine(DisplayMessage(stageCompleteMsg, StageCompleteEffect, 0f, true));
 	}
 
 	public void DisplayBossIncoming()
@@ -58,7 +64,14 @@ public class EnemyWaveText : MonoBehaviour {
 	{
 		waveCompleteParticles.gameObject.SetActive (true);
 		waveCompleteParticles.Play ();
-		SoundManager.instance.PlayUISound (victorySound);
+		SoundManager.instance.PlayUISound (waveCompleteSound);
+	}
+
+	private void StageCompleteEffect()
+	{
+		waveCompleteParticles.gameObject.SetActive(true);
+		waveCompleteParticles.Play();
+		SoundManager.instance.PlayUISound(stageCompleteSound);
 	}
 
 	private void BossIncomingEffect()

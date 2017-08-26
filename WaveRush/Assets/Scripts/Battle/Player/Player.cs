@@ -55,7 +55,9 @@ public class Player : MonoBehaviour, IDamageable
 
 	[Header("Effects")]
 	public ParticleSystem healEffect;
+	public SimpleAnimation spawnEffect;
 	public SimpleAnimation deathEffect;
+	public SimpleAnimation sacrificeEffect;
 
 	[Header("Audio")]
 	private SoundManager sound;
@@ -63,6 +65,7 @@ public class Player : MonoBehaviour, IDamageable
 	public AudioClip gameOverSound;
 	public AudioClip heartBreakBuildUpSound;
 	public AudioClip heartBreakSound;
+	public AudioClip heartExtractSound;
 
 	[HideInInspector]
 	public ObjectPooler deathPropPool;
@@ -185,7 +188,7 @@ public class Player : MonoBehaviour, IDamageable
 		sr.sortingLayerName = "UI";
 		Time.timeScale = 0f;
 		yield return new WaitForSecondsRealtime(0.5f);
-		PlayDeathEffect(transform.position);
+		PlayDeathEffect(transform.position, deathEffect);
 		sound.PlaySingle(heartBreakBuildUpSound);
 		sr.enabled = false;
 		yield return new WaitForSecondsRealtime(deathEffect.GetSecondsUntilFrame(10));
@@ -197,6 +200,31 @@ public class Player : MonoBehaviour, IDamageable
 		CameraControl.instance.DisableOverlay(1.0f);
 		if (OnPlayerDied != null)
 			OnPlayerDied();
+	}
+
+	public void SacrificeEffect()
+	{
+		StartCoroutine(SacrificeRoutine());
+	}
+
+	private IEnumerator SacrificeRoutine()
+	{
+		sound.RandomizeSFX(gameOverSound);
+
+		CameraControl.instance.SetOverlayColor(Color.black, 0.4f, 1.0f);
+		sr.sortingLayerName = "UI";
+		Time.timeScale = 0f;
+		yield return new WaitForSecondsRealtime(0.2f);
+		PlayDeathEffect(transform.position, sacrificeEffect);
+		sound.PlaySingle(heartBreakBuildUpSound);
+		sr.enabled = false;
+		yield return new WaitForSecondsRealtime(sacrificeEffect.GetSecondsUntilFrame(4));
+		CameraControl.instance.StartFlashColor(Color.white, 0.4f, 0, 0, 1f);
+		sound.RandomizeSFX(heartExtractSound);
+		yield return new WaitForSecondsRealtime(1.0f);
+		transform.parent.gameObject.SetActive(false);
+		Time.timeScale = 1f;
+		CameraControl.instance.DisableOverlay(1.0f);
 	}
 
 	/// <summary>
@@ -211,6 +239,11 @@ public class Player : MonoBehaviour, IDamageable
 		OnPlayerHealed (amt);
 	}
 
+	/// <summary>
+	/// Heal function with an option to play the healing effect
+	/// </summary>
+	/// <param name="amt">Amt.</param>
+	/// <param name="playEffect">If set to <c>true</c> play effect.</param>
 	public void HealEffect (int amt, bool playEffect)
 	{
 		if (playEffect)
@@ -218,44 +251,9 @@ public class Player : MonoBehaviour, IDamageable
 		Heal (amt);
 	}
 
-	void Update()
-	{
-/*		if (autoTargetEnabled)
-		{
-			AutoTarget ();
-			if (targetedEnemy != null)
-				autoTargetReticle.position = targetedEnemy.position;
-		}*/
-	}
-
-/*	public void AutoTarget()
-	{
-		RaycastHit2D[] raycastHits = Physics2D.CircleCastAll (transform.position, 1f, dir, 8f);
-		Debug.DrawRay (transform.position, dir.normalized * 8f, Color.white);
-		foreach (RaycastHit2D raycastHit in raycastHits)
-		{
-			Collider2D col = raycastHit.collider;
-			if (col.CompareTag("Enemy"))
-			{
-				targetedEnemy = col.transform;
-			}
-		}
-	}
-
-	public void StartAutoTarget()
-	{
-		autoTargetEnabled = true;
-		autoTargetReticle.gameObject.SetActive (true);
-	}
-
-	public void StopAutoTarget()
-	{
-		autoTargetEnabled = false;
-		targetedEnemy = null;
-		autoTargetReticle.position = new Vector3 (-1, -1, -1);
-		autoTargetReticle.gameObject.SetActive (false);
-	}*/
-
+	/// <summary>
+	/// Spawn death props
+	/// </summary>
 	private void SpawnDeathProps()
 	{
 		foreach (Sprite sprite in hero.deathProps)
@@ -275,6 +273,10 @@ public class Player : MonoBehaviour, IDamageable
 		}
 	}
 
+	/// <summary>
+	/// Sets the timescale to 1 or 0
+	/// </summary>
+	/// <param name="paused">If set to <c>true</c> pause.</param>
 	public void SetPause(bool paused)
 	{
 		if (paused)
@@ -301,17 +303,17 @@ public class Player : MonoBehaviour, IDamageable
 			OnPlayerUpgradesUpdated(numUpgrades);
 	}
 
-	private void PlayDeathEffect(Vector3 position)
+	private void PlayDeathEffect(Vector3 position, SimpleAnimation effect)
 	{
 		GameObject o = EffectPooler.instance.GetPooledObject();
 		SimpleAnimationPlayer animPlayer = o.GetComponent<SimpleAnimationPlayer>();
 		TempObject tempObj = o.GetComponent<TempObject>();
 		tempObj.GetComponent<SpriteRenderer>().sortingLayerName = "UI";
-		tempObj.info = new TempObjectInfo(true, 0f, deathEffect.TimeLength - 2f, 1f);
-		animPlayer.anim = deathEffect;
+		tempObj.info = new TempObjectInfo(true, 0f, effect.TimeLength - 2f, 1f);
+		animPlayer.anim = effect;
 		tempObj.Init(Quaternion.identity,
 					 position,
-		             deathEffect.frames[0]);
+					 effect.frames[0]);
 		animPlayer.ignoreTimeScaling = true;
 		animPlayer.Play();
 	}

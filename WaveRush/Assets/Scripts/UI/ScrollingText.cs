@@ -48,6 +48,11 @@ public class ScrollingText : MonoBehaviour {
 		}
 	}
 
+	public void SetScrollAudio(AudioClip clip)
+	{
+		audioSource.clip = clip;
+	}
+
 	public bool IsTextScrolling()
 	{
 		return textIsScrolling;
@@ -70,13 +75,13 @@ public class ScrollingText : MonoBehaviour {
 		while (textIsScrolling)
 		{
 			audioSource.Play();
-			yield return new WaitForSecondsRealtime(0.05f);
+			yield return new WaitForSecondsRealtime(0.08f);
 		}		
 	}
 
 	/// <summary>
 	/// Parses the rich text for <see cref="AnimateText"/> so that it does not write out
-	/// rich text markup, but rather handles tags in the text gracefully. For example, with
+	/// rich text markup, but rather handles tags in the text appropriately. For example, with
 	/// the text, "I <color="#0f0">love</color> processing strings!", the method would return:
 	/// i = 1: "I "
 	/// i = 2: "I <color="#0f0">l</color>"
