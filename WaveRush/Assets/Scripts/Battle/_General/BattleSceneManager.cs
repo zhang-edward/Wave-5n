@@ -65,6 +65,7 @@ public class BattleSceneManager : MonoBehaviour
 		while (dialogueView.dialoguePlaying)
 			yield return null;
 
+		SoundManager.instance.PlayMusicLoop(map.data.musicLoop, map.data.musicIntro);
 		player.input.enabled = true;
 		gui.enemyWaveText.gameObject.SetActive(true);
 		enemyManager.Init(stage);

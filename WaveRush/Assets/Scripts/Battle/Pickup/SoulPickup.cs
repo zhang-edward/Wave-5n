@@ -4,8 +4,8 @@ using System.Collections;
 public class SoulPickup : MonoBehaviour
 {
 	private Rigidbody2D rb2d;
-	private bool goToPlayer;
 	private Transform player;
+
 
 	public AudioClip soulPickupSound;
 	public SimpleAnimation pickupEffect;
@@ -22,29 +22,24 @@ public class SoulPickup : MonoBehaviour
 			Random.Range(-3f, 3f)),
 			ForceMode2D.Impulse
 		);
-		Invoke("StartGoToPlayer", Random.Range(2f, 4f));
+		StartCoroutine(GoToPlayer());
 	}
 
-	private void StartGoToPlayer()
+	private IEnumerator GoToPlayer()
 	{
-		goToPlayer = true;
-	}
-
-	void Update()
-	{
-		if (goToPlayer)
+		yield return new WaitForSeconds(Random.Range(1f, 2f));
+		float distance = Vector3.Distance(transform.position, player.position);
+		while (distance > 2.0f)
 		{
-			float distance = Vector3.Distance(transform.position, player.position);
+			distance = Vector3.Distance(transform.position, player.position);
 			Vector3 dir = (player.position - transform.position).normalized;
-			rb2d.velocity = dir * Mathf.Pow(distance, 2) * 2;
-			if (distance <= 1.0)
-			{
-				BattleSceneManager.instance.AddSouls(1);
-				SoundManager.instance.PlaySingle(soulPickupSound);
-				EffectPooler.PlayEffect(pickupEffect, transform.position);
-				Destroy(gameObject);
-			}
+			rb2d.velocity = dir * distance * 3;
+			yield return null;
 		}
+		BattleSceneManager.instance.AddSouls(1);
+		SoundManager.instance.PlaySingle(soulPickupSound);
+		EffectPooler.PlayEffect(pickupEffect, transform.position);
+		Destroy(gameObject);
 	}
 }
 

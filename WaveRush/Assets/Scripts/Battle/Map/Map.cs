@@ -143,7 +143,6 @@ public class Map : MonoBehaviour {
 
 	public void CreateMap()
 	{
-		SoundManager.instance.PlayMusicLoop (data.musicLoop, data.musicIntro);
 		CreateBossSpawn ();
 		for (int x = 0; x < size; x++)
 		{

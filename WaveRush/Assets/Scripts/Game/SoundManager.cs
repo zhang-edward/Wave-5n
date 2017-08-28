@@ -13,6 +13,8 @@ public class SoundManager : MonoBehaviour {
 
 	public float musicVolume;
 
+	public bool playingMusic { get; private set; }
+
 	void Awake()
 	{
 		// make this a singleton
@@ -71,6 +73,7 @@ public class SoundManager : MonoBehaviour {
 	public void PlayMusicLoop(AudioClip clip, AudioClip intro = null)
 	{
 //		Debug.Log ("Playing new music loop: " + clip);
+		playingMusic = true;
 		StartCoroutine (MusicLoop (clip, intro));
 	}
 
@@ -90,6 +93,16 @@ public class SoundManager : MonoBehaviour {
 		music.loop = true;
 		music.clip = clip;
 		music.Play ();
+	}
+
+	public void PauseMusic()
+	{
+		music.Pause();
+	}
+
+	public void UnPauseMusic()
+	{
+		music.UnPause();
 	}
 
 	private IEnumerator ImportantSound()

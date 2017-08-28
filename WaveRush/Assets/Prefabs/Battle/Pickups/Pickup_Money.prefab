@@ -63,8 +63,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3d1f1cd8eec744c1afccd1d32351bbc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  value: 5
+  value: 0
   coinPickupSound: {fileID: 8300000, guid: df94032e3d1c847109bc678e2e366a63, type: 3}
+  pickupEffect:
+    frames:
+    - {fileID: 21300000, guid: 5aba8e1ba056e40f5814c2d725350d4e, type: 3}
+    - {fileID: 21300002, guid: 5aba8e1ba056e40f5814c2d725350d4e, type: 3}
+    - {fileID: 21300004, guid: 5aba8e1ba056e40f5814c2d725350d4e, type: 3}
+    - {fileID: 21300006, guid: 5aba8e1ba056e40f5814c2d725350d4e, type: 3}
+    fps: 20
 --- !u!212 &21207716
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -60,10 +60,11 @@ public class GUIManager : MonoBehaviour {
 	{
 		MessageText.Message introMessage = new MessageText.Message
 			(enemyManager.stageData.stageName,
-			  1,
-			  3.0f,
-			  1.0f,
-			 Color.white);
+			 numTimes: 1,
+			 fadeInTime: 1.0f,
+			 persistTime: 3.0f,
+			 fadeOutTime: 1.0f,
+			 color: Color.white);
 		enemyWaveText.DisplayCustomMessage(introMessage);
 	}
 
