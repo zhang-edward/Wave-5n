@@ -18,14 +18,12 @@ public class TouchInputHandler : MonoBehaviour {
 	//private float maxTapDist = 1.0f;
 	private float maxTapTime = 0.5f;
 
-	public delegate void Swipe(Vector2 dir);
-	public event Swipe OnSwipe;
-
-	public delegate void TapHold(Vector3 pos);
-	public event TapHold OnTapHold;
-
-	public delegate void TapRelease(Vector3 pos);
-	public event TapRelease OnTapRelease;
+	public delegate void DirectionalTouchInput(Vector3 vec);
+	public event DirectionalTouchInput OnSwipe;
+	public event DirectionalTouchInput OnTapHold;
+	public event DirectionalTouchInput OnTapRelease;
+	public delegate void TouchInput();
+	public event TouchInput MultiTouch;
 
 
 	// Update is called once per frame
@@ -36,6 +34,8 @@ public class TouchInputHandler : MonoBehaviour {
 			if (IsPointerOverUIObject ())
 				return;
 			Touch touch = Input.touches[0];
+			if (Input.touchCount >= 2)
+				MultiTouch();
 
 			// if touch began
 			switch (touch.phase)

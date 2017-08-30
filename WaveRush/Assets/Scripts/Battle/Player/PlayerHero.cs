@@ -11,6 +11,10 @@ public abstract class PlayerHero : MonoBehaviour {
 		{"NINJA", "ninja"}
 	};*/
 
+	public const float PARRY_TIME = 0.5f;
+	public const float PARRY_SLOW_TIME = 0.0f;
+	public const float PARRY_COOLDOWN_TIME = 0.5f;
+
 	[HideInInspector]
 	public Player player;
 	[HideInInspector]
@@ -56,13 +60,15 @@ public abstract class PlayerHero : MonoBehaviour {
 		get {return cooldownTimers;}
 	}
 	[Header("Ability Cooldown Times")]
-	public float[] cooldownTime;		// the regular cooldown time for each ability. Set in inspector
+	public float[] cooldownTime;		// The regular cooldown time for each ability. Set in inspector
 	[HideInInspector]
-	public float[] cooldownMultipliers;
+	public float[] cooldownMultipliers;	// The cooldown time multipliers, modified by powerups or abilities
 
 	public int NumAbilities{
 		get {return cooldownTimers.Length;}
 	}
+
+	private Coroutine listenForParryRoutine;
 
 	public delegate void InputAction();
 	protected InputAction inputAction;
@@ -110,6 +116,43 @@ public abstract class PlayerHero : MonoBehaviour {
 		if (onSwipe != null)
 			onSwipe();
 	}
+
+	public virtual void HandleMultiTouch()
+	{
+		listenForParryRoutine = StartCoroutine(ListenForParry());
+	}
+
+	private IEnumerator ListenForParry()
+	{
+		EffectPooler.PlayEffect(player.parryEffect, transform.position, true, 0.1f);
+		player.StrobeColor(Color.yellow, PARRY_TIME - 0.1f);
+		body.Move(Vector2.zero);
+		player.OnPlayerDamaged += Parry;
+		player.input.enabled = false;
+		sound.PlaySingle(player.parrySound);
+		yield return new WaitForSeconds(PARRY_TIME);
+		player.FlashColor(Color.gray, PARRY_COOLDOWN_TIME);
+		player.OnPlayerDamaged -= Parry;
+		yield return new WaitForSeconds(PARRY_COOLDOWN_TIME);
+		player.sr.color = Color.white;
+		player.input.enabled = true;
+	}
+
+	private void Parry(int damagedAmt)
+	{
+		sound.PlaySingle(player.parrySuccessSound);
+		player.Heal(damagedAmt);
+		player.HitDisable(0.5f);
+		//player.StartTempSlowDown(PARRY_SLOW_TIME);
+		ParryEffect();
+		StopCoroutine(listenForParryRoutine);
+		player.OnPlayerDamaged -= Parry;
+		player.input.enabled = true;
+		player.sr.color = Color.white;
+	}
+
+	protected abstract void ParryEffect();
+
 
 	/// <summary>
 	/// Performs a special ability.

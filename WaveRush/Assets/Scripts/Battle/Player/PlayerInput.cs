@@ -23,6 +23,7 @@ public class PlayerInput : MonoBehaviour {
 		touchInputHandler.OnSwipe += HandleSwipe;
 		touchInputHandler.OnTapHold += HandleTapHold;
 		touchInputHandler.OnTapRelease += HandleTapRelease;
+		touchInputHandler.MultiTouch += HandleMultiTouch;
 #endif
 	}
 
@@ -64,12 +65,12 @@ public class PlayerInput : MonoBehaviour {
 #if UNITY_ANDROID
 			touchInputHandler.ListenForTouchInput();
 #else
-			HandleMouseInput();
+			HandleMouseKeyboardInput();
 #endif
 		}
 	}
 
-	public void HandleMouseInput()
+	public void HandleMouseKeyboardInput()
 	{
 		if (EventSystem.current.IsPointerOverGameObject ())
 			return;
@@ -93,6 +94,10 @@ public class PlayerInput : MonoBehaviour {
 			player.dir = ((Vector2)(mousePos - transform.position));
 			player.hero.HandleSwipe ();
 		}
+		if (Input.GetKeyDown(KeyCode.Space))
+		{
+			HandleMultiTouch();
+		}
 	}
 
 	private void HandleSwipe(Vector2 dir)
@@ -112,5 +117,10 @@ public class PlayerInput : MonoBehaviour {
 	{
 		player.dir = pos - transform.position;
 		player.hero.HandleTap ();
+	}
+
+	private void HandleMultiTouch()
+	{
+		player.hero.HandleMultiTouch();
 	}
 }

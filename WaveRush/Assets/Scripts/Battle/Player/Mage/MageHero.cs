@@ -57,6 +57,27 @@ public class MageHero : PlayerHero {
 		onTap = StartTeleport;
 	}
 
+	protected override void ParryEffect()
+	{
+		StartCoroutine(ParryEffectRoutine());
+	}
+
+	private IEnumerator ParryEffectRoutine()
+	{
+		SetAnimationSet(magmaFormAnim);
+		player.dir = UtilMethods.DegreeToVector2(Random.Range(0, 360f));
+		specialRushAbility.speed /= 2;
+		specialRushAbility.Execute();
+		player.input.isInputEnabled = false;
+		Debug.Log("Doing this!");
+		yield return new WaitForSeconds(specialRushAbility.duration - 0.1f);
+		specialRushAbility.speed *= 2;
+		SetAnimationSet(defaultAnim);
+		Debug.Log("Doing this now!");
+		yield return new WaitForSeconds(0.1f);
+		player.input.isInputEnabled = true;
+	}
+
 	private void ShootFireball()
 	{
 		if (!IsCooledDown (0, true, HandleSwipe))
@@ -177,9 +198,7 @@ public class MageHero : PlayerHero {
 		player.isInvincible = true;
 		yield return new WaitForSeconds(transformEffect.anim.SecondsPerFrame * 9f);
 		sound.PlaySingle(transformSound);
-		magmaFormAnim.Init(player.animPlayer);
-		anim = magmaFormAnim;
-		anim.Play("Default");
+		SetAnimationSet(magmaFormAnim);
 		onSwipe = SpecialRush;
 		onTap = null;
 		while (transformEffect.isPlaying)
@@ -205,9 +224,7 @@ public class MageHero : PlayerHero {
 
 	public void ResetSpecialAbility()
 	{
-		defaultAnim.Init(player.animPlayer);
-		anim = defaultAnim;
-		anim.Play("Default");
+		SetAnimationSet(defaultAnim);
 		onSwipe = ShootFireball;
 		onTap = StartTeleport;
 		specialActivated = false;
@@ -245,5 +262,15 @@ public class MageHero : PlayerHero {
 			player.TriggerOnEnemyDamagedEvent(damage);
 			player.TriggerOnEnemyLastHitEvent (e);
 		}
+	}
+
+
+	// ========== Helper Methods ==========
+
+	private void SetAnimationSet(AnimationSet animSet)
+	{
+		animSet.Init(player.animPlayer);
+		anim = animSet;
+		anim.Play("Default");
 	}
 }

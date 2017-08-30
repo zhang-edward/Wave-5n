@@ -43,6 +43,13 @@ public class NinjaHero : PlayerHero {
 		onTap = ShootNinjaStar;
 	}
 
+	protected override void ParryEffect()
+	{
+		cooldownTimers[0] = 0f;
+		cooldownTimers[1] = 0f;
+		body.Move(UtilMethods.DegreeToVector2(Random.Range(0, 360f)));
+	}
+
 	public void DashAttack()
 	{
 		if (!IsCooledDown (0, true, HandleSwipe))

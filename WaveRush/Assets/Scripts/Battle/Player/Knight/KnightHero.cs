@@ -84,6 +84,13 @@ public class KnightHero : PlayerHero {
 			OnKnightShield();
 	}
 
+	protected override void ParryEffect()
+	{
+		cooldownTimers[0] = 0f;
+		body.moveSpeed = 4f;
+		body.Move(UtilMethods.DegreeToVector2(Random.Range(0, 360f)));
+	}
+
 	public void ResetInvincibility()
 	{
 		areaAttackShieldOn = false;

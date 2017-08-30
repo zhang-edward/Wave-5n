@@ -3,6 +3,8 @@ using System.Collections;
 
 public class Player : MonoBehaviour, IDamageable
 {
+	public const float HIT_DISABLE_TIME = 1.0f;
+
 	public delegate void EnemyDamaged (float strength);
 	public event EnemyDamaged OnEnemyDamaged;
 
@@ -58,6 +60,7 @@ public class Player : MonoBehaviour, IDamageable
 	public SimpleAnimation spawnEffect;
 	public SimpleAnimation deathEffect;
 	public SimpleAnimation sacrificeEffect;
+	public SimpleAnimation parryEffect;
 
 	[Header("Audio")]
 	private SoundManager sound;
@@ -66,6 +69,9 @@ public class Player : MonoBehaviour, IDamageable
 	public AudioClip heartBreakBuildUpSound;
 	public AudioClip heartBreakSound;
 	public AudioClip heartExtractSound;
+	public AudioClip parrySound;
+	public AudioClip parrySuccessSound;
+	public AudioClip parryFailSound;
 
 	[HideInInspector]
 	public ObjectPooler deathPropPool;
@@ -138,20 +144,63 @@ public class Player : MonoBehaviour, IDamageable
 	}
 
 	/// <summary>
-	/// Flashes red. Used when the player is damaged by an enemy.
+	/// Flashes a color. Used when the player is damaged by an enemy.
 	/// </summary>
-	public IEnumerator FlashRed()
+	public void FlashColor(Color color, float time = 0.5f)
 	{
-		hitDisabled = true;
-		sr.color = Color.red;
+		StartCoroutine(FlashColorRoutine(color, time));
+	}
+
+	private IEnumerator FlashColorRoutine(Color color, float time)
+	{
+		sr.color = color;
 		float t = 0;
 		while (sr.color != Color.white)
 		{
-			sr.color = Color.Lerp (Color.red, Color.white, t);
-			t += Time.deltaTime * 2f;
+			sr.color = Color.Lerp (color, Color.white, t);
+			t += Time.deltaTime / time;
 			yield return null;
 		}
+	}
+
+	public void HitDisable(float time)
+	{
+		StartCoroutine(HitDisableRoutine(time));
+	}
+
+	private IEnumerator HitDisableRoutine(float time)
+	{
+		hitDisabled = true;
+		yield return new WaitForSeconds(time);
 		hitDisabled = false;
+	}
+
+	/// <summary>
+	/// Makes the player sprite flash a color on and off again
+	/// </summary>
+	/// <param name="color">Color.</param>
+	/// <param name="time">Time.</param>
+	public void StrobeColor(Color color, float time)
+	{
+		StartCoroutine(StrobeColorRoutine(color, time));
+	}
+
+	private IEnumerator StrobeColorRoutine(Color color, float time)
+	{
+		float strobeSpeed = 0.03f;
+		float t = 0;
+		bool strobeColorOn = false;
+		while (t < time)
+		{
+			if (!strobeColorOn)
+				sr.color = color;
+			else
+				sr.color = Color.white;
+			strobeColorOn = !strobeColorOn;
+			t += strobeSpeed;
+			yield return new WaitForSecondsRealtime(strobeSpeed);
+		}
+		sr.color = Color.white;
 	}
 
 
@@ -167,7 +216,8 @@ public class Player : MonoBehaviour, IDamageable
 		OnPlayerDamaged(amt);
 
 		body.AddRandomImpulse (3f);
-		StartCoroutine (FlashRed ());
+		HitDisable(HIT_DISABLE_TIME);
+		FlashColor(Color.red);
 
 		if (health <= 0 && OnPlayerWillDie != null)	
 			OnPlayerWillDie ();	// for events that prevent the player's death
