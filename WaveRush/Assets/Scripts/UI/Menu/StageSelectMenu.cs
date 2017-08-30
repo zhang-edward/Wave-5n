@@ -25,8 +25,6 @@ public class StageSelectMenu : MonoBehaviour
 	[Header("Stage Select View")]
 	public GameObject stageSelectionView;
 	public Transform stageIconFolder;
-	public Transform stageIconSelectedFolder;
-	public GameObject placeholder;
 	public GameObject highlightMenu;
 
 	void OnEnable()
@@ -130,7 +128,8 @@ public class StageSelectMenu : MonoBehaviour
 	}
 
 	public void SelectStageIcon(GameObject stageIconObj)
-	{
+	{    
+		DeselectStageIcon();	// If there is already a selected stage icon, deselect it first
 		selectedStageIcon = stageIconObj;	// store a reference to this object so that the Deselect method has a reference to it later
 		StageIcon stageIcon = stageIconObj.GetComponent<StageIcon>();
 		// Do the actual selection in the GameManager
@@ -138,14 +137,15 @@ public class StageSelectMenu : MonoBehaviour
 		gm.selectedSeriesIndex = stageIcon.seriesIndex;
 		gm.selectedStageIndex = stageIcon.stageIndex;
 		// UI Stuff
-		highlightMenu.transform.SetParent(stageIcon.transform, false);
+		highlightMenu.SetActive(true);
+		selectedStageIcon.SetActive(false);
+		highlightMenu.transform.SetParent(stageIconFolder, false);
 		stageIcon.highlightMenu = highlightMenu;
 		stageIcon.ExpandHighlightMenu();
-		stageIconSelectedFolder.gameObject.SetActive(true);
-		placeholder.SetActive(true);
 		int siblingIndex = stageIcon.stageIndex;
-		placeholder.transform.SetSiblingIndex(siblingIndex);
-		stageIconObj.transform.SetParent(stageIconSelectedFolder, false);
+		highlightMenu.transform.SetSiblingIndex(siblingIndex);
+
+		
 	}
 
 	public void DeselectStageIcon()
@@ -153,12 +153,10 @@ public class StageSelectMenu : MonoBehaviour
 		// if there is nothing to deselect, return
 		if (selectedStageIcon == null)
 			return;
-		
+
+		selectedStageIcon.SetActive(true);
 		StageIcon stageIcon = selectedStageIcon.GetComponent<StageIcon>();
 		stageIcon.CollapseHighlightMenu();
-		stageIconSelectedFolder.gameObject.SetActive(false);
-		placeholder.SetActive(false);
-		selectedStageIcon.transform.SetParent(stageIconFolder, false);
 		selectedStageIcon.transform.SetSiblingIndex(stageIcon.stageIndex);
 		selectedStageIcon = null;
 	}
