@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour {
 	public static GameManager instance;
 
 	[Header("Realtime Timer")]
-	public RealtimeTimerManager timerManager;
+	public RealtimeTimerCounter timerCounter;
 	[Header("Quest Manager")]
 	public QuestManager questManager;
 	[Header("Save Game")]
@@ -34,6 +34,9 @@ public class GameManager : MonoBehaviour {
 
 	public delegate void GameStateUpdate();
 	public GameStateUpdate OnSceneLoaded;
+	public GameStateUpdate OnAppLoaded;
+	public GameStateUpdate OnAppClosed;
+	public GameStateUpdate OnTimersUpdated;
 
 
 	void Awake()
@@ -47,29 +50,29 @@ public class GameManager : MonoBehaviour {
 		}
 		DontDestroyOnLoad (this);
 
+		//print("GameManager awake");
 		SaveLoad.Load ();
-		InitRealtimeTimers();
+		InitPawnTimers();
 		questManager.Init();
 	}
 
-	public void InitRealtimeTimers()
+	public void InitPawnTimers()
 	{
-		timerManager.AddTimer("Debug", saveGame.debugTimer);
 		foreach (Pawn pawn in saveGame.pawns)
 		{
 			if (pawn != null && pawn.unlockTime > 0)
 			{
-				timerManager.AddTimer("Pawn:" + pawn.id, pawn.unlockTime);
+				timerCounter.SetTimer(pawn.GetTimerID(), pawn.unlockTime);
 			}
 		}
 		foreach (Pawn pawn in saveGame.extraPawns)
 		{
 			if (pawn != null && pawn.unlockTime > 0)
 			{
-				timerManager.AddTimer("Pawn:" + pawn.id, pawn.unlockTime);
+				timerCounter.SetTimer(pawn.GetTimerID(), pawn.unlockTime);
 			}
 		}
-		timerManager.UpdateTimersSinceLastClosed();
+		timerCounter.UpdateTimersSinceLastClosed();
 	}
 
 	public void ScheduleSimple()
@@ -101,24 +104,30 @@ public class GameManager : MonoBehaviour {
 	{
 		if (!focus)
 		{
-			//Debug.Log("Pause");
-			PlayerPrefs.SetString(RealtimeTimerManager.LAST_CLOSED_KEY, System.DateTime.Now.ToString());
-			SaveTimers();
+			//print("Application Paused");
+			PlayerPrefs.SetString(RealtimeTimerCounter.LAST_CLOSED_KEY, System.DateTime.Now.ToString());
+			if (OnAppClosed != null)
+				OnAppClosed();
+			SavePawnTimers();
 		}
 		else
 		{
-			//Debug.Log("Resume");
-			timerManager.UpdateTimersSinceLastClosed();
+			//print("Application Unpaused");
+			if (OnAppLoaded != null)
+				OnAppLoaded();
+			timerCounter.UpdateTimersSinceLastClosed();
+			if (OnTimersUpdated != null)
+				OnTimersUpdated();
 		}
 	}
 
-	private void SaveTimers()
+	private void SavePawnTimers()
 	{
 		foreach (Pawn pawn in saveGame.pawns)
 		{
 			if (pawn != null && pawn.unlockTime > 0)
 			{
-				RealtimeTimer timer = timerManager.GetTimer("Pawn:" + pawn.id);
+				RealtimeTimer timer = timerCounter.GetTimer(pawn.GetTimerID());
 				pawn.unlockTime = timer.timer;
 			}
 		}
@@ -126,7 +135,7 @@ public class GameManager : MonoBehaviour {
 		{
 			if (pawn != null && pawn.unlockTime > 0)
 			{
-				RealtimeTimer timer = timerManager.GetTimer("Pawn:" + pawn.id);
+				RealtimeTimer timer = timerCounter.GetTimer(pawn.GetTimerID());
 				pawn.unlockTime = timer.timer;
 			}
 		}
@@ -135,9 +144,11 @@ public class GameManager : MonoBehaviour {
 
 	private void OnApplicationQuit()
 	{
-		PlayerPrefs.SetString(RealtimeTimerManager.LAST_CLOSED_KEY, System.DateTime.Now.ToString());
-		saveGame.debugTimer = timerManager.GetTimer("Debug").timer;
-		SaveTimers();
+		PlayerPrefs.SetString(RealtimeTimerCounter.LAST_CLOSED_KEY, System.DateTime.Now.ToString());
+		//print("Application Quit");
+		if (OnAppClosed != null)
+			OnAppClosed();
+		SavePawnTimers();
 		SaveLoad.Save();
 	}
 

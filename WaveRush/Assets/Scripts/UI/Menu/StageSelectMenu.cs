@@ -144,8 +144,6 @@ public class StageSelectMenu : MonoBehaviour
 		stageIcon.ExpandHighlightMenu();
 		int siblingIndex = stageIcon.stageIndex;
 		highlightMenu.transform.SetSiblingIndex(siblingIndex);
-
-		
 	}
 
 	public void DeselectStageIcon()

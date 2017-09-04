@@ -1,11 +1,16 @@
 ﻿using UnityEngine;
-using System.Collections;
+using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
 	GameManager gm;
+
+	[Header("Primary Menus")]
 	public PawnFusionMenu pawnFusionMenu;
 	public PawnRetireMenu pawnRetireMenu;
+	
+	[Header("Secondary Views")]
+	public DialogueView dialogueView;
 
 	void Start()
 	{

@@ -17,7 +17,7 @@ public class GachaMenu : MonoBehaviour
 	public void SoulsGacha()
 	{
 		List<Pawn> acquiredPawns = new List<Pawn>();
-		int level = 9;				// The overall level of the gacha (determines the levels of the heroes dropped)
+		int level = 1;				// The overall level of the gacha (determines the levels of the heroes dropped)
 		float spawnChance = 0.5f;	// Initial spawn chance for an additional pawn
 		int numPawnsToGenerate = 1;	// Guaranteed 1 pawn to drop, maximum of 5 pawns to drop
 		for (int i = 0; i < 4; i++)

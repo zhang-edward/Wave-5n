@@ -80,7 +80,7 @@ GameObject:
   - component: {fileID: 22270866}
   - component: {fileID: 11490514}
   m_Layer: 11
-  m_Name: Image
+  m_Name: LoadingOverlay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -443,14 +443,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 391ff181c49ea475ba9aa8699ae90148, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timerManager: {fileID: 114845664978174300}
+  timerCounter: {fileID: 114845664978174300}
   questManager: {fileID: 114362485652048620}
   saveGame:
     heroData: []
     numPawns: 0
     latestUnlockedSeriesIndex: 1
     latestUnlockedStageIndex: 0
-    debugTimer: 0
   selectedPawn:
     type: 1
     level: 1
@@ -487,7 +486,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 0}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -921,7 +920,7 @@ GameObject:
   - component: {fileID: 4172585748427982}
   - component: {fileID: 114845664978174300}
   m_Layer: 11
-  m_Name: RealtimeTimerManager
+  m_Name: RealtimeTimerCounter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

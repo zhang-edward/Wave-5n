@@ -25,8 +25,9 @@ public class SaveGame
 
 	public Dictionary<HeroType, ScoreManager.Score> highScores;
 	public Wallet wallet;
-	public float debugTimer = 10000;
 
+	private Dictionary<string, float> timers;   // list of various timers in the game, such as daily rewards and quests
+	public int numDailyHeroRewards;
 
 	public SaveGame()
 	{
@@ -47,6 +48,7 @@ public class SaveGame
 		// high scores are all 0 by default
 		ClearHighScores();
 		// wallet money = 0 by default
+		timers = new Dictionary<string, float>();
 		wallet = new Wallet();
 	}
 
@@ -65,6 +67,25 @@ public class SaveGame
 		return null;
 	}
 
+	public float GetSavedTimer(string key)
+	{
+		if (timers.ContainsKey(key))
+			return timers[key];
+		else
+			return -1;
+	}
+
+	public void SetSavedTimer(string key, float time)
+	{
+		if (timers.ContainsKey(key))
+			timers[key] = time;
+		else
+			timers.Add(key, time);
+	}
+
+	// ========== 
+	// Pawns
+	// ==========
 	public bool AddPawn(Pawn pawn, bool overflow = true, float unlockTime = 0)
 	{
 		for (int i = 0; i < pawns.Length; i++)
@@ -75,7 +96,7 @@ public class SaveGame
 				pawn.unlockTime = unlockTime;
 				if (unlockTime > 0)
 				{
-					GameManager.instance.timerManager.AddTimer("Pawn:" + i, unlockTime);
+					GameManager.instance.timerCounter.SetTimer(pawn.GetTimerID(), unlockTime);
 				}
 				pawns[i] = pawn;
 				Debug.Log("New Pawn:" + pawn + " with unlock time:" + unlockTime);

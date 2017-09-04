@@ -122,7 +122,7 @@ public class PawnIconStandard : PawnIcon
 			if (pawnData.unlockTime > 0 && showTimer)
 			{
 				timerView.gameObject.SetActive(true);
-				timerView.timer = GameManager.instance.timerManager.GetTimer("Pawn:" + pawnData.id);
+				timerView.timer = GameManager.instance.timerCounter.GetTimer(pawnData.GetTimerID());
 			}
 			else
 			{

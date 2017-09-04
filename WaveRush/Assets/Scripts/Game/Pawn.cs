@@ -78,4 +78,9 @@ public class Pawn
 		}
 		return answer;
 	}
+
+	public string GetTimerID()
+	{
+		return "Pawn:" + id;
+	}
 }

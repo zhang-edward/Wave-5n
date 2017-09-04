@@ -8,12 +8,12 @@ public class DialogueView : MonoBehaviour
 	public Text nameText;
 	public ScrollingText dialogueText;
 	public bool dialoguePlaying;
-
+	
 	private DialogueSet[] dialogueSets;
 	private bool proceed;
 	private bool willAcceptScreenPress;
 
-	public void Init(DialogueSet[] dialogueSets)
+	public void Init(params DialogueSet[] dialogueSets)
 	{
 		this.dialogueSets = dialogueSets;
 		gameObject.SetActive(true);
@@ -32,7 +32,7 @@ public class DialogueView : MonoBehaviour
 		speakerImage.anim = dialogueSet.character.GetExpression(dialogueSet.dialogues[0].expression);
 		speakerImage.Play();
 
-		yield return new WaitForSeconds(1.0f);      // Wait for UI to animate in
+		yield return new WaitForSeconds(0.5f);      // Wait for UI to animate in
 
 		int i = 0;
 		while (i < dialogueSets.Length)
