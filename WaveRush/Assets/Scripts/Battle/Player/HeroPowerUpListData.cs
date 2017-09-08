@@ -6,10 +6,13 @@ public class HeroPowerUpListData : ScriptableObject
 	public HeroType heroName;
 	public HeroPowerUp[] t1PPowerUps, t2PPowerUps, t3PPowerups;
 
+	public static int[] powerUpUnlockLevels = {1, 2, 3, 4, 5, 6, 7, 8, 9};		// the levels for which each powerup (powerups 1 - 9) are unlocked
+	// TODO: Change to {3, 5, 7, 10, 12, 14, 16, 18, 20} later
 
 	// return the power up corresponding to the level param given
-	public HeroPowerUp GetPowerUpFromLevel(int level)
+	public HeroPowerUp GetPowerUpFromIndex(int level)
 	{
+		level += 1;
 		HeroPowerUp powerUp;
 		// levels 8-9 are T3
 		if (level >= Pawn.T3_MIN_LEVEL)
@@ -30,5 +33,18 @@ public class HeroPowerUpListData : ScriptableObject
 			powerUp = t1PPowerUps[i];
 		}
 		return powerUp;
+	}
+
+	// Return the number of powerUps unlocked based on the level
+	public static int GetNumPowerUpsUnlocked(int level)
+	{
+		for (int i = 0; i < powerUpUnlockLevels.Length; i ++)
+		{
+			if (powerUpUnlockLevels[i] > level)
+			{
+				return i;
+			}
+		}
+		return powerUpUnlockLevels.Length;
 	}
 }

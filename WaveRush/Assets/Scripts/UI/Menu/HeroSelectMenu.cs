@@ -20,8 +20,8 @@ public class HeroSelectMenu : MonoBehaviour
 		{
 			PawnIconStandard pawnIconStandard = (PawnIconStandard)pawnIcon;
 			pawnIconStandard.onClick = (PawnIconStandard iconData) => {
-				pawnInfoPanel.Init(iconData.pawnData);
 				pawnInfoPanel.gameObject.SetActive(true);
+				pawnInfoPanel.Init(iconData.pawnData);
 				GameManager.instance.selectedPawn = pawnIcon.pawnData;
 			};
 		}

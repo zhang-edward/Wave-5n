@@ -27,7 +27,11 @@ public class TimerView : MonoBehaviour
 		string digitMinutes = "";
 		string digitSeconds = "";
 		if (time <= 0)
+		{
+			hours = 0;
+			minutes = 0;
 			seconds = 0;
+		}
 		if (hours < 10)
 			digitHours = "0";
 		if (minutes < 10)

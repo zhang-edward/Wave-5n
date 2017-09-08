@@ -16,7 +16,7 @@ public class EnemyManager : MonoBehaviour {
 	private List<Enemy> enemies = new List<Enemy>();
 	public List<Enemy> Enemies { get {return enemies;} }
 
-	private int level;
+	public int level;
 	public StageData stageData { get; private set; }
 
 	public EnemyHealthBar bossHealthBar;

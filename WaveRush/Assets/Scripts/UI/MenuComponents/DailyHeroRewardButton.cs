@@ -105,7 +105,7 @@ public class DailyHeroRewardButton : MonoBehaviour
 		print("Init timer");
 		currentNumRewards = saveGame.numDailyHeroRewards;
 		timeUntilNextReward = saveGame.GetSavedTimer(TIMER_KEY);
-		if (timeUntilNextReward < 0)
+		if (timeUntilNextReward < 0 && currentNumRewards < MAX_REWARDS)
 		{
 			timeUntilNextReward = REWARD_INTERVAL;
 		}

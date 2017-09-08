@@ -123,6 +123,7 @@ public class PawnIconStandard : PawnIcon
 			{
 				timerView.gameObject.SetActive(true);
 				timerView.timer = GameManager.instance.timerCounter.GetTimer(pawnData.GetTimerID());
+				print(timerView.timer);
 			}
 			else
 			{

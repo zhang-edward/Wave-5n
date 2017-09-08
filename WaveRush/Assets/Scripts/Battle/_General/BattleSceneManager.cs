@@ -8,7 +8,7 @@ using System.Collections.Generic;
 public class BattleSceneManager : MonoBehaviour
 {
 	public static BattleSceneManager instance;
-	GameManager gm;
+	private GameManager gm;
 
 	public Map map;
 	public EnemyManager enemyManager;

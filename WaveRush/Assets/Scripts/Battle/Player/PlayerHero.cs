@@ -77,6 +77,7 @@ public abstract class PlayerHero : MonoBehaviour {
 	public InputAction onTapRelease;
 	public InputAction onTapHoldDown;
 	public InputAction onSpecialAbility;
+	public InputAction onParry;
 
 	void OnDisable()
 	{
@@ -140,6 +141,8 @@ public abstract class PlayerHero : MonoBehaviour {
 
 	private void Parry(int damagedAmt)
 	{
+		if (onParry != null)
+			onParry();
 		sound.PlaySingle(player.parrySuccessSound);
 		player.Heal(damagedAmt);
 		player.HitDisable(0.5f);

@@ -36,6 +36,7 @@ public class Enemy : MonoBehaviour, IDamageable {
 	public int baseHealth = 1;
 	public int maxHealth { get; set; }
 	public int health { get; protected set; }
+	public int moneyValueMultiplier = 1;
 	public bool healable = true;
 	public Vector3 healthBarOffset;
 	public bool canBeDisabledOnHit = true;
@@ -81,6 +82,7 @@ public class Enemy : MonoBehaviour, IDamageable {
 		DEFAULT_LAYER = body.gameObject.layer;
 		DEFAULT_SPEED = body.moveSpeed;
 
+		print("wtf");
 		this.level = level;
 		this.map = map;
 		maxHealth = EnemyHealthEquation(level, baseHealth);  // calculate health based on level
@@ -231,8 +233,7 @@ public class Enemy : MonoBehaviour, IDamageable {
 	protected virtual IEnumerator MoveState()
 	{
 		yield return new WaitForEndOfFrame ();
-		movementMethod.Reset ();
-		//print("Updating whatever moveState is: " + movementMethod);
+		print("Updating whatever moveState is: " + movementMethod);
 		for (;;)
 		{
 			movementMethod.UpdateState ();
@@ -249,7 +250,7 @@ public class Enemy : MonoBehaviour, IDamageable {
 	{
 		anim.CrossFade ("default", 0f);
 		StopAllCoroutines ();       // stops any duplicate MoveStates that may have been started concurrently
-//		print("To move state");
+		print("To move state");
 		StartCoroutine ("MoveState");
 	}
 
@@ -275,7 +276,9 @@ public class Enemy : MonoBehaviour, IDamageable {
 	protected void SpawnMoneyPickup()
 	{
 		int rangeValue = (int)Mathf.Sqrt(maxHealth);
-		int moneyValue = Random.Range (rangeValue / 2, rangeValue * 2);
+		int moneyValue = Random.Range (rangeValue / 2, rangeValue * 2) * moneyValueMultiplier;
+		if (moneyValue <= 0)
+			return;
 		GameObject o = Instantiate (moneyPickupPrefab, transform.position, Quaternion.identity) as GameObject;
 		MoneyPickup moneyPickup = o.GetComponent<MoneyPickup>();
 		moneyPickup.value = moneyValue;

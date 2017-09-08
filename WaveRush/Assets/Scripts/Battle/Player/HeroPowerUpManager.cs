@@ -35,9 +35,10 @@ public class HeroPowerUpManager : MonoBehaviour
 	private void InitPowerUpList(int level)
 	{
 		HeroPowerUpListData powerUpListData = DataManager.GetPowerUpListData(hero.heroType);
-		for (int i = 1; i <= level; i ++)
+		int numPowerUpsUnlocked = HeroPowerUpListData.GetNumPowerUpsUnlocked(level);
+		for (int i = 0; i < numPowerUpsUnlocked; i ++)
 		{
-			HeroPowerUp powerUpPrefab = powerUpListData.GetPowerUpFromLevel(i);
+			HeroPowerUp powerUpPrefab = powerUpListData.GetPowerUpFromIndex(i);
 			GameObject o = Instantiate(powerUpPrefab.gameObject);                         // instantiate the prefab
 			HeroPowerUp powerUp = o.GetComponent<HeroPowerUp>();
 			powerUps.Add(powerUp);
