@@ -498,7 +498,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4633864283917734}
-  - component: {fileID: 114033204203376538}
+  - component: {fileID: 114023779558059752}
   - component: {fileID: 114813756173719540}
   m_Layer: 0
   m_Name: Game
@@ -1412,7 +1412,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!114 &114033204203376538
+--- !u!114 &114023779558059752
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -1420,7 +1420,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1632650076636628}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c580f37c23f33478da54239cab8ffba7, type: 3}
+  m_Script: {fileID: 11500000, guid: 0a4beba57f0eb482abc8b5fb21dd1368, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   map: {fileID: 114302477262485974}
@@ -1428,8 +1428,7 @@ MonoBehaviour:
   player: {fileID: 114493654895252084}
   gui: {fileID: 0}
   dialogueView: {fileID: 0}
-  abilitiesBar: {fileID: 0}
-  mapType: 1
+  sacrificeButton: {fileID: 0}
 --- !u!114 &114126643502235696
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1483,6 +1482,7 @@ MonoBehaviour:
   player: {fileID: 114493654895252084}
   map: {fileID: 114302477262485974}
   enemyHealthBarPool: {fileID: 0}
+  level: 0
   bossHealthBar: {fileID: 0}
   heartPickup: {fileID: 173812, guid: 8dd926ddd7c834f74b10ccfa42430b5c, type: 2}
   upgradePickup: {fileID: 1483514902278300, guid: de091d5a608ec4da1a89934888f559dc,

@@ -18,6 +18,7 @@ public class Player : MonoBehaviour, IDamageable
 	public delegate void PlayerLifecycleEvent();
 	public event PlayerLifecycleEvent OnPlayerInitialized;
 	public event PlayerLifecycleEvent OnPlayerDied;
+	public event PlayerLifecycleEvent OnPlayerTryHit;
 	public event PlayerLifecycleEvent OnPlayerWillDie;
 
 	public delegate void PlayerUpgradesUpdated(int numUpgrades);
@@ -210,6 +211,8 @@ public class Player : MonoBehaviour, IDamageable
 	/// <param name="amt">Amount to deduct from health.</param>
 	public void Damage(int amt)
 	{
+		if (OnPlayerTryHit != null)
+			OnPlayerTryHit();
 		if (hitDisabled || isInvincible || amt <= 0)
 			return;
 		health -= amt;

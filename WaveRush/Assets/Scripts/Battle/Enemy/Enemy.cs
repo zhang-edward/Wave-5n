@@ -233,7 +233,7 @@ public class Enemy : MonoBehaviour, IDamageable {
 	protected virtual IEnumerator MoveState()
 	{
 		yield return new WaitForEndOfFrame ();
-		print("Updating whatever moveState is: " + movementMethod);
+		//print("Updating whatever moveState is: " + movementMethod);
 		for (;;)
 		{
 			movementMethod.UpdateState ();
@@ -250,7 +250,7 @@ public class Enemy : MonoBehaviour, IDamageable {
 	{
 		anim.CrossFade ("default", 0f);
 		StopAllCoroutines ();       // stops any duplicate MoveStates that may have been started concurrently
-		print("To move state");
+		//print("To move state");
 		StartCoroutine ("MoveState");
 	}
 

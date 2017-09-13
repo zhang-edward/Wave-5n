@@ -63,7 +63,6 @@ public class EnemyManager : MonoBehaviour {
 		yield return new WaitForSeconds(2f);
 		for (;;)
 		{
-
 			// all enemies dead
 			if (NumAliveEnemies() <= 0 && hasBossSpawned)
 			{
@@ -75,9 +74,7 @@ public class EnemyManager : MonoBehaviour {
 						if (OnStageCompleted != null)
 							OnStageCompleted();
 						yield return new WaitForSeconds(2.0f);
-						endPortalEnemy = SpawnEnemy(endPortalPrefab, map.CenterPosition).GetComponentInChildren<EndPortal>();
-						if (OnEndPortalSpawned != null)
-							OnEndPortalSpawned();
+						SpawnEndPortal();
 						while (endPortalEnemy != null)
 							yield return null;
 					}
@@ -146,6 +143,13 @@ public class EnemyManager : MonoBehaviour {
 	{
 		OnQueueBossMessage ();
 		Invoke ("SpawnBoss", bossSpawnDelay);
+	}
+
+	public void SpawnEndPortal()
+	{
+		endPortalEnemy = SpawnEnemy(endPortalPrefab, map.CenterPosition).GetComponentInChildren<EndPortal>();
+		if (OnEndPortalSpawned != null)
+			OnEndPortalSpawned();
 	}
 
 	public GameObject SpawnEnemy(GameObject prefab, Vector3 pos)

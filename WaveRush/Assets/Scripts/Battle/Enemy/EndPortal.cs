@@ -28,7 +28,6 @@ public class EndPortal : Enemy
 
 	public override void Damage(int amt)
 	{
-		
 		health -= amt;
 		if (health > 0)
 		{
@@ -55,6 +54,13 @@ public class EndPortal : Enemy
 		RemoveEnemyFromList();
 		invincible = true;
 		anim.CrossFade("Unlock", 0f);
+		anim.SetBool("Locked", false);
+	}
+
+	public void Lock()
+	{
+		anim.CrossFade("Lock", 0f);
+		anim.SetBool("Locked", true);
 	}
 
 	protected override void SpawnDeathProps()

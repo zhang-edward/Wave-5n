@@ -13,7 +13,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterName: Grim Jester
   textColor: {r: 0.79999775, g: 0.476784, b: 0.903, a: 1}
-  nameColor: {r: 0.8000001, g: 0.4784314, b: 0.90196085, a: 1}
+  nameColor: {r: 0.46337143, g: 0, b: 0.6102941, a: 1}
   expressions:
   - name: Default
     anim:
@@ -54,4 +54,9 @@ MonoBehaviour:
       - {fileID: 21300044, guid: 6726db5043840493db95a73b9400e64b, type: 3}
       - {fileID: 21300046, guid: 6726db5043840493db95a73b9400e64b, type: 3}
       fps: 5
+  - name: Unhappy
+    anim:
+      frames:
+      - {fileID: 21300050, guid: 6726db5043840493db95a73b9400e64b, type: 3}
+      fps: 0
   voice: {fileID: 8300000, guid: a7a2a640294a2482d9cf95bbbd2b6d64, type: 3}

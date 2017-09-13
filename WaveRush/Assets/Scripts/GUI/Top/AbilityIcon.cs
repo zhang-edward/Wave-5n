@@ -5,20 +5,39 @@ using System.Collections;
 public class AbilityIcon : MonoBehaviour
 {
 	public Image image { get; private set; }
-	public Slider slider;
+	public Image mask;
+	public GameObject highlight;
 
 	void Awake()
 	{
 		image = GetComponent<Image> ();
-		slider.maxValue = 1;
-		slider.minValue = 0;
 	}
 
 	public void SetCooldown(float percent)
 	{
 		if (percent < 0)
 			return;
-		slider.value = percent;
+		mask.fillAmount = percent;
+	}
+
+	public void FlashHighlight()
+	{
+		StartCoroutine(FlashHighlightRoutine());
+	}
+
+	public void StopFlashHighlight()
+	{
+		highlight.SetActive(false);
+		StopAllCoroutines();
+	}
+
+	private IEnumerator FlashHighlightRoutine()
+	{
+		for (;;)
+		{
+			highlight.SetActive(!highlight.activeInHierarchy);
+			yield return new WaitForSeconds(0.3f);
+		}
 	}
 }
 

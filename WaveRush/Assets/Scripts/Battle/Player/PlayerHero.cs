@@ -128,30 +128,37 @@ public abstract class PlayerHero : MonoBehaviour {
 		EffectPooler.PlayEffect(player.parryEffect, transform.position, true, 0.1f);
 		player.StrobeColor(Color.yellow, PARRY_TIME - 0.1f);
 		body.Move(Vector2.zero);
-		player.OnPlayerDamaged += Parry;
+		player.OnPlayerTryHit += Parry;
 		player.input.enabled = false;
 		sound.PlaySingle(player.parrySound);
 		yield return new WaitForSeconds(PARRY_TIME);
 		player.FlashColor(Color.gray, PARRY_COOLDOWN_TIME);
-		player.OnPlayerDamaged -= Parry;
+		player.OnPlayerTryHit -= Parry;
 		yield return new WaitForSeconds(PARRY_COOLDOWN_TIME);
 		player.sr.color = Color.white;
 		player.input.enabled = true;
 	}
 
-	private void Parry(int damagedAmt)
+	private void Parry()
 	{
 		if (onParry != null)
 			onParry();
 		sound.PlaySingle(player.parrySuccessSound);
-		player.Heal(damagedAmt);
+		player.isInvincible = true;
 		player.HitDisable(0.5f);
-		//player.StartTempSlowDown(PARRY_SLOW_TIME);
 		ParryEffect();
+		CameraControl.instance.StartFlashColor(Color.white, 0.5f, 0, 0f, 0.5f);
 		StopCoroutine(listenForParryRoutine);
-		player.OnPlayerDamaged -= Parry;
+		player.OnPlayerTryHit -= Parry;
 		player.input.enabled = true;
 		player.sr.color = Color.white;
+		Invoke("ResetInvincibility", 0.1f);
+	}
+
+	private void ResetInvincibility()
+	{
+		print("player is not invincible");
+		player.isInvincible = false;
 	}
 
 	protected abstract void ParryEffect();

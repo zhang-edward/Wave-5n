@@ -5,7 +5,7 @@ using System.Collections;
 public class AbilityIconBar : MonoBehaviour {
 
 	public SpecialAbilityIcon specialAbilityIcon;
-	private AbilityIcon[] abilityIcons;
+	public AbilityIcon[] abilityIcons;
 	public GameObject iconPrefab;
 
 	public Player player;
