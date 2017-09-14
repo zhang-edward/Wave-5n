@@ -4,7 +4,7 @@ using Utils;
 
 namespace Unused 
 {
-	public class MapGenerator
+	/*public class MapGenerator
 	{
 		private CAGenerator caGenerator = new CAGenerator ();
 		private int[,] terrainIdMap;
@@ -57,7 +57,7 @@ namespace Unused
 			{-1, 0, 0, 0, -1},
 			{-1, 0, 0, 0, -1},
 			{-1, -1, -1, -1, -1}
-		};*/
+		};
 		}
 
 		public void Reset()
@@ -73,7 +73,7 @@ namespace Unused
 		}
 
 
-		/* ============== Terrain ID Map Tweaking ================= */
+		/* ============== Terrain ID Map Tweaking ================= 
 
 		public void TweakEdges()
 		{
@@ -124,7 +124,7 @@ namespace Unused
 			return sum;
 		}
 
-		/*	private bool HasNeighbor(int x, int y, int id)
+			private bool HasNeighbor(int x, int y, int id)
 	{
 		if (inBounds (x, y + 1) && Terrain [y + 1, x] == id)
 			return true;
@@ -137,13 +137,13 @@ namespace Unused
 
 		return false;
 	}
-*/
-		/*	private bool inBounds(int x, int y)
+
+	private bool inBounds(int x, int y)
 		{
 			return (x >= 0 && x < size) &&
 				(y >= 0 && y < size);
-		}*/
+		}
 	}
 
-		
+	*/	
 }

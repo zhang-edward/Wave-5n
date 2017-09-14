@@ -128,7 +128,14 @@ public class Map : MonoBehaviour {
 	{
 		// get a random object
 		GameObject obj = Instantiate (terrainObjectPrefab);
-		obj.GetComponent<SpriteRenderer>().sprite = data.terrainObjects[Random.Range(0, data.terrainObjects.Length)];
+		MapData.TerrainObjectData tod = data.terrainObjects[Random.Range(0, data.terrainObjects.Length)];
+		obj.GetComponent<SpriteRenderer>().sprite = tod.sprite;
+		if (tod.flattened)
+		{
+			SortingLayerControl slc = obj.GetComponent<SortingLayerControl>();
+			slc.usingCustomPivot = true;
+			slc.customPivot = 2f;
+		}
 		obj.transform.SetParent (objectsFolder);
 		obj.transform.position = new Vector2 (x, y);
 		terrainObjects.Add (obj);
