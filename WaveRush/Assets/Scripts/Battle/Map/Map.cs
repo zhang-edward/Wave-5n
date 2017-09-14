@@ -6,6 +6,7 @@ public class Map : MonoBehaviour {
 
 	public GameObject terrainPrefab;
 	public GameObject colliderPrefab;
+	public GameObject terrainObjectPrefab;
 
 	public MapData data { get; private set; }
 
@@ -126,7 +127,8 @@ public class Map : MonoBehaviour {
 	private void CreateRandomObject(int x, int y)
 	{
 		// get a random object
-		GameObject obj = Instantiate (data.terrainObjectPrefabs[Random.Range(0, data.terrainObjectPrefabs.Length)]);
+		GameObject obj = Instantiate (terrainObjectPrefab);
+		obj.GetComponent<SpriteRenderer>().sprite = data.terrainObjects[Random.Range(0, data.terrainObjects.Length)];
 		obj.transform.SetParent (objectsFolder);
 		obj.transform.position = new Vector2 (x, y);
 		terrainObjects.Add (obj);

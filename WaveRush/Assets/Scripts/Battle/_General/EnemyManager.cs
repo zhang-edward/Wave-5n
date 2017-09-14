@@ -103,7 +103,7 @@ public class EnemyManager : MonoBehaviour {
 		}
 	}
 
-	private void StartNextWave()
+	public void StartNextWave()
 	{
 		// event call
 		if (OnEnemyWaveSpawned != null)
@@ -285,5 +285,10 @@ public class EnemyManager : MonoBehaviour {
 		enemiesKilled++;
 		if (OnEnemyDefeated != null)
 			OnEnemyDefeated();
+	}
+
+	public void SetWave(int waveNumber)
+	{
+		this.waveNumber = waveNumber;
 	}
 }

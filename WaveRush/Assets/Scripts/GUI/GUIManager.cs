@@ -20,7 +20,7 @@ public class GUIManager : MonoBehaviour {
 	public GameObject gameOverUI;   	// game over panel
 	public ScoreReport scorePanel;  	// score report in game over panel
 	public GameObject stageClearPanel;
-	public GameObject upgradeButton;    // button for upgrading the player character
+	//public GameObject upgradeButton;    // button for upgrading the player character
 	public HeroesRescuedMenu heroesRescuedMenu;
 
 	[Header("Data")]
@@ -98,7 +98,8 @@ public class GUIManager : MonoBehaviour {
 
 	private void ShowEnemyWaveText(int waveNumber)
 	{
-		waveIndicatorText.text = waveNumber.ToString();
+		int goalWave = enemyManager.stageData.goalWave;
+		waveIndicatorText.text = (waveNumber % goalWave).ToString() + "/" + goalWave.ToString();
 		enemyWaveText.DisplayWaveNumber (waveNumber);
 	}
 

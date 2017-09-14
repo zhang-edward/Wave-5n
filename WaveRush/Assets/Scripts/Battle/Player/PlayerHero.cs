@@ -78,6 +78,7 @@ public abstract class PlayerHero : MonoBehaviour {
 	public InputAction onTapHoldDown;
 	public InputAction onSpecialAbility;
 	public InputAction onParry;
+	public event Player.PlayerLifecycleEvent OnSpecialAbilityCharged;
 
 	void OnDisable()
 	{
@@ -162,7 +163,6 @@ public abstract class PlayerHero : MonoBehaviour {
 	}
 
 	protected abstract void ParryEffect();
-
 
 	/// <summary>
 	/// Performs a special ability.
@@ -259,6 +259,8 @@ public abstract class PlayerHero : MonoBehaviour {
 		specialAbilityCharge += 1 * chargeMultiplier;
 		if (specialAbilityCharge >= specialAbilityChargeCapacity)
 		{
+			if (OnSpecialAbilityCharged != null)
+				OnSpecialAbilityCharged();
 			specialAbilityCharge = specialAbilityChargeCapacity;
 		}
 	}
@@ -268,6 +270,8 @@ public abstract class PlayerHero : MonoBehaviour {
 		specialAbilityCharge += amt;
 		if (specialAbilityCharge >= specialAbilityChargeCapacity)
 		{
+			if (OnSpecialAbilityCharged != null)
+				OnSpecialAbilityCharged();
 			specialAbilityCharge = specialAbilityChargeCapacity;
 		}	
 	}

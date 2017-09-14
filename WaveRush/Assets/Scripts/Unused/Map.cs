@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace Unused
 {
-	public class Map : MonoBehaviour
+	/*public class Map : MonoBehaviour
 	{
-		/*[System.Serializable]
+	[System.Serializable]
 	public class TerrainObjectIds
 	{
 		public string name;
@@ -20,14 +20,15 @@ namespace Unused
 				identifier = value;
 			}
 		}
-	}*/
+	}
 
 		//public TerrainObjectIds[] terrainObjectIds;
 		//private Dictionary<string, int> terrainObject;
 
 		public GameObject terrainPrefab;
 		public Sprite[] terrainSprites;
-		public GameObject[] terrainObjectPrefabs;
+		public GameObject terrainObjectPrefab;
+		public Sprite[] terrainObjectSprites;
 		public GameObject borderPrefab;
 
 		private SpriteRenderer[,] terrainSpriteMap = new SpriteRenderer[size, size];
@@ -77,19 +78,20 @@ namespace Unused
 						else if (terrainId == -1 || terrainId == BORDER_TILE)
 						{
 							terrainSpriteMap [y, x].sprite = terrainSprites [0];
-							/*if (terrainId == BORDER_TILE)
-						{
-							GameObject o = Instantiate (borderPrefab);
-							o.transform.SetParent (this.transform);
-							o.transform.position = new Vector2 (x, y);
-						}*/
+							if (terrainId == BORDER_TILE)
+							{
+								GameObject o = Instantiate (borderPrefab);
+								o.transform.SetParent (this.transform);
+								o.transform.position = new Vector2 (x, y);
+							}
 						}
 					}
 
 					if (mapGenerator.TerrainObjects[y, x] > 0)
 					{
 						//Debug.Log ("Terrain Objects matrix: " + terrainObjects [y, x]);
-						GameObject obj = Instantiate (terrainObjectPrefabs[mapGenerator.TerrainObjects[y, x] - 1]);
+						GameObject obj = Instantiate (terrainObjectPrefab);
+						obj.GetComponent<SpriteRenderer>().sprite = terrainObjectSprites[mapGenerator.TerrainObjects[y, x] - 1];
 						obj.transform.SetParent (this.transform);
 						obj.transform.position = new Vector2 (x, y);
 						terrainObjects.Add (obj);
@@ -140,7 +142,7 @@ namespace Unused
 			if (id == 4)
 				sr.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90));
 
-			/*		UnityEngine.Assertions.Assert.IsTrue (
+					UnityEngine.Assertions.Assert.IsTrue (
 			id == 1 ||
 			id == 3 ||
 			id == 2 ||
@@ -150,7 +152,7 @@ namespace Unused
 			id == 8 ||
 			id == 9
 		);
-*/
+
 			return returnId;
 		}
 
@@ -161,7 +163,7 @@ namespace Unused
 				GenerateMap ();
 			}
 
-			/*		if (Input.GetMouseButtonDown(0))
+					if (Input.GetMouseButtonDown(0))
 		{
 			Vector3 mousePosition = Camera.main.ScreenToWorldPoint (Input.mousePosition);
 			//Debug.Log (terrain[Mathf.RoundToInt (mousePosition.y), Mathf.RoundToInt (mousePosition.x)]);
@@ -169,9 +171,9 @@ namespace Unused
 				Mathf.RoundToInt (mousePosition.x),
 				Mathf.RoundToInt (mousePosition.y)).Count;
 			Debug.Log (count);
-		}*/
+		}
 		}
 	}
 
-		
+    */
 }

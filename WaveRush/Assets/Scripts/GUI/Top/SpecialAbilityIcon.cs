@@ -27,13 +27,13 @@ public class SpecialAbilityIcon : MonoBehaviour
 	void Start()
 	{
 		button.onClick.AddListener (() => {
-			player.hero.SpecialAbility ();
+			player.hero.SpecialAbility();
 		});
 	}
 
-	public void SetMultiplierText(float multiplier)
+	public void SetMultiplierText(string text)
 	{
-		chargeMultiplierText.text = "x" + multiplier;
+		chargeMultiplierText.text = text;
 	}
 
 	public void SetCooldown(float percent)

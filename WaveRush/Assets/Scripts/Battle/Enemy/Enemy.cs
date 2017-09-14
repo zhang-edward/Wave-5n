@@ -82,7 +82,6 @@ public class Enemy : MonoBehaviour, IDamageable {
 		DEFAULT_LAYER = body.gameObject.layer;
 		DEFAULT_SPEED = body.moveSpeed;
 
-		print("wtf");
 		this.level = level;
 		this.map = map;
 		maxHealth = EnemyHealthEquation(level, baseHealth);  // calculate health based on level

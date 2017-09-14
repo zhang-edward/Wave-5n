@@ -35,7 +35,7 @@ public class KnightHero : PlayerHero {
 	public delegate void KnightAbilityActivated();
 	public event KnightAbilityActivated OnKnightRush;
 	public event KnightAbilityActivated OnKnightShield;
-
+	public event KnightAbilityActivated OnKnightSpecialCharge;
 
 	public override void Init (EntityPhysics body, Player player, Pawn heroData)
 	{
@@ -113,6 +113,8 @@ public class KnightHero : PlayerHero {
 		}
 		else
 		{
+			if (OnKnightSpecialCharge != null)
+				OnKnightSpecialCharge();
 			specialAbilityChargeRoutine = StartCoroutine(SpecialAbilityCharge());
 		}
 	}

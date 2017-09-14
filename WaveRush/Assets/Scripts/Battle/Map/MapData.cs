@@ -7,7 +7,7 @@ public class MapData : ScriptableObject
 	public MapType mapType;
 	[Space]
 	public Sprite[] terrainSprites;
-	public GameObject[] terrainObjectPrefabs;
+	public Sprite[] terrainObjects;
 
 	public GameObject bossSpawnPrefab;
 	[Header("Background")]

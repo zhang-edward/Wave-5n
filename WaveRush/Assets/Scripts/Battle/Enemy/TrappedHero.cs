@@ -55,7 +55,8 @@ public class TrappedHero : Enemy
 		RemoveEnemyFromList();
 		invincible = true;
 		Pawn pawn = PawnGenerator.GenerateCrystalDrop(level);
-		BattleSceneManager.instance.AddPawn(pawn);
+		if (BattleSceneManager.instance != null)
+			BattleSceneManager.instance.AddPawn(pawn);
 		StartCoroutine(DieRoutine());
 	}
 

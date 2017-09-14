@@ -1,12 +1,11 @@
 fileFormatVersion: 2
-guid: b99e8283eddab455caffc0b257043b46
-timeCreated: 1505182046
+guid: 4b344bbc5182542a7bcd367d8555bcea
+timeCreated: 1505353533
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: tutorialKnight_0
-    21300002: tutorialKnight_1
-    21300004: tutorialKnight_2
+    21300000: terrain_tutorial_bg_tiles_0
+    21300002: terrain_tutorial_bg_tiles_1
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -30,7 +29,7 @@ TextureImporter:
   textureFormat: 1
   maxTextureSize: 2048
   textureSettings:
-    filterMode: 0
+    filterMode: -1
     aniso: -1
     mipBias: -1
     wrapMode: 1
@@ -54,33 +53,33 @@ TextureImporter:
   textureFormatSet: 0
   platformSettings:
   - buildTarget: DefaultTexturePlatform
-    maxTextureSize: 128
+    maxTextureSize: 2048
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
   - buildTarget: Standalone
-    maxTextureSize: 128
+    maxTextureSize: 2048
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
   - buildTarget: iPhone
-    maxTextureSize: 128
+    maxTextureSize: 2048
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
   - buildTarget: Android
-    maxTextureSize: 128
+    maxTextureSize: 2048
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -89,39 +88,26 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: tutorialKnight_0
+      name: terrain_tutorial_bg_tiles_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 16
-        height: 16
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: tutorialKnight_1
+      name: terrain_tutorial_bg_tiles_1
       rect:
         serializedVersion: 2
-        x: 16
+        x: 64
         y: 0
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: tutorialKnight_2
-      rect:
-        serializedVersion: 2
-        x: 32
-        y: 0
-        width: 16
-        height: 16
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}

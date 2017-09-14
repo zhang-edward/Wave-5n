@@ -57,6 +57,9 @@ public class AbilityIconBar : MonoBehaviour {
 		}
 		float percent = (hero.specialAbilityCharge / hero.specialAbilityChargeCapacity);
 		specialAbilityIcon.SetCooldown (percent);
-		specialAbilityIcon.SetMultiplierText (hero.chargeMultiplier);
+		if (hero.chargeMultiplier <= 1)
+			specialAbilityIcon.SetMultiplierText("");
+		else
+			specialAbilityIcon.SetMultiplierText ("x" + hero.chargeMultiplier);
 	}
 }
