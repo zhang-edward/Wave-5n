@@ -8,7 +8,7 @@ public class KnightFlyingSwords : HeroPowerUp
 	private int numSwords;
 
 	private float addSwordChance = 0.05f;
-	private float swordAttackChance = 0.5f;
+	private float swordAttackChance = 1f;
 	private int maxSwords = 3;
 
 	public IndicatorEffect indicator;

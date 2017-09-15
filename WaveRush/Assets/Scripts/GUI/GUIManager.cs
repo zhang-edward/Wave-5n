@@ -19,7 +19,6 @@ public class GUIManager : MonoBehaviour {
 	[Header("Game Over Panel")]
 	public GameObject gameOverUI;   	// game over panel
 	public ScoreReport scorePanel;  	// score report in game over panel
-	public GameObject stageClearPanel;
 	//public GameObject upgradeButton;    // button for upgrading the player character
 	public HeroesRescuedMenu heroesRescuedMenu;
 
@@ -89,8 +88,6 @@ public class GUIManager : MonoBehaviour {
 
 	private IEnumerator StageCompleteViewRoutine()
 	{
-		if (enemyManager.IsStageComplete())
-			stageClearPanel.SetActive(true);
 		yield return new WaitForSeconds(1.0f);
 		GameManager.instance.GoToScene("MainMenu");
 		yield return null;

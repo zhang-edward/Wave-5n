@@ -12,13 +12,18 @@ public class HeroesRescuedMenu : MonoBehaviour
 
 	public void Init(List<Pawn> acquiredPawns)
 	{
-		int j = 0;	// track the pawnIcons list position
+		StartCoroutine(InitRoutine(acquiredPawns));
+	}
+
+	private IEnumerator InitRoutine(List<Pawn> acquiredPawns)
+	{
+		int j = 0;  // track the pawnIcons list position
 		for (int i = 0; i < acquiredPawns.Count; i++)      // iterate through the master list of pawns (may contain holes)
 		{
 			Pawn pawn = acquiredPawns[i];
 			if (pawn != null)
 			{
-				if (j >= pawnIcons.Count)	// if we need more pawn icons, add new ones to the list
+				if (j >= pawnIcons.Count)   // if we need more pawn icons, add new ones to the list
 				{
 					AddNewPawnIcon(pawn);
 				}
@@ -35,6 +40,7 @@ public class HeroesRescuedMenu : MonoBehaviour
 				j++;
 			}
 		}
+		yield return null;	// Wait one frame to avoid any strange glitches
 		StartCoroutine(AnimateIn(acquiredPawns.Count));
 	}
 
