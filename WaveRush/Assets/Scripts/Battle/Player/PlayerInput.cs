@@ -17,7 +17,7 @@ public class PlayerInput : MonoBehaviour {
 
 	void Start()
 	{
-#if UNITY_ANDROID
+#if UNITY_ANDROID || UNITY_IOS || UNITY_IOS
 		Invoke("CalibrateAccelerometer", 0.5f);
 		touchInputHandler.enabled = true;
 		touchInputHandler.OnSwipe += HandleSwipe;
@@ -42,7 +42,7 @@ public class PlayerInput : MonoBehaviour {
 		//Vector2 movementDir;
 		if (isInputEnabled)
 		{
-#if UNITY_ANDROID
+#if UNITY_ANDROID || UNITY_IOS
 			// get accelerometer input
 			//accel = (Vector2)Vector3.Lerp(accel, Input.acceleration - calibratedAccelerometer, 10f * Time.deltaTime);
 
@@ -62,7 +62,7 @@ public class PlayerInput : MonoBehaviour {
 			//player.body.Move (movementDir);
 
 			// Get mouse or touch input
-#if UNITY_ANDROID
+#if UNITY_ANDROID || UNITY_IOS || UNITY_IOS
 			touchInputHandler.ListenForTouchInput();
 #else
 			HandleMouseKeyboardInput();
@@ -100,7 +100,7 @@ public class PlayerInput : MonoBehaviour {
 		}
 	}
 
-	private void HandleSwipe(Vector2 dir)
+	private void HandleSwipe(Vector3 dir)
 	{
 		player.dir = dir;
 		Debug.DrawRay (transform.position, dir, Color.white, 0.5f);
