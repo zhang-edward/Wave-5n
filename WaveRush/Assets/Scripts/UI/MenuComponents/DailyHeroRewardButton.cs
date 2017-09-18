@@ -114,7 +114,7 @@ public class DailyHeroRewardButton : MonoBehaviour
 
 	private void SaveTimer()
 	{
-		print("Save timer");
+		//print("Save timer");
 		timeUntilNextReward = timerCounter.GetTimer(TIMER_KEY).timer;
 		saveGame.SetSavedTimer(TIMER_KEY, timeUntilNextReward);
 		saveGame.numDailyHeroRewards = currentNumRewards;
@@ -124,7 +124,7 @@ public class DailyHeroRewardButton : MonoBehaviour
 	private void UpdateRewardsSinceLastLogin()
 	{
 		float timerTime = timerCounter.GetTimer(TIMER_KEY).timer;
-		print("Time since last logged in: " + timerTime);
+		//print("Time since last logged in: " + timerTime);
 		if (timerTime > 0 || currentNumRewards >= MAX_REWARDS)
 			return;
 		int numRewardsSinceLastLogin = Mathf.FloorToInt(Mathf.Abs(timerTime) / REWARD_INTERVAL);

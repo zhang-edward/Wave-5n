@@ -30,6 +30,7 @@ public class GameManager : MonoBehaviour {
 	public Image loadingOverlay;
 	public GameObject debugPanel;
 	public MessageText debugText;
+	public MessageText alertText;
 	public Text fpsDisplay;
 
 	public delegate void GameStateUpdate();
@@ -73,6 +74,12 @@ public class GameManager : MonoBehaviour {
 			}
 		}
 		timerCounter.UpdateTimersSinceLastClosed();
+	}
+
+	public void AddPawnTimer(int id)
+	{
+		Pawn pawn = saveGame.GetPawn(id);
+		timerCounter.SetTimer(pawn.GetTimerID(), pawn.unlockTime);
 	}
 
 	public void ScheduleSimple()
@@ -334,6 +341,12 @@ public class GameManager : MonoBehaviour {
 		saveGame = new SaveGame ();
 		LoadSaveFile ();
 		SaveLoad.Save ();
+	}
+
+	public void DisplayAlert(string message)
+	{
+		alertText.SetColor(Color.white);
+		alertText.Display(new MessageText.Message(message, 1, 0, 2f, 1f, Color.white));
 	}
 
 	// ==========

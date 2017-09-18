@@ -6,12 +6,23 @@ public class GachaMenu : MonoBehaviour
 {
 	private GameManager gm;
 
-	public HeroesRescuedMenu heroesRescuedMenu;
-	public GameObject closeHeroesRescuedMenuButton;
+	public AcquirePawnsView acquirePawnsView;
 
 	void Start()
 	{
 		gm = GameManager.instance;
+	}
+
+	public void TrySoulsGacha()
+	{
+		if (gm.saveGame.HasExtraPawns())
+		{
+			gm.DisplayAlert("You have too many heroes! Try fusing or retiring them.");
+		}
+		else
+		{
+			SoulsGacha();
+		}
 	}
 
 	public void SoulsGacha()
@@ -42,18 +53,6 @@ public class GachaMenu : MonoBehaviour
 		{
 			gm.saveGame.AddPawn(pawn);
 		}
-		StartCoroutine(AnimateInHeroesRescuedMenu(acquiredPawns));
-	}
-
-	private IEnumerator AnimateInHeroesRescuedMenu(List<Pawn> acquiredPawns)
-	{
-		closeHeroesRescuedMenuButton.SetActive(false);
-		heroesRescuedMenu.gameObject.SetActive(true);
-		heroesRescuedMenu.Reset();
-		yield return new WaitForSeconds(1.0f);
-		heroesRescuedMenu.Init(acquiredPawns);
-		while (!heroesRescuedMenu.AllIconsRevealed())
-			yield return new WaitForSeconds(0.5f);
-		closeHeroesRescuedMenuButton.SetActive(true);
+		acquirePawnsView.Init(acquiredPawns.ToArray());
 	}
 }

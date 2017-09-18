@@ -24,7 +24,7 @@ public class MainMenu : MonoBehaviour
 	{
 		if (gm.saveGame.HasExtraPawns())
 		{
-			Debug.LogWarning("Cannot enter; too many pawns!");	
+			gm.DisplayAlert("You have too many heroes! Try fusing or retiring them.");	
 		}
 		else
 		{

@@ -144,6 +144,7 @@ public class PawnFusionMenu : MonoBehaviour
 			saveGame.RemovePawn(pawn1.id);
 			saveGame.RemovePawn(pawn2.id);
 			saveGame.AddPawn(pawn, true, 100);
+			GameManager.instance.AddPawnTimer(pawn.id);
 			SaveLoad.Save();
 			fuseMatIcon1.gameObject.SetActive(false);
 			fuseMatIcon2.gameObject.SetActive(false);
@@ -155,24 +156,25 @@ public class PawnFusionMenu : MonoBehaviour
 	// NOTE: Order of the condition checks here matters!
 	public bool CheckCanFusePawns(Pawn pawn1, Pawn pawn2)
 	{
+		GameManager gm = GameManager.instance;
 		if (pawn1.type != pawn2.type)
 		{
-			Debug.LogWarning("Heroes must be the same type!");
+			gm.DisplayAlert("Heroes must be the same type!");
 			return false;
 		}
 		if (pawn1.level >= Pawn.MAX_LEVEL || pawn2.level >= Pawn.MAX_LEVEL)
 		{
-			Debug.LogWarning("You cannot fuse a max level hero!");
+			gm.DisplayAlert("You cannot fuse a max level hero!");
 			return false;
 		}
 		if (pawn1.tier != pawn2.tier)
 		{
-			Debug.LogWarning("The heroes must be the same tier!");
+			gm.DisplayAlert("The heroes must be the same tier!");
 			return false;
 		}
 		if (pawn1.atThresholdLevel != pawn2.atThresholdLevel) // Either they are both at threshold or both aren't
 		{
-			Debug.LogWarning("Heroes must both be at max level to ascend tiers!");
+			gm.DisplayAlert("Heroes must both be at max level to ascend tiers!");
 			return false;
 		}
 		return true;

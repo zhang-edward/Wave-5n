@@ -105,14 +105,14 @@ public class SaveGame
 		}
 		if (overflow)
 		{
-			AddOverflowPawn(pawn);
+			AddOverflowPawn(pawn, unlockTime);
 			return true;
 		}
 		return false;
 	}
 
 	// Add a pawn when pawn capacity has been reached
-	private void AddOverflowPawn(Pawn pawn)
+	private void AddOverflowPawn(Pawn pawn, float unlockTime = 0)
 	{
 		int debugCounter = 0;
 		while (debugCounter < 10)		// if we are trying to add 1024+ extra pawns (10 resizings = 2^10 = 1024)
@@ -121,9 +121,10 @@ public class SaveGame
 			{
 				if (extraPawns[i] == null)
 				{
-					pawn.SetID(i);
+					pawn.SetID(i + pawnCapacity);
+					pawn.unlockTime = unlockTime;
 					extraPawns[i] = pawn;
-					Debug.Log("New Pawn (Overflow):" + pawn);
+					Debug.Log("New Pawn (Overflow):" + pawn + " with unlock time:" + unlockTime);
 					return;
 				}
 			}
@@ -137,6 +138,14 @@ public class SaveGame
 		}
 		Debug.LogError("1000+ tries to fit a new Pawn into the extraPawns list!" +
 					   "extraPawns list has " + extraPawns.Length + " pawns");
+	}
+
+	public Pawn GetPawn(int id)
+	{
+		if (id < pawnCapacity)
+			return pawns[id];
+		else
+			return extraPawns[id - pawnCapacity];
 	}
 
 	public bool RemovePawn(int id)
@@ -154,7 +163,7 @@ public class SaveGame
 					{
 						i++;
 					}
-					Debug.Log("Extra pawn filled slot:" + extraPawns[i]);
+					Debug.Log("Extra pawn filled slot" + i + ":" + extraPawns[i]);
 					AddPawn(extraPawns[i]);
 					extraPawns[i] = null;
 				}
@@ -167,10 +176,11 @@ public class SaveGame
 		}
 		else
 		{
-			if (extraPawns[id] != null)
+			int extraId = id - pawnCapacity;
+			if (extraPawns[extraId] != null)
 			{
-				Debug.Log("Removed Pawn (Extra):" + extraPawns[id]);
-				extraPawns[id] = null;
+				Debug.Log("Removed Pawn (Extra):" + extraPawns[extraId]);
+				extraPawns[extraId] = null;
 				return true;
 			}
 			else
