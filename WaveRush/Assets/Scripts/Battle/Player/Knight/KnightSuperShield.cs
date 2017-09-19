@@ -48,7 +48,7 @@ public class KnightSuperShield : HeroPowerUp
 	public void SuperShield()
 	{
 		// check cooldown
-		if (!knight.IsCooledDown(1))
+		if (!knight.CheckIfCooledDownNotify(1))
 			return;
 		knight.ResetCooldownTimer(1);
 		areaAttackEffect.SetActive(true);

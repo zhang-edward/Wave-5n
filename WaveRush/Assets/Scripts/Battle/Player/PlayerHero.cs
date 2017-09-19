@@ -80,6 +80,9 @@ public abstract class PlayerHero : MonoBehaviour {
 	public InputAction onParry;
 	public event Player.PlayerLifecycleEvent OnSpecialAbilityCharged;
 
+	public delegate void OnAbility(int i);
+	public event OnAbility OnAbilityFailed;
+
 	void OnDisable()
 	{
 		player.OnEnemyDamaged -= IncrementCombo;
@@ -233,7 +236,8 @@ public abstract class PlayerHero : MonoBehaviour {
 		}
 	}
 
-	public bool IsCooledDown(int index, bool queueActionIfFailed = false, InputAction input = null)
+	// Checks if an ability is cooled down and, if not, notifies event listeners (for the HUD icons to flash red)
+	public bool CheckIfCooledDownNotify(int index, bool queueActionIfFailed = false, InputAction input = null)
 	{
 		// check cooldown timer
 		if (CooldownTimers[index] > 0)
@@ -242,6 +246,11 @@ public abstract class PlayerHero : MonoBehaviour {
 			{
 				inputAction = input;
 				QueueAction (CooldownTimers [index]);
+			}
+			else
+			{
+				if (OnAbilityFailed != null)
+					OnAbilityFailed(index);
 			}
 			return false;
 		}

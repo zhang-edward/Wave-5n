@@ -5,7 +5,7 @@ using System.Collections;
 public class SpecialAbilityIcon : MonoBehaviour
 {
 	public SimpleAnimationPlayer holder;
-	public RectTransform cooldownMask;
+	public Image cooldownMask;
 	public Sprite holderDefaultSprite;
 	public SimpleAnimation holderAbilityAvailableEffect;
 	public SimpleAnimation holderCooledDownEffect;
@@ -13,7 +13,7 @@ public class SpecialAbilityIcon : MonoBehaviour
 	public Player player;
 	public Text chargeMultiplierText;
 	[HideInInspector]
-	public Image image;
+	public Image icon;
 	[Header("Audio")]
 	public AudioClip abilityReadySound;
 
@@ -21,7 +21,7 @@ public class SpecialAbilityIcon : MonoBehaviour
 
 	void Awake()
 	{
-		image = GetComponent<Image>();
+		icon = GetComponent<Image>();
 	}
 
 	void Start()
@@ -39,7 +39,7 @@ public class SpecialAbilityIcon : MonoBehaviour
 	public void SetCooldown(float percent)
 	{
 		percent = 1 - percent;
-		cooldownMask.sizeDelta = new Vector2 (16, percent * 16);
+		cooldownMask.fillAmount = percent;
 		// if cooled down completely (ability is ready to use again)
 		if (percent <= 0)
 		{
@@ -57,11 +57,6 @@ public class SpecialAbilityIcon : MonoBehaviour
 		StartCoroutine (PlayFinishCooldownEffect ());
 
 		SoundManager.instance.PlayUISound(abilityReadySound);
-	}
-
-	public void SetScale(float scale)
-	{
-		transform.localScale = Vector3.one * scale;
 	}
 
 	private IEnumerator PlayFinishCooldownEffect()

@@ -80,7 +80,7 @@ public class MageHero : PlayerHero {
 
 	private void ShootFireball()
 	{
-		if (!IsCooledDown (0, true, HandleSwipe))
+		if (!CheckIfCooledDownNotify (0, true, HandleSwipe))
 			return;
 		ResetCooldownTimer (0);
 
@@ -107,7 +107,7 @@ public class MageHero : PlayerHero {
 
 	public void StartTeleport()
 	{
-		if (!IsCooledDown (1))
+		if (!CheckIfCooledDownNotify (1))
 			return;
 		player.dir = Vector2.ClampMagnitude(player.dir, teleportRange);
 		if (CanTeleport(player.transform.position + (Vector3)player.dir))

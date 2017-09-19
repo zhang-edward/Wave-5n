@@ -73,7 +73,7 @@ public class TutorialScene1Manager : MonoBehaviour
 
 		gm.OnSceneLoaded -= Init;   // Remove the listener because it is only run once per scene
 
-		/*
+
 		// Step -2: Swipe
 		DisableTap();
 		DisableSpecialAbility();
@@ -92,7 +92,7 @@ public class TutorialScene1Manager : MonoBehaviour
 
 		// Step -1: Learn swipe controls
 		tutorialTaskView.Init("Use your Rush Ability 3 times (0/3)", false);
-		abilitiesBar.abilityIcons[0].FlashHighlight();
+		abilitiesBar.abilityIcons[0].FlashHighlight(Color.white);
 
 		while (knightRushCount < 3)
 		{
@@ -114,7 +114,7 @@ public class TutorialScene1Manager : MonoBehaviour
 		tutorialTaskView.Init("Use your Shield Ability 2 times (0/2)", false);
 		controlPointer.gameObject.SetActive(true);
 		controlPointer.CrossFade("Tap", 0f);
-		abilitiesBar.abilityIcons[1].FlashHighlight();
+		abilitiesBar.abilityIcons[1].FlashHighlight(Color.white);
 		EnableTap();
 
 		knight.OnKnightShield += IncrementShieldCount;
@@ -164,7 +164,7 @@ public class TutorialScene1Manager : MonoBehaviour
 		attackingDummy.invincible = false;
 		attackingDummy.GetComponentInChildren<Enemy>().Damage(999);
 		parryCount = 0;
-		knight.onParry -= IncrementParryCount;*/
+		knight.onParry -= IncrementParryCount;
 
 		// Step 3: Finish tutorial
 		PlayKnightCharDialogue(3);

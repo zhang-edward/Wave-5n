@@ -42,7 +42,7 @@ public class NinjaTripleStar : HeroPowerUp
 	public void TripleStar()
 	{
 		// if cooldown has not finished
-		if (!ninja.IsCooledDown (1))
+		if (!ninja.CheckIfCooledDownNotify (1))
 			return;
 		ninja.ResetCooldownTimer (1);
 

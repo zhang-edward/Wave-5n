@@ -25,12 +25,14 @@ public class AbilityIconBar : MonoBehaviour {
 	void OnDisabled()
 	{
 		player.OnPlayerInitialized -= Init;
+		player.hero.OnAbilityFailed -= FlashRedAbilityIcon;
 	}
 
 	void Init()
 	{
 		playerWasInitialized = true;
 		hero = player.hero;
+		player.hero.OnAbilityFailed += FlashRedAbilityIcon;
 		abilityIcons = new AbilityIcon[hero.NumAbilities];
 		//Debug.Log ("There are " + abilityIcons.Length + " player abilities");
 		for (int i = 0; i < hero.NumAbilities; i ++)
@@ -40,9 +42,8 @@ public class AbilityIconBar : MonoBehaviour {
 			abilityIcons [i] = o.GetComponent<AbilityIcon> ();
 			abilityIcons [i].image.sprite = hero.icons [i];
 		}
-		int centerIndex = hero.NumAbilities / 2;
-		specialAbilityIcon.image.sprite = hero.specialAbilityIcon;
-		specialAbilityIcon.transform.parent.SetSiblingIndex (centerIndex);
+		specialAbilityIcon.icon.sprite = hero.specialAbilityIcon;
+		specialAbilityIcon.transform.parent.SetSiblingIndex (0);
 	}
 
 	void LateUpdate()
@@ -61,5 +62,10 @@ public class AbilityIconBar : MonoBehaviour {
 			specialAbilityIcon.SetMultiplierText("");
 		else
 			specialAbilityIcon.SetMultiplierText ("x" + hero.chargeMultiplier);
+	}
+
+	private void FlashRedAbilityIcon(int index)
+	{
+		abilityIcons[index].FlashHighlight(Color.red, 0.1f, 0.1f);
 	}
 }

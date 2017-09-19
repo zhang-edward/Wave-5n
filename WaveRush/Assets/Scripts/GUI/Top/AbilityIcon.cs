@@ -20,9 +20,15 @@ public class AbilityIcon : MonoBehaviour
 		mask.fillAmount = percent;
 	}
 
-	public void FlashHighlight()
+	public void FlashHighlight(Color color, float interval = 0.3f)
 	{
-		StartCoroutine(FlashHighlightRoutine());
+		StartCoroutine(FlashHighlightRoutine(color, interval));
+	}
+
+	public void FlashHighlight(Color color, float time, float interval)
+	{
+		StartCoroutine(FlashHighlightRoutine(color, interval));
+		Invoke("StopFlashHighlight", time);
 	}
 
 	public void StopFlashHighlight()
@@ -31,13 +37,15 @@ public class AbilityIcon : MonoBehaviour
 		StopAllCoroutines();
 	}
 
-	private IEnumerator FlashHighlightRoutine()
+	private IEnumerator FlashHighlightRoutine(Color color, float interval)
 	{
+		highlight.GetComponent<Image>().color = color;
 		for (;;)
 		{
 			highlight.SetActive(!highlight.activeInHierarchy);
-			yield return new WaitForSeconds(0.3f);
+			yield return new WaitForSeconds(interval);
 		}
+		highlight.SetActive(false);
 	}
 }
 

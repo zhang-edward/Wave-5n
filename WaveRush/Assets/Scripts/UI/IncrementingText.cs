@@ -63,7 +63,6 @@ public class IncrementingText : MonoBehaviour {
 			pitch = ((float)incrementer / numberToReport) + 0.5f;
 			audioSrc.pitch = pitch;
 		}
-		print("yo waht the fuck!");
 		audioSrc.clip = blipSound;
 		audioSrc.Play();
 	}

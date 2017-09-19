@@ -52,7 +52,7 @@ public class NinjaHero : PlayerHero {
 
 	public void DashAttack()
 	{
-		if (!IsCooledDown (0, true, HandleSwipe))
+		if (!CheckIfCooledDownNotify (0, true, HandleSwipe))
 			return;
 		ResetCooldownTimer (0);
 		StartCoroutine(DashAttackRoutine ());
@@ -93,7 +93,7 @@ public class NinjaHero : PlayerHero {
 	public void ShootNinjaStar()
 	{
 		// if cooldown has not finished
-		if (!IsCooledDown (1))
+		if (!CheckIfCooledDownNotify (1))
 			return;
 		ResetCooldownTimer (1);
 		// Sound

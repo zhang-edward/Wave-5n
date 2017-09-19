@@ -21,6 +21,7 @@ public class WalkVicinityState : MoveState
 		base.Init (e, player);
 		map = e.map;
 		anim = e.anim;
+		state = State.Wait;
 	}
 
 	public override void Reset()

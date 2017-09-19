@@ -58,7 +58,7 @@ public class KnightSuperRush : HeroPowerUp
 	private void SuperRush()
 	{
 		// check cooldown
-		if (!knight.IsCooledDown (0, true, playerHero.HandleSwipe))
+		if (!knight.CheckIfCooledDownNotify (0, true, playerHero.HandleSwipe))
 			return;
 		knight.ResetCooldownTimer (0);
 		knight.damageMultiplier *= 2f;

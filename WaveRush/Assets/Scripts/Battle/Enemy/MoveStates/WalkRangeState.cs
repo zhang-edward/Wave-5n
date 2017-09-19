@@ -23,6 +23,7 @@ public class WalkRangeState : MoveState
 		base.Init(e, player);
 		anim = e.anim;
 		map = e.map;
+		state = State.Wait;
 	}
 
 	public override void Reset()

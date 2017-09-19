@@ -92,7 +92,7 @@ public class Map : MonoBehaviour {
 			{
 				// process terrainMap
 				int id = 0;
-				if (terrainMap.GetPixel (x, y).r == 1)
+				if (Mathf.RoundToInt(terrainMap.GetPixel (x, y).r) == 1)
 				{
 					id = 1;
 					openCells.Add (new Vector2 (x, y));	// add to a list of empty cells

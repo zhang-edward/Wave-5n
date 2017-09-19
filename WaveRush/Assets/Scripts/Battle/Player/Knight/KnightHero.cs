@@ -57,7 +57,7 @@ public class KnightHero : PlayerHero {
 	public void RushAbility()
 	{
 		// check cooldown
-		if (!IsCooledDown (0, true, HandleSwipe))
+		if (!CheckIfCooledDownNotify (0, true, HandleSwipe))
 			return;
 		ResetCooldownTimer (0);
 		rushAbility.Execute();
@@ -68,7 +68,7 @@ public class KnightHero : PlayerHero {
 	public void AreaAttack()
 	{
 		// check cooldown
-		if (!IsCooledDown (1))
+		if (!CheckIfCooledDownNotify (1))
 			return;
 		ResetCooldownTimer (1);
 		areaAttackEffect.SetActive(true);
@@ -184,7 +184,6 @@ public class KnightHero : PlayerHero {
 
 	public void ResetSpecialAbility()
 	{
-		Debug.Log("ResetSpecial");
 		player.input.isInputEnabled = true;
 		damageMultiplier /= 1.5f;
 		specialAbilityCharge = 0;

@@ -76,7 +76,7 @@ public class TutorialScene2Manager : MonoBehaviour
 
 		gm.OnSceneLoaded -= Init;   // Remove the listener because it is only run once per scene
 
-		/*yield return new WaitForSeconds(TASK_DELAY_INTERVAL);
+		yield return new WaitForSeconds(TASK_DELAY_INTERVAL);
 		player.input.isInputEnabled = false;
 		// Step 0: Congratulations
 		PlayKnightCharDialogue(0);
@@ -131,7 +131,7 @@ public class TutorialScene2Manager : MonoBehaviour
 		yield return new WaitUntil(() => !dialogueView.dialoguePlaying);
 		cam.StartShake(3.0f, 0.02f, true, true);
 		yield return new WaitForSeconds(3.0f);
-		*/
+
 		// Step 6: Enemies coming, defend the trapped heroes
 		PlayKnightCharDialogue(6);
 		while (dialogueView.dialoguePlaying)
