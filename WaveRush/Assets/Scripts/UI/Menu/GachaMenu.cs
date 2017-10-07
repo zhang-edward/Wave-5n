@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class GachaMenu : MonoBehaviour
 {
 	private GameManager gm;
+	private const int SOULS_GACHA_COST = 5;
 
 	public AcquirePawnsView acquirePawnsView;
 
@@ -15,20 +16,24 @@ public class GachaMenu : MonoBehaviour
 
 	public void TrySoulsGacha()
 	{
+		print("Trying souls gacha");
 		if (gm.saveGame.HasExtraPawns())
 		{
 			gm.DisplayAlert("You have too many heroes! Try fusing or retiring them.");
 		}
 		else
 		{
-			SoulsGacha();
+			if (gm.wallet.TrySpendSouls(SOULS_GACHA_COST))
+				SoulsGacha();
+			else
+				gm.DisplayAlert("Not Enough Souls!");
 		}
 	}
 
 	public void SoulsGacha()
 	{
 		List<Pawn> acquiredPawns = new List<Pawn>();
-		int level = 1;				// The overall level of the gacha (determines the levels of the heroes dropped)
+		int level = 5;				// The overall level of the gacha (determines the levels of the heroes dropped)
 		float spawnChance = 0.5f;	// Initial spawn chance for an additional pawn
 		int numPawnsToGenerate = 1;	// Guaranteed 1 pawn to drop, maximum of 5 pawns to drop
 		for (int i = 0; i < 4; i++)

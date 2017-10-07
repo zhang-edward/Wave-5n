@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using System.Collections;
 
 public class PawnFusionMenu : MonoBehaviour
@@ -13,6 +14,9 @@ public class PawnFusionMenu : MonoBehaviour
 	[Header("Fusion Menu")]
 	public PawnIconStandard resultIcon;
 	public PawnIconStandard fuseMatIcon1, fuseMatIcon2;
+	public TMP_Text moneyCostText;
+	public TMP_Text soulsCostText;
+	public Animator resourceReqAnim;
 	[Header("Highlight Menu")]
 	public GameObject highlightMenu;
 	public Button selectButton, infoButton;
@@ -24,16 +28,20 @@ public class PawnFusionMenu : MonoBehaviour
 		fuseMatIcon1.onClick = (iconData) =>
 		{
 			selectedIcons[0].SetActive(true);
+			fuseMatIcon1.pawnData = null;
 			fuseMatIcon1.gameObject.SetActive(false);
 			numSelected--;
 			UpdatePawnSelectionViewInteractability();
+			UpdateCostText();
 		};
 		fuseMatIcon2.onClick = (iconData) =>
 		{
 			selectedIcons[1].SetActive(true);
+			fuseMatIcon2.pawnData = null;
 			fuseMatIcon2.gameObject.SetActive(false);
 			numSelected--;
 			UpdatePawnSelectionViewInteractability();
+			UpdateCostText();
 		};
 	}
 
@@ -79,6 +87,14 @@ public class PawnFusionMenu : MonoBehaviour
 		pawnSelectionView.GetComponent<CanvasGroup>().interactable = numSelected < 2;
 	}
 
+	private void UpdateCostText()
+	{
+		Pawn pawn1 = fuseMatIcon1.pawnData;
+		Pawn pawn2 = fuseMatIcon2.pawnData;
+		moneyCostText.text = GetFusionCost(pawn1, pawn2).ToString();
+		soulsCostText.text = GetFusionSoulsCost(pawn1, pawn2).ToString();
+	}
+
 	// Called by selectButton (in inspector, in the highlight menu)
 	public void SelectPawnIcon()
 	{
@@ -104,6 +120,7 @@ public class PawnFusionMenu : MonoBehaviour
 		if (numSelected > 2)
 			numSelected = 2;
 		UpdatePawnSelectionViewInteractability();
+		UpdateCostText();
 		//print("numSelected:" + numSelected);
 	}
 
@@ -127,10 +144,11 @@ public class PawnFusionMenu : MonoBehaviour
 
 	public void FusePawns()
 	{
+		GameManager gm = GameManager.instance;
 		SaveGame saveGame = GameManager.instance.saveGame;
 		if (numSelected != 2)
 		{
-			Debug.LogWarning("You must select 2 heroes!");
+			gm.DisplayAlert("You must select 2 heroes!");
 			return;
 		}
 		Pawn pawn1 = selectedIcons[0].GetComponent<PawnIcon>().pawnData;
@@ -140,17 +158,27 @@ public class PawnFusionMenu : MonoBehaviour
 
 		if (CheckCanFusePawns(pawn1, pawn2))
 		{
+			// Add the pawns to the save file
 			Pawn pawn = GetFusedPawn(pawn1, pawn2);
 			saveGame.RemovePawn(pawn1.id);
 			saveGame.RemovePawn(pawn2.id);
 			saveGame.AddPawn(pawn, true, 100);
-			GameManager.instance.AddPawnTimer(pawn.id);
+			gm.AddPawnTimer(pawn.id);
+			// Spend resources
+			bool spentMoney = gm.wallet.TrySpendMoney(GetFusionCost(pawn1, pawn2));
+			bool spentSouls = gm.wallet.TrySpendSouls(GetFusionSoulsCost(pawn1, pawn2));
+			UnityEngine.Assertions.Assert.IsTrue(spentMoney && spentSouls);
+			// Save Game
 			SaveLoad.Save();
+			// Update UI
 			fuseMatIcon1.gameObject.SetActive(false);
+			fuseMatIcon1.pawnData = null;
 			fuseMatIcon2.gameObject.SetActive(false);
+			fuseMatIcon2.pawnData = null;
 			resultIcon.gameObject.SetActive(true);
 			resultIcon.Init(pawn);
 		}
+		UpdateCostText();
 	}
 
 	// NOTE: Order of the condition checks here matters!
@@ -177,7 +205,51 @@ public class PawnFusionMenu : MonoBehaviour
 			gm.DisplayAlert("Heroes must both be at max level to ascend tiers!");
 			return false;
 		}
+		if (!CanAffordFusion(pawn1, pawn2))
+		{
+			resourceReqAnim.CrossFade("Warning", 0);
+			return false;
+		}
 		return true;
+	}
+
+	private bool CanAffordFusion(Pawn pawn1, Pawn pawn2)
+	{
+		Wallet wallet = GameManager.instance.wallet;
+		if (wallet.money < GetFusionCost(pawn1, pawn2) ||
+			wallet.souls < GetFusionSoulsCost(pawn1, pawn2))
+			return false;
+		return true;
+	}
+
+	private int GetFusionCost(Pawn pawn1, Pawn pawn2)
+	{
+		int pawn1Level = 0;
+		int pawn2Level = 0;
+		if (pawn1 != null)
+			pawn1Level = pawn1.level;
+		if (pawn2 != null)
+			pawn2Level = pawn2.level;
+		int cost = ((pawn1Level + pawn2Level) / 2) * 75;
+		return cost;
+	}
+
+	private int GetFusionSoulsCost(Pawn pawn1, Pawn pawn2)
+	{
+		int pawn1Level = 0;
+		int pawn2Level = 0;
+		if (pawn1 != null)
+			pawn1Level = pawn1.level;
+		if (pawn2 != null)
+			pawn2Level = pawn2.level;
+		if (pawn1Level == Pawn.T2_MIN_LEVEL - 1 ||
+		    pawn2Level == Pawn.T2_MIN_LEVEL - 1)
+			return 2;
+		else if (pawn1Level == Pawn.T3_MIN_LEVEL - 1 ||
+		         pawn2Level == Pawn.T2_MIN_LEVEL - 1)
+			return 5;
+		else
+			return 0;
 	}
 
 	private Pawn GetFusedPawn(Pawn pawn1, Pawn pawn2)

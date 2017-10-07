@@ -12,6 +12,11 @@ public class MainMenuScrollView : ScrollViewSnap
 		StartCoroutine(InitAfter1Frame());  // Due to some buggy shit with anchoredPositions in layouts at the start
 	}
 
+	void Start()
+	{
+		SoundManager.instance.PauseMusic();
+	}
+
 	void OnEnable()
 	{
 		OnSelectedContentChanged += StartFadeMusic;
