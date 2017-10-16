@@ -32,6 +32,20 @@ public class DailyHeroRewardButton : MonoBehaviour
 		timerCounter = GameManager.instance.timerCounter;
 		button = GetComponent<Button>();
 		outline = GetComponent<Outline>();
+<<<<<<< HEAD
+=======
+
+		timerCounter = GameManager.instance.timerCounter;
+		saveGame = GameManager.instance.saveGame;
+		currentNumRewards = saveGame.numDailyHeroRewards;
+
+		// If the timer has not been initialized yet (app is opened for the first time)
+		// Since timerCounter is a singleton instance under GameManager, when this scene is reloaded later
+		// after the app has been opened, the timer will already be initialized and therefore InitTimer() will
+		// not be run.
+		if (timerCounter.GetTimer(TIMER_KEY) == null)
+			InitTimer();
+>>>>>>> af6c7c1... Remove large files
 	}
 
 	void Start()
@@ -52,6 +66,7 @@ public class DailyHeroRewardButton : MonoBehaviour
 	{
 		GameManager.instance.OnAppClosed -= SaveTimer;
 		GameManager.instance.OnTimersUpdated -= UpdateRewardsSinceLastLogin;
+		saveGame.numDailyHeroRewards = currentNumRewards;
 	}
 
 	private IEnumerator ButtonPressedRoutine()
@@ -72,8 +87,12 @@ public class DailyHeroRewardButton : MonoBehaviour
 			}
 			heroesRescuedMenu.gameObject.SetActive(true);
 			heroesRescuedMenu.Init(rewards);
+			if (timerCounter.GetTimer(TIMER_KEY).timer <= 0)
+			{
+				timeUntilNextReward = REWARD_INTERVAL;
+				ResetTimer();
+			}
 			currentNumRewards = 0;
-			ResetTimer();
 		}
 		else
 		{
@@ -132,8 +151,16 @@ public class DailyHeroRewardButton : MonoBehaviour
 		if (currentNumRewards > MAX_REWARDS)
 			currentNumRewards = MAX_REWARDS;
 		saveGame.numDailyHeroRewards = currentNumRewards;
+<<<<<<< HEAD
 
 		timeUntilNextReward = timerTime % REWARD_INTERVAL;
+=======
+		// Reset the timer to the appropriate time
+		if (currentNumRewards < MAX_REWARDS)
+			timeUntilNextReward = Mathf.Abs(timerTime) % REWARD_INTERVAL;
+		else
+			timeUntilNextReward = 0;
+>>>>>>> af6c7c1... Remove large files
 		ResetTimer();
 	}
 

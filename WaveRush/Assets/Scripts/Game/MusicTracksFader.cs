@@ -8,7 +8,7 @@ public class MusicTracksFader : MonoBehaviour
 
 	public void StartFadeMusic(int index)
 	{
-		print("switching tracks to " + index);
+//		print("switching tracks to " + index);
 		StopAllCoroutines();
 		for (int i = 0; i < musicSrc.Length; i++)
 		{
@@ -26,7 +26,7 @@ public class MusicTracksFader : MonoBehaviour
 	private IEnumerator FadeMusicRoutine(float targetVolume, int audioSrcIndex)
 	{
 		AudioSource src = musicSrc[audioSrcIndex];
-		print("setting " + src + " to volume " + targetVolume);
+//		print("setting " + src + " to volume " + targetVolume);
 		float initialVolume = src.volume;
 		float finalVolume = targetVolume;
 		float t = 0;

@@ -6239,7 +6239,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   helpButton: {fileID: 453700612}
-  anim: {fileID: 0}
+  anim: {fileID: 453700615}
   dialogueView: {fileID: 1403409571}
   tutorialDialogueSet: {fileID: 11400000, guid: 072bceaf5a7f041f8bfb67824f34d2b3,
     type: 2}
@@ -11044,6 +11044,7 @@ GameObject:
   - component: {fileID: 914318034}
   - component: {fileID: 914318033}
   - component: {fileID: 914318036}
+  - component: {fileID: 914318038}
   m_Layer: 5
   m_Name: HelpButton
   m_TagString: Untagged
@@ -11168,7 +11169,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   helpButton: {fileID: 914318035}
-  anim: {fileID: 0}
+  anim: {fileID: 914318038}
   dialogueView: {fileID: 1403409571}
   tutorialDialogueSet: {fileID: 11400000, guid: 3290b7a007dda4e28b60379a4a6249d9,
     type: 2}
@@ -11178,6 +11179,23 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 914318031}
+--- !u!95 &914318038
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 914318031}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 435a182860dd64f73a1fd6ded3a421b9, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!1 &924375887
 GameObject:
   m_ObjectHideFlags: 0
@@ -20533,6 +20551,7 @@ GameObject:
   - component: {fileID: 1698397945}
   - component: {fileID: 1698397944}
   - component: {fileID: 1698397943}
+  - component: {fileID: 1698397948}
   m_Layer: 5
   m_Name: HelpButton
   m_TagString: Untagged
@@ -20653,9 +20672,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1698397941}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e0d9def4c81e3423aa5a4fa040c6efa2, type: 3}
+  m_Script: {fileID: 11500000, guid: 31e1db96ef228463db3e79a37b07415b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+<<<<<<< HEAD
 <<<<<<< HEAD
   dialogueView: {fileID: 0}
   helpButton: {fileID: 1698397945}
@@ -20663,12 +20683,35 @@ MonoBehaviour:
     type: 2}
 =======
 >>>>>>> 9ac300e... Add music fader and main menu music tracks
+=======
+  helpButton: {fileID: 1698397945}
+  anim: {fileID: 1698397948}
+  dialogueView: {fileID: 1403409571}
+  tutorialDialogueSet: {fileID: 0}
+>>>>>>> af6c7c1... Remove large files
 --- !u!222 &1698397947
 CanvasRenderer:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1698397941}
+--- !u!95 &1698397948
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1698397941}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 435a182860dd64f73a1fd6ded3a421b9, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!1 &1708709742
 GameObject:
   m_ObjectHideFlags: 0

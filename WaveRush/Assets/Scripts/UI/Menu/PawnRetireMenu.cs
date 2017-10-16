@@ -19,6 +19,7 @@ public class PawnRetireMenu : MonoBehaviour
 		pawnSelectionView.Refresh();
 		foreach (PawnIcon pawnIcon in pawnSelectionView.pawnIcons)
 		{
+			DeselectIcon(pawnIcon);
 			PawnIconStandard icon = (PawnIconStandard)pawnIcon;
 			icon.onClick = (iconData) =>
 			{

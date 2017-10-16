@@ -19,7 +19,7 @@ public class TutorialDialogueViewButton : MonoBehaviour
 	void Awake()
 	{
 		helpButton.onClick.AddListener(Init);
-		anim.Stop();
+		anim.enabled = false;
 	}
 
 	public void Init()
