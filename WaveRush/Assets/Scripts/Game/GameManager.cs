@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour {
 
 	public const string BattleSceneName = "Game";
 
-	public const float LOADING_SCREEN_SPEED = 12; 
+	public const float LOADING_SCREEN_SPEED = 8; 
 	public static GameManager instance;
 
 	[Header("Realtime Timer")]
@@ -199,7 +199,7 @@ public class GameManager : MonoBehaviour {
 			yield return null;
 		StartCoroutine(DeactivateLoadingScreen ());
 
-		while (loadingOverlay.color.a > 0.5f)
+		while (loadingOverlay.color.a > 0.05f)
 			yield return null;
 		// On finished scene loading
 		if (OnSceneLoaded != null)

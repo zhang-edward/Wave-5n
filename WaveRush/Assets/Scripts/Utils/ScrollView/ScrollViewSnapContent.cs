@@ -26,7 +26,6 @@ public class ScrollViewSnapContent : MonoBehaviour {
 
 	protected virtual void OnClick()
 	{
-		print("FUCK!");
 		scrollView.SetSelectedContentIndex (index);
 	}
 }

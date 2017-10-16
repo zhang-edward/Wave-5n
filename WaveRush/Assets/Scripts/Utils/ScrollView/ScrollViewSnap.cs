@@ -23,6 +23,8 @@ public class ScrollViewSnap : MonoBehaviour {
 	public delegate void SelectedContentChanged ();
 	public event SelectedContentChanged OnSelectedContentChanged;
 
+	private Coroutine LerpToContentRoutine;
+
 
 	void Awake()
 	{
@@ -89,8 +91,9 @@ public class ScrollViewSnap : MonoBehaviour {
 
 	private void StartLerpToContent()
 	{
-		StopAllCoroutines ();
-		StartCoroutine (LerpToContent ());
+		if (LerpToContentRoutine != null)
+			StopCoroutine (LerpToContentRoutine);
+		LerpToContentRoutine = StartCoroutine (LerpToContent ());
 	}
 
 	private IEnumerator LerpToContent()
@@ -123,12 +126,16 @@ public class ScrollViewSnap : MonoBehaviour {
 
 	public void SetSelectedContentIndex(int index)
 	{
+		if (selectedContentIndex == index)
+			return;
 		selectedContentIndex = index;
+		//print("setting selected content index");
 		EndDrag ();
 	}
 
 	public void ScrollRight()
 	{
+		//print("scrolling right");
 		selectedContentIndex++;
 		if (selectedContentIndex >= content.Count)
 			selectedContentIndex = content.Count - 1;
@@ -137,6 +144,7 @@ public class ScrollViewSnap : MonoBehaviour {
 
 	public void ScrollLeft()
 	{
+		//print("scrolling left");
 		selectedContentIndex--;
 		if (selectedContentIndex <= 0)
 			selectedContentIndex = 0;

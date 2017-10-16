@@ -5,10 +5,21 @@ using System.Collections;
 public class MainMenuScrollView : ScrollViewSnap
 {
 	public CanvasScaler canvasScaler;
+	public MusicTracksFader musicTracksFader;
 
 	void Awake()
 	{
-		StartCoroutine(InitAfter1Frame());	// Due to some buggy shit with anchoredPositions in layouts at the start
+		StartCoroutine(InitAfter1Frame());  // Due to some buggy shit with anchoredPositions in layouts at the start
+	}
+
+	void OnEnable()
+	{
+		OnSelectedContentChanged += StartFadeMusic;
+	}
+
+	private void StartFadeMusic()
+	{
+		musicTracksFader.StartFadeMusic(selectedContentIndex);
 	}
 
 	protected override void InitContent()
