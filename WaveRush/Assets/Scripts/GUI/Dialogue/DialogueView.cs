@@ -4,17 +4,21 @@ using System.Collections;
 
 public class DialogueView : MonoBehaviour
 {
-	public SimpleAnimationPlayerImage speakerImage;
-	public Text nameText;
-	public ScrollingText dialogueText;
-	public bool dialoguePlaying;
+	public SimpleAnimationPlayerImage speakerImage;		// Image for the character that is speaking
+	public Text nameText;								// Text containing the name of the character
+	public ScrollingText dialogueText;					// Text containing the dialogue
+	public bool dialoguePlaying;						// Whether or not this dialogue is currently in progress
+
+	public delegate void DialogueLifecycleEvent();
+	public event DialogueLifecycleEvent onDialogueFinished;
 	
-	private DialogueSet[] dialogueSets;
-	private bool proceed;
+	private DialogueSet[] dialogueSets;					// Dialogue data
+	private bool proceed;								// 
 	private bool willAcceptScreenPress;
 
 	public void Init(params DialogueSet[] dialogueSets)
 	{
+		willAcceptScreenPress = false;
 		this.dialogueSets = dialogueSets;
 		gameObject.SetActive(true);
 		StartCoroutine(DisplayDialogues());
@@ -22,6 +26,7 @@ public class DialogueView : MonoBehaviour
 
 	private IEnumerator DisplayDialogues()
 	{
+		dialogueText.text = "";
 		dialoguePlaying = true;
 
 		// Initialize view
@@ -62,6 +67,8 @@ public class DialogueView : MonoBehaviour
 		}
 		gameObject.SetActive(false);
 		dialoguePlaying = false;
+		if (onDialogueFinished != null)
+			onDialogueFinished();
 	}
 
 	private void UpdateDialogue(DialogueSet.Dialogue d, DialogueSet dSet)

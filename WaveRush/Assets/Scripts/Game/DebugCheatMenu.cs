@@ -101,4 +101,8 @@ public class DebugCheatMenu : MonoBehaviour
 		player.hero.powerUpManager.AddPowerUp(name);
 	}
 
+	public void ResetTutorials()
+	{
+		TutorialDialogueViewButton.ResetTutorials();
+	}
 }

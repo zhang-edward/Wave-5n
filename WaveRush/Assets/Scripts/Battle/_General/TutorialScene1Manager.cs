@@ -18,6 +18,8 @@ public class TutorialScene1Manager : MonoBehaviour
 	public AbilityIconBar abilitiesBar;
 	public TutorialTaskView tutorialTaskView;
 	public Animator controlPointer;
+	public TMPro.TMP_Text ouchText;
+	private int ouchTextIndex;
 	[Header("Data")]
 	public DialogueSet[] dialogueSteps;
 	public GameObject trainingDummyPrefab;
@@ -138,6 +140,9 @@ public class TutorialScene1Manager : MonoBehaviour
 
 		tutorialTaskView.Init("Destroy the dummy", false);
 		GameObject trainingDummy = enemyManager.SpawnEnemy(trainingDummyPrefab, map.CenterPosition);
+		Enemy trainingDummyEnemy = trainingDummy.GetComponentInChildren<Enemy>();
+		trainingDummyEnemy.OnEnemyDamaged += SetOuchText;
+		ouchText.GetComponent<UIFollow>().Init(trainingDummy.transform, trainingDummyEnemy.healthBarOffset * 1.5f);
 		while (trainingDummy.gameObject.activeInHierarchy)
 			yield return null;
 		tutorialTaskView.SetCompleted(true);
@@ -225,5 +230,36 @@ public class TutorialScene1Manager : MonoBehaviour
 	private void IncrementParryCount()
 	{
 		parryCount++;
+	}
+
+	private void SetOuchText(int num)
+	{
+		CancelInvoke();
+		ouchText.gameObject.SetActive(true);
+		ouchTextIndex++;
+		switch (ouchTextIndex)
+		{
+			case (1):
+				ouchText.text = "Ow";
+				break;
+			case (2):
+				ouchText.text = "Ouch";
+				break;
+			case (3):
+				ouchText.text = "Please stop";
+				break;
+			case (4):
+				ouchText.text = "I'm in so much pain";
+				break;
+			case (5):
+				ouchText.text = "I see the light";
+				break;
+		}
+		Invoke("DisableOuchText", 2.0f);
+	}
+
+	private void DisableOuchText()
+	{
+		ouchText.gameObject.SetActive(false);
 	}
 }

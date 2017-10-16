@@ -32,11 +32,12 @@ public class BattleSceneManager : MonoBehaviour
 		else if (instance != this)
 			Destroy(this.gameObject);
 
+		// Do BattleSceneManager-specific initialization which has no external dependencies
 		acquiredPawns = new List<Pawn>();
 		gm = GameManager.instance;
-		gm.OnSceneLoaded += Init;
 		enemyManager.OnEndPortalSpawned += () => { StartCoroutine(StageCompleteRoutine()); };
 		player.OnPlayerDied += UpdateData;
+		gm.OnSceneLoaded += Init;
 	}
 
 	// Init main game environment

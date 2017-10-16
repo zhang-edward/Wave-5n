@@ -134,8 +134,8 @@ public class EnemyManager : MonoBehaviour {
 
     private int DifficultyCurveEquation()
     {
-		float t = -difficultyCurve + 18;	// 18 = max slope part of curve (difficulty increases most on this wave)
-		float answer = 20 / (1 + Mathf.Pow(1.2f, t)) + 5;
+		float t = -difficultyCurve + 10;	// 18 = max slope part of curve (difficulty increases most on this wave)
+		float answer = 20 / (1 + Mathf.Pow(1.2f, t)) + 10;
 		return Mathf.RoundToInt(answer);
     }
 
