@@ -204,14 +204,14 @@ public class TutorialScene2Manager : MonoBehaviour
 		);
 		gui.GameOverUI(data);
 
-		gm.saveGame.RemovePawn(gm.selectedPawn.id);
+		gm.saveGame.pawnWallet.RemovePawn(gm.selectedPawn.id);
 		List<Pawn> acquiredPawns = new List<Pawn>();
 		for (int i = 0; i < 6; i ++)
 		{
 			Pawn pawn = new Pawn(HeroType.Knight);
 			pawn.level = 0;
 			acquiredPawns.Add(pawn);
-			gm.saveGame.AddPawn(pawn);
+			gm.saveGame.pawnWallet.AddPawn(pawn);
 		}
 		gui.heroesRescuedMenu.Init(acquiredPawns);
 

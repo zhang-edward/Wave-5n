@@ -17,7 +17,7 @@ public class GachaMenu : MonoBehaviour
 	public void TrySoulsGacha()
 	{
 		print("Trying souls gacha");
-		if (gm.saveGame.HasExtraPawns())
+		if (gm.saveGame.pawnWallet.HasExtraPawns())
 		{
 			gm.DisplayAlert("You have too many heroes! Try fusing or retiring them.");
 		}
@@ -56,7 +56,7 @@ public class GachaMenu : MonoBehaviour
 		}
 		foreach(Pawn pawn in acquiredPawns)
 		{
-			gm.saveGame.AddPawn(pawn);
+			gm.saveGame.pawnWallet.AddPawn(pawn);
 		}
 		acquirePawnsView.Init(acquiredPawns.ToArray());
 	}

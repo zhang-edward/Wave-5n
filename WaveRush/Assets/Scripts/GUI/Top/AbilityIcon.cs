@@ -45,7 +45,6 @@ public class AbilityIcon : MonoBehaviour
 			highlight.SetActive(!highlight.activeInHierarchy);
 			yield return new WaitForSeconds(interval);
 		}
-		highlight.SetActive(false);
 	}
 }
 

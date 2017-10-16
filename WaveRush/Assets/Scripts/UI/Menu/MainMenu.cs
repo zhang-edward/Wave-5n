@@ -22,7 +22,7 @@ public class MainMenu : MonoBehaviour
 
 	public void GoToBattle()
 	{
-		if (gm.saveGame.HasExtraPawns())
+		if (gm.saveGame.pawnWallet.HasExtraPawns())
 		{
 			gm.DisplayAlert("You have too many heroes! Try fusing or retiring them.");	
 		}

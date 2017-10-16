@@ -32,8 +32,6 @@ public class DailyHeroRewardButton : MonoBehaviour
 		timerCounter = GameManager.instance.timerCounter;
 		button = GetComponent<Button>();
 		outline = GetComponent<Outline>();
-<<<<<<< HEAD
-=======
 
 		timerCounter = GameManager.instance.timerCounter;
 		saveGame = GameManager.instance.saveGame;
@@ -45,12 +43,8 @@ public class DailyHeroRewardButton : MonoBehaviour
 		// not be run.
 		if (timerCounter.GetTimer(TIMER_KEY) == null)
 			InitTimer();
-<<<<<<< HEAD
->>>>>>> af6c7c1... Remove large files
-=======
 		else if (timerCounter.GetTimer(TIMER_KEY).timer <= 0 && currentNumRewards < MAX_REWARDS)
 			UpdateRewardsSinceLastLogin();
->>>>>>> ce9177b... Fix various small bugs in MainMenu
 	}
 
 	void Start()
@@ -60,12 +54,7 @@ public class DailyHeroRewardButton : MonoBehaviour
 
 	void OnEnable()
 	{
-<<<<<<< HEAD
 		saveGame = GameManager.instance.saveGame;
-		InitTimer();
-=======
-		print("OnEnable");
->>>>>>> ce9177b... Fix various small bugs in MainMenu
 		GameManager.instance.OnAppClosed += SaveTimer;
 		GameManager.instance.OnTimersUpdated += UpdateRewardsSinceLastLogin;
 	}
@@ -91,7 +80,7 @@ public class DailyHeroRewardButton : MonoBehaviour
 			for (int i = 0; i < currentNumRewards; i++)
 			{
 				Pawn p = PawnGenerator.GenerateCrystalDrop(1);
-				saveGame.AddPawn(p);
+				saveGame.pawnWallet.AddPawn(p);
 				rewards.Add(p);
 			}
 			heroesRescuedMenu.gameObject.SetActive(true);
@@ -155,30 +144,20 @@ public class DailyHeroRewardButton : MonoBehaviour
 		//print("Time since last logged in: " + timerTime);
 		if (timerTime > 0 || currentNumRewards >= MAX_REWARDS)
 			return;
-<<<<<<< HEAD
-		int numRewardsSinceLastLogin = Mathf.FloorToInt(Mathf.Abs(timerTime) / REWARD_INTERVAL);
-		currentNumRewards += numRewardsSinceLastLogin;
-		if (currentNumRewards > MAX_REWARDS)
-			currentNumRewards = MAX_REWARDS;
-=======
 		// The number of rewards since the last login time is equal to the negative time divided by the reward interval
 		// since that is the amount of time that has surpassed
 		int numRewardsSinceLastLogin = Mathf.FloorToInt(Mathf.Abs(timerTime) / REWARD_INTERVAL) + 1;
 		// Set the number of rewards to the specified cap, if it was surpassed
 		currentNumRewards = Mathf.Min(currentNumRewards + numRewardsSinceLastLogin, MAX_REWARDS);
 		// Save the data in the saveGame
->>>>>>> ce9177b... Fix various small bugs in MainMenu
 		saveGame.numDailyHeroRewards = currentNumRewards;
-<<<<<<< HEAD
 
 		timeUntilNextReward = timerTime % REWARD_INTERVAL;
-=======
 		// Reset the timer to the appropriate time
 		if (currentNumRewards < MAX_REWARDS)
 			timeUntilNextReward = REWARD_INTERVAL - Mathf.Abs(timerTime) % REWARD_INTERVAL;
 		else
 			timeUntilNextReward = 0;
->>>>>>> af6c7c1... Remove large files
 		ResetTimer();
 	}
 

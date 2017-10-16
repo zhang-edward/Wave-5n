@@ -9,6 +9,8 @@ public class MainMenuSceneManager : MonoBehaviour
 	public static MainMenuSceneManager instance;
 	private GameManager gm;
 
+	public TutorialDialogueManager tutorialDialogueManager;
+
 	void Awake()
 	{
 		// Make this a singleton
@@ -17,11 +19,11 @@ public class MainMenuSceneManager : MonoBehaviour
 		else if (instance != this)
 			Destroy(this.gameObject);
 
+		gm = GameManager.instance;
 		gm.OnSceneLoaded += Init;
 	}
 
 	private void Init()
 	{
-		
 	}
 }

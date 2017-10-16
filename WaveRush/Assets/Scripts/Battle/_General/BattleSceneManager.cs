@@ -125,10 +125,10 @@ public class BattleSceneManager : MonoBehaviour
 			}
 		}
 
-		gm.saveGame.RemovePawn(gm.selectedPawn.id);
+		gm.saveGame.pawnWallet.RemovePawn(gm.selectedPawn.id);
 		foreach(Pawn pawn in acquiredPawns)
 		{
-			gm.saveGame.AddPawn(pawn);
+			gm.saveGame.pawnWallet.AddPawn(pawn);
 		}
 
 		int enemiesDefeated = enemyManager.enemiesKilled;

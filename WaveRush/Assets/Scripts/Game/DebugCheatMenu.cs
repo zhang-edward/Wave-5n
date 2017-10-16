@@ -56,7 +56,7 @@ public class DebugCheatMenu : MonoBehaviour
 		//HeroType type = (HeroType)Enum.GetValues(typeof(HeroType)).GetValue(UnityEngine.Random.Range(1, numHeroTypes));
 		Pawn pawn = new Pawn(HeroType.Knight);
 		pawn.level = Convert.ToInt32(level);
-		GameManager.instance.saveGame.AddPawn(pawn);
+		GameManager.instance.saveGame.pawnWallet.AddPawn(pawn);
 		SaveLoad.Save();
 	}
 

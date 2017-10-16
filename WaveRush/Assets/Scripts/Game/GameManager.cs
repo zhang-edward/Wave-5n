@@ -59,14 +59,14 @@ public class GameManager : MonoBehaviour {
 
 	public void InitPawnTimers()
 	{
-		foreach (Pawn pawn in saveGame.pawns)
+		foreach (Pawn pawn in saveGame.pawnWallet.pawns)
 		{
 			if (pawn != null && pawn.unlockTime > 0)
 			{
 				timerCounter.SetTimer(pawn.GetTimerID(), pawn.unlockTime);
 			}
 		}
-		foreach (Pawn pawn in saveGame.extraPawns)
+		foreach (Pawn pawn in saveGame.pawnWallet.extraPawns)
 		{
 			if (pawn != null && pawn.unlockTime > 0)
 			{
@@ -78,7 +78,7 @@ public class GameManager : MonoBehaviour {
 
 	public void AddPawnTimer(int id)
 	{
-		Pawn pawn = saveGame.GetPawn(id);
+		Pawn pawn = saveGame.pawnWallet.GetPawn(id);
 		timerCounter.SetTimer(pawn.GetTimerID(), pawn.unlockTime);
 	}
 
@@ -130,7 +130,7 @@ public class GameManager : MonoBehaviour {
 
 	private void SavePawnTimers()
 	{
-		foreach (Pawn pawn in saveGame.pawns)
+		foreach (Pawn pawn in saveGame.pawnWallet.pawns)
 		{
 			if (pawn != null && pawn.unlockTime > 0)
 			{
@@ -138,7 +138,7 @@ public class GameManager : MonoBehaviour {
 				pawn.unlockTime = timer.timer;
 			}
 		}
-		foreach (Pawn pawn in saveGame.extraPawns)
+		foreach (Pawn pawn in saveGame.pawnWallet.extraPawns)
 		{
 			if (pawn != null && pawn.unlockTime > 0)
 			{

@@ -19,8 +19,8 @@ public class PawnSelectionView : MonoBehaviour
 
 	public void Refresh()
 	{
-		Pawn[] pawnsArr = GameManager.instance.saveGame.pawns;  // retrieve the correct data
-		Pawn[] extraPawnsArr = GameManager.instance.saveGame.extraPawns;
+		Pawn[] pawnsArr = GameManager.instance.saveGame.pawnWallet.pawns;  // retrieve the correct data
+		Pawn[] extraPawnsArr = GameManager.instance.saveGame.pawnWallet.extraPawns;
 		pawns = new Pawn[pawnsArr.Length + extraPawnsArr.Length];
 		for (int i = 0; i < pawnsArr.Length; i ++)
 		{

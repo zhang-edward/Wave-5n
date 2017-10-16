@@ -145,7 +145,7 @@ public class PawnFusionMenu : MonoBehaviour
 	public void FusePawns()
 	{
 		GameManager gm = GameManager.instance;
-		SaveGame saveGame = GameManager.instance.saveGame;
+		PawnWallet pawnWallet = GameManager.instance.saveGame.pawnWallet;
 		if (numSelected != 2)
 		{
 			gm.DisplayAlert("You must select 2 heroes!");
@@ -160,9 +160,9 @@ public class PawnFusionMenu : MonoBehaviour
 		{
 			// Add the pawns to the save file
 			Pawn pawn = GetFusedPawn(pawn1, pawn2);
-			saveGame.RemovePawn(pawn1.id);
-			saveGame.RemovePawn(pawn2.id);
-			saveGame.AddPawn(pawn, true, 100);
+			pawnWallet.RemovePawn(pawn1.id);
+			pawnWallet.RemovePawn(pawn2.id);
+			pawnWallet.AddPawn(pawn, true, 100);
 			gm.AddPawnTimer(pawn.id);
 			// Spend resources
 			bool spentMoney = gm.wallet.TrySpendMoney(GetFusionCost(pawn1, pawn2));
