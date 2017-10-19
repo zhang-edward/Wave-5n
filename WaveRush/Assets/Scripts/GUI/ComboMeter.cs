@@ -12,6 +12,11 @@ public class ComboMeter : MonoBehaviour {
 
 	private int oldCombo;
 
+ 	void Awake()
+	{
+		player = GetComponentInParent<GUIManager>().player;
+	}
+
 	void OnEnable()
 	{
 		player.OnPlayerInitialized += Init;

@@ -12,7 +12,7 @@ public class TutorialDialogueManager : MonoBehaviour
 	{
 		if (!PlayerPrefs.HasKey(GetPlayerPrefsKey(tutorialIndex)))
 		{
-			dialogueView.Init(dialogueSets);
+			dialogueView.Init(dialogueSets[0]);
 		}
 	}
 

@@ -21,6 +21,7 @@ public class SpecialAbilityIcon : MonoBehaviour
 
 	void Awake()
 	{
+		player = GetComponentInParent<GUIManager>().player;
 		icon = GetComponent<Image>();
 	}
 

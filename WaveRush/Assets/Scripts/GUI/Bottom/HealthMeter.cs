@@ -3,12 +3,13 @@ using System.Collections;
 
 public class HealthMeter : MonoBehaviour {
 
-	public Player player;
+	private Player player;
 	public UIHeart[] healthIndicators;
 	public GameObject healthIndicatorPrefab;
 
-	void Awake()
+	private void Awake()
 	{
+		player = GetComponentInParent<GUIManager>().player;
 	}
 
 	void OnEnable()

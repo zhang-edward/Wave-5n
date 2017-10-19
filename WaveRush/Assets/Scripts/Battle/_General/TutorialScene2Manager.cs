@@ -21,7 +21,6 @@ public class TutorialScene2Manager : MonoBehaviour
 	public DialogueView dialogueView;
 	public AbilityIconBar abilitiesBar;
 	public ComboMeter comboMeter;
-	public Animator controlPointer;
 	public GameObject resourcesView;
 	[Header("Data")]
 	public DialogueSet[] dialogueSteps;
@@ -76,6 +75,7 @@ public class TutorialScene2Manager : MonoBehaviour
 
 		gm.OnSceneLoaded -= Init;   // Remove the listener because it is only run once per scene
 
+		/*
 		yield return new WaitForSeconds(TASK_DELAY_INTERVAL);
 		player.input.isInputEnabled = false;
 		// Step 0: Congratulations
@@ -141,7 +141,7 @@ public class TutorialScene2Manager : MonoBehaviour
 		}
 		cam.StartShake(1.5f, 0.01f, true, true);
 		yield return new WaitForSeconds(1.0f);
-		player.input.isInputEnabled = true;
+		player.input.isInputEnabled = true;*/
 
 		cam.StartFlashColor(Color.white, 1, 0, 0, 1);
 		knightCharacter.gameObject.SetActive(false);
@@ -159,36 +159,14 @@ public class TutorialScene2Manager : MonoBehaviour
 		gui.DisplayIntroMessage();
 		yield return new WaitForSeconds(2.0f);
 		enemyManager.SetWave(1);
-		print("listening for tutorial");
+		/*print("listening for tutorial");
 		knight.OnSpecialAbilityCharged += SpecialAbilityTutorial_1;
 		knight.OnKnightSpecialCharge += SpecialAbilityTutorial_2;
 		knight.onSpecialAbility += DeactivateSpecialAbilityTutorial;
 		yield return new WaitUntil(() => activatedSpecialAbilityTutorial);
 		knight.OnSpecialAbilityCharged -= SpecialAbilityTutorial_1;
 		knight.OnKnightSpecialCharge -= SpecialAbilityTutorial_2;
-		knight.onSpecialAbility -= DeactivateSpecialAbilityTutorial;
-	}
-
-	private void SpecialAbilityTutorial_1()
-	{
-		print("doing tutorial pt 1");
-		controlPointer.gameObject.SetActive(true);
-		controlPointer.transform.parent.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 56, 0);
-		controlPointer.CrossFade("Tap", 0f);
-	}
-
-	private void SpecialAbilityTutorial_2()
-	{
-		print("doing tutorial pt 2");
-		controlPointer.gameObject.SetActive(true);
-		controlPointer.transform.parent.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, -8, 0);
-		controlPointer.CrossFade("Swipe", 0f);
-	}
-
-	private void DeactivateSpecialAbilityTutorial()
-	{
-		controlPointer.gameObject.SetActive(false);
-		activatedSpecialAbilityTutorial = true;
+		knight.onSpecialAbility -= DeactivateSpecialAbilityTutorial;*/
 	}
 
 	private void UpdateData()

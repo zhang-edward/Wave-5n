@@ -13,8 +13,9 @@ public class AbilityIconBar : MonoBehaviour {
 	private bool playerWasInitialized = false;
 	private PlayerHero hero;
 
-	void Awake()
+	private void Awake()
 	{
+		player = GetComponentInParent<GUIManager>().player;
 	}
 
 	void OnEnable()

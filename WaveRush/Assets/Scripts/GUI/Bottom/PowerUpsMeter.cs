@@ -4,11 +4,16 @@ using UnityEngine;
 
 public class PowerUpsMeter : MonoBehaviour {
 
-	public Player player;
+	private Player player;
 	private HeroPowerUpManager powerUpHolder;
 
 	public List<PowerUpIcon> powerUpIcons = new List<PowerUpIcon>();
 	public GameObject powerUpIconPrefab;
+
+	private void Awake()
+	{
+		player = GetComponentInParent<GUIManager>().player;
+	}
 
 	void OnEnable()
 	{
