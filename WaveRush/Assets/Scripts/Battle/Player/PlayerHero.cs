@@ -161,7 +161,7 @@ public abstract class PlayerHero : MonoBehaviour {
 
 	private void ResetInvincibility()
 	{
-		print("player is not invincible");
+//		print("player is not invincible");
 		player.isInvincible = false;
 	}
 

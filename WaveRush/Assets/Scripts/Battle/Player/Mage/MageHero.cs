@@ -69,11 +69,11 @@ public class MageHero : PlayerHero {
 		specialRushAbility.speed /= 2;
 		specialRushAbility.Execute();
 		player.input.isInputEnabled = false;
-		Debug.Log("Doing this!");
+//		Debug.Log("Doing this!");
 		yield return new WaitForSeconds(specialRushAbility.duration - 0.1f);
 		specialRushAbility.speed *= 2;
 		SetAnimationSet(defaultAnim);
-		Debug.Log("Doing this now!");
+//		Debug.Log("Doing this now!");
 		yield return new WaitForSeconds(0.1f);
 		player.input.isInputEnabled = true;
 	}

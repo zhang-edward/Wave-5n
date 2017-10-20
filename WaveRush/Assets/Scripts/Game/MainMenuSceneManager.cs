@@ -25,10 +25,19 @@ public class MainMenuSceneManager : MonoBehaviour
 
 	private void Init()
 	{
-		if (gm.saveGame.latestUnlockedSeriesIndex == 0 && 
-		    gm.saveGame.latestUnlockedStageIndex == 0)
+		if (CheckStage(0, 0))
 		{
 			tutorialDialogueManager.Init(0);
 		}
+		if (CheckStage(0, 1))
+		{
+			
+		}
+	}
+
+	private bool CheckStage(int series, int stage)
+	{
+		return (gm.saveGame.latestUnlockedSeriesIndex == series &&
+				gm.saveGame.latestUnlockedStageIndex == stage);
 	}
 }

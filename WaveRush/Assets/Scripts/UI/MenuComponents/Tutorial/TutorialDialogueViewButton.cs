@@ -27,14 +27,14 @@ public class TutorialDialogueViewButton : MonoBehaviour
 	{
 		// If this key does not exist in PlayerPrefs, add it (should be run when the game is first initialized)
 		if (!TUTORIAL_KEYS.Contains(PLAYERPREFS_KEY))
+		{
+			print("Added key " + PLAYERPREFS_KEY);
 			TUTORIAL_KEYS.Add(PLAYERPREFS_KEY);
-		// If the player has not seen this tutorial dialogue yet, autoplay it
-		if (!PlayerPrefs.HasKey(PLAYERPREFS_KEY) || PlayerPrefs.GetInt(PLAYERPREFS_KEY) != 1)
-		{
-			dialogueView.onDialogueFinished += SetBounceIdleOff;
 		}
-		else
+		// If the player has seen this dialogue, set animation accordingly
+		if (PlayerPrefs.HasKey(PLAYERPREFS_KEY) && PlayerPrefs.GetInt(PLAYERPREFS_KEY) == 1)
 		{
+			//print("Nobounce for " + PLAYERPREFS_KEY);
 			anim.CrossFade("nobounce", 0);
 		}
 	}
@@ -47,10 +47,13 @@ public class TutorialDialogueViewButton : MonoBehaviour
 	public void Init()
 	{
 		dialogueView.Init(tutorialDialogueSet);
+		if (!PlayerPrefs.HasKey(PLAYERPREFS_KEY) || PlayerPrefs.GetInt(PLAYERPREFS_KEY) != 1)
+			dialogueView.onDialogueFinished += SetBounceIdleOff;
 	}
 
 	private void SetBounceIdleOff()
 	{
+		//print("dialogue finished nobounce: " + PLAYERPREFS_KEY);
 		anim.CrossFade("nobounce", 0);
 		PlayerPrefs.SetInt(PLAYERPREFS_KEY, 1);
 	}

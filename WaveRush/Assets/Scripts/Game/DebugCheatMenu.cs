@@ -104,5 +104,6 @@ public class DebugCheatMenu : MonoBehaviour
 	public void ResetTutorials()
 	{
 		TutorialDialogueViewButton.ResetTutorials();
+		MainMenuSceneManager.instance.tutorialDialogueManager.ResetTutorials();
 	}
 }

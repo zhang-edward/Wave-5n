@@ -9,7 +9,7 @@ public class Wallet
 
 	public bool TrySpendMoney(int amt)
 	{
-		if (money > amt)
+		if (money >= amt)
 		{
 			money -= amt;
 			return true;
@@ -19,7 +19,7 @@ public class Wallet
 
 	public bool TrySpendSouls(int amt)
 	{
-		if (souls > amt)
+		if (souls >= amt)
 		{
 			souls -= amt;
 			return true;

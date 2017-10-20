@@ -43,7 +43,9 @@ public class DailyHeroRewardButton : MonoBehaviour
 		// not be run.
 		if (timerCounter.GetTimer(TIMER_KEY) == null)
 			InitTimer();
-		else if (timerCounter.GetTimer(TIMER_KEY).timer <= 0 && currentNumRewards < MAX_REWARDS)
+		else
+			timerView.timer = timerCounter.GetTimer(TIMER_KEY);
+		if (timerCounter.GetTimer(TIMER_KEY).timer <= 0 && currentNumRewards < MAX_REWARDS)
 			UpdateRewardsSinceLastLogin();
 	}
 
@@ -140,6 +142,7 @@ public class DailyHeroRewardButton : MonoBehaviour
 
 	private void UpdateRewardsSinceLastLogin()
 	{
+		print("Update Rewards");
 		float timerTime = timerCounter.GetTimer(TIMER_KEY).timer;
 		//print("Time since last logged in: " + timerTime);
 		if (timerTime > 0 || currentNumRewards >= MAX_REWARDS)
