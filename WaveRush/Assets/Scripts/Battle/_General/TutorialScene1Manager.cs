@@ -175,7 +175,7 @@ public class TutorialScene1Manager : MonoBehaviour
 		PlayKnightCharDialogue(3);
 		yield return new WaitUntil(() => !dialogueView.dialoguePlaying);
 
-		enemyManager.SpawnEndPortal();
+		//enemyManager.SpawnEndPortal();
 	}
 
 	private void PlayKnightCharDialogue(int step)

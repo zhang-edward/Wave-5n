@@ -8,14 +8,22 @@ public class TutorialDialogueManager : MonoBehaviour
 	public DialogueView dialogueView;
 	public DialogueSet[] tutorialDialogueSets;
 
-	public void Init(int tutorialIndex)
+	public bool Init(int tutorialIndex)
 	{
-		if (!PlayerPrefs.HasKey(GetPlayerPrefsKey(tutorialIndex)) || 
-		    PlayerPrefs.GetInt(GetPlayerPrefsKey(tutorialIndex)) == 0)
+		if (!HasPlayedTutorial(tutorialIndex))
 		{
-			dialogueView.Init(tutorialDialogueSets[0]);
+			Debug.Log("Playing:" + tutorialIndex);
+			dialogueView.Init(tutorialDialogueSets[tutorialIndex]);
 			PlayerPrefs.SetInt(GetPlayerPrefsKey(tutorialIndex), 1);
+			return true;
 		}
+		return false;
+	}
+
+	public bool HasPlayedTutorial(int tutorialIndex)
+	{
+		return PlayerPrefs.HasKey(GetPlayerPrefsKey(tutorialIndex)) &&
+               PlayerPrefs.GetInt(GetPlayerPrefsKey(tutorialIndex)) != 0;
 	}
 
 	public string GetPlayerPrefsKey(int tutorialIndex)

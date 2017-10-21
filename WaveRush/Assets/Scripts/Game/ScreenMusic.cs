@@ -10,4 +10,9 @@ public class ScreenMusic : MonoBehaviour {
 	{
 		SoundManager.instance.PlayMusicLoop (musicLoop, intro);
 	}
+
+	private void OnDisable()
+	{
+		SoundManager.instance.PauseMusic();
+	}
 }

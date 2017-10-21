@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -14,12 +15,16 @@ public class BattleSceneManager : MonoBehaviour
 	public EnemyManager enemyManager;
 	public Player player;
 	public GUIManager gui;
+	[Header("UI")]
 	public DialogueView dialogueView;
-	public HoldDownButton sacrificeButton;
+	public GameObject stageCompleteOptions;
+	public HoldDownButton exitButton;
+	public HoldDownButton continueButton;
 
 	public List<Pawn> acquiredPawns { get; private set; }   // pawns acquired this session
 	public int moneyEarned { get; private set; } 			// money earned in this session
 	public int soulsEarned { get; private set; }            // souls earned in this session
+	public bool leaveOrContinueOptionOpen { get; private set; }
 
 	public delegate void BattleSceneEvent();
 	public BattleSceneEvent OnStageCompleted;
@@ -35,7 +40,7 @@ public class BattleSceneManager : MonoBehaviour
 		// Do BattleSceneManager-specific initialization which has no external dependencies
 		acquiredPawns = new List<Pawn>();
 		gm = GameManager.instance;
-		enemyManager.OnEndPortalSpawned += () => { StartCoroutine(StageCompleteRoutine()); };
+		enemyManager.OnStageCompleted += () => { StartCoroutine(StageCompleteRoutine()); };
 		player.OnPlayerDied += UpdateData;
 		gm.OnSceneLoaded += Init;
 	}
@@ -77,14 +82,19 @@ public class BattleSceneManager : MonoBehaviour
 
 	private IEnumerator StageCompleteRoutine()
 	{
-		while (enemyManager.endPortalEnemy != null)
+		enemyManager.paused = true;
+		// Delay before showing end dialogue
+		yield return new WaitForSecondsRealtime(1.0f);
+		stageCompleteOptions.SetActive(true);
+		leaveOrContinueOptionOpen = true;
+		while (leaveOrContinueOptionOpen)
 		{
-			sacrificeButton.gameObject.SetActive(true);
-			if (sacrificeButton.maxed)
+			player.input.isInputEnabled = false;
+			//player.LeaveEffect();
+			if (exitButton.maxed)
 			{
-				player.SacrificeEffect();
-				enemyManager.endPortalEnemy.Unlock();
-				CameraControl.instance.SetFocus(enemyManager.endPortalEnemy.transform);
+				/*//enemyManager.endPortalEnemy.Unlock();
+				//CameraControl.instance.SetFocus(enemyManager.endPortalEnemy.transform);
 				// Wait for unlock animation to finish
 				yield return new WaitForEndOfFrame();       // wait for the animation state to update before continuing
 				while (enemyManager.endPortalEnemy.anim.GetCurrentAnimatorStateInfo(0).IsName("Unlock"))
@@ -93,13 +103,21 @@ public class BattleSceneManager : MonoBehaviour
 					yield return null;
 				}
 				yield return new WaitForSeconds(0.5f);
-				sacrificeButton.SetLocked(true);
+				//exitButton.SetLocked(true);*/
+				player.transform.parent.gameObject.SetActive(false);
+				stageCompleteOptions.GetComponent<UIAnimatorControl>().AnimateOut();
 				UpdateData();
+			}
+			if (continueButton.maxed)
+			{
+				leaveOrContinueOptionOpen = false;
 			}
 			yield return null;
 		}
-		sacrificeButton.gameObject.SetActive(false);
-		print("No sacrifice detected; continue");
+		player.input.isInputEnabled = true;
+		enemyManager.paused = false;
+		stageCompleteOptions.GetComponent<UIAnimatorControl>().AnimateOut();
+		//print("No sacrifice detected; continue");
 	}
 
 	private void UpdateData()

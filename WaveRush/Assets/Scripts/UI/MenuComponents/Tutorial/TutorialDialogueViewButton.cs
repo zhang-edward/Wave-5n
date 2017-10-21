@@ -28,7 +28,7 @@ public class TutorialDialogueViewButton : MonoBehaviour
 		// If this key does not exist in PlayerPrefs, add it (should be run when the game is first initialized)
 		if (!TUTORIAL_KEYS.Contains(PLAYERPREFS_KEY))
 		{
-			print("Added key " + PLAYERPREFS_KEY);
+//			print("Added key " + PLAYERPREFS_KEY);
 			TUTORIAL_KEYS.Add(PLAYERPREFS_KEY);
 		}
 		// If the player has seen this dialogue, set animation accordingly

@@ -36,6 +36,7 @@ public class IncrementingText : MonoBehaviour {
 		doneUpdating = false;
 		//Debug.Log ("moneyEarned: " + text.text);
 		int incrementer = int.Parse(text.text.ToString());
+		int audioCounter = 0;
 		while (incrementer != numberToReport)
 		{
 			if (Mathf.Abs(numberToReport - incrementer) > 50)
@@ -46,7 +47,8 @@ public class IncrementingText : MonoBehaviour {
 			{
 				incrementer += ((int)Mathf.Sign (numberToReport - incrementer));
 			}
-			if (audioSrc != null)
+			audioCounter++;
+			if (audioSrc != null && audioCounter % 3 == 0)
 				PlayAudio(incrementer);
 			text.text = incrementer.ToString ();
 

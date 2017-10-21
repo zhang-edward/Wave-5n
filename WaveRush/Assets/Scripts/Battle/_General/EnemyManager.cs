@@ -31,9 +31,9 @@ public class EnemyManager : MonoBehaviour {
 	public GameObject soulPickup;
 	public GameObject trappedHeroPrefab;
 	public GameObject endPortalPrefab;
-
-	public EndPortal endPortalEnemy { get; private set; }
-
+	//public EndPortal endPortalEnemy { get; private set; }
+	[Header("EnemyManager Properties")]
+	public bool paused;
 	public int waveNumber { get; private set; }
 	private int difficultyCurve = 0;	// number to determine the number of enemies to spawn
 	//public ShopNPC shopNPC;
@@ -63,6 +63,8 @@ public class EnemyManager : MonoBehaviour {
 		yield return new WaitForSeconds(2f);
 		for (;;)
 		{
+			while (paused)
+				yield return null;
 			// all enemies dead
 			if (NumAliveEnemies() <= 0 && hasBossSpawned)
 			{
@@ -73,10 +75,11 @@ public class EnemyManager : MonoBehaviour {
 						print("Stage completed");
 						if (OnStageCompleted != null)
 							OnStageCompleted();
-						yield return new WaitForSeconds(2.0f);
-						SpawnEndPortal();
-						while (endPortalEnemy != null)
+						while (paused)
 							yield return null;
+						//SpawnEndPortal();
+						/*while (endPortalEnemy != null)
+							yield return null;*/
 					}
 					else
 					{
@@ -145,12 +148,12 @@ public class EnemyManager : MonoBehaviour {
 		Invoke ("SpawnBoss", bossSpawnDelay);
 	}
 
-	public void SpawnEndPortal()
+	/*public void SpawnEndPortal()
 	{
 		endPortalEnemy = SpawnEnemy(endPortalPrefab, map.CenterPosition).GetComponentInChildren<EndPortal>();
 		if (OnEndPortalSpawned != null)
 			OnEndPortalSpawned();
-	}
+	}*/
 
 	public GameObject SpawnEnemy(GameObject prefab, Vector3 pos)
 	{

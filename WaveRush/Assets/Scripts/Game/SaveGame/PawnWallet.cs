@@ -32,7 +32,7 @@ public class PawnWallet
 					GameManager.instance.timerCounter.SetTimer(pawn.GetTimerID(), unlockTime);
 				}
 				pawns[i] = pawn;
-				Debug.Log("New Pawn:" + pawn + " with unlock time:" + unlockTime);
+//				Debug.Log("New Pawn:" + pawn + " with unlock time:" + unlockTime);
 				return true;
 			}
 		}
@@ -96,8 +96,8 @@ public class PawnWallet
 					{
 						i++;
 					}
-					Debug.Log("Extra pawn filled slot" + i + ":" + extraPawns[i]);
-					AddPawn(extraPawns[i]);
+					Debug.Log("Extra pawn filled slot " + id + ":" + extraPawns[i]);
+					AddPawn(extraPawns[i], false, extraPawns[i].unlockTime);
 					extraPawns[i] = null;
 				}
 				return true;
@@ -128,6 +128,16 @@ public class PawnWallet
 		for (int i = 0; i < extraPawns.Length; i++)
 		{
 			if (extraPawns[i] != null)
+				return true;
+		}
+		return false;
+	}
+
+	public bool HasPawns()
+	{
+		for (int i = 0; i < pawns.Length; i ++)
+		{
+			if (pawns[i] != null)
 				return true;
 		}
 		return false;

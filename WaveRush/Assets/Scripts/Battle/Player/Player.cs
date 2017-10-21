@@ -255,9 +255,9 @@ public class Player : MonoBehaviour, IDamageable
 			OnPlayerDied();
 	}
 
-	public void SacrificeEffect()
+	public void LeaveEffect()
 	{
-		StartCoroutine(SacrificeRoutine());
+		//StartCoroutine(SacrificeRoutine());
 	}
 
 	private IEnumerator SacrificeRoutine()

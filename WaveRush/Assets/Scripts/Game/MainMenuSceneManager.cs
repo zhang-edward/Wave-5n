@@ -10,6 +10,9 @@ public class MainMenuSceneManager : MonoBehaviour
 	private GameManager gm;
 
 	public TutorialDialogueManager tutorialDialogueManager;
+	public MainMenu mainMenu;
+
+	public GameObject heroManagementOptions1;
 
 	void Awake()
 	{
@@ -23,15 +26,32 @@ public class MainMenuSceneManager : MonoBehaviour
 		gm.OnSceneLoaded += Init;
 	}
 
+	void OnEnable()
+	{
+		mainMenu.OnGoToBattle += GoToBattle;
+	}
+
+	void OnDisable()
+	{
+		mainMenu.OnGoToBattle -= GoToBattle;
+	}
+
 	private void Init()
 	{
 		if (CheckStage(0, 0))
 		{
 			tutorialDialogueManager.Init(0);
-		}
-		if (CheckStage(0, 1))
-		{
-			
+			if (!tutorialDialogueManager.HasPlayedTutorial(1))
+			{
+				print("player has not played 1");
+				mainMenu.OnGoToBattle -= GoToBattle;
+				mainMenu.OnGoToBattle += () =>
+				{
+					print("button pressed");
+					tutorialDialogueManager.Init(1);
+					tutorialDialogueManager.dialogueView.onDialogueFinished += GoToBattle;
+				};
+			}
 		}
 	}
 
@@ -39,5 +59,10 @@ public class MainMenuSceneManager : MonoBehaviour
 	{
 		return (gm.saveGame.latestUnlockedSeriesIndex == series &&
 				gm.saveGame.latestUnlockedStageIndex == stage);
+	}
+
+	void GoToBattle()
+	{
+		GameManager.instance.GoToScene("HeroSelect");
 	}
 }

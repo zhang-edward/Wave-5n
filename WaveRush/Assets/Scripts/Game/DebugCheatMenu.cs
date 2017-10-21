@@ -39,9 +39,9 @@ public class DebugCheatMenu : MonoBehaviour
 		gm.wallet.SetMoneyDebug(Convert.ToInt32(amt));
 	}
 
-	public void SetMoneyEarnedDebugString(string amt)
+	public void SetSoulsDebugString(string amt)
 	{
-		gm.wallet.SetMoneyDebug(Convert.ToInt32(amt));
+		gm.wallet.SetSoulsDebug(Convert.ToInt32(amt));
 	}
 
 	public void SaveGame()

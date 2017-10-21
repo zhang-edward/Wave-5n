@@ -90,6 +90,7 @@ public class PawnIconStandard : PawnIcon
 		{
 			if (pawnData.level == 0)
 			{
+				heroStars.enabled = false;
 				heroStars.color = Color.clear;
 			}
 			else
@@ -98,6 +99,7 @@ public class PawnIconStandard : PawnIcon
 				if (index > 8)
 					index = 8;
 				heroStars.color = Color.white;
+				heroStars.enabled = true;
 				heroStars.sprite = starSprites[index];
 			}
 		}
