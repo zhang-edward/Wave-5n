@@ -11,8 +11,10 @@ public class MainMenuSceneManager : MonoBehaviour
 
 	public TutorialDialogueManager tutorialDialogueManager;
 	public MainMenu mainMenu;
+	public DailyHeroRewardButton dailyHeroRewardButton;
 
-	public GameObject heroManagementOptions1;
+	public GameObject[] lockedObjects0;
+	public GameObject[] lockedObjects1;
 
 	void Awake()
 	{
@@ -40,7 +42,12 @@ public class MainMenuSceneManager : MonoBehaviour
 	{
 		if (CheckStage(0, 0))
 		{
+			// Disable all locked objects
+			foreach (GameObject o in lockedObjects0)
+				o.SetActive(false);
+			// Play tutorial dialogue
 			tutorialDialogueManager.Init(0);
+			// Play a tutorial dialogue upon pressing the "Battle" button
 			if (!tutorialDialogueManager.HasPlayedTutorial(1))
 			{
 				print("player has not played 1");
@@ -53,6 +60,31 @@ public class MainMenuSceneManager : MonoBehaviour
 				};
 			}
 		}
+		if (CheckStage(0, 1))
+		{
+			// Disable all locked objects
+			foreach (GameObject o in lockedObjects1)
+				o.SetActive(false);
+			// Play tutorial dialogue
+			tutorialDialogueManager.Init(2);
+			// Play a tutorial dialogue upon pressing the Daily Hero Reward button
+			if (PlayerPrefs.HasKey(DailyHeroRewardButton.TUTORIAL_KEY))
+			{
+				dailyHeroRewardButton.EnableTutorial();
+				PlayerPrefs.SetInt(DailyHeroRewardButton.TUTORIAL_KEY, 1);
+			}
+		}
+		if (CheckStage(0, 2))
+		{
+			// Disable all locked objects
+			foreach (GameObject o in lockedObjects1)
+				o.SetActive(false);
+		}
+		if (CheckStage(0, 3))
+		{
+			tutorialDialogueManager.Init(3);
+		}
+		gm.OnSceneLoaded -= Init; // Since this only runs once per scene
 	}
 
 	private bool CheckStage(int series, int stage)

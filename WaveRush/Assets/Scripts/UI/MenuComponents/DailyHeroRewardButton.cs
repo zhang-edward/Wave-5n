@@ -10,6 +10,8 @@ public class DailyHeroRewardButton : MonoBehaviour
 	private const string TIMER_KEY = "DailyHeroRewardButton";
 	private const float REWARD_INTERVAL = 100f;
 	private const int MAX_REWARDS = 3;
+	public const string TUTORIAL_KEY = "DailyHeroRewardButton_Tutorial";
+
 
 	[Header("Set from Inspector")]
 	public DialogueView dialogueView;
@@ -17,24 +19,30 @@ public class DailyHeroRewardButton : MonoBehaviour
 	[Header("Set in Prefab")]
 	public TimerView timerView;
 	public TMP_Text numRewardsText;
-	public DialogueSet dialogueSuccess, dialogueFailure;
+	public DialogueSet dialogueSuccess, dialogueFailure, dialogueTutorial;
 
+	// Properties
 	private RealtimeTimerCounter timerCounter;
 	private SaveGame saveGame;
 	private float timeUntilNextReward;
 	private int currentNumRewards;
-	private Outline outline;
 
+	// UI
 	private Button button;
+
+	public delegate void OnClickedButton();
+	public event OnClickedButton OnClick;
 
 	void Awake()
 	{
+		// Initialization
 		timerCounter = GameManager.instance.timerCounter;
 		button = GetComponent<Button>();
-		outline = GetComponent<Outline>();
 
+		// Get references from GameManager
 		timerCounter = GameManager.instance.timerCounter;
 		saveGame = GameManager.instance.saveGame;
+		// Get data from saveGame
 		currentNumRewards = saveGame.numDailyHeroRewards;
 
 		// If the timer has not been initialized yet (app is opened for the first time)
@@ -51,7 +59,10 @@ public class DailyHeroRewardButton : MonoBehaviour
 
 	void Start()
 	{
-		button.onClick.AddListener(() => StartCoroutine(ButtonPressedRoutine()));
+		button.onClick.AddListener(() => {
+			if (OnClick != null)
+				OnClick();
+		});
 	}
 
 	void OnEnable()
@@ -59,6 +70,7 @@ public class DailyHeroRewardButton : MonoBehaviour
 		saveGame = GameManager.instance.saveGame;
 		GameManager.instance.OnAppClosed += SaveTimer;
 		GameManager.instance.OnTimersUpdated += UpdateRewardsSinceLastLogin;
+		OnClick += ClaimRewards;
 	}
 
 
@@ -67,17 +79,43 @@ public class DailyHeroRewardButton : MonoBehaviour
 		GameManager.instance.OnAppClosed -= SaveTimer;
 		GameManager.instance.OnTimersUpdated -= UpdateRewardsSinceLastLogin;
 		saveGame.numDailyHeroRewards = currentNumRewards;
+		OnClick -= ClaimRewards;
 	}
 
-	private IEnumerator ButtonPressedRoutine()
+	public void ClaimRewards()
+	{
+		StartCoroutine(ClaimRewardsRoutine());
+	}
+
+	public void EnableTutorial()
+	{
+		OnClick -= ClaimRewards;
+		OnClick += PlayTutorial;
+	}
+
+	public void DisableTutorial()
+	{
+		OnClick -= PlayTutorial;
+		OnClick += ClaimRewards;
+		dialogueView.onDialogueFinished -= DisableTutorial;
+	}
+
+	private void PlayTutorial()
+	{
+		dialogueView.Init(dialogueTutorial);
+		dialogueView.onDialogueFinished += DisableTutorial;
+	}
+
+	private IEnumerator ClaimRewardsRoutine()
 	{
 		if (currentNumRewards > 0)
 		{
 			heroesRescuedMenu.Reset();
+			// Play a dialogue and wait for it to finish
 			dialogueView.Init(dialogueSuccess);
 			while (dialogueView.dialoguePlaying)
 				yield return null;
-
+			// Get rewards
 			List<Pawn> rewards = new List<Pawn>();
 			for (int i = 0; i < currentNumRewards; i++)
 			{
@@ -85,8 +123,10 @@ public class DailyHeroRewardButton : MonoBehaviour
 				saveGame.pawnWallet.AddPawn(p);
 				rewards.Add(p);
 			}
+			// View the rewards in the heroesRescuedMenu
 			heroesRescuedMenu.gameObject.SetActive(true);
 			heroesRescuedMenu.Init(rewards);
+			// Reset the timer and the number of rewards
 			if (timerCounter.GetTimer(TIMER_KEY).timer <= 0)
 			{
 				timeUntilNextReward = REWARD_INTERVAL;

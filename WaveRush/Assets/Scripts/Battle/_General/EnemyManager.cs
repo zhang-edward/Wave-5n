@@ -35,6 +35,7 @@ public class EnemyManager : MonoBehaviour {
 	[Header("EnemyManager Properties")]
 	public bool paused;
 	public int waveNumber { get; private set; }
+	public bool isStageComplete { get; private set; }
 	private int difficultyCurve = 0;	// number to determine the number of enemies to spawn
 	//public ShopNPC shopNPC;
 
@@ -75,8 +76,11 @@ public class EnemyManager : MonoBehaviour {
 						print("Stage completed");
 						if (OnStageCompleted != null)
 							OnStageCompleted();
+						isStageComplete = true;
 						while (paused)
 							yield return null;
+
+						isStageComplete = false;
 						//SpawnEndPortal();
 						/*while (endPortalEnemy != null)
 							yield return null;*/
@@ -235,11 +239,6 @@ public class EnemyManager : MonoBehaviour {
 				break;
 			}
 		}
-	}
-
-	public bool IsStageComplete()
-	{
-		return waveNumber > stageData.goalWave;
 	}
 
 	/* ==========

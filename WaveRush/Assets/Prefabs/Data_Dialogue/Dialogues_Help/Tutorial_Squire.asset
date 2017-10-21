@@ -9,11 +9,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 37d5d23629e1248d888af00e3959de60, type: 3}
-  m_Name: Squire_GetReward_Fail
+  m_Name: Tutorial_Squire
   m_EditorClassIdentifier: 
   character: {fileID: 11400000, guid: 3b1cc0754ef1a4220ad51cbbd66af8f3, type: 2}
   dialogues:
   - expression: Default
-    text: I don't have any new recruits for you right now. My apologies!
-  - expression: Default
-    text: Come back later, I'll find some worthy heroes for your party.
+    text: Good day! I'm your squire, at your service!
+  - expression: 
+    text: I will periodically <color=yellow>recruit new heroes</color> for you!
+  - expression: 
+    text: Check back every so often to officially incorporate them into your party!
+  - expression: 
+    text: Thank you for your attention. I will faithfully carry out my duties!!

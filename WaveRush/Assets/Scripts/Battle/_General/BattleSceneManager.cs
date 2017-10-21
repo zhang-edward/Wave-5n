@@ -133,7 +133,7 @@ public class BattleSceneManager : MonoBehaviour
 		);
 		gui.GameOverUI(data);
 
-		if (enemyManager.IsStageComplete())
+		if (enemyManager.isStageComplete)
 		{
 			if (OnStageCompleted != null)
 				OnStageCompleted();

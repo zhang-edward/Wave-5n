@@ -198,12 +198,12 @@ public class GameManager : MonoBehaviour {
 		while (!async.isDone)
 			yield return null;
 		StartCoroutine(DeactivateLoadingScreen ());
-
-		while (loadingOverlay.color.a > 0.05f)
-			yield return null;
 		// On finished scene loading
 		if (OnSceneLoaded != null)
 			OnSceneLoaded();
+
+		while (loadingOverlay.color.a > 0.05f)
+			yield return null;
 	}
 
 	// ==========
