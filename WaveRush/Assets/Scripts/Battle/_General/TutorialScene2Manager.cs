@@ -74,7 +74,6 @@ public class TutorialScene2Manager : MonoBehaviour
 
 		gm.OnSceneLoaded -= Init;   // Remove the listener because it is only run once per scene
 
-		/*
 		yield return new WaitForSeconds(TASK_DELAY_INTERVAL);
 		player.input.isInputEnabled = false;
 		// Step 0: Congratulations
@@ -140,7 +139,7 @@ public class TutorialScene2Manager : MonoBehaviour
 		}
 		cam.StartShake(1.5f, 0.01f, true, true);
 		yield return new WaitForSeconds(1.0f);
-		player.input.isInputEnabled = true;*/
+		player.input.isInputEnabled = true;
 
 		cam.StartFlashColor(Color.white, 1, 0, 0, 1);
 		knightCharacter.gameObject.SetActive(false);
@@ -158,14 +157,6 @@ public class TutorialScene2Manager : MonoBehaviour
 		gui.DisplayIntroMessage();
 		yield return new WaitForSeconds(2.0f);
 		enemyManager.SetWave(1);
-		/*print("listening for tutorial");
-		knight.OnSpecialAbilityCharged += SpecialAbilityTutorial_1;
-		knight.OnKnightSpecialCharge += SpecialAbilityTutorial_2;
-		knight.onSpecialAbility += DeactivateSpecialAbilityTutorial;
-		yield return new WaitUntil(() => activatedSpecialAbilityTutorial);
-		knight.OnSpecialAbilityCharged -= SpecialAbilityTutorial_1;
-		knight.OnKnightSpecialCharge -= SpecialAbilityTutorial_2;
-		knight.onSpecialAbility -= DeactivateSpecialAbilityTutorial;*/
 	}
 
 	private void UpdateData()
@@ -197,6 +188,7 @@ public class TutorialScene2Manager : MonoBehaviour
 		int maxCombo = player.hero.maxCombo;
 
 		gm.UpdateScores(enemiesDefeated, wavesSurvived, maxCombo);
+		PlayerPrefs.SetInt(SaveGame.TUTORIAL_COMPLETE_KEY, 1);
 	}
 
 	private void PlayKnightCharDialogue(int step)

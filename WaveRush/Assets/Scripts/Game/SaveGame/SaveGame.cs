@@ -5,7 +5,8 @@ using UnityEngine;
 [Serializable]
 public class SaveGame
 {
-//	public const int INITIAL_PAWN_CAPACITY = 20;
+	//	public const int INITIAL_PAWN_CAPACITY = 20;
+	public const string TUTORIAL_COMPLETE_KEY = "TutorialComplete";
 
 	public HeroSaveData[] heroData;
 	[Serializable]
