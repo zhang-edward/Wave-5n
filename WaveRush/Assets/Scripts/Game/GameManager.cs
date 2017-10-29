@@ -82,11 +82,6 @@ public class GameManager : MonoBehaviour {
 		timerCounter.SetTimer(pawn.GetTimerID(), pawn.unlockTime);
 	}
 
-	public void ScheduleSimple()
-	{
-		Assets.SimpleAndroidNotifications.NotificationManager.Send(System.TimeSpan.FromSeconds(5), "Simple notification", "Customize icon and color", new Color(1, 0.3f, 0.15f));
-	}
-
 	void Start()
 	{
 		if (OnSceneLoaded != null)

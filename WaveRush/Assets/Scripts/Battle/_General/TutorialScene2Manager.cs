@@ -28,7 +28,6 @@ public class TutorialScene2Manager : MonoBehaviour
 	public StageData tutorialStageData;
 	public MapType mapType;
 
-	private bool activatedSpecialAbilityTutorial;
 	private KnightHero knight;
 
 	void Awake()
