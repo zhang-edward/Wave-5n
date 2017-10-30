@@ -174,8 +174,9 @@ public class TutorialScene1Manager : MonoBehaviour
 		// Step 3: Finish tutorial
 		PlayKnightCharDialogue(3);
 		yield return new WaitUntil(() => !dialogueView.dialoguePlaying);
+		yield return new WaitForSeconds(1.0f);
 
-		//enemyManager.SpawnEndPortal();
+		GameManager.instance.GoToScene("Tutorial2");
 	}
 
 	private void PlayKnightCharDialogue(int step)
@@ -252,7 +253,10 @@ public class TutorialScene1Manager : MonoBehaviour
 				ouchText.text = "I'm in so much pain";
 				break;
 			case (5):
-				ouchText.text = "I see the light";
+				ouchText.text = "The light";
+				break;
+			case (6):
+				ouchText.text = "I see the light...";
 				break;
 		}
 		Invoke("DisableOuchText", 2.0f);

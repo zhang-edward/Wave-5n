@@ -93,20 +93,10 @@ public class BattleSceneManager : MonoBehaviour
 			//player.LeaveEffect();
 			if (exitButton.maxed)
 			{
-				/*//enemyManager.endPortalEnemy.Unlock();
-				//CameraControl.instance.SetFocus(enemyManager.endPortalEnemy.transform);
-				// Wait for unlock animation to finish
-				yield return new WaitForEndOfFrame();       // wait for the animation state to update before continuing
-				while (enemyManager.endPortalEnemy.anim.GetCurrentAnimatorStateInfo(0).IsName("Unlock"))
-				{
-					print("Playing animation");
-					yield return null;
-				}
-				yield return new WaitForSeconds(0.5f);
-				//exitButton.SetLocked(true);*/
 				player.transform.parent.gameObject.SetActive(false);
 				stageCompleteOptions.GetComponent<UIAnimatorControl>().AnimateOut();
 				UpdateData();
+				yield break;
 			}
 			if (continueButton.maxed)
 			{

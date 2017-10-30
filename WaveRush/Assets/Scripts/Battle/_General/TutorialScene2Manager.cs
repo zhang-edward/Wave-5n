@@ -55,7 +55,7 @@ public class TutorialScene2Manager : MonoBehaviour
 
 	private void Restart()
 	{
-		GameManager.instance.LoadScene("Tutorial2");
+		GameManager.instance.GoToScene("Tutorial2");
 	}
 
 	private IEnumerator TutorialScene()

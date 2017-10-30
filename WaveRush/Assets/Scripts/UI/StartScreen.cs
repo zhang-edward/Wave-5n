@@ -3,15 +3,16 @@ using System.Collections;
 
 public class StartScreen : MonoBehaviour
 {
-	void UserPressedScreen()
+	public void UserPressedScreen()
 	{
+		print("User pressed screen");
 		if (PlayerPrefs.GetInt(SaveGame.TUTORIAL_COMPLETE_KEY) != 1)
 		{
-			GameManager.instance.LoadScene("TutorialScene1");
+			GameManager.instance.GoToScene("Tutorial1", 0.1f);
 		}
 		else
 		{
-			GameManager.instance.LoadScene("MainMenu");
+			GameManager.instance.GoToScene("MainMenu");
 		}
 	}
 }

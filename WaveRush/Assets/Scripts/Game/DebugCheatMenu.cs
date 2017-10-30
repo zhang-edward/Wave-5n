@@ -21,7 +21,8 @@ public class DebugCheatMenu : MonoBehaviour
 
 	void UpdateDebugMenuOptions()
 	{
-		bool isBattleSceneOpen = SceneManager.GetActiveScene().name.Equals(GameManager.BattleSceneName);
+		bool isBattleSceneOpen = SceneManager.GetActiveScene().name.Equals(GameManager.BattleSceneName) ||
+		                                     SceneManager.GetActiveScene().name.Equals("Tutorial2");
 		menuSceneDebugOptions.SetActive(!isBattleSceneOpen);
 		battleSceneDebugOptions.SetActive(isBattleSceneOpen);
 		if (isBattleSceneOpen)

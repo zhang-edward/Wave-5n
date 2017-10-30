@@ -173,15 +173,15 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
-	public void GoToScene(string sceneName)
+	public void GoToScene(string sceneName, float fadeInSpeed = 1f)
 	{
 		//didInitializeGameScene = false;
 		Time.timeScale = 1;
-		StartCoroutine (LoadScene(sceneName));
+		StartCoroutine (LoadScene(sceneName, fadeInSpeed));
 		ObjectPooler.objectPoolers.Clear ();
 	}
 
-	public IEnumerator LoadScene(string scene)
+	private IEnumerator LoadScene(string scene, float fadeInSpeed)
 	{
 		//Debug.Log ("Loading scene");
 		StartCoroutine(ActivateLoadingScreen ());
@@ -192,7 +192,7 @@ public class GameManager : MonoBehaviour {
 
 		while (!async.isDone)
 			yield return null;
-		StartCoroutine(DeactivateLoadingScreen ());
+		StartCoroutine(DeactivateLoadingScreen (fadeInSpeed));
 		// On finished scene loading
 		if (OnSceneLoaded != null)
 			OnSceneLoaded();
@@ -301,14 +301,14 @@ public class GameManager : MonoBehaviour {
 		loadingOverlay.color = finalColor;
 	}
 
-	private IEnumerator DeactivateLoadingScreen()
+	private IEnumerator DeactivateLoadingScreen(float fadeInSpeed)
 	{
 		Color initialColor = Color.black;
 		Color finalColor = Color.clear;
 		float t = 0;
 		while (loadingOverlay.color.a > 0.05f)
 		{
-			loadingOverlay.color = Color.Lerp (initialColor, finalColor, t * LOADING_SCREEN_SPEED);
+			loadingOverlay.color = Color.Lerp (initialColor, finalColor, t * LOADING_SCREEN_SPEED * fadeInSpeed);
 			t += Time.deltaTime;
 			yield return null;
 		}
