@@ -55,6 +55,7 @@ public class GameManager : MonoBehaviour {
 		SaveLoad.Load ();
 		InitPawnTimers();
 		questManager.Init();
+		loadingOverlay.gameObject.SetActive(false);
 	}
 
 	public void InitPawnTimers()
@@ -154,25 +155,6 @@ public class GameManager : MonoBehaviour {
 		SaveLoad.Save();
 	}
 
-	private IEnumerator FPS()
-	{
-		string fps;
-		for (;;)
-		{
-			// Capture frame-per-second
-			int lastFrameCount = Time.frameCount;
-			float lastTime = Time.realtimeSinceStartup;
-			yield return new WaitForSeconds(1.0f);
-			float timeSpan = Time.realtimeSinceStartup - lastTime;
-			int frameCount = Time.frameCount - lastFrameCount;
-
-			// Display it
-
-			fps = string.Format("FPS: {0}", Mathf.RoundToInt(frameCount / timeSpan));
-			fpsDisplay.text = fps;
-		}
-	}
-
 	public void GoToScene(string sceneName, float fadeInSpeed = 1f)
 	{
 		//didInitializeGameScene = false;
@@ -193,6 +175,7 @@ public class GameManager : MonoBehaviour {
 		while (!async.isDone)
 			yield return null;
 		StartCoroutine(DeactivateLoadingScreen (fadeInSpeed));
+
 		// On finished scene loading
 		if (OnSceneLoaded != null)
 			OnSceneLoaded();
@@ -289,6 +272,7 @@ public class GameManager : MonoBehaviour {
 
 	private IEnumerator ActivateLoadingScreen()
 	{
+		loadingOverlay.gameObject.SetActive(true);
 		Color initialColor = Color.clear;
 		Color finalColor = Color.black;
 		float t = 0;
@@ -313,6 +297,7 @@ public class GameManager : MonoBehaviour {
 			yield return null;
 		}
 		loadingOverlay.color = finalColor;
+		loadingOverlay.gameObject.SetActive(false);
 	}
 
 	// ==========
@@ -352,5 +337,27 @@ public class GameManager : MonoBehaviour {
 	{
 		debugText.SetColor (Color.white);
 		debugText.Display (new MessageText.Message(message, 1, 0, 2f, 1f, Color.white));
+	}
+
+	/// <summary>
+	/// FPS counter
+	/// </summary>
+	private IEnumerator FPS()
+	{
+		string fps;
+		for (;;)
+		{
+			// Capture frame-per-second
+			int lastFrameCount = Time.frameCount;
+			float lastTime = Time.realtimeSinceStartup;
+			yield return new WaitForSeconds(1.0f);
+			float timeSpan = Time.realtimeSinceStartup - lastTime;
+			int frameCount = Time.frameCount - lastFrameCount;
+
+			// Display it
+
+			fps = string.Format("FPS: {0}", Mathf.RoundToInt(frameCount / timeSpan));
+			fpsDisplay.text = fps;
+		}
 	}
 }

@@ -156,7 +156,7 @@ public abstract class PlayerHero : MonoBehaviour {
 		player.OnPlayerTryHit -= Parry;
 		player.input.enabled = true;
 		player.sr.color = Color.white;
-		Invoke("ResetInvincibility", 0.1f);
+		Invoke("ResetInvincibility", 1.0f);
 	}
 
 	private void ResetInvincibility()

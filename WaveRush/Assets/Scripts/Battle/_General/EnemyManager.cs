@@ -38,6 +38,8 @@ public class EnemyManager : MonoBehaviour {
 	public bool isStageComplete { get; private set; }
 	private int difficultyCurve = 0;	// number to determine the number of enemies to spawn
 	//public ShopNPC shopNPC;
+	[Header("Effects")]
+	public SimpleAnimation bossDeathEffect;
 
 	public List<BossEnemy> bosses;
 
@@ -141,8 +143,8 @@ public class EnemyManager : MonoBehaviour {
 
     private int DifficultyCurveEquation()
     {
-		float t = -difficultyCurve + 10;	// 18 = max slope part of curve (difficulty increases most on this wave)
-		float answer = 20 / (1 + Mathf.Pow(1.2f, t)) + 10;
+		float t = -difficultyCurve + stageData.maxDifficultyVelocity;	// Max slope part of curve (difficulty increases most on this wave)
+		float answer = stageData.upperAsymptote / (1 + Mathf.Pow(1.2f, t)) + stageData.lowerAsymptote;
 		return Mathf.RoundToInt(answer);
     }
 

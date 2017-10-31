@@ -16,10 +16,13 @@ public class BattleSceneManager : MonoBehaviour
 	public Player player;
 	public GUIManager gui;
 	[Header("UI")]
+	public LosePanel losePanel;
 	public DialogueView dialogueView;
 	public GameObject stageCompleteOptions;
-	public HoldDownButton exitButton;
-	public HoldDownButton continueButton;
+	public ModalSelectionView stageCompleteModal;
+	public Button exitButton;
+	public Button continueButton;
+	public GameObject pauseButton;
 
 	public List<Pawn> acquiredPawns { get; private set; }   // pawns acquired this session
 	public int moneyEarned { get; private set; } 			// money earned in this session
@@ -87,23 +90,29 @@ public class BattleSceneManager : MonoBehaviour
 		yield return new WaitForSecondsRealtime(1.0f);
 		stageCompleteOptions.SetActive(true);
 		leaveOrContinueOptionOpen = true;
+		// Selection
+		int selection = -1;
+		stageCompleteModal.OnOptionSelected += (s) => {
+			selection = s;
+		};
 		while (leaveOrContinueOptionOpen)
 		{
+			pauseButton.gameObject.SetActive(false);
 			player.input.isInputEnabled = false;
-			//player.LeaveEffect();
-			if (exitButton.maxed)
+			if (selection == 1)
 			{
 				player.transform.parent.gameObject.SetActive(false);
 				stageCompleteOptions.GetComponent<UIAnimatorControl>().AnimateOut();
 				UpdateData();
 				yield break;
 			}
-			if (continueButton.maxed)
+			if (selection == 0)
 			{
 				leaveOrContinueOptionOpen = false;
 			}
 			yield return null;
 		}
+		pauseButton.gameObject.SetActive(true);
 		player.input.isInputEnabled = true;
 		enemyManager.paused = false;
 		stageCompleteOptions.GetComponent<UIAnimatorControl>().AnimateOut();
@@ -121,7 +130,9 @@ public class BattleSceneManager : MonoBehaviour
 			souls: 				gm.wallet.souls,
 			soulsEarned:		soulsEarned
 		);
-		gui.GameOverUI(data);
+
+		gui.gameOverUI.SetActive(true);
+		losePanel.Init(data, acquiredPawns, gm.GetStage(gm.selectedSeriesIndex, gm.selectedStageIndex).stageName);
 
 		if (enemyManager.isStageComplete)
 		{

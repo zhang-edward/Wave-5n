@@ -16,6 +16,10 @@ public class StageData : ScriptableObject
 	public string stageName;
 	public MapType mapType;
 	public int level;
+	[Header("Difficulty Curve Variables")]
+	public float upperAsymptote = 15;					// The maximum number of enemies possible
+	public float lowerAsymptote = 5;					// The minimum number of enemies possible
+	public float maxDifficultyVelocity = 5;				// The wave for which the difficulty is increasing the most
 	[Header("Stage Events")]
 	public int goalWave = 5;                            // what wave the player must reach for the stage to be completed
 	//public int shopWave = 3;
