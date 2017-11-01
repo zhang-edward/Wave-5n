@@ -38,6 +38,9 @@ public class GameManager : MonoBehaviour {
 	public GameStateUpdate OnAppLoaded;
 	public GameStateUpdate OnAppClosed;
 	public GameStateUpdate OnTimersUpdated;
+	public delegate void SaveStateUpdate();
+	public SaveStateUpdate OnHasViewedDictionaryUpdated;
+
 
 
 	void Awake()
@@ -321,6 +324,16 @@ public class GameManager : MonoBehaviour {
 		saveGame = new SaveGame ();
 		LoadSaveFile ();
 		SaveLoad.Save ();
+	}
+
+	public void SetHasPlayerViewedKey(string key, bool hasViewed)
+	{
+		if (!saveGame.hasPlayerViewedDict.ContainsKey(key))
+			saveGame.hasPlayerViewedDict.Add(key, hasViewed);
+		else
+			saveGame.hasPlayerViewedDict[key] = hasViewed;
+		if (OnHasViewedDictionaryUpdated != null)
+			OnHasViewedDictionaryUpdated();
 	}
 
 	public void DisplayAlert(string message)

@@ -177,6 +177,7 @@ public class KnightHero : PlayerHero {
 		onTap = AreaAttack;
 		Time.timeScale = 1f;
 		specialRushAbility.Execute();
+		player.isInvincible = true;
 		player.input.isInputEnabled = false;
 		damageMultiplier *= 1.5f;
 		specialActivated = true;
@@ -187,6 +188,7 @@ public class KnightHero : PlayerHero {
 	public void ResetSpecialAbility()
 	{
 		player.input.isInputEnabled = true;
+		player.isInvincible = false;
 		damageMultiplier /= 1.5f;
 		specialAbilityCharge = 0;
 		specialActivated = false;

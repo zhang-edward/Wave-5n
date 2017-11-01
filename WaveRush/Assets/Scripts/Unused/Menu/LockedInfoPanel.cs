@@ -4,7 +4,7 @@ using System.Collections;
 
 namespace Unused
 {
-	public class LockedInfoPanel : MonoBehaviour
+	/*public class LockedInfoPanel : MonoBehaviour
 	{
 
 		public Text costText;
@@ -29,5 +29,5 @@ namespace Unused
 				chooser.UpdateHeroInfoPanel();
 			}
 		}
-	}
+	}*/
 }

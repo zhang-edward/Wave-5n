@@ -1,6 +1,6 @@
 ﻿namespace Unused
 {
-	using UnityEngine;
+	/*using UnityEngine;
 	using UnityEngine.UI;
 	using System.Collections;
 
@@ -58,6 +58,6 @@
 			LockedInfoPanel lockedHero = currentHeroInfoPrefab.GetComponent<LockedInfoPanel>();
 			lockedHero.Init(heroChooser, heroIcon);
 		}
-	}
+	}*/
 }
 

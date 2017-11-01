@@ -4,7 +4,7 @@ using System.Collections;
 
 namespace Unused
 {
-	public class HeroIcon : ScrollViewSnapContent
+	/*public class HeroIcon : ScrollViewSnapContent
 	{
 
 		public HeroType heroName;
@@ -36,5 +36,5 @@ namespace Unused
 			print("unlocked " + index);
 			SaveLoad.Save();
 		}
-	}
+	}*/
 }

@@ -4,7 +4,7 @@
 	using UnityEngine.UI;
 	using System.Collections;
 
-	public class HeroChooser : MonoBehaviour
+	/*public class HeroChooser : MonoBehaviour
 	{
 		public static string LOCKED = "LOCKED";
 
@@ -85,6 +85,6 @@
 				UpdateHeroInfoPanel();
 			}
 		}
-	}
+	}*/
 }
 

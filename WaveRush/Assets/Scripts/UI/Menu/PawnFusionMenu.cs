@@ -113,6 +113,7 @@ public class PawnFusionMenu : MonoBehaviour
 
 		selectedIcons[index] = highlightedIcon.gameObject;
 		highlightedIcon.gameObject.SetActive(false);
+		highlightedIcon.GetComponent<Button>().interactable = false;
 		highlightMenu.SetActive(false);
 		fuseMatIcon.Init(highlightedIcon.pawnData);
 		fuseMatIcon.gameObject.SetActive(true);

@@ -22,8 +22,6 @@ public abstract class PlayerHero : MonoBehaviour {
 	protected SoundManager sound;
 
 	[Header("Ability Icons")]
-	public Sprite[] icons;
-	public Sprite specialAbilityIcon;
 	public HeroType heroType;
 
 	[Header("PlayerHero Properties")]

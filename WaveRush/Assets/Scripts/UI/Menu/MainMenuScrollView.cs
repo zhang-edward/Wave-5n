@@ -42,10 +42,4 @@ public class MainMenuScrollView : ScrollViewSnap
 		yield return new WaitForEndOfFrame();
 		Init();
 	}
-
-	private void ForcePosition()
-	{
-		float dest = selectedContentIndex * -contentDistance;
-		panel.anchoredPosition = new Vector2(dest, panel.anchoredPosition.y);
-	}
 }

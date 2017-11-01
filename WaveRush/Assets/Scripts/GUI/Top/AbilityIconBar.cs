@@ -41,9 +41,9 @@ public class AbilityIconBar : MonoBehaviour {
 			GameObject o = Instantiate (iconPrefab);
 			o.transform.SetParent (transform, false);
 			abilityIcons [i] = o.GetComponent<AbilityIcon> ();
-			abilityIcons [i].image.sprite = hero.icons [i];
+			abilityIcons [i].image.sprite = DataManager.GetHeroData(player.hero.heroType).abilityIcons [i];
 		}
-		specialAbilityIcon.icon.sprite = hero.specialAbilityIcon;
+		specialAbilityIcon.icon.sprite = DataManager.GetHeroData(player.hero.heroType).specialAbilityIcon;
 		specialAbilityIcon.transform.parent.SetSiblingIndex (0);
 	}
 
