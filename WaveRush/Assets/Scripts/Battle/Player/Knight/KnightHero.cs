@@ -78,7 +78,7 @@ public class KnightHero : PlayerHero {
 		areaAttackAbility.Execute();
 
 		// Reset Ability
-		Invoke ("ResetInvincibility", 1.5f);
+		Invoke ("ResetInvincibility", 3f);
 
 		if (OnKnightShield != null)
 			OnKnightShield();
@@ -126,9 +126,10 @@ public class KnightHero : PlayerHero {
 			ResetInvincibility();
 		Time.timeScale = 0.2f;
 		// Player Properties
-		player.isInvincible = true;
+		onTap = null;
+		//player.isInvincible = true;
 		specialCharging = true;
-		player.input.isInputEnabled = false;
+		//player.input.isInputEnabled = false;
 		// Animation
 		anim.Play("Special");
 		specialChargeAnim.Play();
@@ -137,11 +138,11 @@ public class KnightHero : PlayerHero {
 		// Camera Control
 		CameraControl.instance.SetOverlayColor(Color.black, 0.4f, 1.0f);
 		CameraControl.instance.screenOverlay.sortingLayerName = "TerrainObjects";
-		while (anim.player.isPlaying)
-			yield return null;
+		/*while (anim.player.isPlaying)
+			yield return null;*/
 		// Player Properties
 		player.isInvincible = false;
-		player.input.isInputEnabled = true;
+		//player.input.isInputEnabled = true;
 		// Animation
 		anim.Play("SpecialPersist");
 		// Set onSwipe
@@ -173,6 +174,7 @@ public class KnightHero : PlayerHero {
 		// Event call
 		if (onSpecialAbility != null)
 			onSpecialAbility();
+		onTap = AreaAttack;
 		Time.timeScale = 1f;
 		specialRushAbility.Execute();
 		player.input.isInputEnabled = false;

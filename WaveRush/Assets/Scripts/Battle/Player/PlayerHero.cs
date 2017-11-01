@@ -11,9 +11,9 @@ public abstract class PlayerHero : MonoBehaviour {
 		{"NINJA", "ninja"}
 	};*/
 
-	public const float PARRY_TIME = 0.5f;
+	public const float PARRY_TIME = 0.7f;
 	public const float PARRY_SLOW_TIME = 0.0f;
-	public const float PARRY_COOLDOWN_TIME = 0.5f;
+	public const float PARRY_COOLDOWN_TIME = 0.3f;
 
 	[HideInInspector]
 	public Player player;
@@ -124,6 +124,7 @@ public abstract class PlayerHero : MonoBehaviour {
 
 	public virtual void HandleMultiTouch()
 	{
+		player.OnPlayerTryHit += Parry;		// This is not inside the coroutine because of frame lag
 		listenForParryRoutine = StartCoroutine(ListenForParry());
 	}
 
@@ -132,7 +133,6 @@ public abstract class PlayerHero : MonoBehaviour {
 		EffectPooler.PlayEffect(player.parryEffect, transform.position, true, 0.1f);
 		player.StrobeColor(Color.yellow, PARRY_TIME - 0.1f);
 		body.Move(Vector2.zero);
-		player.OnPlayerTryHit += Parry;
 		player.input.enabled = false;
 		sound.PlaySingle(player.parrySound);
 		yield return new WaitForSeconds(PARRY_TIME);
@@ -147,8 +147,8 @@ public abstract class PlayerHero : MonoBehaviour {
 	{
 		if (onParry != null)
 			onParry();
-		sound.PlaySingle(player.parrySuccessSound);
 		player.isInvincible = true;
+		sound.PlaySingle(player.parrySuccessSound);
 		player.HitDisable(0.5f);
 		ParryEffect();
 		CameraControl.instance.StartFlashColor(Color.white, 0.5f, 0, 0f, 0.5f);

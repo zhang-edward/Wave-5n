@@ -17,7 +17,9 @@ public class TutorialScene1Manager : MonoBehaviour
 	public DialogueView dialogueView;
 	public AbilityIconBar abilitiesBar;
 	public TutorialTaskView tutorialTaskView;
-	public Animator controlPointer;
+	//public Animator controlPointer;
+	public ReverseMaskHighlight highlighter;
+	public TMPro.TMP_Text tipText;
 	public TMPro.TMP_Text ouchText;
 	private int ouchTextIndex;
 	[Header("Data")]
@@ -34,7 +36,6 @@ public class TutorialScene1Manager : MonoBehaviour
 	private int knightRushCount;
 	private int knightShieldCount;
 	private int parryCount;
-	private bool playerActivatedSpecial;
 
 	void Awake()
 	{
@@ -73,14 +74,14 @@ public class TutorialScene1Manager : MonoBehaviour
 		knight = (KnightHero)player.hero;
 		enemyManager.level = 1;
 
+		SoundManager.instance.PlayMusicLoop(map.data.musicLoop, map.data.musicIntro);
+
 		gm.OnSceneLoaded -= Init;   // Remove the listener because it is only run once per scene
 
 
 		// Step -2: Swipe
 		DisableTap();
 		DisableSpecialAbility();
-		controlPointer.gameObject.SetActive(true);
-		controlPointer.CrossFade("Swipe", 0f);
 		tutorialTaskView.Init("Swipe to use your Rush Ability", false);
 
 		knight.OnKnightRush += IncrementRushCount;
@@ -89,13 +90,10 @@ public class TutorialScene1Manager : MonoBehaviour
 		tutorialTaskView.SetCompleted(true);
 		sound.PlayUISound(taskCompleteSound);
 		yield return new WaitForSeconds(TASK_DELAY_INTERVAL);
-		controlPointer.gameObject.SetActive(false);
 		knightRushCount = 0;
 
 		// Step -1: Learn swipe controls
-		tutorialTaskView.Init("Use your Rush Ability 3 times (0/3)", false);
-		abilitiesBar.abilityIcons[0].FlashHighlight(Color.white);
-
+		tutorialTaskView.SetCompleted(false);
 		while (knightRushCount < 3)
 		{
 			tutorialTaskView.SetText(string.Format("Use your Rush Ability 3 times ({0}/3)", knightRushCount));
@@ -109,17 +107,29 @@ public class TutorialScene1Manager : MonoBehaviour
 		knight.OnKnightRush -= IncrementRushCount;
 
 		// Step 0: Learn tap controls
+		tutorialTaskView.SetCompleted(false);
 		PlayKnightCharDialogue(0);
 		yield return new WaitUntil(() => !dialogueView.dialoguePlaying);
 		cam.ResetFocus();
 
 		tutorialTaskView.Init("Use your Shield Ability 2 times (0/2)", false);
-		controlPointer.gameObject.SetActive(true);
-		controlPointer.CrossFade("Tap", 0f);
-		abilitiesBar.abilityIcons[1].FlashHighlight(Color.white);
+		//controlPointer.gameObject.SetActive(true);
+		//controlPointer.CrossFade("Tap", 0f);
+		//abilitiesBar.abilityIcons[1].FlashHighlight(Color.white);
 		EnableTap();
 
 		knight.OnKnightShield += IncrementShieldCount;
+
+		// Tip about cooldown timers
+		while (knightShieldCount < 1)
+			yield return null;
+		yield return new WaitForSecondsRealtime(1.0f);
+		highlighter.Highlight(abilitiesBar.abilityIcons[1].image.rectTransform.position,
+							  abilitiesBar.abilityIcons[1].image.rectTransform.sizeDelta);
+		tipText.text = "Keep an eye on your cooldown timers. You can't use an ability while it is cooling down!";
+		while (highlighter.gameObject.activeInHierarchy)
+			yield return null;
+
 		while (knightShieldCount < 2)
 		{
 			tutorialTaskView.SetText(string.Format("Use your Shield Ability 2 times ({0}/2)", knightShieldCount));
@@ -129,7 +139,7 @@ public class TutorialScene1Manager : MonoBehaviour
 		sound.PlayUISound(taskCompleteSound);
 		yield return new WaitForSeconds(TASK_DELAY_INTERVAL);
 		abilitiesBar.abilityIcons[1].StopFlashHighlight();
-		controlPointer.gameObject.SetActive(false);
+		//controlPointer.gameObject.SetActive(false);
 		knightShieldCount = 0;
 		knight.OnKnightShield -= IncrementShieldCount;
 
@@ -154,16 +164,17 @@ public class TutorialScene1Manager : MonoBehaviour
 		yield return new WaitUntil(() => !dialogueView.dialoguePlaying);
 		cam.ResetFocus();
 
-		tutorialTaskView.Init("Parry 3 times (0/3)", false);
+		//tutorialTaskView.Init("Parry 5 times (0/5)", false);
 		Enemy attackingDummy = enemyManager.SpawnEnemy(attackingDummyPrefab, map.CenterPosition + (Vector3.right * 2f)).GetComponentInChildren<Enemy>();
 		attackingDummy.invincible = true;
 		knight.onParry += IncrementParryCount;
-		while (parryCount < 3)
+		tutorialTaskView.SetCompleted(false);
+		while (parryCount < 5)
 		{
-			tutorialTaskView.SetText(string.Format("Parry 3 times ({0}/3)", parryCount));
+			tutorialTaskView.SetText(string.Format("Parry 5 times ({0}/5)", parryCount));
 			yield return null;
 		}
-		tutorialTaskView.Init("Parry 3 times (3/3)", true);
+		tutorialTaskView.Init("Parry 5 times (5/5)", true);
 		sound.PlayUISound(taskCompleteSound);
 		yield return new WaitForSeconds(TASK_DELAY_INTERVAL);
 		attackingDummy.invincible = false;

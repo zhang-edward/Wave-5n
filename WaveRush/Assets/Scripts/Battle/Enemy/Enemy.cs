@@ -247,7 +247,8 @@ public class Enemy : MonoBehaviour, IDamageable {
 	
 	private void ToMoveState()
 	{
-		anim.CrossFade ("default", 0f);
+		if (anim.HasState(0, Animator.StringToHash("default")))
+			anim.CrossFade ("default", 0f);
 		StopAllCoroutines ();       // stops any duplicate MoveStates that may have been started concurrently
 		//print("To move state");
 		StartCoroutine ("MoveState");

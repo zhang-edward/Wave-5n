@@ -90,7 +90,7 @@ public class BattleSceneManager : MonoBehaviour
 		yield return new WaitForSecondsRealtime(1.0f);
 		stageCompleteOptions.SetActive(true);
 		leaveOrContinueOptionOpen = true;
-		// Selection
+		// Modal View Selection
 		int selection = -1;
 		stageCompleteModal.OnOptionSelected += (s) => {
 			selection = s;

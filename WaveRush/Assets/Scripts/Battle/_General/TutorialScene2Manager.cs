@@ -22,6 +22,8 @@ public class TutorialScene2Manager : MonoBehaviour
 	public AbilityIconBar abilitiesBar;
 	public ComboMeter comboMeter;
 	public GameObject resourcesView;
+	public ReverseMaskHighlight highlighter;
+	public TMPro.TMP_Text tipText;
 	[Header("Data")]
 	public DialogueSet[] dialogueSteps;
 	public GameObject trappedHeroShardPrefab;
@@ -79,7 +81,7 @@ public class TutorialScene2Manager : MonoBehaviour
 		yield return new WaitForSeconds(TASK_DELAY_INTERVAL);
 		player.input.isInputEnabled = false;
 		// Step 0: Congratulations
-		/*PlayKnightCharDialogue(0);
+		PlayKnightCharDialogue(0);
 		yield return new WaitUntil(() => !dialogueView.dialoguePlaying);
 
 		// Step 1: What's going on?
@@ -105,11 +107,11 @@ public class TutorialScene2Manager : MonoBehaviour
 		cam.SetFocus(knightPropsCenterFocusPoint.transform);
 		yield return new WaitForSeconds(1.0f);
 		cam.StartFlashColor(Color.white, 1, 0, 0, 1);
-		*/foreach(GameObject o in knightPropCharacters)
+		foreach(GameObject o in knightPropCharacters)
 		{
 			o.SetActive(false);
 			enemyManager.SpawnEnemy(trappedHeroShardPrefab, o.transform.position);
-		}/*
+		}
 		yield return new WaitForSeconds(2.0f);
 
 		// Step 3: Dark Lord hahahaha!
@@ -139,7 +141,7 @@ public class TutorialScene2Manager : MonoBehaviour
 			cam.StartShake(0.1f, 0.02f, true, true);
 			yield return new WaitForSeconds(0.1f);
 		}
-		cam.StartShake(1.5f, 0.01f, true, true);*/
+		cam.StartShake(1.5f, 0.01f, true, true);
 		yield return new WaitForSeconds(1.0f);
 		player.input.isInputEnabled = true;
 
@@ -158,6 +160,15 @@ public class TutorialScene2Manager : MonoBehaviour
 		comboMeter.Init();
 		gui.DisplayIntroMessage();
 		yield return new WaitForSeconds(2.0f);
+
+		while (knight.specialAbilityCharge < knight.specialAbilityChargeCapacity)
+			yield return null;
+		yield return new WaitForSecondsRealtime(1.0f);
+		highlighter.Highlight(abilitiesBar.specialAbilityIcon.icon.rectTransform.position,
+		                      abilitiesBar.specialAbilityIcon.icon.rectTransform.sizeDelta);
+		tipText.text = "<color=blue>Tap</color> this icon, then <color=blue>swipe</color> to use your special ability!";
+		while (highlighter.gameObject.activeInHierarchy)
+			yield return null;
 	}
 
 	private void UpdateData()
