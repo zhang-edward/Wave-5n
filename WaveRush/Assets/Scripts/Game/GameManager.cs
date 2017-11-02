@@ -328,6 +328,7 @@ public class GameManager : MonoBehaviour {
 
 	public void SetHasPlayerViewedKey(string key, bool hasViewed)
 	{
+		print("Key: " + key);
 		if (!saveGame.hasPlayerViewedDict.ContainsKey(key))
 			saveGame.hasPlayerViewedDict.Add(key, hasViewed);
 		else

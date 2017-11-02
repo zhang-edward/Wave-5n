@@ -5,6 +5,7 @@ using System.Collections;
 public class DialogueTipsView : MonoBehaviour
 {
 	public Button button;
+	[Tooltip("The panel which holds the text object")]
 	public GameObject textPanel;
 	public ScrollingText scrollingText;
 

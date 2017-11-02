@@ -9,27 +9,26 @@ public class PawnInfoPanel : MonoBehaviour
 	public PawnIconStandard pawnIcon;
 	public TMP_Text damageText, healthText, livesText;
 	public ScrollingText infoText;
-	public Button bottomButton;
 	[Header("Mid Panel Menus")]
 	public Transform powersPanel;
 	public GameObject abilityIcon1, abilityIcon2, specialAbilityIcon;
 	public ToggleGroup infoIconsToggleGroup;
 	public ToggleGroup midPanelTabToggleGroup;
 	public ScrollViewSnap midPanelScrollView;
-	public NewFeatureIndicator newTextAbilities, newTextPowers;		// Flashing "new" symbol if the player has not
-																	// viewed the powers or abilities for the specified hero
+	[Header("NewIndicators")]
+	public NewFeatureIndicator newSpecial;
+	public NewFeatureIndicator[] newAbility;
+	public NewFeatureIndicator newTextAbilities, newTextPowers;
 	[Header("Prefabs")]
 	public GameObject heroPowerUpInfoPrefab;
-	[Header("Properties")]
-	public bool hasButton;
 	private GameObject[] heroPowerUpInfoIcons;
 
-	private string HasPlayerViewedAbilitiesKey {
+	private string HasPlayerViewedAbilitiesTabKey {
 		get {
 			return pawnIcon.pawnData.type.ToString() + "_Ablities";
 		}
 	}
-	private string HasPlayerViewedPowersKey {
+	private string HasPlayerViewedPowersTabKey {
 		get {
 			return pawnIcon.pawnData.type.ToString() + "_Powers";
 		}
@@ -50,7 +49,6 @@ public class PawnInfoPanel : MonoBehaviour
 
 	void OnEnable()
 	{
-		bottomButton.gameObject.SetActive(hasButton);
 		foreach(GameObject o in heroPowerUpInfoIcons)
 		{
 			o.GetComponent<Toggle>().isOn = false;
@@ -67,10 +65,13 @@ public class PawnInfoPanel : MonoBehaviour
 		int numPowerUpsUnlocked = HeroPowerUpListData.GetNumPowerUpsUnlocked(pawn.level);
 		for (int i = 0; i < HeroPowerUpListData.powerUpUnlockLevels.Length; i++)
 		{
+			// If the hero has unlocked this powerUp
 			bool locked = i >= numPowerUpsUnlocked;
 			int unlockedLevel = HeroPowerUpListData.powerUpUnlockLevels[i];
 			HeroPowerUpData data = powerUpListData.GetPowerUpFromIndex(i).data;
-			heroPowerUpInfoIcons[i].GetComponent<HeroPowerUpInfoIcon>().Init(data, locked, unlockedLevel);
+			// Get the key for NewFeatureIndicator
+			string newKey = GetViewedPowerKey(i);
+			heroPowerUpInfoIcons[i].GetComponent<HeroPowerUpInfoIcon>().Init(data, locked, newKey, unlockedLevel);
 			heroPowerUpInfoIcons[i].GetComponent<ScrollingTextOption>().scrollingText = infoText;
 		}
 		// Reset MidPanel Menu
@@ -81,8 +82,12 @@ public class PawnInfoPanel : MonoBehaviour
 		infoText.defaultText = heroData.heroDescription;
 		infoText.SetToDefaultText();
 		// Initialize NewFeatureIndicator
-		newTextPowers.RegisterKey(HasPlayerViewedPowersKey);
-		newTextAbilities.RegisterKey(HasPlayerViewedAbilitiesKey);
+		newTextPowers.RegisterKey(HasPlayerViewedPowersTabKey);
+		newTextAbilities.RegisterKey(HasPlayerViewedAbilitiesTabKey);
+		newAbility[0].RegisterKey(GetViewedAbilityKey('0'));
+		newAbility[1].RegisterKey(GetViewedAbilityKey('1'));
+		newSpecial.RegisterKey(GetViewedAbilityKey('S'));
+
 		// Initialize Abilities Panel
 		abilityIcon1.GetComponent<Image>().sprite = heroData.abilityIcons[0];
 		abilityIcon2.GetComponent<Image>().sprite = heroData.abilityIcons[1];
@@ -90,6 +95,9 @@ public class PawnInfoPanel : MonoBehaviour
 		abilityIcon1.GetComponent<ScrollingTextOption>().text = heroData.ability1Description;
 		abilityIcon2.GetComponent<ScrollingTextOption>().text = heroData.ability2Description;
 		specialAbilityIcon.GetComponent<ScrollingTextOption>().text = heroData.specialDescription;
+		abilityIcon1.GetComponent<Toggle>().isOn = false;
+		abilityIcon2.GetComponent<Toggle>().isOn = false;
+		specialAbilityIcon.GetComponent<Toggle>().isOn = false;
 	}
 
 	private IEnumerator ForcePosAfter1Frame()
@@ -106,15 +114,18 @@ public class PawnInfoPanel : MonoBehaviour
 			midPanelScrollView.SetSelectedContentIndex(1);
 	}
 
-	public void SetViewedAbilities()
+	/// <summary>
+	/// Gets the key for the NewFeatureIndicator.
+	/// </summary>
+	/// <returns>The viewed ability key.</returns>
+	/// <param name="ability">Either '0', '1', or 'S'</param>
+	public string GetViewedAbilityKey(char ability)
 	{
-		//print("Viewing abilities for " + pawnIcon.pawnData.type.ToString());
-		GameManager.instance.SetHasPlayerViewedKey(HasPlayerViewedAbilitiesKey, true);
+		return pawnIcon.pawnData.type.ToString() + "_Abilities_" + ability;
 	}
 
-	public void SetViewedPowers()
+	public string GetViewedPowerKey(int powerIndex)
 	{
-		//print("Viewing powers for " + pawnIcon.pawnData.type.ToString());
-		GameManager.instance.SetHasPlayerViewedKey(HasPlayerViewedPowersKey, true);
+		return pawnIcon.pawnData.type.ToString() + "_Powers_" + powerIndex;
 	}
 }

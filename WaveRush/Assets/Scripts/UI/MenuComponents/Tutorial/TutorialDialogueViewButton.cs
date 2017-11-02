@@ -7,63 +7,17 @@ public class TutorialDialogueViewButton : MonoBehaviour
 	public static List<string> TUTORIAL_KEYS = new List<string>();
 
 	public Button helpButton;
-	public Animator anim;
 	public DialogueView dialogueView;
 	public DialogueSet tutorialDialogueSet;
-
-	private string PLAYERPREFS_KEY
-	{
-		get {
-			return tutorialDialogueSet.name;
-		}	
-	}
+	public NewFeatureIndicator newText;
 
 	void Awake()
 	{
 		helpButton.onClick.AddListener(Init);
 	}
 
-	void OnEnable()
-	{
-		// If this key does not exist in PlayerPrefs, add it (should be run when the game is first initialized)
-		if (!TUTORIAL_KEYS.Contains(PLAYERPREFS_KEY))
-		{
-//			print("Added key " + PLAYERPREFS_KEY);
-			TUTORIAL_KEYS.Add(PLAYERPREFS_KEY);
-		}
-		// If the player has seen this dialogue, set animation accordingly
-		if (PlayerPrefs.HasKey(PLAYERPREFS_KEY) && PlayerPrefs.GetInt(PLAYERPREFS_KEY) == 1)
-		{
-			//print("Nobounce for " + PLAYERPREFS_KEY);
-			anim.CrossFade("nobounce", 0);
-		}
-	}
-
-	private void OnDisable()
-	{
-		dialogueView.onDialogueFinished -= SetBounceIdleOff;
-	}
-
 	public void Init()
 	{
 		dialogueView.Init(tutorialDialogueSet);
-		if (!PlayerPrefs.HasKey(PLAYERPREFS_KEY) || PlayerPrefs.GetInt(PLAYERPREFS_KEY) != 1)
-			dialogueView.onDialogueFinished += SetBounceIdleOff;
-	}
-
-	private void SetBounceIdleOff()
-	{
-		//print("dialogue finished nobounce: " + PLAYERPREFS_KEY);
-		anim.CrossFade("nobounce", 0);
-		PlayerPrefs.SetInt(PLAYERPREFS_KEY, 1);
-	}
-
-	public static void ResetTutorials()
-	{
-		foreach (string key in TUTORIAL_KEYS)
-		{
-			PlayerPrefs.SetInt(key, 0);
-			print("Set " + key + " to " + PlayerPrefs.GetInt(key));
-		}
 	}
 }

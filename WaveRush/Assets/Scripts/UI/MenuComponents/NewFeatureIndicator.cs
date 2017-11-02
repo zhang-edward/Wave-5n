@@ -7,9 +7,10 @@ using System.Collections;
 /// </summary>
 public class NewFeatureIndicator : MonoBehaviour
 {
-	private SaveGame saveGame;
-	private GameManager gm;
-	private string key;
+	protected SaveGame saveGame;
+	protected GameManager gm;
+	public string key;
+	public bool selfInit;
 
 	void Awake()
 	{
@@ -17,9 +18,16 @@ public class NewFeatureIndicator : MonoBehaviour
 		saveGame = gm.saveGame;
 	}
 
+	protected void Start()
+	{
+		if (selfInit)
+			RegisterKey(key);
+	}
+
 	void OnEnable()
 	{
-		gm.OnHasViewedDictionaryUpdated += UpdateShouldEnable;
+		if (key == "")
+			gm.OnHasViewedDictionaryUpdated += UpdateShouldEnable;
 	}
 
 	void OnDisable()
@@ -30,20 +38,30 @@ public class NewFeatureIndicator : MonoBehaviour
 	public void RegisterKey(string key)
 	{
 		this.key = key;
-		print(key);
+		print("Registered: " + key);
 		if (!saveGame.hasPlayerViewedDict.ContainsKey(key))
+		{
 			gm.SetHasPlayerViewedKey(key, false);
+			gm.OnHasViewedDictionaryUpdated += UpdateShouldEnable;
+		}
 		else
 			UpdateShouldEnable();
 	}
 
-	private void UpdateShouldEnable()
+	protected virtual void UpdateShouldEnable()
 	{
-		if (key == null)
+		if (key == "")
 			return;
+		print("Checking " + key);
 		bool shouldEnable = !saveGame.hasPlayerViewedDict[key];
-		print("Checking if " + key + " is new: " + shouldEnable);
+		//print("Checking if " + key + " is new: " + shouldEnable);
 		// The object should only be enabled if the dictionary indicates that the player has not viewed the feature
 		gameObject.SetActive(shouldEnable);
 	}
+
+	public void SetViewed() 
+	{
+		gm.SetHasPlayerViewedKey(key, true);
+	}
+
 }
