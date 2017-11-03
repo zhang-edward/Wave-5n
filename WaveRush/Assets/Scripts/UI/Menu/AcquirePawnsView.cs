@@ -44,25 +44,16 @@ public class AcquirePawnsView : MonoBehaviour
 
 	private IEnumerator AcquirePawnRoutine()
 	{
-		yield return new WaitUntil(() => proceed);
-		proceed = false;
+		yield return new WaitUntil(() => Input.GetMouseButtonDown(0));
+		yield return new WaitForEndOfFrame();
+		print("User pressed screen-animating");
 		anim.SetTrigger("Animate");
-		yield return new WaitUntil(() => heroesRescuedMenu.AllIconsRevealed() && proceed);
-		proceed = false;
+		yield return new WaitForSeconds(2.5f);
+		yield return new WaitUntil(() => Input.GetMouseButtonDown(0));
+		yield return new WaitForEndOfFrame();
+		print("User pressed screen-animating out");
 		anim.SetTrigger("AnimateOut");
 		yield return new WaitForSeconds(0.1f);      // wait for the animation state to update before continuing
 		gameObject.SetActive(false);
-	}
-
-	public void Proceed()
-	{
-		StartCoroutine(ProceedRoutine());
-	}
-
-	private IEnumerator ProceedRoutine()
-	{
-		proceed = true;
-		yield return null;
-		proceed = false;
 	}
 }

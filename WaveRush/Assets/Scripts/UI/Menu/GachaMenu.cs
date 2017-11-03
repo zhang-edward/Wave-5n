@@ -34,20 +34,7 @@ public class GachaMenu : MonoBehaviour
 	{
 		List<Pawn> acquiredPawns = new List<Pawn>();
 		int level = 5;				// The overall level of the gacha (determines the levels of the heroes dropped)
-		float spawnChance = 0.5f;	// Initial spawn chance for an additional pawn
 		int numPawnsToGenerate = 1;	// Guaranteed 1 pawn to drop, maximum of 5 pawns to drop
-		for (int i = 0; i < 4; i++)
-		{
-			if (Random.value < spawnChance)
-			{
-				numPawnsToGenerate++;
-				spawnChance *= 0.9f;		// Spawn chance multiplier
-			}
-			else
-			{
-				break;
-			}
-		}
 		print("Got " + numPawnsToGenerate + " new pawns");
 		level -= (int)Mathf.Sqrt(numPawnsToGenerate);	// scale the level by the number of pawns dropped
 		for (int i = 0; i < numPawnsToGenerate; i ++)

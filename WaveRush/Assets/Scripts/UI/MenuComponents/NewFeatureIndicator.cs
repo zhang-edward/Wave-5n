@@ -52,7 +52,7 @@ public class NewFeatureIndicator : MonoBehaviour
 	{
 		if (key == "")
 			return;
-		print("Checking " + key);
+		//print("Checking " + key);
 		bool shouldEnable = !saveGame.hasPlayerViewedDict[key];
 		//print("Checking if " + key + " is new: " + shouldEnable);
 		// The object should only be enabled if the dictionary indicates that the player has not viewed the feature

@@ -25,6 +25,16 @@ public class IncrementingText : MonoBehaviour {
 		doneUpdating = true;
 	}
 
+	void OnEnable()
+	{
+		SoundManager.instance.RegisterSfxSrc(audioSrc);
+	}
+
+	void OnDisable()
+	{
+		SoundManager.instance.UnregisterSfxSrc(audioSrc);
+	}
+
 	public void DisplayNumber(int number)
 	{
 		numberToReport = number;

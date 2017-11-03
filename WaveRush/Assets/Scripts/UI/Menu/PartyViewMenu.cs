@@ -9,4 +9,6 @@ public class PartyViewMenu : MonoBehaviour
 	{
 		pawnSelectionView.Init();
 	}
+
+
 }

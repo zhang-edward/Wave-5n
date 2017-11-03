@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class SoundManager : MonoBehaviour {
 
@@ -7,11 +8,16 @@ public class SoundManager : MonoBehaviour {
 	AudioSource ui;
 	AudioSource music;
 	AudioSource sfx;
+	private List<AudioSource> sfxSources;
+	private List<AudioSource> musicSources;
 
 	private float lowPitchRange = 0.95f;
 	private float highPitchRange = 1.05f;
 
-	public float musicVolume;
+	[Range(0, 1)]
+	public float musicVolume = 1;
+	[Range(0, 1)]
+	public float sfxVolume = 1;
 
 	public bool playingMusic { get; private set; }
 
@@ -28,6 +34,26 @@ public class SoundManager : MonoBehaviour {
 		sfx = GameObject.Find ("SFX").GetComponent<AudioSource> ();
 
 		music.volume = musicVolume;
+	}
+
+	public void RegisterSfxSrc(AudioSource src)
+	{
+		sfxSources.Add(src);
+	}
+
+	public void UnregisterSfxSrc(AudioSource src)
+	{
+		sfxSources.Remove(src);
+	}
+
+	public void RegisterMusicSrc(AudioSource src)
+	{
+		musicSources.Add(src);
+	}
+
+	public void UnregisterMusicSrc(AudioSource src)
+	{
+		musicSources.Remove(src);
 	}
 
 	/// <summary>
@@ -129,5 +155,21 @@ public class SoundManager : MonoBehaviour {
 			music.volume -= 0.05f;
 			yield return null;
 		}
+	}
+
+	void Update()
+	{
+		music.volume = musicVolume;
+		sfx.volume = sfxVolume;
+	}
+
+	public void SetMusicVolume(float volume)
+	{
+		musicVolume = volume;
+	}
+
+	public void SetSfxVolume(float volume)
+	{
+		sfxVolume = volume;
 	}
 }

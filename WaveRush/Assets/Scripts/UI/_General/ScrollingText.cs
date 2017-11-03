@@ -13,18 +13,24 @@ public class ScrollingText : MonoBehaviour {
 	public string defaultText;
 	public string text;		// text to display in the text box
 
-	private AudioSource audioSource;
+	private AudioSource audioSrc;
 	private bool textIsScrolling;
 
 	void Awake()
 	{
 		textBox = GetComponent<TMP_Text>();
-		audioSource = GetComponent<AudioSource> ();
+		audioSrc = GetComponent<AudioSource> ();
 	}
 
 	void OnEnable()
 	{
 		SetToDefaultText ();
+		SoundManager.instance.RegisterSfxSrc(audioSrc);
+	}
+
+	void OnDisable()
+	{
+		SoundManager.instance.UnregisterSfxSrc(audioSrc);
 	}
 
 	public void SetToDefaultText()
@@ -57,7 +63,7 @@ public class ScrollingText : MonoBehaviour {
 
 	public void SetScrollAudio(AudioClip clip)
 	{
-		audioSource.clip = clip;
+		audioSrc.clip = clip;
 	}
 
 	public bool IsTextScrolling()
@@ -81,7 +87,7 @@ public class ScrollingText : MonoBehaviour {
 	{
 		while (textIsScrolling)
 		{
-			audioSource.Play();
+			audioSrc.Play();
 			yield return new WaitForSecondsRealtime(0.08f);
 		}		
 	}

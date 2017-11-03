@@ -5,7 +5,7 @@
 
 	public class RushAbility : PlayerAbility
 	{
-		private AudioSource sound;
+		private SoundManager sound;
 		[Header("Properties")]
 		public float speed;					// base speed of the rush
 		public float duration;				// the duration of the rush
@@ -23,7 +23,7 @@
 
 		void Awake()
 		{
-			sound = GetComponent<AudioSource>();
+			sound = SoundManager.instance;
 		}
 
 		public void Init(Player player, HitEnemy onHitEnemyCallback)
@@ -35,7 +35,7 @@
 		public void Execute()
 		{
 			// Sound
-			RandomizeSFX();
+			sound.RandomizeSFX(rushSound);
 			// Animation
 			hero.anim.Play(rushState);
 			// Effects
@@ -92,14 +92,6 @@
 					}
 				}
 			}
-		}
-
-		public void RandomizeSFX()
-		{
-			float randomPitch = Random.Range(0.95f, 1.05f);
-			sound.pitch = randomPitch;
-			sound.clip = rushSound;
-			sound.Play();
 		}
 	}
 }
