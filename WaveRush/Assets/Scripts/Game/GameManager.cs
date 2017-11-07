@@ -38,6 +38,9 @@ public class GameManager : MonoBehaviour {
 	public GameStateUpdate OnAppLoaded;
 	public GameStateUpdate OnAppClosed;
 	public GameStateUpdate OnTimersUpdated;
+	public delegate void SaveStateUpdate();
+	public SaveStateUpdate OnHasViewedDictionaryUpdated;
+
 
 
 	void Awake()
@@ -55,6 +58,7 @@ public class GameManager : MonoBehaviour {
 		SaveLoad.Load ();
 		InitPawnTimers();
 		questManager.Init();
+		loadingOverlay.gameObject.SetActive(false);
 	}
 
 	public void InitPawnTimers()
@@ -154,34 +158,15 @@ public class GameManager : MonoBehaviour {
 		SaveLoad.Save();
 	}
 
-	private IEnumerator FPS()
-	{
-		string fps;
-		for (;;)
-		{
-			// Capture frame-per-second
-			int lastFrameCount = Time.frameCount;
-			float lastTime = Time.realtimeSinceStartup;
-			yield return new WaitForSeconds(1.0f);
-			float timeSpan = Time.realtimeSinceStartup - lastTime;
-			int frameCount = Time.frameCount - lastFrameCount;
-
-			// Display it
-
-			fps = string.Format("FPS: {0}", Mathf.RoundToInt(frameCount / timeSpan));
-			fpsDisplay.text = fps;
-		}
-	}
-
-	public void GoToScene(string sceneName)
+	public void GoToScene(string sceneName, float fadeInSpeed = 1f)
 	{
 		//didInitializeGameScene = false;
 		Time.timeScale = 1;
-		StartCoroutine (LoadScene(sceneName));
+		StartCoroutine (LoadScene(sceneName, fadeInSpeed));
 		ObjectPooler.objectPoolers.Clear ();
 	}
 
-	public IEnumerator LoadScene(string scene)
+	private IEnumerator LoadScene(string scene, float fadeInSpeed)
 	{
 		//Debug.Log ("Loading scene");
 		StartCoroutine(ActivateLoadingScreen ());
@@ -192,7 +177,8 @@ public class GameManager : MonoBehaviour {
 
 		while (!async.isDone)
 			yield return null;
-		StartCoroutine(DeactivateLoadingScreen ());
+		StartCoroutine(DeactivateLoadingScreen (fadeInSpeed));
+
 		// On finished scene loading
 		if (OnSceneLoaded != null)
 			OnSceneLoaded();
@@ -289,6 +275,7 @@ public class GameManager : MonoBehaviour {
 
 	private IEnumerator ActivateLoadingScreen()
 	{
+		loadingOverlay.gameObject.SetActive(true);
 		Color initialColor = Color.clear;
 		Color finalColor = Color.black;
 		float t = 0;
@@ -301,18 +288,19 @@ public class GameManager : MonoBehaviour {
 		loadingOverlay.color = finalColor;
 	}
 
-	private IEnumerator DeactivateLoadingScreen()
+	private IEnumerator DeactivateLoadingScreen(float fadeInSpeed)
 	{
 		Color initialColor = Color.black;
 		Color finalColor = Color.clear;
 		float t = 0;
 		while (loadingOverlay.color.a > 0.05f)
 		{
-			loadingOverlay.color = Color.Lerp (initialColor, finalColor, t * LOADING_SCREEN_SPEED);
+			loadingOverlay.color = Color.Lerp (initialColor, finalColor, t * LOADING_SCREEN_SPEED * fadeInSpeed);
 			t += Time.deltaTime;
 			yield return null;
 		}
 		loadingOverlay.color = finalColor;
+		loadingOverlay.gameObject.SetActive(false);
 	}
 
 	// ==========
@@ -338,6 +326,17 @@ public class GameManager : MonoBehaviour {
 		SaveLoad.Save ();
 	}
 
+	public void SetHasPlayerViewedKey(string key, bool hasViewed)
+	{
+//		print("Key: " + key);
+		if (!saveGame.hasPlayerViewedDict.ContainsKey(key))
+			saveGame.hasPlayerViewedDict.Add(key, hasViewed);
+		else
+			saveGame.hasPlayerViewedDict[key] = hasViewed;
+		if (OnHasViewedDictionaryUpdated != null)
+			OnHasViewedDictionaryUpdated();
+	}
+
 	public void DisplayAlert(string message)
 	{
 		alertText.SetColor(Color.white);
@@ -352,5 +351,27 @@ public class GameManager : MonoBehaviour {
 	{
 		debugText.SetColor (Color.white);
 		debugText.Display (new MessageText.Message(message, 1, 0, 2f, 1f, Color.white));
+	}
+
+	/// <summary>
+	/// FPS counter
+	/// </summary>
+	private IEnumerator FPS()
+	{
+		string fps;
+		for (;;)
+		{
+			// Capture frame-per-second
+			int lastFrameCount = Time.frameCount;
+			float lastTime = Time.realtimeSinceStartup;
+			yield return new WaitForSeconds(1.0f);
+			float timeSpan = Time.realtimeSinceStartup - lastTime;
+			int frameCount = Time.frameCount - lastFrameCount;
+
+			// Display it
+
+			fps = string.Format("FPS: {0}", Mathf.RoundToInt(frameCount / timeSpan));
+			fpsDisplay.text = fps;
+		}
 	}
 }

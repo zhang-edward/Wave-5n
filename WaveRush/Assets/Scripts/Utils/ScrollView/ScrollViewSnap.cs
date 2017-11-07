@@ -150,4 +150,10 @@ public class ScrollViewSnap : MonoBehaviour {
 			selectedContentIndex = 0;
 		EndDrag();
 	}
+
+	public void ForcePosition()
+	{
+		float dest = selectedContentIndex * -contentDistance;
+		panel.anchoredPosition = new Vector2(dest, panel.anchoredPosition.y);
+	}
 }

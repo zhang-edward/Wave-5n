@@ -12,11 +12,20 @@ MonoBehaviour:
   m_Name: KnightData
   m_EditorClassIdentifier: 
   heroType: 1
+  abilityIcons:
+  - {fileID: 21300018, guid: c249c27ff77ed416bbc513d9e1c5388b, type: 3}
+  - {fileID: 21300020, guid: c249c27ff77ed416bbc513d9e1c5388b, type: 3}
+  specialAbilityIcon: {fileID: 21300026, guid: c249c27ff77ed416bbc513d9e1c5388b, type: 3}
   powerUpData: {fileID: 11400000, guid: 3b689b17444a44ef880adb1f7bdfc865, type: 2}
-  heroDescription: 
-  ability1Description: 
-  ability2Description: 
-  specialDescription: 
+  heroDescription: The Knight is utilizes both aggressive and defensive abilities
+    to take down his foes.
+  ability1Description: 'RUSH: <color=yellow>Swipe</color> in a direction to dash through
+    up to 5 enemies in that direction.'
+  ability2Description: 'SHIELD: <color=yellow>Tap</color> to gain a shield for 3 seconds
+    and damage any nearby foes.'
+  specialDescription: 'SUPER RUSH: <color=yellow>Tap this icon</color>, then <color=yellow>swipe</color>
+    to do a powerful dash through up to 15 enemies. You are <color=yellow>invulnerable</color>
+    during this ability.'
   t1Skin:
     animations:
     - frames:

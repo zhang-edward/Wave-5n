@@ -3,14 +3,14 @@ using System.Collections;
 
 public class BossEnemy : Enemy
 {
+	protected EnemyManager enemyManager;
 	[HideInInspector]
 	public GameObject soulPickupPrefab;
 	[Header("Boss Attributes")]
 	public AudioClip deathSound;
-	public SimpleAnimation deathEffect;
 	public bool dying { get; private set; }
 
-	protected EnemyManager enemyManager;
+	private SimpleAnimation deathEffect;
 	private int numSouls;
 
 	public override void Init (Vector3 spawnLocation, Map map, int level)
@@ -19,6 +19,7 @@ public class BossEnemy : Enemy
 		numSouls = SoulsFormula(level);
 		base.Init (spawnLocation, map, level);
 		enemyManager = GetComponentInParent<EnemyManager> ();
+		deathEffect = enemyManager.bossDeathEffect;
 		CameraControl.instance.secondaryFocus = this.transform;
 	}
 

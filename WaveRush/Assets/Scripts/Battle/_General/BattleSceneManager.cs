@@ -16,10 +16,13 @@ public class BattleSceneManager : MonoBehaviour
 	public Player player;
 	public GUIManager gui;
 	[Header("UI")]
+	public LosePanel losePanel;
 	public DialogueView dialogueView;
 	public GameObject stageCompleteOptions;
-	public HoldDownButton exitButton;
-	public HoldDownButton continueButton;
+	public ModalSelectionView stageCompleteModal;
+	public Button exitButton;
+	public Button continueButton;
+	public GameObject pauseButton;
 
 	public List<Pawn> acquiredPawns { get; private set; }   // pawns acquired this session
 	public int moneyEarned { get; private set; } 			// money earned in this session
@@ -87,33 +90,29 @@ public class BattleSceneManager : MonoBehaviour
 		yield return new WaitForSecondsRealtime(1.0f);
 		stageCompleteOptions.SetActive(true);
 		leaveOrContinueOptionOpen = true;
+		// Modal View Selection
+		int selection = -1;
+		stageCompleteModal.OnOptionSelected += (s) => {
+			selection = s;
+		};
 		while (leaveOrContinueOptionOpen)
 		{
+			pauseButton.gameObject.SetActive(false);
 			player.input.isInputEnabled = false;
-			//player.LeaveEffect();
-			if (exitButton.maxed)
+			if (selection == 1)
 			{
-				/*//enemyManager.endPortalEnemy.Unlock();
-				//CameraControl.instance.SetFocus(enemyManager.endPortalEnemy.transform);
-				// Wait for unlock animation to finish
-				yield return new WaitForEndOfFrame();       // wait for the animation state to update before continuing
-				while (enemyManager.endPortalEnemy.anim.GetCurrentAnimatorStateInfo(0).IsName("Unlock"))
-				{
-					print("Playing animation");
-					yield return null;
-				}
-				yield return new WaitForSeconds(0.5f);
-				//exitButton.SetLocked(true);*/
 				player.transform.parent.gameObject.SetActive(false);
 				stageCompleteOptions.GetComponent<UIAnimatorControl>().AnimateOut();
 				UpdateData();
+				yield break;
 			}
-			if (continueButton.maxed)
+			if (selection == 0)
 			{
 				leaveOrContinueOptionOpen = false;
 			}
 			yield return null;
 		}
+		pauseButton.gameObject.SetActive(true);
 		player.input.isInputEnabled = true;
 		enemyManager.paused = false;
 		stageCompleteOptions.GetComponent<UIAnimatorControl>().AnimateOut();
@@ -131,7 +130,9 @@ public class BattleSceneManager : MonoBehaviour
 			souls: 				gm.wallet.souls,
 			soulsEarned:		soulsEarned
 		);
-		gui.GameOverUI(data);
+
+		gui.gameOverUI.SetActive(true);
+		losePanel.Init(data, acquiredPawns, gm.GetStage(gm.selectedSeriesIndex, gm.selectedStageIndex).stageName);
 
 		if (enemyManager.isStageComplete)
 		{

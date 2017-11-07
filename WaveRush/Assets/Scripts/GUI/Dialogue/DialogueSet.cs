@@ -8,7 +8,7 @@ public class DialogueSet : ScriptableObject
 	public class Dialogue
 	{
 		public string expression;
-		[TextArea]
+		[TextArea(3, 10)]
 		public string text;
 	}
 

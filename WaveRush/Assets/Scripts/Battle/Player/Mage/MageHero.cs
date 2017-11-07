@@ -208,7 +208,7 @@ public class MageHero : PlayerHero {
 		if (OnMageSpecialAbility != null)
 			OnMageSpecialAbility();
 
-		yield return new WaitForSeconds(10f);
+		yield return new WaitForSeconds(7f);
 		sound.PlaySingle(powerDownSound);
 		ResetSpecialAbility();
 	}

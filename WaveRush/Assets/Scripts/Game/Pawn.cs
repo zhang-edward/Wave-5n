@@ -48,6 +48,16 @@ public class Pawn
 		return string.Format("[Pawn: type={0}, id={1}, level={2}]", type.ToString(), id, level);
 	}
 
+	public static float DamageEquation(Pawn pawn)
+	{
+		float answer = (0.08f * Mathf.Pow(pawn.level, 2.8f) + 5.3f);
+		if (pawn.level >= T2_MIN_LEVEL)
+			answer += 5f;
+		if (pawn.level >= T3_MIN_LEVEL)
+			answer += 5f;
+		return answer;
+	}
+
 	public static float DamageEquation(int level)
 	{
 		float answer = (0.08f * Mathf.Pow(level, 2.8f) + 5.3f);

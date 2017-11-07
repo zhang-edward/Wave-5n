@@ -3,7 +3,7 @@ namespace Unused
 	using UnityEngine;
 	using System.Collections;
 
-	public class HeroIconsView : ScrollViewSnap
+	/*public class HeroIconsView : ScrollViewSnap
 	{
 
 		public GameObject leftArrow, rightArrow;
@@ -32,5 +32,5 @@ namespace Unused
 			leftArrow.gameObject.SetActive(selectedContentIndex > 0);
 			rightArrow.gameObject.SetActive(selectedContentIndex < content.Count - 1);
 		}
-	}
+	}*/
 }

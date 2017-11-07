@@ -13,7 +13,7 @@ public class MusicTracksFader : MonoBehaviour
 		{
 			if (i == index)
 			{
-				StartCoroutine(FadeMusicRoutine(SoundManager.instance.musicVolume, i));
+				StartCoroutine(FadeMusicRoutine(i));
 			}
 			else
 			{
@@ -22,10 +22,30 @@ public class MusicTracksFader : MonoBehaviour
 		}
 	}
 
+	private IEnumerator FadeMusicRoutine(int audioSrcIndex)
+	{
+		SoundManager sound = SoundManager.instance;
+		AudioSource src = musicSrc[audioSrcIndex];
+//		print("setting " + src + " to volume " + targetVolume);
+		float initialVolume = src.volume;
+		float t = 0;
+		for (;;)
+		{
+			while (Mathf.Abs(src.volume - sound.musicVolume) > 0.05f)
+			{
+				src.volume = Mathf.Lerp(initialVolume, sound.musicVolume, t);
+				t += Time.deltaTime;
+				yield return null;
+			}
+			src.volume = sound.musicVolume;
+			yield return null;
+		}
+	}
+
 	private IEnumerator FadeMusicRoutine(float targetVolume, int audioSrcIndex)
 	{
 		AudioSource src = musicSrc[audioSrcIndex];
-//		print("setting " + src + " to volume " + targetVolume);
+		//		print("setting " + src + " to volume " + targetVolume);
 		float initialVolume = src.volume;
 		float finalVolume = targetVolume;
 		float t = 0;

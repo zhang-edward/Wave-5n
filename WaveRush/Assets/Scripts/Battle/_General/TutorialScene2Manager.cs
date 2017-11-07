@@ -22,6 +22,8 @@ public class TutorialScene2Manager : MonoBehaviour
 	public AbilityIconBar abilitiesBar;
 	public ComboMeter comboMeter;
 	public GameObject resourcesView;
+	public ReverseMaskHighlight highlighter;
+	public TMPro.TMP_Text tipText;
 	[Header("Data")]
 	public DialogueSet[] dialogueSteps;
 	public GameObject trappedHeroShardPrefab;
@@ -44,7 +46,9 @@ public class TutorialScene2Manager : MonoBehaviour
 
 	void OnEnable()
 	{
-		enemyManager.OnStageCompleted += UpdateData;
+		enemyManager.OnStageCompleted += () => {
+			Invoke("UpdateData", 3.0f);
+		};
 	}
 
 	// Init main game environment
@@ -55,7 +59,7 @@ public class TutorialScene2Manager : MonoBehaviour
 
 	private void Restart()
 	{
-		GameManager.instance.LoadScene("Tutorial2");
+		GameManager.instance.GoToScene("Tutorial2");
 	}
 
 	private IEnumerator TutorialScene()
@@ -156,23 +160,20 @@ public class TutorialScene2Manager : MonoBehaviour
 		comboMeter.Init();
 		gui.DisplayIntroMessage();
 		yield return new WaitForSeconds(2.0f);
-		enemyManager.SetWave(1);
+
+		while (knight.specialAbilityCharge < knight.specialAbilityChargeCapacity)
+			yield return null;
+		yield return new WaitForSecondsRealtime(1.0f);
+		highlighter.Highlight(abilitiesBar.specialAbilityIcon.icon.rectTransform.position,
+		                      abilitiesBar.specialAbilityIcon.icon.rectTransform.sizeDelta);
+		tipText.text = "<color=blue>Tap</color> this icon, then <color=blue>swipe</color> to use your special ability!";
+		while (highlighter.gameObject.activeInHierarchy)
+			yield return null;
 	}
 
 	private void UpdateData()
 	{
-		ScoreReport.ScoreReportData data = new ScoreReport.ScoreReportData(
-			enemiesDefeated: enemyManager.enemiesKilled,
-			wavesSurvived: Mathf.Max(enemyManager.waveNumber - 1, 0),
-			maxCombo: player.hero.maxCombo,
-			money: gm.wallet.money,
-			moneyEarned: 0,
-			souls: gm.wallet.souls,
-			soulsEarned: 0
-		);
-		gui.GameOverUI(data);
-
-		gm.saveGame.pawnWallet.RemovePawn(gm.selectedPawn.id);
+		enemyManager.paused = true;
 		List<Pawn> acquiredPawns = new List<Pawn>();
 		for (int i = 0; i < 6; i ++)
 		{
@@ -181,14 +182,8 @@ public class TutorialScene2Manager : MonoBehaviour
 			acquiredPawns.Add(pawn);
 			gm.saveGame.pawnWallet.AddPawn(pawn);
 		}
-		gui.heroesRescuedMenu.Init(acquiredPawns);
-
-		int enemiesDefeated = enemyManager.enemiesKilled;
-		int wavesSurvived = enemyManager.waveNumber;
-		int maxCombo = player.hero.maxCombo;
-
-		gm.UpdateScores(enemiesDefeated, wavesSurvived, maxCombo);
 		PlayerPrefs.SetInt(SaveGame.TUTORIAL_COMPLETE_KEY, 1);
+		GameManager.instance.GoToScene("MainMenu", 0.1f);
 	}
 
 	private void PlayKnightCharDialogue(int step)

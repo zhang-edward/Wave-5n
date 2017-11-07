@@ -7,7 +7,9 @@ public class StageSeriesIcon : ScrollViewSnapContent
 	public delegate void Clicked(StageSeriesData data);
 	public event Clicked onClicked;
 
+	public Image buttonPanel;
 	public Image icon;
+
 	private StageSeriesData data;
 
 	public void Init(StageSeriesData data)

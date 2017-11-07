@@ -11,9 +11,9 @@ public abstract class PlayerHero : MonoBehaviour {
 		{"NINJA", "ninja"}
 	};*/
 
-	public const float PARRY_TIME = 0.5f;
+	public const float PARRY_TIME = 0.7f;
 	public const float PARRY_SLOW_TIME = 0.0f;
-	public const float PARRY_COOLDOWN_TIME = 0.5f;
+	public const float PARRY_COOLDOWN_TIME = 0.3f;
 
 	[HideInInspector]
 	public Player player;
@@ -22,8 +22,6 @@ public abstract class PlayerHero : MonoBehaviour {
 	protected SoundManager sound;
 
 	[Header("Ability Icons")]
-	public Sprite[] icons;
-	public Sprite specialAbilityIcon;
 	public HeroType heroType;
 
 	[Header("PlayerHero Properties")]
@@ -124,6 +122,7 @@ public abstract class PlayerHero : MonoBehaviour {
 
 	public virtual void HandleMultiTouch()
 	{
+		player.OnPlayerTryHit += Parry;		// This is not inside the coroutine because of frame lag
 		listenForParryRoutine = StartCoroutine(ListenForParry());
 	}
 
@@ -132,7 +131,6 @@ public abstract class PlayerHero : MonoBehaviour {
 		EffectPooler.PlayEffect(player.parryEffect, transform.position, true, 0.1f);
 		player.StrobeColor(Color.yellow, PARRY_TIME - 0.1f);
 		body.Move(Vector2.zero);
-		player.OnPlayerTryHit += Parry;
 		player.input.enabled = false;
 		sound.PlaySingle(player.parrySound);
 		yield return new WaitForSeconds(PARRY_TIME);
@@ -147,8 +145,8 @@ public abstract class PlayerHero : MonoBehaviour {
 	{
 		if (onParry != null)
 			onParry();
-		sound.PlaySingle(player.parrySuccessSound);
 		player.isInvincible = true;
+		sound.PlaySingle(player.parrySuccessSound);
 		player.HitDisable(0.5f);
 		ParryEffect();
 		CameraControl.instance.StartFlashColor(Color.white, 0.5f, 0, 0f, 0.5f);
@@ -156,7 +154,7 @@ public abstract class PlayerHero : MonoBehaviour {
 		player.OnPlayerTryHit -= Parry;
 		player.input.enabled = true;
 		player.sr.color = Color.white;
-		Invoke("ResetInvincibility", 0.1f);
+		Invoke("ResetInvincibility", 1.0f);
 	}
 
 	private void ResetInvincibility()
@@ -195,7 +193,7 @@ public abstract class PlayerHero : MonoBehaviour {
 		anim.Init(player.animPlayer);
 		anim.player.Init();
 		damageMultiplier = 1f;
-		baseDamage = Mathf.RoundToInt(Pawn.DamageEquation(heroData.level));
+		baseDamage = Mathf.RoundToInt(Pawn.DamageEquation(heroData));
 		// init cooldownMultipliers
 		cooldownMultipliers = new float[cooldownTime.Length];
 		for(int i = 0; i < cooldownTime.Length; i ++)

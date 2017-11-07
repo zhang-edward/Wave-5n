@@ -5,9 +5,14 @@ using System.Collections.Generic;
 public class HeroData : ScriptableObject
 {
 	public HeroType heroType;
+	[Header("Hero Data")]
+	public Sprite[] abilityIcons;
+	public Sprite specialAbilityIcon;
 	public HeroPowerUpListData powerUpData;
-	[TextArea]
+	[TextArea(3, 10)]
 	public string heroDescription, ability1Description, ability2Description, specialDescription;
 	public AnimationSet t1Skin, t2Skin, t3Skin;
 	public Sprite[] icons;
+	[TextArea(2,5)]
+	public string[] tips;
 }

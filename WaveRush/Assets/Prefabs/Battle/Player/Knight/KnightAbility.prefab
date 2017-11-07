@@ -109,6 +109,7 @@ CircleCollider2D:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_UsedByEffector: 0
+  m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
@@ -161,7 +162,7 @@ MonoBehaviour:
   - {fileID: 21300020, guid: c249c27ff77ed416bbc513d9e1c5388b, type: 3}
   specialAbilityIcon: {fileID: 21300026, guid: c249c27ff77ed416bbc513d9e1c5388b, type: 3}
   heroType: 1
-  maxHealth: 20
+  maxHealth: 16
   baseDamage: 0
   anim:
     animations: []
@@ -174,8 +175,8 @@ MonoBehaviour:
   chargeMultiplier: 1
   specialAbilityChargeCapacity: 50
   cooldownTime:
-  - 1.5
-  - 3
+  - 1.25
+  - 5.5
   cooldownMultipliers: []
   rushAbility: {fileID: 114205876650001828}
   specialRushAbility: {fileID: 114376882785846972}
@@ -183,6 +184,7 @@ MonoBehaviour:
   rushEffect: {fileID: 1566888301041644}
   specialRushEffect: {fileID: 128766}
   areaAttackEffect: {fileID: 168668}
+  areaAttackShieldOn: 0
   hitEffect:
     frames:
     - {fileID: 0}
@@ -272,11 +274,17 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: -10
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0.5882353}
   m_FlipX: 0
   m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 0
 --- !u!212 &21298260
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -307,11 +315,17 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300004, guid: 79bd3e170b5964a93aa756518512e65d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -488,6 +502,7 @@ CircleCollider2D:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_UsedByEffector: 0
+  m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 3
@@ -502,6 +517,7 @@ CircleCollider2D:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_UsedByEffector: 0
+  m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
@@ -704,6 +720,7 @@ MonoBehaviour:
   maxHit: 5
   duration: 1
   areaAttackSound: {fileID: 8300000, guid: 577b89f17cf804ac7935a5475e03ab78, type: 3}
+  areaAttackState: Default
 --- !u!114 &114205876650001828
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -852,11 +869,17 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 0
 --- !u!212 &212992088129103504
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -887,8 +910,14 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 0
