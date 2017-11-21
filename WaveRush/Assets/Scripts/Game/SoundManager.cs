@@ -8,8 +8,8 @@ public class SoundManager : MonoBehaviour {
 	AudioSource ui;
 	AudioSource music;
 	AudioSource sfx;
-	private List<AudioSource> sfxSources;
-	private List<AudioSource> musicSources;
+	private List<AudioSource> sfxSources = new List<AudioSource>();
+	private List<AudioSource> musicSources = new List<AudioSource>();
 
 	private float lowPitchRange = 0.95f;
 	private float highPitchRange = 1.05f;

@@ -27,12 +27,14 @@ public class IncrementingText : MonoBehaviour {
 
 	void OnEnable()
 	{
-		SoundManager.instance.RegisterSfxSrc(audioSrc);
+		if (audioSrc != null)
+			SoundManager.instance.RegisterSfxSrc(audioSrc);
 	}
 
 	void OnDisable()
 	{
-		SoundManager.instance.UnregisterSfxSrc(audioSrc);
+		if (audioSrc != null)
+			SoundManager.instance.UnregisterSfxSrc(audioSrc);
 	}
 
 	public void DisplayNumber(int number)

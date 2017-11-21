@@ -25,12 +25,12 @@ public class PawnInfoPanel : MonoBehaviour
 
 	private string HasPlayerViewedAbilitiesTabKey {
 		get {
-			return pawnIcon.pawnData.type.ToString() + "_Ablities";
+			return pawnIcon.pawnData.type.ToString() + "_Ablities_Tab";
 		}
 	}
 	private string HasPlayerViewedPowersTabKey {
 		get {
-			return pawnIcon.pawnData.type.ToString() + "_Powers";
+			return pawnIcon.pawnData.type.ToString() + "_Powers_Tab";
 		}
 	}
 

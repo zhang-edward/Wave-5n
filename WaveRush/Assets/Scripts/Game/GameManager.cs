@@ -326,15 +326,29 @@ public class GameManager : MonoBehaviour {
 		SaveLoad.Save ();
 	}
 
-	public void SetHasPlayerViewedKey(string key, bool hasViewed)
+	/// <summary>
+	/// Sets the key in the viewed dictionary to the given value
+	/// </summary>
+	/// <param name="key">Key.</param>
+	/// <param name="val">value to set</param>
+	public void SetHasPlayerViewedKey(string key, bool val)
 	{
 //		print("Key: " + key);
 		if (!saveGame.hasPlayerViewedDict.ContainsKey(key))
-			saveGame.hasPlayerViewedDict.Add(key, hasViewed);
+			saveGame.hasPlayerViewedDict.Add(key, val);
 		else
-			saveGame.hasPlayerViewedDict[key] = hasViewed;
+			saveGame.hasPlayerViewedDict[key] = val;
+		// Event for NewFeatureIndicators to refresh their 
 		if (OnHasViewedDictionaryUpdated != null)
 			OnHasViewedDictionaryUpdated();
+	}
+
+	public void InitHasPlayerViewedKey(string key, bool val)
+	{
+		if (!saveGame.hasPlayerViewedDict.ContainsKey(key))
+			saveGame.hasPlayerViewedDict.Add(key, val);
+		else
+			saveGame.hasPlayerViewedDict[key] = val;
 	}
 
 	public void DisplayAlert(string message)

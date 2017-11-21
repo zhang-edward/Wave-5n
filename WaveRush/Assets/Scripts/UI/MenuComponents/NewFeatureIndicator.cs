@@ -26,8 +26,7 @@ public class NewFeatureIndicator : MonoBehaviour
 
 	void OnEnable()
 	{
-		if (key == "")
-			gm.OnHasViewedDictionaryUpdated += UpdateShouldEnable;
+		gm.OnHasViewedDictionaryUpdated += UpdateShouldEnable;
 	}
 
 	void OnDisable()
@@ -41,8 +40,7 @@ public class NewFeatureIndicator : MonoBehaviour
 		print("Registered: " + key);
 		if (!saveGame.hasPlayerViewedDict.ContainsKey(key))
 		{
-			gm.SetHasPlayerViewedKey(key, false);
-			gm.OnHasViewedDictionaryUpdated += UpdateShouldEnable;
+			gm.InitHasPlayerViewedKey(key, false);
 		}
 		else
 			UpdateShouldEnable();
@@ -50,9 +48,7 @@ public class NewFeatureIndicator : MonoBehaviour
 
 	protected virtual void UpdateShouldEnable()
 	{
-		if (key == "")
-			return;
-		//print("Checking " + key);
+		print("Checking " + key);
 		bool shouldEnable = !saveGame.hasPlayerViewedDict[key];
 		//print("Checking if " + key + " is new: " + shouldEnable);
 		// The object should only be enabled if the dictionary indicates that the player has not viewed the feature
@@ -62,6 +58,7 @@ public class NewFeatureIndicator : MonoBehaviour
 	public void SetViewed() 
 	{
 		gm.SetHasPlayerViewedKey(key, true);
+		gameObject.SetActive(false);
 	}
 
 }

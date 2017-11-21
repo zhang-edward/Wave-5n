@@ -49,6 +49,7 @@ public class TutorialScene2Manager : MonoBehaviour
 		enemyManager.OnStageCompleted += () => {
 			Invoke("UpdateData", 3.0f);
 		};
+		player.OnPlayerDied += Restart;
 	}
 
 	// Init main game environment
@@ -78,7 +79,7 @@ public class TutorialScene2Manager : MonoBehaviour
 
 		gm.OnSceneLoaded -= Init;   // Remove the listener because it is only run once per scene
 
-		yield return new WaitForSeconds(TASK_DELAY_INTERVAL);
+		/*yield return new WaitForSeconds(TASK_DELAY_INTERVAL);
 		player.input.isInputEnabled = false;
 		// Step 0: Congratulations
 		PlayKnightCharDialogue(0);
@@ -143,7 +144,7 @@ public class TutorialScene2Manager : MonoBehaviour
 		}
 		cam.StartShake(1.5f, 0.01f, true, true);
 		yield return new WaitForSeconds(1.0f);
-		player.input.isInputEnabled = true;
+		player.input.isInputEnabled = true;*/
 
 		cam.StartFlashColor(Color.white, 1, 0, 0, 1);
 		knightCharacter.gameObject.SetActive(false);
