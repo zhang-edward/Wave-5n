@@ -134,7 +134,7 @@ public class GameManager : MonoBehaviour {
 			if (pawn != null && pawn.unlockTime > 0)
 			{
 				RealtimeTimer timer = timerCounter.GetTimer(pawn.GetTimerID());
-				pawn.unlockTime = timer.timer;
+				pawn.unlockTime = timer.time;
 			}
 		}
 		foreach (Pawn pawn in saveGame.pawnWallet.extraPawns)
@@ -142,7 +142,7 @@ public class GameManager : MonoBehaviour {
 			if (pawn != null && pawn.unlockTime > 0)
 			{
 				RealtimeTimer timer = timerCounter.GetTimer(pawn.GetTimerID());
-				pawn.unlockTime = timer.timer;
+				pawn.unlockTime = timer.time;
 			}
 		}
 		SaveLoad.Save();
@@ -151,7 +151,7 @@ public class GameManager : MonoBehaviour {
 	private void OnApplicationQuit()
 	{
 		PlayerPrefs.SetString(RealtimeTimerCounter.LAST_CLOSED_KEY, System.DateTime.Now.ToString());
-		//print("Application Quit");
+		print("Application Quit");
 		if (OnAppClosed != null)
 			OnAppClosed();
 		SavePawnTimers();
@@ -345,10 +345,8 @@ public class GameManager : MonoBehaviour {
 
 	public void InitHasPlayerViewedKey(string key, bool val)
 	{
-		if (!saveGame.hasPlayerViewedDict.ContainsKey(key))
-			saveGame.hasPlayerViewedDict.Add(key, val);
-		else
-			saveGame.hasPlayerViewedDict[key] = val;
+		Assert.IsTrue(!saveGame.hasPlayerViewedDict.ContainsKey(key));
+		saveGame.hasPlayerViewedDict.Add(key, val);
 	}
 
 	public void DisplayAlert(string message)

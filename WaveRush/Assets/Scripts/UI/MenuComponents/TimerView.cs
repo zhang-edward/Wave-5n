@@ -15,7 +15,7 @@ public class TimerView : MonoBehaviour
 
 	void Update()
 	{
-		text.text = Compose(timer.timer);
+		text.text = Compose(timer.time);
 	}
 
 	private string Compose(float time)
@@ -44,6 +44,6 @@ public class TimerView : MonoBehaviour
 
 	public bool TimerDone()
 	{
-		return timer.timer <= 0;
+		return timer.time <= 0;
 	}
 }

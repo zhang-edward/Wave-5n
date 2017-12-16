@@ -199,13 +199,13 @@ public class TutorialScene1Manager : MonoBehaviour
 
 	private void DisableSwipe()
 	{
-		storedOnSwipe = player.hero.onSwipe;
-		player.hero.onSwipe = null;
+		storedOnSwipe = player.hero.onDrag;
+		player.hero.onDrag = null;
 	}
 
 	private void EnableSwipe()
 	{
-		player.hero.onSwipe = storedOnSwipe;
+		player.hero.onDrag = storedOnSwipe;
 	}
 
 	private void DisableTap()

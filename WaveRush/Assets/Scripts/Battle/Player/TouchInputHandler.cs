@@ -19,8 +19,9 @@ public class TouchInputHandler : MonoBehaviour {
 	private float maxTapTime = 0.5f;
 
 	public delegate void DirectionalTouchInput(Vector3 vec);
-	public event DirectionalTouchInput OnSwipe;
+	public event DirectionalTouchInput OnDragRelease;
 	public event DirectionalTouchInput OnTapHold;
+	public event DirectionalTouchInput OnDragMove;
 	public event DirectionalTouchInput OnTapRelease;
 	public delegate void TouchInput();
 	public event TouchInput MultiTouch;
@@ -40,32 +41,42 @@ public class TouchInputHandler : MonoBehaviour {
 			// if touch began
 			switch (touch.phase)
 			{
-			case (TouchPhase.Began):
-				startPos = Camera.main.ScreenToWorldPoint(touch.position);
-				startTime = Time.time;
-				Debug.Log("Touch began:" + startPos);
-				break;
-			case (TouchPhase.Ended):
-				//startedMove = false;
+				case (TouchPhase.Began):
+					startPos = Camera.main.ScreenToWorldPoint(touch.position);
+					startTime = Time.time;
+					Debug.Log("Touch began:" + startPos);
+					break;
+				case (TouchPhase.Moved):
+					Vector2 curPos = Camera.main.ScreenToWorldPoint(touch.position);
+					Vector2 swipeDir = curPos - startPos;
+					float swipeDist = (curPos - startPos).magnitude;
+					couldBeSwipe = swipeDist > minSwipeDist;
+					if (couldBeSwipe)
+					{
+						OnDragMove(swipeDir);
+					}
+					break;
+				case (TouchPhase.Ended):
+					//startedMove = false;
 
-				float swipeTime = Time.time - startTime;
-				Vector2 curPos = Camera.main.ScreenToWorldPoint (touch.position);
-				Vector2 swipeDir = curPos - startPos;
-				float swipeDist = (curPos - startPos).magnitude;
+					float swipeTime = Time.time - startTime;
+					curPos = Camera.main.ScreenToWorldPoint(touch.position);
+					swipeDir = curPos - startPos;
+					swipeDist = (curPos - startPos).magnitude;
 
-				Debug.Log ("swipe time: " + swipeTime + "\n" + 
-				          "swipe dist: " + swipeDist);
-				couldBeSwipe = swipeTime < maxSwipeTime && swipeDist > minSwipeDist;
-				if (couldBeSwipe)
-				{
-					Debug.Log ("Swipe");
-					couldBeSwipe = false;
-					OnSwipe (swipeDir);
-				}
-				else if (swipeTime < maxTapTime)
-					OnTapRelease(Camera.main.ScreenToWorldPoint(touch.position));
+					/*Debug.Log ("swipe time: " + swipeTime + "\n" + 
+							  "swipe dist: " + swipeDist);*/
+					couldBeSwipe = /*swipeTime < maxSwipeTime && */swipeDist > minSwipeDist;
+					if (couldBeSwipe)
+					{
+						//Debug.Log ("Swipe");
+						couldBeSwipe = false;
+						OnDragRelease(swipeDir);
+					}
+					else if (swipeTime < maxTapTime)
+						OnTapRelease(Camera.main.ScreenToWorldPoint(touch.position));
 
-				break;
+					break;
 			}
 
 /*			// if touch started moving, begin listening for swipe

@@ -53,7 +53,7 @@ public class MageHero : PlayerHero {
 		base.Init (body, player, heroData);
 
 		defaultAnim = anim;
-		onSwipe = ShootFireball;
+		onDrag = ShootFireball;
 		onTap = StartTeleport;
 	}
 
@@ -80,7 +80,7 @@ public class MageHero : PlayerHero {
 
 	private void ShootFireball()
 	{
-		if (!CheckIfCooledDownNotify (0, true, HandleSwipe))
+		if (!CheckIfCooledDownNotify (0, true, HandleDrag))
 			return;
 		ResetCooldownTimer (0);
 
@@ -199,7 +199,7 @@ public class MageHero : PlayerHero {
 		yield return new WaitForSeconds(transformEffect.anim.SecondsPerFrame * 9f);
 		sound.PlaySingle(transformSound);
 		SetAnimationSet(magmaFormAnim);
-		onSwipe = SpecialRush;
+		onDrag = SpecialRush;
 		onTap = null;
 		while (transformEffect.isPlaying)
 			yield return null;
@@ -225,7 +225,7 @@ public class MageHero : PlayerHero {
 	public void ResetSpecialAbility()
 	{
 		SetAnimationSet(defaultAnim);
-		onSwipe = ShootFireball;
+		onDrag = ShootFireball;
 		onTap = StartTeleport;
 		specialActivated = false;
 		player.isInvincible = false;

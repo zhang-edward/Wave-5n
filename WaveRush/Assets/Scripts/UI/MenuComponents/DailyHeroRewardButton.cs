@@ -8,7 +8,7 @@ using System;
 public class DailyHeroRewardButton : MonoBehaviour
 {
 	private const string TIMER_KEY = "DailyHeroRewardButton";
-	private const float REWARD_INTERVAL = 100f;
+	private const float REWARD_INTERVAL = 10f;
 	private const int MAX_REWARDS = 3;
 	public const string TUTORIAL_KEY = "DailyHeroRewardButton_Tutorial";
 
@@ -53,8 +53,8 @@ public class DailyHeroRewardButton : MonoBehaviour
 			InitTimer();
 		else
 			timerView.timer = timerCounter.GetTimer(TIMER_KEY);
-		if (timerCounter.GetTimer(TIMER_KEY).timer <= 0 && currentNumRewards < MAX_REWARDS)
-			UpdateRewardsSinceLastLogin();
+		// Timer has counted down past 0 since last login
+		UpdateRewards();
 	}
 
 	void Start()
@@ -69,7 +69,7 @@ public class DailyHeroRewardButton : MonoBehaviour
 	{
 		saveGame = GameManager.instance.saveGame;
 		GameManager.instance.OnAppClosed += SaveTimer;
-		GameManager.instance.OnTimersUpdated += UpdateRewardsSinceLastLogin;
+		GameManager.instance.OnTimersUpdated += UpdateRewards;
 		OnClick += ClaimRewards;
 	}
 
@@ -77,7 +77,7 @@ public class DailyHeroRewardButton : MonoBehaviour
 	void OnDisable()
 	{
 		GameManager.instance.OnAppClosed -= SaveTimer;
-		GameManager.instance.OnTimersUpdated -= UpdateRewardsSinceLastLogin;
+		GameManager.instance.OnTimersUpdated -= UpdateRewards;
 		saveGame.numDailyHeroRewards = currentNumRewards;
 		OnClick -= ClaimRewards;
 	}
@@ -127,7 +127,7 @@ public class DailyHeroRewardButton : MonoBehaviour
 			heroesRescuedMenu.gameObject.SetActive(true);
 			heroesRescuedMenu.Init(rewards);
 			// Reset the timer and the number of rewards
-			if (timerCounter.GetTimer(TIMER_KEY).timer <= 0)
+			if (timerCounter.GetTimer(TIMER_KEY).time <= 0)
 			{
 				timeUntilNextReward = REWARD_INTERVAL;
 				ResetTimer();
@@ -146,57 +146,45 @@ public class DailyHeroRewardButton : MonoBehaviour
 		numRewardsText.text = currentNumRewards.ToString();
 	}
 
-	private void GetNewReward()
-	{
-		currentNumRewards++;
-		saveGame.numDailyHeroRewards = currentNumRewards;
-		timeUntilNextReward = REWARD_INTERVAL;
-		if (currentNumRewards >= MAX_REWARDS)
-		{
-			currentNumRewards = MAX_REWARDS;
-			return;
-		}
-		ResetTimer();
-	}
-
+	/// <summary>
+	/// Initialize the timer. Should be called upon starting the game.
+	/// </summary>
 	private void InitTimer()
 	{
-//		print("Init timer");
 		currentNumRewards = saveGame.numDailyHeroRewards;
 		timeUntilNextReward = saveGame.GetSavedTimer(TIMER_KEY);
-		if (timeUntilNextReward < 0 && currentNumRewards < MAX_REWARDS)
-		{
-			timeUntilNextReward = REWARD_INTERVAL;
-		}
+		// We don't need to account for the timer going below 0 
+		// because UpdateRewards() is always called directly after this method
 		ResetTimer();
 	}
 
 	private void SaveTimer()
 	{
-		//print("Save timer");
-		timeUntilNextReward = timerCounter.GetTimer(TIMER_KEY).timer;
+		timeUntilNextReward = timerCounter.GetTimer(TIMER_KEY).time;
 		saveGame.SetSavedTimer(TIMER_KEY, timeUntilNextReward);
 		saveGame.numDailyHeroRewards = currentNumRewards;
-
 	}
 
-	private void UpdateRewardsSinceLastLogin()
+	/// <summary>
+	/// Updates the number of rewards based on the value of <see cref="RealtimeTimer.time"/>.
+	/// Should be called every time the timer reaches 0, or on startup
+	/// </summary>
+	private void UpdateRewards()
 	{
-//		print("Update Rewards");
-		float timerTime = timerCounter.GetTimer(TIMER_KEY).timer;
-		//print("Time since last logged in: " + timerTime);
-		if (timerTime > 0 || currentNumRewards >= MAX_REWARDS)
+		float timerTime = timerCounter.GetTimer(TIMER_KEY).time; 
+		if (timerTime > 0 || currentNumRewards >= MAX_REWARDS) 	// If the timer has not reached zero, no rewards
 			return;
-		// The number of rewards since the last login time is equal to the negative time divided by the reward interval
+
+		// Get the number of rewards earned
+		// The number of rewards since the last login time is equal to the negative time divided by the reward interval 
 		// since that is the amount of time that has surpassed
 		int numRewardsSinceLastLogin = Mathf.FloorToInt(Mathf.Abs(timerTime) / REWARD_INTERVAL) + 1;
-		// Set the number of rewards to the specified cap, if it was surpassed
-		currentNumRewards = Mathf.Min(currentNumRewards + numRewardsSinceLastLogin, MAX_REWARDS);
-		// Save the data in the saveGame
-		saveGame.numDailyHeroRewards = currentNumRewards;
-
+		currentNumRewards = 														// Save the currentNumRewards locally
+			Mathf.Min(currentNumRewards + numRewardsSinceLastLogin, MAX_REWARDS);	// Cap the numRewards to MAX_REWARDS
+		saveGame.numDailyHeroRewards = currentNumRewards; 							// Save the time locally
 		timeUntilNextReward = timerTime % REWARD_INTERVAL;
-		// Reset the timer to the appropriate time
+
+		// Reset the timer to the appropriate time if we still have rewards to earn; else, set it to 0
 		if (currentNumRewards < MAX_REWARDS)
 			timeUntilNextReward = REWARD_INTERVAL - Mathf.Abs(timerTime) % REWARD_INTERVAL;
 		else
@@ -204,9 +192,12 @@ public class DailyHeroRewardButton : MonoBehaviour
 		ResetTimer();
 	}
 
+	/// <summary>
+	/// Resets the timer. Should be called every time <see cref="timeUntilNextReward"/> is modified.
+	/// </summary>
 	private void ResetTimer()
 	{
-		timerCounter.SetTimer(TIMER_KEY, timeUntilNextReward, GetNewReward);
+		timerCounter.SetTimer(TIMER_KEY, timeUntilNextReward, UpdateRewards);
 		timerView.timer = timerCounter.GetTimer(TIMER_KEY);
 	}
 }

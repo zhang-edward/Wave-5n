@@ -40,6 +40,7 @@ public class Player : MonoBehaviour, IDamageable
 
 	[Header("Player direction")]
 	public Vector2 dir;		// player's facing direction and movement direction
+	public Transform dirIndicator;
 
 	[Header("Stats")]
 	public int maxHealth = 10;

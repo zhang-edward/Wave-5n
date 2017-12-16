@@ -4,15 +4,15 @@ using System.Collections;
 public class RealtimeTimer : MonoBehaviour
 {
 	private string id;
-	public float timer { get; private set; }
+	public float time { get; private set; }
 
 	public delegate void OnFinishedTimer();
 	private OnFinishedTimer onFinishedTimer;
 
-	public void Init(string id, float timer, OnFinishedTimer onFinishedTimer)
+	public void Init(string id, float time, OnFinishedTimer onFinishedTimer)
 	{
 		this.id = id;
-		this.timer = timer;
+		this.time = time;
 		this.onFinishedTimer = onFinishedTimer;
 		StartCoroutine(UpdateTimer());
 	}
@@ -20,19 +20,19 @@ public class RealtimeTimer : MonoBehaviour
 	public void Reset(float timer, OnFinishedTimer onFinishedTimer)
 	{
 		StopAllCoroutines();
-		this.timer = timer;
+		this.time = timer;
 		this.onFinishedTimer = onFinishedTimer;
 		StartCoroutine(UpdateTimer());
 	}
 
 	void Update()
 	{
-		timer -= Time.deltaTime;
+		time -= Time.deltaTime;
 	}
 
 	private IEnumerator UpdateTimer()
 	{
-		while (timer > 0)
+		while (time > 0)
 			yield return null;
 		if (onFinishedTimer != null)
 			onFinishedTimer();
@@ -40,6 +40,6 @@ public class RealtimeTimer : MonoBehaviour
 
 	public void SubtractTime(float time)
 	{
-		timer -= time;
+		this.time -= time;
 	}
 }

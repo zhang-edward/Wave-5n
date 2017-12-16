@@ -21,10 +21,8 @@ public abstract class PlayerHero : MonoBehaviour {
 	public EntityPhysics body;
 	protected SoundManager sound;
 
-	[Header("Ability Icons")]
-	public HeroType heroType;
-
 	[Header("PlayerHero Properties")]
+	public HeroType heroType;
 	public int maxHealth;
 	public int baseDamage;
 	public int damage {
@@ -33,6 +31,7 @@ public abstract class PlayerHero : MonoBehaviour {
 		}
 	}
 	public float damageMultiplier { get; set; }
+
 	[Header("Animations/Skins")]
 	public AnimationSet anim;
 
@@ -70,7 +69,8 @@ public abstract class PlayerHero : MonoBehaviour {
 
 	public delegate void InputAction();
 	protected InputAction inputAction;
-	public InputAction onSwipe;
+	public InputAction onDrag;
+	public InputAction onDragHold;
 	public InputAction onTap;
 	public InputAction onTapRelease;
 	public InputAction onTapHoldDown;
@@ -112,12 +112,25 @@ public abstract class PlayerHero : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// Performs an ability on swipe
+	/// Performs an ability on drag
 	/// </summary>
-	public virtual void HandleSwipe()
+	public virtual void HandleDrag()
 	{
-		if (onSwipe != null)
-			onSwipe();
+		if (onDrag != null)
+			onDrag();
+		player.dirIndicator.gameObject.SetActive(false);
+	}
+
+	/// <summary>
+	/// Performs an ability on dragHoldDown
+	/// </summary>
+	public virtual void HandleDragHold()
+	{
+		if (onDragHold != null)
+			onDrag();
+		float angle = Mathf.Atan2(player.dir.y, player.dir.x) * Mathf.Rad2Deg;
+		player.dirIndicator.gameObject.SetActive(true);
+		player.dirIndicator.rotation = Quaternion.Euler(0, 0, angle);
 	}
 
 	public virtual void HandleMultiTouch()

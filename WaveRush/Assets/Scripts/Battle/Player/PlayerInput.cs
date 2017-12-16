@@ -20,7 +20,8 @@ public class PlayerInput : MonoBehaviour {
 #if UNITY_ANDROID || UNITY_IOS || UNITY_IOS
 		Invoke("CalibrateAccelerometer", 0.5f);
 		touchInputHandler.enabled = true;
-		touchInputHandler.OnSwipe += HandleSwipe;
+		touchInputHandler.OnDragRelease += HandleDrag;
+		touchInputHandler.OnDragMove += HandleDragHold;
 		touchInputHandler.OnTapHold += HandleTapHold;
 		touchInputHandler.OnTapRelease += HandleTapRelease;
 		touchInputHandler.MultiTouch += HandleMultiTouch;
@@ -88,11 +89,15 @@ public class PlayerInput : MonoBehaviour {
 			player.hero.HandleTapRelease();
 			timeInputHeldDown = 0;
 		}
-		if (Input.GetMouseButtonDown(1))
+		if (Input.GetMouseButton(1))
 		{
 			Vector3 mousePos = Camera.main.ScreenToWorldPoint (Input.mousePosition);
-			player.dir = ((Vector2)(mousePos - transform.position));
-			player.hero.HandleSwipe ();
+			player.dir = (mousePos - transform.position);
+			player.hero.HandleDragHold ();
+		}
+		if (Input.GetMouseButtonUp(1))
+		{
+			player.hero.HandleDrag();
 		}
 		if (Input.GetKeyDown(KeyCode.Space))
 		{
@@ -100,11 +105,17 @@ public class PlayerInput : MonoBehaviour {
 		}
 	}
 
-	private void HandleSwipe(Vector3 dir)
+	private void HandleDragHold(Vector3 dir)
+	{
+		player.dir = dir;
+		player.hero.HandleDragHold();
+	}
+
+	private void HandleDrag(Vector3 dir)
 	{
 		player.dir = dir;
 		Debug.DrawRay (transform.position, dir, Color.white, 0.5f);
-		player.hero.HandleSwipe ();
+		player.hero.HandleDrag ();
 	}
 
 	private void HandleTapHold(Vector3 pos)

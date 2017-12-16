@@ -50,20 +50,20 @@ public class KnightSuperRush : HeroPowerUp
 			chargeEffect.AnimateOut();
 			percentActivated = 1f;
 			activated = true;
-			storedOnSwipe = knight.onSwipe;
-			knight.onSwipe = SuperRush;	
+			storedOnSwipe = knight.onDrag;
+			knight.onDrag = SuperRush;	
 		}
 	}
 
 	private void SuperRush()
 	{
 		// check cooldown
-		if (!knight.CheckIfCooledDownNotify (0, true, playerHero.HandleSwipe))
+		if (!knight.CheckIfCooledDownNotify (0, true, playerHero.HandleDrag))
 			return;
 		knight.ResetCooldownTimer (0);
 		knight.damageMultiplier *= 2f;
 		rushAbility.Execute();
-		knight.onSwipe = storedOnSwipe;
+		knight.onDrag = storedOnSwipe;
 		percentActivated = 0f;
 		activated = false;
 		Invoke("ResetRushAbility", rushAbility.duration);

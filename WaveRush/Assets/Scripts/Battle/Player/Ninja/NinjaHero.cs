@@ -39,7 +39,7 @@ public class NinjaHero : PlayerHero {
 		base.Init (body, player, heroData);
 		projectilePool = (RuntimeObjectPooler)projectilePrefab.GetComponent<Projectile>().GetObjectPooler();
 
-		onSwipe = DashAttack;
+		onDrag = DashAttack;
 		onTap = ShootNinjaStar;
 	}
 
@@ -52,7 +52,7 @@ public class NinjaHero : PlayerHero {
 
 	public void DashAttack()
 	{
-		if (!CheckIfCooledDownNotify (0, true, HandleSwipe))
+		if (!CheckIfCooledDownNotify (0, true, HandleDrag))
 			return;
 		ResetCooldownTimer (0);
 		StartCoroutine(DashAttackRoutine ());

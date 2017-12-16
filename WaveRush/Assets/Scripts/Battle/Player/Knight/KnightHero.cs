@@ -43,7 +43,7 @@ public class KnightHero : PlayerHero {
 		base.Init (body, player, heroData);
 		InitAbilities();
 		// handle input
-		onSwipe = RushAbility;
+		onDrag = RushAbility;
 		onTap = AreaAttack;
 	}
 
@@ -57,7 +57,7 @@ public class KnightHero : PlayerHero {
 	public void RushAbility()
 	{
 		// check cooldown
-		if (!CheckIfCooledDownNotify (0, true, HandleSwipe))
+		if (!CheckIfCooledDownNotify (0, true, HandleDrag))
 			return;
 		ResetCooldownTimer (0);
 		rushAbility.Execute();
@@ -146,8 +146,8 @@ public class KnightHero : PlayerHero {
 		// Animation
 		anim.Play("SpecialPersist");
 		// Set onSwipe
-		storedOnSwipe = onSwipe;
-		onSwipe = SpecialRush;
+		storedOnSwipe = onDrag;
+		onDrag = SpecialRush;
 		yield return new WaitForSecondsRealtime(3.0f);
 		// Animation
 		anim.Play("Default");
@@ -165,7 +165,7 @@ public class KnightHero : PlayerHero {
 		CameraControl.instance.screenOverlay.sortingLayerName = "Default";
 		CameraControl.instance.DisableOverlay(1f);
 		// Reset onSwipe
-		onSwipe = storedOnSwipe;
+		onDrag = storedOnSwipe;
 	}
 
 	private void SpecialRush()
