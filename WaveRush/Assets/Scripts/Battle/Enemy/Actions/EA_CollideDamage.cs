@@ -1,7 +1,8 @@
-﻿using UnityEngine;
-namespace EnemyActions
+﻿namespace EnemyActions
 {
-	public class CollideDamageAction : EnemyAction
+	using UnityEngine;
+
+	public class EA_CollideDamage : EnemyAction
 	{
 		private float cooldown;
 		private float attackBuildUp = 0.4f; // time for the player to be in contact with the enemy before the player is damaged

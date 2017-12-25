@@ -42,12 +42,12 @@ public class TouchInputHandler : MonoBehaviour {
 			switch (touch.phase)
 			{
 				case (TouchPhase.Began):
-					startPos = Camera.main.ScreenToWorldPoint(touch.position);
+					startPos = touch.position;
 					startTime = Time.time;
 					Debug.Log("Touch began:" + startPos);
 					break;
 				case (TouchPhase.Moved):
-					Vector2 curPos = Camera.main.ScreenToWorldPoint(touch.position);
+					Vector2 curPos = touch.position;
 					Vector2 swipeDir = curPos - startPos;
 					float swipeDist = (curPos - startPos).magnitude;
 					couldBeSwipe = swipeDist > minSwipeDist;
@@ -60,7 +60,7 @@ public class TouchInputHandler : MonoBehaviour {
 					//startedMove = false;
 
 					float swipeTime = Time.time - startTime;
-					curPos = Camera.main.ScreenToWorldPoint(touch.position);
+					curPos = touch.position;
 					swipeDir = curPos - startPos;
 					swipeDist = (curPos - startPos).magnitude;
 

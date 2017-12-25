@@ -1,48 +1,57 @@
-﻿namespace PlayerAbilities
+﻿namespace PlayerActions
 {
 	using UnityEngine;
+	using System.Collections;
 	using System.Collections.Generic;
 
-	public class AreaAttackAbility : PlayerAbility
+	[System.Serializable]
+	public class PA_AreaEffect : PlayerAction
 	{
 		private SoundManager sound;
 		[Header("Properties")]
-		public float range;				// The range of the attack
-		public int maxHit;				// The maxmimum number of enemies that can be hit by the attack
-		public float duration;          // the cooldown before the player can make his next action
+		public float   range;							// The range of the attack
+		public int 	   maxHit;							// The maxmimum number of enemies that can be affected
+		public Vector2 position { private get; set; }	// The position of the area effect
 		[Header("Effects and SFX")]
 		public AudioClip areaAttackSound;
-		public string areaAttackState = "Default";
+		public string    areaAttackState = "Default";
 
-		private List<Enemy> hitEnemies = new List<Enemy>(); // enemies collided with during one execution of this ability
+		private List<Enemy> hitEnemies = new List<Enemy>(); // Enemies affected with during one execution of this ability
 
 		public delegate void HitEnemy(Enemy e);
 		private HitEnemy OnHitEnemy;
 
-		void Start()
-		{
-			sound = SoundManager.instance;
-		}
 
 		public void Init(Player player, HitEnemy onHitEnemyCallback)
 		{
 			base.Init(player);
 			OnHitEnemy = onHitEnemyCallback;
+			sound = SoundManager.instance;
+
 		}
 
-		public void Execute()
+		public void SetPosition(Vector2 position)
+		{
+			this.position = position;
+		}
+
+		protected override void DoAction()
+		{
+			player.StartCoroutine(ExecuteRoutine(position));
+		}
+
+		private IEnumerator ExecuteRoutine(Vector2 pos)
 		{
 			// Sound
 			sound.RandomizeSFX(areaAttackSound);
 			// Animation
 			hero.anim.Play(areaAttackState);
 			// Player properties
-			player.isInvincible = true;
 			player.input.isInputEnabled = false;
 			hero.body.Move(Vector2.zero);
 
 			int numEnemiesHit = 0;
-			Collider2D[] cols = Physics2D.OverlapCircleAll(transform.position, range);
+			Collider2D[] cols = Physics2D.OverlapCircleAll(pos, range);
 			foreach (Collider2D col in cols)
 			{
 				if (col.CompareTag("Enemy"))
@@ -57,17 +66,9 @@
 					}
 				}
 			}
-			Invoke("Reset", 0.5f);
-		}
 
-		public void Reset()
-		{
+			yield return new WaitForSeconds(duration);
 			player.input.isInputEnabled = true;
-		}
-
-		private void OnDrawGizmosSelected()
-		{
-			Gizmos.DrawWireSphere(transform.position, range);
 		}
 	}
 }

@@ -1,20 +1,58 @@
 ﻿using UnityEngine;
-using PlayerAbilities;
+using PlayerActions;
 using Projectiles;
 using System.Collections;
 
 public class MageHero : PlayerHero {
 
-	[HideInInspector]public RuntimeObjectPooler projectilePool;
+	public class PA_ShootMeteorProjectile : PA_ShootProjectile
+	{
+		protected override void DoAction()
+		{
+			Vector3 target = (Vector3)hero.player.dir + player.transform.position;
+			Vector3 origin = target + new Vector3(Random.Range(-3f, 3f), 10);
+			SetProjectileOrigin(origin);
+			SetProjectileDirection(target - origin);
+			base.DoAction();
+		}
+	}
+
+	[System.Serializable]
+	public class PA_Meteor : PA_Sequencer
+	{
+		public PA_SpecialAbilityEffect specialEffect;
+		public PA_InputListener inputListener;
+
+		public PA_ShootMeteorProjectile shootMeteor = new PA_ShootMeteorProjectile();
+		private PA_Joint jointAbility = new PA_Joint();
+
+		public void Init(Player player, GameObject meteorPrefab)
+		{
+			RuntimeObjectPooler meteorProjectilePool = (RuntimeObjectPooler)meteorPrefab.GetComponent<Projectile>().GetObjectPooler();
+			shootMeteor.Init(player, meteorProjectilePool);			
+			specialEffect.Init(player, shootMeteor);
+			inputListener.Init(player, shootMeteor);
+			jointAbility.Init(player,
+			                  specialEffect,
+			                  inputListener);
+			base.Init(player,
+			          jointAbility);
+		}
+	}
+
+	[HideInInspector]public  RuntimeObjectPooler projectilePool;
 	[Header("Abilities")]
-	public RushAbility specialRushAbility;
-	public ShootProjectileAbility shootProjectileAbility;
+	//public PA_Rush specialRushAbility;
+	public PA_ShootProjectile shootProjectileAbility;
+	public PA_Meteor specialMeteorAbility;
+	public PA_Teleport teleportAbility;
 	[Header("Prefabs")]
 	public SimpleAnimation hitEffect;
 	public SimpleAnimation specialHitEffect;
 	public GameObject projectilePrefab;
+	public GameObject meteorPrefab;
 	private float teleportRange = 4.0f;
-	private bool specialActivated;
+	private bool  specialActivated;
 	private float specialRushCooldown = 0.5f;
 	private float specialRushCooldowntimer = 0;
 	private AnimationSet defaultAnim;
@@ -26,6 +64,7 @@ public class MageHero : PlayerHero {
 	public AudioClip powerUpSound;
 	public AudioClip transformSound;
 	public AudioClip powerDownSound;
+	public AudioClip spawnMeteorSound;
 	[Header("Etc")]
 	public Map map;
 	public AnimationSet magmaFormAnim;
@@ -48,13 +87,21 @@ public class MageHero : PlayerHero {
 		cooldownTimers = new float[2];
 		map = GameObject.Find ("Map").GetComponent<Map>();
 		projectilePool = (RuntimeObjectPooler)projectilePrefab.GetComponent<Projectile>().GetObjectPooler();
-		shootProjectileAbility.Init(player, projectilePool);
-		specialRushAbility.Init(player, DamageEnemySpecial);
+
 		base.Init (body, player, heroData);
 
 		defaultAnim = anim;
 		onDrag = ShootFireball;
 		onTap = StartTeleport;
+		InitAbilities();
+	}
+
+	private void InitAbilities()
+	{
+		shootProjectileAbility.Init(player, projectilePool);
+		specialMeteorAbility.Init(player, meteorPrefab);
+		//specialRushAbility.Init(player, DamageEnemySpecial);
+		teleportAbility.Init(player);
 	}
 
 	protected override void ParryEffect()
@@ -66,14 +113,12 @@ public class MageHero : PlayerHero {
 	{
 		SetAnimationSet(magmaFormAnim);
 		player.dir = UtilMethods.DegreeToVector2(Random.Range(0, 360f));
-		specialRushAbility.speed /= 2;
-		specialRushAbility.Execute();
+		//specialRushAbility.movement.speed /= 2;
+		//specialRushAbility.Execute();
 		player.input.isInputEnabled = false;
-//		Debug.Log("Doing this!");
-		yield return new WaitForSeconds(specialRushAbility.duration - 0.1f);
-		specialRushAbility.speed *= 2;
+		//yield return new WaitForSeconds(specialRushAbility.duration - 0.1f);
+		//specialRushAbility.movement.speed *= 2;
 		SetAnimationSet(defaultAnim);
-//		Debug.Log("Doing this now!");
 		yield return new WaitForSeconds(0.1f);
 		player.input.isInputEnabled = true;
 	}
@@ -84,25 +129,20 @@ public class MageHero : PlayerHero {
 			return;
 		ResetCooldownTimer (0);
 
-		Vector2 dir = player.dir.normalized;
-		Projectile fireball = shootProjectileAbility.ShootProjectile(dir);
+		shootProjectileAbility.SetProjectileOrigin(player.transform.position);
+		shootProjectileAbility.SetProjectileDirection(player.dir.normalized);
+		shootProjectileAbility.Execute();
+		Projectile fireball = shootProjectileAbility.GetProjectile();
 		fireball.GetComponentInChildren<AreaDamageAction>().damage = damage;
 
-		// recoil
+		/** Recoil */
+		Vector2 dir = player.dir.normalized;
 		body.Move (dir);	// set the sprites flipX to the correct direction
-		body.Rb2d.velocity = dir * -4f;
+		body.rb2d.velocity = dir * -4f;
 
-		// event
+		/** Event */
 		if (OnMageShotFireball != null)
 			OnMageShotFireball (fireball.gameObject);
-
-		// Reset the ability
-		Invoke ("ResetShootFireball", 0.5f);
-	}
-
-	public void ResetShootFireball()
-	{
-		body.moveSpeed = player.DEFAULT_SPEED;
 	}
 
 	public void StartTeleport()
@@ -110,8 +150,12 @@ public class MageHero : PlayerHero {
 		if (!CheckIfCooledDownNotify (1))
 			return;
 		player.dir = Vector2.ClampMagnitude(player.dir, teleportRange);
+		teleportAbility.OnTeleportIn += DisableTeleportIndicator;
+		teleportIndicator.transform.position = transform.position + (Vector3)player.dir;
+		teleportIndicator.gameObject.SetActive(true);
 		if (CanTeleport(player.transform.position + (Vector3)player.dir))
-			StartCoroutine (Teleport ());
+			teleportAbility.Execute();
+		ResetCooldownTimer(1);
 	}
 
 	private bool CanTeleport(Vector3 dest)
@@ -119,9 +163,15 @@ public class MageHero : PlayerHero {
 		return map.WithinOpenCells(dest);
 	}
 
-	private IEnumerator Teleport()
+	private void DisableTeleportIndicator()
+	{
+		teleportIndicator.gameObject.SetActive(false);
+	}
+
+	/*private IEnumerator Teleport()
 	{
 		ResetCooldownTimer (1);
+		int k = player.invincibility.Add(999);
 		TeleportOut();
 		teleportIndicator.transform.position = transform.position + (Vector3)player.dir;
 		teleportIndicator.gameObject.SetActive(true);
@@ -134,7 +184,7 @@ public class MageHero : PlayerHero {
 		while (anim.player.isPlaying)
 			yield return null;
 		// reset properties
-		player.isInvincible = false;
+		player.invincibility.RemoveTimer(k);
 		player.input.isInputEnabled = true;
 	}
 
@@ -145,7 +195,6 @@ public class MageHero : PlayerHero {
 		// Animation
 		anim.Play("TeleOut");
 		// Set properties
-		player.isInvincible = true;
 		player.input.isInputEnabled = false;
 		// event trigger
 		if (OnMageTeleportOut != null)
@@ -166,7 +215,7 @@ public class MageHero : PlayerHero {
 		// event trigger
 		if (OnMageTeleportIn != null)
 			OnMageTeleportIn();
-	}
+	}*/
 
 	private void AreaAttack()
 	{
@@ -183,34 +232,37 @@ public class MageHero : PlayerHero {
 
 	public override void SpecialAbility()
 	{
+		if (specialAbilityCharge < specialAbilityChargeCapacity ||
+		    specialMeteorAbility.inProgress)
+			return;
 		StartCoroutine(SpecialAbilityRoutine());	
 	}
 
 	private IEnumerator SpecialAbilityRoutine()
 	{
-		if (specialAbilityCharge < specialAbilityChargeCapacity || specialActivated)
-			yield break;
-		specialActivated = true;
-		transformEffect.gameObject.SetActive(true);
-		transformEffect.Play();
-		sound.PlaySingle(powerUpSound);
-		CameraControl.instance.StartShake(0.2f, 0.05f, true, false);
-		player.isInvincible = true;
-		yield return new WaitForSeconds(transformEffect.anim.SecondsPerFrame * 9f);
-		sound.PlaySingle(transformSound);
-		SetAnimationSet(magmaFormAnim);
-		onDrag = SpecialRush;
-		onTap = null;
-		while (transformEffect.isPlaying)
+		sound.RandomizeSFX(powerUpSound);
+		onTap -= StartTeleport;
+		specialMeteorAbility.Execute();
+		specialMeteorAbility.shootMeteor.OnExecutedAction += SetMeteorProperties;
+		while (specialMeteorAbility.inProgress)
 			yield return null;
-		transformEffect.gameObject.SetActive(false);
+		yield return new WaitForSeconds(0.5f);
+		onTap += StartTeleport;
+	}
 
-		if (OnMageSpecialAbility != null)
-			OnMageSpecialAbility();
+	private void SetMeteorProperties()
+	{
+		Projectile meteor = specialMeteorAbility.shootMeteor.GetProjectile();
+		meteor.GetComponentInChildren<AreaDamageAction>().damage = Mathf.RoundToInt(damage * 4f);
+		meteor.OnDie += MeteorImpactEvent;
+		specialAbilityCharge = 0;
+	}
 
-		yield return new WaitForSeconds(7f);
-		sound.PlaySingle(powerDownSound);
-		ResetSpecialAbility();
+	private void MeteorImpactEvent()
+	{
+		CameraControl.instance.StartShake(0.3f, 0.1f, true, false);
+		CameraControl.instance.StartFlashColor(Color.white, 0.8f, 0, 0, 1f);
+		player.StartTempSlowDown(0.2f);
 	}
 
 	public void SpecialRush()
@@ -219,7 +271,7 @@ public class MageHero : PlayerHero {
 			return;
 		specialRushCooldowntimer = specialRushCooldown;
 
-		specialRushAbility.Execute();
+		//specialRushAbility.Execute();
 	}
 
 	public void ResetSpecialAbility()
@@ -228,7 +280,6 @@ public class MageHero : PlayerHero {
 		onDrag = ShootFireball;
 		onTap = StartTeleport;
 		specialActivated = false;
-		player.isInvincible = false;
 		specialAbilityCharge = 0;
 	}
 

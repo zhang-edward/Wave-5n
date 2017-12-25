@@ -15,7 +15,7 @@ public class KnightRushPowerUp : HeroPowerUp
 	{
 		base.Activate (hero);
 		this.knight = (KnightHero)hero;
-		knight.rushAbility.speed *= MULTIPLIER;
+		//knight.rushAbility.movement.speed *= MULTIPLIER;
 		totalSpeedMultiplier = MULTIPLIER;
 		knight.OnKnightRush += PlayEffect;
 	}
@@ -23,13 +23,13 @@ public class KnightRushPowerUp : HeroPowerUp
 	public override void Deactivate ()
 	{
 		base.Deactivate ();
-		knight.rushAbility.speed /= totalSpeedMultiplier;
+		//knight.rushAbility.movement.speed /= totalSpeedMultiplier;
 	}
 
 	public override void Stack ()
 	{
 		base.Stack ();
-		knight.rushAbility.speed *= MULTIPLIER;
+		//knight.rushAbility.movement.speed *= MULTIPLIER;
 		totalSpeedMultiplier *= MULTIPLIER;
 	}
 

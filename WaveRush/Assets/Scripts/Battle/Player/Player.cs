@@ -1,64 +1,98 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Player : MonoBehaviour, IDamageable
 {
+	/// <summary>
+	/// Aids in statuses having multiple factors. For example, invincibility might be affected by post-player-damage,
+	/// an ability activation, powerups, etc. so each ability can have its own timer.
+	/// </summary>
+	public class StatusTimers
+	{
+		private float[] timers = new float[10];
+
+		/// <summary>
+		/// Adds a new timer
+		/// </summary>
+		/// <returns>The index of the new timer</returns>
+		/// <param name="time">Time to initialize the timer to.</param>
+		public int Add(float time)
+		{
+			for (int i = 0; i < timers.Length; i++)
+			{
+				if (timers[i] <= 0f)
+				{
+					timers[i] = time;
+					return i;
+				}
+			}
+			// If there are no empty timer slots, double the array size and copy the old array over
+			int oldLength = timers.Length;
+			float[] newArr = new float[oldLength * 2];
+			timers.CopyTo(newArr, 0);
+			// Add the timer value to the new, bigger array
+			timers = newArr;
+			timers[oldLength] = time;
+			return oldLength;
+		}
+
+		/// <summary>
+		/// Decrements each timer.
+		/// </summary>
+		/// <param name="amt">Amount to decrement by.</param>
+		public void DecrementTimer(float amt) 
+		{
+			for (int i = timers.Length - 1; i >= 0; i--)
+			{
+				if (timers[i] >= 0)
+					timers[i] -= amt;
+			}
+		}
+
+		public void RemoveTimer(int i) 
+		{
+			timers[i] = 0;
+		}
+
+		public bool IsOn()
+		{
+			for (int i = 0; i < timers.Length; i ++) {
+				if (timers[i] > 0)
+					return true;
+			}
+			return false;
+		}
+	}
+
 	public const float HIT_DISABLE_TIME = 1.0f;
 
-	public delegate void EnemyDamaged (float strength);
-	public event EnemyDamaged OnEnemyDamaged;
-
-	public delegate void EnemySelected (Enemy e);
-	public event EnemySelected OnEnemyLastHit;
-
-	public delegate void PlayerHealthChanged (int amt);
-	public event PlayerHealthChanged OnPlayerDamaged;
-	public event PlayerHealthChanged OnPlayerHealed;
-
-	public delegate void PlayerLifecycleEvent();
-	public event PlayerLifecycleEvent OnPlayerInitialized;
-	public event PlayerLifecycleEvent OnPlayerDied;
-	public event PlayerLifecycleEvent OnPlayerTryHit;
-	public event PlayerLifecycleEvent OnPlayerWillDie;
-
-	public delegate void PlayerUpgradesUpdated(int numUpgrades);
-	public event PlayerUpgradesUpdated OnPlayerUpgradesUpdated;
-
-	[HideInInspector]
-	public float DEFAULT_SPEED;
+	[HideInInspector]public float DEFAULT_SPEED;
 
 	public GameObject[] heroPrefabs;
 
 	[Header("Entity Base Values")]
-	public SpriteRenderer sr;
+	public SpriteRenderer 	  sr;
 	public AnimationSetPlayer animPlayer;
-	public PlayerInput input;
-	public EntityPhysics body;
+	public PlayerInput 		  input;
+	public EntityPhysics      body;
 
 	[Header("Player Ability")]
 	public PlayerHero hero;
 
 	[Header("Player direction")]
-	public Vector2 dir;		// player's facing direction and movement direction
+	public Vector2   dir;		// player's facing direction and movement direction
 	public Transform dirIndicator;
 
 	[Header("Stats")]
-	public int maxHealth = 10;
-	public int health { get; private set; }
-	private bool hitDisabled = false;			// true when the player has been damaged
-	public bool isInvincible = false;			// property that can be set by other abilities
+	public int  maxHealth = 10;
+	public int  health { get; private set; }
+	public StatusTimers invincibility = new StatusTimers();
 
 	public float damagedCooldownTime = 1.0f;
 
-	/*[Header("AutoTargeter Object")]
-	public Transform autoTargetReticle;
-	[HideInInspector]
-	public Transform targetedEnemy;
-	[HideInInspector]
-	public bool autoTargetEnabled = false;*/
-
 	[Header("Effects")]
-	public ParticleSystem healEffect;
+	public ParticleSystem  healEffect;
 	public SimpleAnimation spawnEffect;
 	public SimpleAnimation deathEffect;
 	public SimpleAnimation sacrificeEffect;
@@ -77,6 +111,26 @@ public class Player : MonoBehaviour, IDamageable
 
 	[HideInInspector]
 	public ObjectPooler deathPropPool;
+
+	/** Delegates and Events */
+	public delegate void EnemyDamaged(float strength);
+	public event EnemyDamaged OnEnemyDamaged;
+
+	public delegate void EnemySelected(Enemy e);
+	public event EnemySelected OnEnemyLastHit;
+
+	public delegate void PlayerHealthChanged(int amt);
+	public event PlayerHealthChanged OnPlayerDamaged;
+	public event PlayerHealthChanged OnPlayerHealed;
+
+	public delegate void PlayerLifecycleEvent();
+	public event PlayerLifecycleEvent OnPlayerInitialized;
+	public event PlayerLifecycleEvent OnPlayerDied;
+	public event PlayerLifecycleEvent OnPlayerTryHit;
+	public event PlayerLifecycleEvent OnPlayerWillDie;
+
+	public delegate void PlayerUpgradesUpdated(int numUpgrades);
+	public event PlayerUpgradesUpdated OnPlayerUpgradesUpdated;
 
 	void Start()
 	{
@@ -114,6 +168,11 @@ public class Player : MonoBehaviour, IDamageable
 		}
 		throw new UnityEngine.Assertions.AssertionException(this.GetType() + ".cs",
 															"Cannot find hero with name " + heroData.type.ToString() + "!");
+	}
+
+	void Update()
+	{
+		invincibility.DecrementTimer(Time.deltaTime);
 	}
 
 	/// <summary>
@@ -167,14 +226,7 @@ public class Player : MonoBehaviour, IDamageable
 
 	public void HitDisable(float time)
 	{
-		StartCoroutine(HitDisableRoutine(time));
-	}
-
-	private IEnumerator HitDisableRoutine(float time)
-	{
-		hitDisabled = true;
-		yield return new WaitForSeconds(time);
-		hitDisabled = false;
+		invincibility.Add(time);
 	}
 
 	/// <summary>
@@ -214,7 +266,7 @@ public class Player : MonoBehaviour, IDamageable
 	{
 		if (OnPlayerTryHit != null)
 			OnPlayerTryHit();
-		if (hitDisabled || isInvincible || amt <= 0)
+		if (invincibility.IsOn() || amt <= 0)
 			return;
 		health -= amt;
 		OnPlayerDamaged(amt);

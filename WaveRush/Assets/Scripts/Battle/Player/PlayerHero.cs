@@ -4,82 +4,69 @@ using System.Collections.Generic;
 
 public abstract class PlayerHero : MonoBehaviour {
 
-	/*public static readonly Dictionary<string, string> HERO_TYPES = new Dictionary<string, string> 
-	{
-		{"KNIGHT", "knight"},
-		{"MAGE", "mage"},
-		{"NINJA", "ninja"}
-	};*/
+	/** Constants */
+	public const float PARRY_TIME = 0.7f;			// The parry time
+	public const float PARRY_SLOW_TIME = 0.0f;		// How long the slow-down effect should be on successful parry
+	public const float PARRY_COOLDOWN_TIME = 0.3f;	// How long the player should be inactive upon failed parry
 
-	public const float PARRY_TIME = 0.7f;
-	public const float PARRY_SLOW_TIME = 0.0f;
-	public const float PARRY_COOLDOWN_TIME = 0.3f;
-
-	[HideInInspector]
-	public Player player;
-	[HideInInspector]
-	public EntityPhysics body;
+	/** Hidden properties */
+	[HideInInspector]public Player player;
+	[HideInInspector]public EntityPhysics body;
+	[HideInInspector]public HeroPowerUpManager powerUpManager;
+	[HideInInspector]public float[] cooldownMultipliers;	// The cooldown time multipliers, modified by powerups or abilities
 	protected SoundManager sound;
 
+	/** Hero properties */
 	[Header("PlayerHero Properties")]
 	public HeroType heroType;
 	public int maxHealth;
 	public int baseDamage;
-	public int damage {
-		get {
-			return Mathf.RoundToInt(baseDamage * damageMultiplier);
-		}
-	}
 	public float damageMultiplier { get; set; }
+	public int damage {
+		get { return Mathf.RoundToInt(baseDamage * damageMultiplier); }	// Final damage calculation
+	}
+	// Combo
+	// TODO: Remove scores from the game
+	public int   maxCombo   { get; private set; }	// The highest combo for this run
+	public int   combo      { get; private set; }	// Combo score
+	public float comboTimer { get; private set; }	// Combo timer-if this reaches 0, reset combo to 0
+	public float maxComboTimer = 3.0f;
 
 	[Header("Animations/Skins")]
 	public AnimationSet anim;
-
-	[HideInInspector]
-	public HeroPowerUpManager powerUpManager;
-
-	[Space]
 	public Sprite[] deathProps;
-
-	public int combo { get; private set; }
-	public int maxCombo { get; private set; }
-	public float comboTimer { get; private set; }
-	[HideInInspector]
-	public float maxComboTimer = 3.0f;
 
 	[Header("Special Ability Properties")]
 	public float chargeMultiplier = 1;
 	public float specialAbilityChargeCapacity;
 	public float specialAbilityCharge { get; protected set; }
 
-	protected float[] cooldownTimers;
-	public float[] CooldownTimers {
-		get {return cooldownTimers;}
-	}
 	[Header("Ability Cooldown Times")]
 	public float[] cooldownTime;		// The regular cooldown time for each ability. Set in inspector
-	[HideInInspector]
-	public float[] cooldownMultipliers;	// The cooldown time multipliers, modified by powerups or abilities
 
-	public int NumAbilities{
-		get {return cooldownTimers.Length;}
-	}
+	public float[] 	cooldownTimers	{ get; protected set; }
+	public int 		NumAbilities 	{ get { return cooldownTimers.Length; } }
 
+	// Misc
 	private Coroutine listenForParryRoutine;
+	private Coroutine queuedActionRoutine;
 
+	/** Delegates and events */
+	// Input Actions
 	public delegate void InputAction();
 	protected InputAction inputAction;
-	public InputAction onDrag;
-	public InputAction onDragHold;
-	public InputAction onTap;
-	public InputAction onTapRelease;
-	public InputAction onTapHoldDown;
-	public InputAction onSpecialAbility;
-	public InputAction onParry;
+	public 	  InputAction onDrag;
+	public    InputAction onDragHold;
+	public    InputAction onTap;
+	public    InputAction onTapRelease;
+	public    InputAction onTapHoldDown;
+	public    InputAction onSpecialAbility;
+	public    InputAction onParry;
+	// Miscellaneous
 	public event Player.PlayerLifecycleEvent OnSpecialAbilityCharged;
-
 	public delegate void OnAbility(int i);
 	public event OnAbility OnAbilityFailed;
+
 
 	void OnDisable()
 	{
@@ -87,8 +74,9 @@ public abstract class PlayerHero : MonoBehaviour {
 		player.OnEnemyDamaged -= IncrementSpecialAbilityCharge;
 	}
 
+	/** Player Inputs */
 	/// <summary>
-	/// Performs an ability on tap
+	/// Performs an action on tap
 	/// </summary>
 	public virtual void HandleTap ()
 	{
@@ -96,6 +84,9 @@ public abstract class PlayerHero : MonoBehaviour {
 			onTap();
 	}
 
+	/// <summary>
+	/// Performs an action on tap release
+	/// </summary>
 	public virtual void HandleTapRelease()
 	{
 		if (onTapRelease != null)
@@ -103,7 +94,7 @@ public abstract class PlayerHero : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// Performs an action on button held down
+	/// Performs an action on screen held down
 	/// </summary>
 	public virtual void HandleHoldDown()
 	{
@@ -112,7 +103,7 @@ public abstract class PlayerHero : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// Performs an ability on drag
+	/// Performs an action on drag
 	/// </summary>
 	public virtual void HandleDrag()
 	{
@@ -122,7 +113,7 @@ public abstract class PlayerHero : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// Performs an ability on dragHoldDown
+	/// Performs an action on dragHoldDown
 	/// </summary>
 	public virtual void HandleDragHold()
 	{
@@ -131,6 +122,30 @@ public abstract class PlayerHero : MonoBehaviour {
 		float angle = Mathf.Atan2(player.dir.y, player.dir.x) * Mathf.Rad2Deg;
 		player.dirIndicator.gameObject.SetActive(true);
 		player.dirIndicator.rotation = Quaternion.Euler(0, 0, angle);
+		player.dirIndicator.localScale = new 
+			Vector3(Mathf.Min(player.dir.magnitude, 2), 0.5f, 1);
+	}
+
+	/// <summary>
+	/// Performs a special ability.
+	/// </summary>
+	public abstract void SpecialAbility();
+
+	protected void QueueAction(float t)
+	{
+		if (queuedActionRoutine != null)
+			StopCoroutine(queuedActionRoutine);
+		queuedActionRoutine = StartCoroutine(QueueActionRoutine(t));
+	}
+
+	/// <summary>
+	/// Queues the action
+	/// </summary>
+	/// <param name="t">Time</param>
+	private IEnumerator QueueActionRoutine(float t)
+	{
+		yield return new WaitForSeconds(t);
+		inputAction();
 	}
 
 	public virtual void HandleMultiTouch()
@@ -139,6 +154,7 @@ public abstract class PlayerHero : MonoBehaviour {
 		listenForParryRoutine = StartCoroutine(ListenForParry());
 	}
 
+	/** Parry */
 	private IEnumerator ListenForParry()
 	{
 		EffectPooler.PlayEffect(player.parryEffect, transform.position, true, 0.1f);
@@ -158,7 +174,7 @@ public abstract class PlayerHero : MonoBehaviour {
 	{
 		if (onParry != null)
 			onParry();
-		player.isInvincible = true;
+		player.invincibility.Add(1.0f);
 		sound.PlaySingle(player.parrySuccessSound);
 		player.HitDisable(0.5f);
 		ParryEffect();
@@ -167,33 +183,9 @@ public abstract class PlayerHero : MonoBehaviour {
 		player.OnPlayerTryHit -= Parry;
 		player.input.enabled = true;
 		player.sr.color = Color.white;
-		Invoke("ResetInvincibility", 1.0f);
 	}
-
-	private void ResetInvincibility()
-	{
-//		print("player is not invincible");
-		player.isInvincible = false;
-	}
-
 	protected abstract void ParryEffect();
 
-	/// <summary>
-	/// Performs a special ability.
-	/// </summary>
-	public abstract void SpecialAbility();
-
-	protected void QueueAction(float t)
-	{
-		StopCoroutine("QueueActionCoroutine");
-		StartCoroutine ("QueueActionCoroutine", t);
-	}
-
-	private IEnumerator QueueActionCoroutine(float t)
-	{
-		yield return new WaitForSeconds (t);
-		inputAction ();
-	}
 
 	public virtual void Init(EntityPhysics body, Player player, Pawn heroData)
 	{
@@ -247,17 +239,25 @@ public abstract class PlayerHero : MonoBehaviour {
 		}
 	}
 
-	// Checks if an ability is cooled down and, if not, notifies event listeners (for the HUD icons to flash red)
-	public bool CheckIfCooledDownNotify(int index, bool queueActionIfFailed = false, InputAction input = null)
+	/// <summary>
+	/// Checks if an ability is cooled down and, if not, notifies event listeners (for the HUD icons to flash red)
+	/// </summary>
+	/// <returns><c>true</c>if the ability with index <paramref name="index"/> is cooled down,<c>false</c> otherwise.</returns>
+	/// <param name="index">Index of the ability.</param>
+	/// <param name="bufferAction">If set to <c>true</c> buffer the ability if it is not cooled down.</param>
+	/// <param name="input">The input.</param>
+	public bool CheckIfCooledDownNotify(int index, bool bufferAction = false, InputAction input = null)
 	{
-		// check cooldown timer
-		if (CooldownTimers[index] > 0)
+		// If the ability is not cooled down
+		if (cooldownTimers[index] > 0)
 		{
-			if (queueActionIfFailed && CooldownTimers [index]< 0.1f)
+			// If we can buffer the action, buffer it
+			if (bufferAction && cooldownTimers [index]< 0.1f)
 			{
 				inputAction = input;
-				QueueAction (CooldownTimers [index]);
+				QueueAction (cooldownTimers [index]);
 			}
+			// Otherwise, notify that the ability failed
 			else
 			{
 				if (OnAbilityFailed != null)

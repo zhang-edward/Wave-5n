@@ -1,10 +1,10 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-
-namespace EnemyActions
+﻿namespace EnemyActions
 {
-	public class SpawnEnemiesAction : EnemyAction
+	using UnityEngine;
+	using System.Collections;
+	using System.Collections.Generic;
+
+	public class EA_SpawnEnemies : EnemyAction
 	{
 		private Animator anim;
 		private EnemyManager enemyManager;

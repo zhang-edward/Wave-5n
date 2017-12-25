@@ -8,7 +8,7 @@ using System;
 public class DailyHeroRewardButton : MonoBehaviour
 {
 	private const string TIMER_KEY = "DailyHeroRewardButton";
-	private const float REWARD_INTERVAL = 10f;
+	private const float REWARD_INTERVAL = 100f;
 	private const int MAX_REWARDS = 3;
 	public const string TUTORIAL_KEY = "DailyHeroRewardButton_Tutorial";
 

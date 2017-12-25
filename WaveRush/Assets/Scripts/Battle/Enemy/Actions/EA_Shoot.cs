@@ -1,17 +1,16 @@
-﻿using UnityEngine;
-using Projectiles;
-using System.Collections;
-
-namespace EnemyActions
+﻿namespace EnemyActions
 {
-	public class ShootAtTargetAction : EnemyAction
+	using UnityEngine;
+	using Projectiles;
+	using System.Collections;
+
+	public class EA_Shoot : EnemyAction
 	{
 		protected Animator anim;
 		protected EntityPhysics body;
 		protected ObjectPooler projectilePool;
 		protected Vector3 shootPointPos;
 		[Header("Set from Hierarchy")]
-		public GenerateRandomPositionNearPlayerAction posGenerator;
 		public GameObject projectilePrefab;
 		public Transform shootPoint;
 		[Header("Properties")]
@@ -84,8 +83,6 @@ namespace EnemyActions
 		{
 			anim.CrossFade(shootState, 0f);     // triggers are unreliable, crossfade forces state to execute
 			Projectile p = projectilePool.GetPooledObject().GetComponent<Projectile>();
-			float lifeTime = Vector3.Distance(shootPoint.position, posGenerator.GetGeneratedPosition()) / p.speed;
-			p.lifeTime = lifeTime;
 			UnityEngine.Assertions.Assert.IsNotNull(p);
 			p.Init(shootPoint.position, dir);
 			SoundManager.instance.RandomizeSFX(shootSound);

@@ -14,7 +14,7 @@ public class SortingLayerControl : MonoBehaviour {
 		sr = GetComponent<SpriteRenderer> ();
 	}
 
-	void Start() 
+	void OnEnable() 
 	{
 		if (updating)
 			StartCoroutine (SetSortingOrderRepeating());

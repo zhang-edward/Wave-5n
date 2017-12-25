@@ -45,7 +45,12 @@ public class BattleSceneManager : MonoBehaviour
 		gm = GameManager.instance;
 		enemyManager.OnStageCompleted += () => { StartCoroutine(StageCompleteRoutine()); };
 		player.OnPlayerDied += UpdateData;
-		gm.OnSceneLoaded += Init;
+		//gm.OnSceneLoaded += Init;
+	}
+
+	void Start()
+	{
+		Init();
 	}
 
 	// Init main game environment
@@ -61,7 +66,6 @@ public class BattleSceneManager : MonoBehaviour
 		StageData stage = gm.GetStage(gm.selectedSeriesIndex, gm.selectedStageIndex);
 
 		// Initialize components
-		print("Map:" + map);
 		map.chosenMap = stage.mapType;
 		map.GenerateMap();
 		player.Init(pawn);
@@ -80,7 +84,7 @@ public class BattleSceneManager : MonoBehaviour
 		enemyManager.Init(stage);
 		gui.DisplayIntroMessage();
 
-		gm.OnSceneLoaded -= Init;   // Remove the listener because it is only run once per scene
+		//gm.OnSceneLoaded -= Init;   // Remove the listener because it is only run once per scene
 	}
 
 	private IEnumerator StageCompleteRoutine()

@@ -4,6 +4,7 @@ using System.Collections;
 public class AnimationSetPlayer : SimpleAnimationPlayer
 {
 	public AnimationSetAnim defaultAnim;
+	public bool willResetToDefault = true;
 
 	public void Init()
 	{
@@ -14,7 +15,7 @@ public class AnimationSetPlayer : SimpleAnimationPlayer
 	{
 		for (;;)
 		{
-			if (!isPlaying)
+			if (!isPlaying && willResetToDefault)
 			{
 				anim = defaultAnim;
 				looping = true;
@@ -22,5 +23,13 @@ public class AnimationSetPlayer : SimpleAnimationPlayer
 			}
 			yield return null;
 		}
+	}
+
+	public void ResetToDefault()
+	{
+		willResetToDefault = true;
+		anim = defaultAnim;
+		looping = true;
+		Play();
 	}
 }

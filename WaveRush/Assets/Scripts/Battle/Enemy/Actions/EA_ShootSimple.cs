@@ -1,10 +1,10 @@
-﻿using UnityEngine;
-using Projectiles;
-using System.Collections;
-
-namespace EnemyActions
+﻿namespace EnemyActions
 {
-	public class ShootActionSimple : ShootAction
+	using UnityEngine;
+	using Projectiles;
+	using System.Collections;
+
+	public class EA_ShootSimple : EA_Shoot
 	{
 		[Header("Projectile Properties")]
 		public float speed;

@@ -16,7 +16,7 @@ public class DebugText : MonoBehaviour {
 
 	void Update()
 	{
-		text.text = "Velocity: " + player.body.Rb2d.velocity.magnitude;
+		text.text = "Velocity: " + player.body.rb2d.velocity.magnitude;
 	}
 
 	void OnEnable()

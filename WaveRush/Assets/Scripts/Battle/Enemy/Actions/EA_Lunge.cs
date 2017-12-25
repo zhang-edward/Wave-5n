@@ -1,9 +1,9 @@
-using UnityEngine;
-using System.Collections;
-
 namespace EnemyActions
 {
-	public class LungeAction : PrepareActionWrapper
+	using UnityEngine;
+	using System.Collections;
+
+	public class EA_Lunge : PrepareActionWrapper
 	{
 		private EntityPhysics body;
 		private float defaultSpeed;

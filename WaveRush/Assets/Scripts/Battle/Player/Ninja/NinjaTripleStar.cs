@@ -76,7 +76,7 @@ public class NinjaTripleStar : HeroPowerUp
 				ninja.ShootNinjaStarFanPattern ();
 			// set direction
 			ninja.body.Move (dir);
-			ninja.body.Rb2d.velocity = Vector2.zero;
+			ninja.body.rb2d.velocity = Vector2.zero;
 
 			yield return new WaitForSeconds (0.1f);
 		}

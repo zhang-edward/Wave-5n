@@ -107,7 +107,7 @@ public class NinjaHero : PlayerHero {
 			ShootNinjaStarFanPattern ();
 		// set direction
 		body.Move (dir);
-		body.Rb2d.velocity = Vector2.zero;
+		body.rb2d.velocity = Vector2.zero;
 
 		if (OnNinjaThrewStar != null)
 			OnNinjaThrewStar ();
@@ -140,7 +140,7 @@ public class NinjaHero : PlayerHero {
 
 	private IEnumerator DashAttackRoutine()
 	{
-		player.isInvincible = true;
+		int k = player.invincibility.Add(999);
 		player.input.isInputEnabled = false;
 		// Sound
 		SoundManager.instance.RandomizeSFX(dashOutSound);
@@ -156,13 +156,13 @@ public class NinjaHero : PlayerHero {
 		SoundManager.instance.RandomizeSFX(slashSound);
 		// (Animation plays automatically)
 		// Player properties
+		player.invincibility.RemoveTimer(k);
 		float distance = GetDashDistanceClamped (transform.position, player.dir.normalized);
 		Vector3 dest = (Vector3)player.dir.normalized * distance 
 			+ player.transform.parent.position;
 		DashCircleCast (transform.position, dest);
 		player.transform.parent.position = dest;
 		body.Move (player.dir.normalized);		
-		player.isInvincible = false;
 
 		if (OnNinjaDash != null)
 			OnNinjaDash ();

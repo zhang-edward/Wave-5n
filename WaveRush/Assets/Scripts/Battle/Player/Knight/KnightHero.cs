@@ -1,33 +1,60 @@
 ﻿using UnityEngine;
-using PlayerAbilities;
+using PlayerActions;
 using System.Collections;
 using System.Collections.Generic;
 
 public class KnightHero : PlayerHero {
 
+	[System.Serializable]
+	public class PA_SpecialRush : PA_Sequencer
+	{
+		public PA_Animate chargeAnim;
+		public PA_EffectAttached chargeEffect;
+		public PA_SpecialAbilityEffect specialEffect;
+		private PA_Joint chargeAction = new PA_Joint();
+		[Space]
+		public PA_InputListener inputListener;
+		public PA_Rush specialRush;
+
+		public void Init(Player player, PA_Rush.HitEnemy onHitEnemyCallback)
+		{
+			base.Init(player);
+			actions = new PlayerAction[2];
+
+			chargeAnim.Init(player);
+			chargeEffect.Init(player);
+			specialEffect.Init(player, specialRush);
+			chargeAction.Init(player, 
+			                  chargeAnim, 
+			                  chargeEffect,
+			                  specialEffect);
+
+			inputListener.Init(player, specialRush);
+			specialRush.Init(player, onHitEnemyCallback);
+
+			actions[0] = chargeAction;
+			actions[1] = inputListener;
+		}
+	}
+
 	[Header("Abilities")]
-	public RushAbility rushAbility;
-	public RushAbility specialRushAbility;
-	public AreaAttackAbility areaAttackAbility;
+	public PA_Rush rushAbility;
+	public PA_AreaEffect areaAttackAbility;
+	public PA_SpecialRush specialRushAbility;
 	[Header("Effects")]
 	public GameObject rushEffect;
 	public GameObject specialRushEffect;
-	public GameObject areaAttackEffect;
-	public bool areaAttackShieldOn = false;
+	public GameObject shieldIndicator;
 	public bool specialActivated { get; private set; }
-	private bool specialCharging = false;
+	private float shieldTimer;
 
 	[Header("Animation")]
 	public SimpleAnimation hitEffect;
 	public SimpleAnimation specialHitAnim;
-	public SimpleAnimationPlayer specialChargeAnim;
 	[Header("Audio")]
-	public AudioClip rushSound;
 	public AudioClip[] hitSounds;
 	public AudioClip[] specialHitSounds;
-	public AudioClip areaAttackSound;
-	public AudioClip specialRushSound;
-	public AudioClip specialRushChargeInitial;
+	public AudioClip specialChargeSound;
 
 	public Coroutine specialAbilityChargeRoutine;
 
@@ -35,7 +62,6 @@ public class KnightHero : PlayerHero {
 	public delegate void KnightAbilityActivated();
 	public event KnightAbilityActivated OnKnightRush;
 	public event KnightAbilityActivated OnKnightShield;
-	public event KnightAbilityActivated OnKnightSpecialCharge;
 
 	public override void Init (EntityPhysics body, Player player, Pawn heroData)
 	{
@@ -50,8 +76,24 @@ public class KnightHero : PlayerHero {
 	private void InitAbilities()
 	{
 		rushAbility.Init(player, DamageEnemy);
-		specialRushAbility.Init(player, DamageEnemy);
+		specialRushAbility.Init(player, SpecialDamageEnemy);
 		areaAttackAbility.Init(player, DamageEnemy);
+	}
+
+	protected override void Update() 
+	{
+		base.Update();
+		if (shieldTimer > 0)
+		{
+			shieldIndicator.SetActive(true);
+			shieldTimer -= Time.deltaTime;
+			if (shieldTimer <= 0)
+				shieldIndicator.GetComponent<IndicatorEffect>().AnimateOut();
+		}
+		else
+		{
+			shieldTimer = 0;
+		}
 	}
 
 	public void RushAbility()
@@ -71,149 +113,78 @@ public class KnightHero : PlayerHero {
 		if (!CheckIfCooledDownNotify (1))
 			return;
 		ResetCooldownTimer (1);
-		areaAttackEffect.SetActive(true);
 		// Properties
-		areaAttackShieldOn = true;
-		player.isInvincible = true;
+		AddShieldTimer(3f);
+		areaAttackAbility.SetPosition(transform.position);
 		areaAttackAbility.Execute();
-
-		// Reset Ability
-		Invoke ("ResetInvincibility", 3f);
 
 		if (OnKnightShield != null)
 			OnKnightShield();
 	}
 
+	public override void SpecialAbility ()
+	{
+		if (specialAbilityCharge < specialAbilityChargeCapacity || 
+		    specialRushAbility.inProgress)
+			return;
+		StartCoroutine(SpecialAbilityRoutine());
+	}
+
+	private IEnumerator SpecialAbilityRoutine()
+	{
+		sound.RandomizeSFX(specialChargeSound);
+		onDrag -= RushAbility;
+		specialRushAbility.Execute();
+		specialRushAbility.specialRush.OnExecutedAction += () => { specialAbilityCharge = 0; };
+		while (specialRushAbility.inProgress)
+			yield return null;
+		onDrag += RushAbility;
+	}
+
 	protected override void ParryEffect()
 	{
 		cooldownTimers[0] = 0f;
-		body.moveSpeed = 4f;
-		body.Move(UtilMethods.DegreeToVector2(Random.Range(0, 360f)));
+		AddShieldTimer(3f);
+		areaAttackAbility.SetPosition(transform.position);
+		areaAttackAbility.Execute();
 	}
 
 	public void ResetInvincibility()
 	{
-		areaAttackShieldOn = false;
-		areaAttackEffect.GetComponent<IndicatorEffect> ().AnimateOut ();
-
-		player.sr.color = Color.white;
-		if (!specialActivated)
-			player.isInvincible = false;
-	}
-
-	public override void SpecialAbility ()
-	{
-		if (specialAbilityCharge < specialAbilityChargeCapacity || specialActivated)
-			return;
-		if (specialCharging)
-		{
-			if (specialAbilityChargeRoutine != null)
-				StopCoroutine(specialAbilityChargeRoutine);
-			ResetSpecialAbilityRoutine();
-		}
-		else
-		{
-			if (OnKnightSpecialCharge != null)
-				OnKnightSpecialCharge();
-			specialAbilityChargeRoutine = StartCoroutine(SpecialAbilityCharge());
-		}
-	}
-
-	private IEnumerator SpecialAbilityCharge()
-	{
-		CancelInvoke();
-		if (areaAttackShieldOn)
-			ResetInvincibility();
-		Time.timeScale = 0.2f;
-		// Player Properties
-		onTap = null;
-		//player.isInvincible = true;
-		specialCharging = true;
-		//player.input.isInputEnabled = false;
-		// Animation
-		anim.Play("Special");
-		specialChargeAnim.Play();
-		// Sound
-		sound.RandomizeSFX(specialRushChargeInitial);
-		// Camera Control
-		CameraControl.instance.SetOverlayColor(Color.black, 0.4f, 1.0f);
-		CameraControl.instance.screenOverlay.sortingLayerName = "TerrainObjects";
-		/*while (anim.player.isPlaying)
-			yield return null;*/
-		// Player Properties
-		player.isInvincible = false;
-		//player.input.isInputEnabled = true;
-		// Animation
-		anim.Play("SpecialPersist");
-		// Set onSwipe
-		storedOnSwipe = onDrag;
-		onDrag = SpecialRush;
-		yield return new WaitForSecondsRealtime(3.0f);
-		// Animation
-		anim.Play("Default");
-		ResetSpecialAbilityRoutine();
-	}
-
-	private void ResetSpecialAbilityRoutine()
-	{
-		Time.timeScale = 1f;
-		// Player Properties
-		specialCharging = false;
-		player.isInvincible = false;
-		player.input.isInputEnabled = true;
-		// Camera
-		CameraControl.instance.screenOverlay.sortingLayerName = "Default";
-		CameraControl.instance.DisableOverlay(1f);
-		// Reset onSwipe
-		onDrag = storedOnSwipe;
-	}
-
-	private void SpecialRush()
-	{
-		ResetSpecialAbilityRoutine();
-		// Event call
-		if (onSpecialAbility != null)
-			onSpecialAbility();
-		onTap = AreaAttack;
-		Time.timeScale = 1f;
-		specialRushAbility.Execute();
-		player.isInvincible = true;
-		player.input.isInputEnabled = false;
-		damageMultiplier *= 1.5f;
-		specialActivated = true;
-		StopCoroutine(specialAbilityChargeRoutine);
-		Invoke("ResetSpecialAbility", specialRushAbility.duration);
-	}
-
-	public void ResetSpecialAbility()
-	{
-		player.input.isInputEnabled = true;
-		player.isInvincible = false;
-		damageMultiplier /= 1.5f;
-		specialAbilityCharge = 0;
-		specialActivated = false;
+		shieldIndicator.GetComponent<IndicatorEffect>().AnimateOut();
 	}
 
 	public void DamageEnemy(Enemy e)
 	{
-		//e.AddStatus(Instantiate(StatusEffectContainer.instance.GetStatus("Weakness")));
 		if (!e.invincible && e.health > 0)
 		{
 			e.Damage (damage);
-			if (specialActivated)
-				EffectPooler.PlayEffect(specialHitAnim, e.transform.position);
-			else
-				EffectPooler.PlayEffect(hitEffect, e.transform.position);
+			EffectPooler.PlayEffect(hitEffect, e.transform.position);
 			player.TriggerOnEnemyDamagedEvent(damage);
 			player.TriggerOnEnemyLastHitEvent (e);
 
-			if (specialActivated)
-				sound.RandomizeSFX(specialHitSounds[Random.Range(0, specialHitSounds.Length)]);
-			else
-				sound.RandomizeSFX(hitSounds[Random.Range(0, hitSounds.Length)]);
-
-			if (specialActivated)
-				player.StartTempSlowDown(0.3f);
+			sound.RandomizeSFX(hitSounds[Random.Range(0, hitSounds.Length)]);
 		}
+	}
+
+	public void SpecialDamageEnemy(Enemy e)
+	{
+		if (!e.invincible && e.health > 0)
+		{
+			e.Damage(damage);
+			EffectPooler.PlayEffect(specialHitAnim, e.transform.position);
+			player.TriggerOnEnemyDamagedEvent(damage);
+			player.TriggerOnEnemyLastHitEvent(e);
+
+			sound.RandomizeSFX(specialHitSounds[Random.Range(0, specialHitSounds.Length)]);
+
+			player.StartTempSlowDown(0.3f);
+		}
+	}
+
+	public void AddShieldTimer(float amt)
+	{
+		shieldTimer += amt;
+		player.invincibility.Add(shieldTimer);
 	}
 }

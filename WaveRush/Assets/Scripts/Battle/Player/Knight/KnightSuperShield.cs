@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using PlayerAbilities;
+using PlayerActions;
 using System.Collections;
 
 public class KnightSuperShield : HeroPowerUp
@@ -7,7 +7,7 @@ public class KnightSuperShield : HeroPowerUp
 	private KnightHero knight;
 	private float activateChance = 0.2f;
 
-	public AreaAttackAbility areaAttackAbility;
+	public PA_AreaEffect areaAttackAbility;
 	public GameObject areaAttackEffect;
 	public IndicatorEffect indicatorEffect;
 
@@ -52,9 +52,8 @@ public class KnightSuperShield : HeroPowerUp
 			return;
 		knight.ResetCooldownTimer(1);
 		areaAttackEffect.SetActive(true);
-		// Properties
-		knight.areaAttackShieldOn = true;
-		knight.player.isInvincible = true;
+		//knight.player.invincibility.Add(1.5f);
+		areaAttackAbility.SetPosition(transform.position);
 		areaAttackAbility.Execute();
 
 		// Reset Ability
@@ -68,12 +67,9 @@ public class KnightSuperShield : HeroPowerUp
 
 	public void ResetInvincibility()
 	{
-		knight.areaAttackShieldOn = false;
 		areaAttackEffect.GetComponent<IndicatorEffect>().AnimateOut();
 
 		knight.player.sr.color = Color.white;
-		if (!knight.specialActivated)
-			knight.player.isInvincible = false;
 	}
 
 	private void DamageEnemy(Enemy e)

@@ -1,10 +1,9 @@
-﻿using UnityEngine;
-using System.Collections;
-
-
-namespace EnemyActions
+﻿namespace EnemyActions
 {
-	public class HealAreaAction : PrepareActionWrapper
+	using UnityEngine;
+	using System.Collections;
+
+	public class EA_HealArea : PrepareActionWrapper
 	{
 		[Header("Properties")]
 		public float baseHealAmt;

@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using PlayerAbilities;
+using PlayerActions;
 using System.Collections;
 
 public class KnightSuperRush : HeroPowerUp
@@ -8,7 +8,7 @@ public class KnightSuperRush : HeroPowerUp
 	private bool activated;
 	private float chargeSpeed = 0.5f;
 
-	public RushAbility rushAbility;
+	public PA_Rush rushAbility;
 	public IndicatorEffect chargeEffect;
 	public PlayerHero.InputAction storedOnSwipe;
 
