@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
-
+/*
 public class AddPowerUpItem : PowerUpItem
 {
 	public Image icon;
@@ -90,3 +90,4 @@ public class AddPowerUpItem : PowerUpItem
 	}
 }
 
+*/

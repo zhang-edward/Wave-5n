@@ -7,22 +7,7 @@ public class HeroPowerUpData : ScriptableObject
 	public string powerUpName;
 	public Sprite icon;
 
-	public HeroPowerUp[] unlockable;
-	public bool isRoot = true;
-
-	public int maxStacks;
-	public int cost;
-	public HeroTier tier;
-
 	[Space]
-	[TextArea]
+	[TextArea(5, 20)]
 	public string description;
-	[TextArea]
-	public string stackDescription;
-}
-
-public enum HeroTier {
-	tier1,
-	tier2,
-	tier3
 }

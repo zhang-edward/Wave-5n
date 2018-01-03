@@ -68,7 +68,7 @@ public class PawnInfoPanel : MonoBehaviour
 			// If the hero has unlocked this powerUp
 			bool locked = i >= numPowerUpsUnlocked;
 			int unlockedLevel = HeroPowerUpListData.powerUpUnlockLevels[i];
-			HeroPowerUpData data = powerUpListData.GetPowerUpFromIndex(i).data;
+			HeroPowerUpData data = powerUpListData.powerUps[i].GetComponent<HeroPowerUp>().data;
 			// Get the key for NewFeatureIndicator
 			string newKey = GetViewedPowerKey(i);
 			heroPowerUpInfoIcons[i].GetComponent<HeroPowerUpInfoIcon>().Init(data, locked, newKey, unlockedLevel);

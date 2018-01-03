@@ -57,7 +57,7 @@
 				if (col.CompareTag("Enemy"))
 				{
 					numEnemiesHit++;
-					if (numEnemiesHit < 5)
+					if (numEnemiesHit < maxHit)
 					{
 						Enemy e = col.gameObject.GetComponentInChildren<Enemy>();
 						hitEnemies.Add(e);
@@ -66,6 +66,7 @@
 					}
 				}
 			}
+			Debug.Log("Detected " + numEnemiesHit + " enemies");
 
 			yield return new WaitForSeconds(duration);
 			player.input.isInputEnabled = true;

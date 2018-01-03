@@ -94,3 +94,9 @@ public class Pawn
 		return "Pawn:" + id;
 	}
 }
+
+public enum HeroTier {
+	tier1,
+	tier2,
+	tier3
+}

@@ -9,17 +9,17 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1167810151280618}
+  m_RootGameObject: {fileID: 1727366502652000}
   m_IsPrefabParent: 1
---- !u!1 &1167810151280618
+--- !u!1 &1727366502652000
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 4352143594995440}
-  - component: {fileID: 114323358078448050}
+  - component: {fileID: 4999192890339558}
+  - component: {fileID: 114191322722729608}
   m_Layer: 0
   m_Name: KnightThornShield
   m_TagString: Untagged
@@ -27,55 +27,35 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4352143594995440
+--- !u!4 &4999192890339558
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1167810151280618}
+  m_GameObject: {fileID: 1727366502652000}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 5.6, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114323358078448050
+--- !u!114 &114191322722729608
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1167810151280618}
+  m_GameObject: {fileID: 1727366502652000}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f91732bd2e6c4fbfab95ea96d2c2b63, type: 3}
+  m_Script: {fileID: 11500000, guid: f95b843fbd3014df5ad9328ece62bf54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   playerHero: {fileID: 0}
-  data: {fileID: 11400000, guid: 11e0d944a38fa45afb0c40ab2d5bc929, type: 2}
-  thornShieldAnim:
-    frames:
-    - {fileID: 21300000, guid: f4cb69463dafe4688a4fb86f50d59526, type: 3}
-    - {fileID: 21300002, guid: f4cb69463dafe4688a4fb86f50d59526, type: 3}
-    - {fileID: 21300004, guid: f4cb69463dafe4688a4fb86f50d59526, type: 3}
-    - {fileID: 21300006, guid: f4cb69463dafe4688a4fb86f50d59526, type: 3}
-    - {fileID: 21300008, guid: f4cb69463dafe4688a4fb86f50d59526, type: 3}
-    - {fileID: 21300010, guid: f4cb69463dafe4688a4fb86f50d59526, type: 3}
-    - {fileID: 21300012, guid: f4cb69463dafe4688a4fb86f50d59526, type: 3}
-    - {fileID: 21300014, guid: f4cb69463dafe4688a4fb86f50d59526, type: 3}
-    - {fileID: 21300016, guid: f4cb69463dafe4688a4fb86f50d59526, type: 3}
-    - {fileID: 21300018, guid: f4cb69463dafe4688a4fb86f50d59526, type: 3}
-    - {fileID: 21300020, guid: f4cb69463dafe4688a4fb86f50d59526, type: 3}
-    - {fileID: 21300022, guid: f4cb69463dafe4688a4fb86f50d59526, type: 3}
-    - {fileID: 21300024, guid: f4cb69463dafe4688a4fb86f50d59526, type: 3}
-    - {fileID: 21300026, guid: f4cb69463dafe4688a4fb86f50d59526, type: 3}
-    fps: 10
-  hitAnim:
-    frames:
-    - {fileID: 21300028, guid: f4cb69463dafe4688a4fb86f50d59526, type: 3}
-    - {fileID: 21300030, guid: f4cb69463dafe4688a4fb86f50d59526, type: 3}
-    - {fileID: 21300032, guid: f4cb69463dafe4688a4fb86f50d59526, type: 3}
-    - {fileID: 21300034, guid: f4cb69463dafe4688a4fb86f50d59526, type: 3}
-    fps: 15
-  effectSound: {fileID: 8300000, guid: 9814fb57eede14e8cb107dd1d09211e5, type: 3}
-  attackSound: {fileID: 8300000, guid: 1842d165c88744e40aa5e1f1a4ff544b, type: 3}
+  data: {fileID: 11400000, guid: 159af1b2b116040a8a04fcdbbbb34597, type: 2}
+  stunArea:
+    duration: -1
+    range: 1
+    maxHit: 3
+    areaAttackSound: {fileID: 8300000, guid: 1842d165c88744e40aa5e1f1a4ff544b, type: 3}
+    areaAttackState: Default

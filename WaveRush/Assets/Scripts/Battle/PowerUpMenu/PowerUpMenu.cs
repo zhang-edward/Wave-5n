@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
-
+/*
 public class PowerUpMenu : MonoBehaviour
 {
 	[Header("Find in Hierarchy")]
@@ -120,4 +120,4 @@ public class PowerUpMenu : MonoBehaviour
 		numUpgradesText.text = upgradesLeft.ToString();
 	}
 }
-
+*/

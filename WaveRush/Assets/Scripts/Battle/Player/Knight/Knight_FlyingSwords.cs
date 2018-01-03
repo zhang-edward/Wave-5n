@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class KnightFlyingSwords : HeroPowerUp
+public class Knight_FlyingSwords : HeroPowerUp
 {
 	private KnightHero knight;
 	private int numSwords;

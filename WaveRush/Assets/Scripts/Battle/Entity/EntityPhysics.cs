@@ -7,8 +7,7 @@ public class EntityPhysics : MonoBehaviour {
 	public Rigidbody2D rb2d { get; private set; }
 	public SpriteRenderer sr;
 	public float moveSpeed;
-
-	//public float hitDisabled;
+	public bool ragdolled;		// If the entity is ragdolled, then movement by the Move() functions are disabled
 
 	void Awake()
 	{
@@ -18,7 +17,14 @@ public class EntityPhysics : MonoBehaviour {
 
 	public void Move(Vector2 dir)
 	{
-		StartCoroutine(MoveRoutine(dir, 0));
+		if (ragdolled)
+			return;
+		
+		rb2d.velocity = (dir * moveSpeed);
+		if (rb2d.velocity.x < -0.1f)
+			sr.flipX = true;
+		else if (rb2d.velocity.x > 0.1f)
+			sr.flipX = false;
 	}
 
 	public void Move(Vector2 dir, float time)
@@ -32,15 +38,10 @@ public class EntityPhysics : MonoBehaviour {
 		// Do-while loop so this executes at least once, even if time = 0
 		do
 		{
-			rb2d.velocity = (dir * moveSpeed);
-			if (rb2d.velocity.x < -0.1f)
-				sr.flipX = true;
-			else if (rb2d.velocity.x > 0.1f)
-				sr.flipX = false;
+			Move(dir);
 			t += Time.deltaTime;
 			yield return null;
 		} while (t < time);
-
 	}
 
 	public void AddRandomImpulse(float amt)

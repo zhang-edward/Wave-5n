@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class KnightShield : HeroPowerUp
+public class Knight_SecondaryShield : HeroPowerUp
 {
 	private KnightHero knight;
 	public bool shielded;

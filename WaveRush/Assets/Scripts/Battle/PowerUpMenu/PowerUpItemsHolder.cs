@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
-public class PowerUpItemsHolder : MonoBehaviour
+/*public class PowerUpItemsHolder : MonoBehaviour
 {
 	public EnemyManager enemyManager;				// used to track wave number
 
@@ -106,7 +106,7 @@ public class PowerUpItemsHolder : MonoBehaviour
 
 	public int NumUpgradesLeft()
 	{
-		return powerUpManager.GetNumUpgradesLeft();
+		return 0; //powerUpManager.GetNumUpgradesLeft();
 	}
 }
-
+*/

@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4188798887445254}
   - component: {fileID: 114828126193199812}
   m_Layer: 0
-  m_Name: KnightShield
+  m_Name: KnightSecondaryShield
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -134,25 +134,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 1067101916631808}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c41ba2cc672e7481daac02014c6355d8, type: 3}
+  m_Script: {fileID: 11500000, guid: ba097f00efadc48799e4a7e6652929fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   playerHero: {fileID: 0}
-  data: {fileID: 11400000, guid: 5a47a66d4d15240b3a60ec17e2cc1348, type: 2}
+  data: {fileID: 11400000, guid: 28e17bd87dfe94439b8aacff3c8cc988, type: 2}
   shielded: 0
   chargePerSecond: 1
   shieldBreakAnim:
     frames:
     - {fileID: 21300000, guid: 198264d5736f544208c48f853be5718d, type: 3}
+    - {fileID: 21300002, guid: 198264d5736f544208c48f853be5718d, type: 3}
     - {fileID: 21300004, guid: 198264d5736f544208c48f853be5718d, type: 3}
-    fps: 24
+    fps: 10
   shieldRegenAnim:
     frames:
     - {fileID: 21300006, guid: 198264d5736f544208c48f853be5718d, type: 3}
     - {fileID: 21300008, guid: 198264d5736f544208c48f853be5718d, type: 3}
     - {fileID: 21300010, guid: 198264d5736f544208c48f853be5718d, type: 3}
     - {fileID: 21300012, guid: 198264d5736f544208c48f853be5718d, type: 3}
-    fps: 24
+    fps: 10
   effect: {fileID: 1425796606350984}
   rechargeSound: {fileID: 0}
   breakSound: {fileID: 0}
@@ -186,8 +187,14 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0.78431374}
   m_FlipX: 0
   m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 0

@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-
+/*
 public class ShopNPC : MonoBehaviour
 {
 	private bool activated;		// whether the player can collide with this shopkeeper to see the shop UI
@@ -72,3 +72,4 @@ public class ShopNPC : MonoBehaviour
 		}
 	}
 }
+*/

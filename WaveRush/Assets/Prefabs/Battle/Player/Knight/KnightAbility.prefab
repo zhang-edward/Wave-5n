@@ -176,7 +176,6 @@ MonoBehaviour:
   rushEffect: {fileID: 1677238449614608}
   specialRushEffect: {fileID: 1566888301041644}
   shieldIndicator: {fileID: 168668}
-  areaAttackShieldOn: 0
   hitEffect:
     frames:
     - {fileID: 0}
@@ -188,18 +187,17 @@ MonoBehaviour:
     - {fileID: 21300004, guid: 0fbc2becaa124485ab805ef631f3fbfd, type: 3}
     - {fileID: 21300006, guid: 0fbc2becaa124485ab805ef631f3fbfd, type: 3}
     fps: 10
-  specialChargeAnim: {fileID: 114053776494803900}
-  rushSound: {fileID: 8300000, guid: 9ee280140e1df47e2a5dc4600c92da89, type: 3}
+  shieldHitAnim:
+    frames:
+    - {fileID: 21300012, guid: 3eaa7cbd1126a48efb4c8c43ae68399d, type: 3}
+    fps: 20
   hitSounds:
   - {fileID: 8300000, guid: a1337dc4deb644172a98b040a0a0e3dc, type: 3}
   - {fileID: 8300000, guid: 3c90b2f417a254f08a6948d4882a2e9f, type: 3}
   specialHitSounds:
   - {fileID: 8300000, guid: c1599a3c6bc644ddf89d7c795d64ecce, type: 3}
   - {fileID: 8300000, guid: 87d21ce0dfadf4fda8dd95c7cead15fb, type: 3}
-  areaAttackSound: {fileID: 8300000, guid: 577b89f17cf804ac7935a5475e03ab78, type: 3}
-  specialRushSound: {fileID: 8300000, guid: 82456ad0590664622b80d1eed4b6717e, type: 3}
-  specialRushChargeInitial: {fileID: 8300000, guid: 40fd5dcf54837455c9bc07108b6a6d6e,
-    type: 3}
+  specialChargeSound: {fileID: 0}
 --- !u!114 &11457932
 MonoBehaviour:
   m_ObjectHideFlags: 1

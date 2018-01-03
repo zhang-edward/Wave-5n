@@ -14,15 +14,14 @@ public class StunStatus : EnemyStatus
 
 	protected override IEnumerator Effect()
 	{
-		enemy.body.AddRandomImpulse(3f);
 		anim.Play();
+		enemy.body.AddRandomImpulse(3f);
 		while (timer > 0)
 		{
-			enemy.action.Interrupt();
 			enemy.Disable(0);
+			enemy.action.Interrupt();
 			yield return null;
 		}
-
 		Deactivate();
 	}
 

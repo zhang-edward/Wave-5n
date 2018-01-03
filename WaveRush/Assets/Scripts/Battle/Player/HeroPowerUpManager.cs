@@ -28,7 +28,6 @@ public class HeroPowerUpManager : MonoBehaviour
 	public void Init(Pawn pawnData)
 	{
 		hero = GetComponent<PlayerHero>();
-		HeroPowerUpListData powerUpListData = DataManager.GetPowerUpListData(hero.heroType);
 		InitPowerUpList(pawnData.level);
 	}
 
@@ -38,15 +37,23 @@ public class HeroPowerUpManager : MonoBehaviour
 		int numPowerUpsUnlocked = HeroPowerUpListData.GetNumPowerUpsUnlocked(level);
 		for (int i = 0; i < numPowerUpsUnlocked; i ++)
 		{
-			HeroPowerUp powerUpPrefab = powerUpListData.GetPowerUpFromIndex(i);
-			GameObject o = Instantiate(powerUpPrefab.gameObject);                         // instantiate the prefab
+			// Instantiate
+			GameObject o = Instantiate(powerUpListData.powerUps[i]);
 			HeroPowerUp powerUp = o.GetComponent<HeroPowerUp>();
 			powerUps.Add(powerUp);
 			o.transform.SetParent(transform);
 			o.transform.localPosition = Vector3.zero;
-			o.SetActive(false);
-			AddPowerUp(powerUp.data.powerUpName);
+			AddPowerUp(powerUp);
 		}
+	}
+
+	public void AddPowerUp(HeroPowerUp powerUp)
+	{
+		powerUp.Activate(hero);
+		numActivePowerUps++;
+		// Send event
+		if (OnPowerUpAdded != null)
+			OnPowerUpAdded();
 	}
 
 	public HeroPowerUp GetPowerUp(string name)
@@ -82,7 +89,7 @@ public class HeroPowerUpManager : MonoBehaviour
 			OnPowerUpAdded();
 	}
 
-	public int GetNumUpgradesLeft()
+	/*public int GetNumUpgradesLeft()
 	{
 		int answer = 0;
 		foreach (HeroPowerUp powerUp in powerUps)
@@ -92,6 +99,6 @@ public class HeroPowerUpManager : MonoBehaviour
 			answer += powerUp.data.maxStacks - powerUp.stacks;
 		}
 		return answer;
-	}
+	}*/
 }
 

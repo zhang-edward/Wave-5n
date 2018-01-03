@@ -210,16 +210,16 @@ public class Enemy : MonoBehaviour, IDamageable {
 
 	private IEnumerator HitDisableState(float time, float randomImpulse)
 	{
-		body.AddRandomImpulse (randomImpulse);
+		// Set properties
 		hitDisabled = true;
-		//Debug.Log ("Stopped all Coroutines");
+		body.ragdolled = true;
+		body.AddRandomImpulse (randomImpulse);
+
 		yield return new WaitForSeconds (time);
 
-		//yield return new WaitForSeconds (0.2f);
-		//UnityEngine.Assertions.Assert.IsTrue(anim.HasState(0, Animator.StringToHash("default")));
 		anim.CrossFade ("default", 0f);
-
 		hitDisabled = false;
+		body.ragdolled = false;
 		ToMoveState ();
 		yield return null;
 	}
@@ -288,27 +288,7 @@ public class Enemy : MonoBehaviour, IDamageable {
 	// ===== IDamageable methods ===== //
 	public virtual void Damage(int amt)
 	{
-		if (invincible)
-			return;
-		health -= amt;
-		if (OnEnemyDamaged != null)
-			OnEnemyDamaged (amt);
-		if (health > 0)
-		{
-			if (canBeDisabledOnHit && !hitDisabled)
-			{
-				action.TryInterrupt ();
-				// Stop all states
-				StopAllCoroutines ();
-				StartCoroutine (HitDisableState (0.05f, 3f));
-			}
-			sr.color = Color.red;
-			Invoke ("ResetColor", 0.2f);
-		}
-		else
-		{
-			Die ();
-		}
+		Damage(amt, false);
 	}
 
 	public virtual void Damage(int amt, bool disable)
