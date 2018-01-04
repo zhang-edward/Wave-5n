@@ -10,7 +10,8 @@
 		private SoundManager sound;
 		[Header("Properties")]
 		public float   range;							// The range of the attack
-		public int 	   maxHit;							// The maxmimum number of enemies that can be affected
+		public int 	   maxHit;                          // The maxmimum number of enemies that can be affected
+		public bool	   loseMomentum;					// Whether or not this ability causes the player to stand still
 		public Vector2 position { private get; set; }	// The position of the area effect
 		[Header("Effects and SFX")]
 		public AudioClip areaAttackSound;
@@ -48,7 +49,9 @@
 			hero.anim.Play(areaAttackState);
 			// Player properties
 			player.input.isInputEnabled = false;
-			hero.body.Move(Vector2.zero);
+
+			if (loseMomentum)
+				hero.body.Move(Vector2.zero);
 
 			int numEnemiesHit = 0;
 			Collider2D[] cols = Physics2D.OverlapCircleAll(pos, range);

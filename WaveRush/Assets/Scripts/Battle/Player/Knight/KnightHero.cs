@@ -56,7 +56,8 @@ public class KnightHero : PlayerHero {
 	[Header("Audio")]
 	public AudioClip[] hitSounds;
 	public AudioClip[] specialHitSounds;
-	public AudioClip specialChargeSound;
+	public AudioClip   specialChargeSound;
+	public AudioClip   shieldHitSound;
 
 	public Coroutine specialAbilityChargeRoutine;
 
@@ -130,7 +131,7 @@ public class KnightHero : PlayerHero {
 		shieldIndicator.SetActive(false);
 		shieldIndicator.SetActive(true);
 		// Properties
-		AddShieldTimer(300f);
+		AddShieldTimer(3f);
 		areaAttackAbility.SetPosition(transform.position);
 		areaAttackAbility.Execute();
 
@@ -209,6 +210,7 @@ public class KnightHero : PlayerHero {
 		timeSinceLastShieldHit = 0;
 		if (OnKnightShieldHit != null)
 			OnKnightShieldHit();
-		EffectPooler.PlayEffect(shieldHitAnim, transform.position);
+		EffectPooler.PlayEffect(shieldHitAnim, transform.position, false, 0.2f);
+		sound.RandomizeSFX(shieldHitSound);
 	}
 }

@@ -18,9 +18,9 @@ public abstract class PlayerHero : MonoBehaviour {
 
 	/** Hero properties */
 	[Header("PlayerHero Properties")]
+	private int baseDamage;
 	public HeroType heroType;
 	public int maxHealth;
-	public int baseDamage;
 	public float damageMultiplier { get; set; }
 	public int damage {
 		get { return Mathf.RoundToInt(baseDamage * damageMultiplier); }	// Final damage calculation

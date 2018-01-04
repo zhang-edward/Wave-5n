@@ -25,14 +25,16 @@ public class Knight_FlyingSwords : HeroPowerUp
 	{
 		base.Activate(hero);
 		knight = (KnightHero)hero;
-		knight.player.OnEnemyLastHit += ActivateEffect;
+		knight.OnKnightShieldHit += AddSword;
+		knight.player.OnEnemyLastHit += AttackSword;
 		percentActivated = 0;
 	}
 
 	public override void Deactivate()
 	{
 		base.Deactivate();
-		knight.player.OnEnemyLastHit -= ActivateEffect;
+		knight.OnKnightShieldHit -= AddSword;
+		knight.player.OnEnemyLastHit -= AttackSword;
 		numSwords = 0;
 	}
 
@@ -42,42 +44,37 @@ public class Knight_FlyingSwords : HeroPowerUp
 		addSwordChance += 0.05f;
 	}
 
-	private void ActivateEffect(Enemy e)
+	private void AddSword()
 	{
-		if (numSwords > 0)
-		{
-			if (Random.value < swordAttackChance)
-			{
-				StartCoroutine(ActivateSwordRoutine(e));
-			}
-		}
-		else
-		{
-			if (Random.value < addSwordChance)
-				StartCoroutine(AddSwords(e));
-		}
+		StartCoroutine(AddSwordRoutine());
 	}
 
-	private IEnumerator AddSwords(Enemy e)
+	private void AttackSword(Enemy e)
 	{
-		numSwords = maxSwords;
+		if (numSwords > 0)
+			StartCoroutine(AttackSwordRoutine(e));
+	}
 
-		float frame7time = addSwordAnim.SecondsPerFrame * 7f; // time before the sword rises up in the animation
-		StunEnemy(e, frame7time);
+	private IEnumerator AddSwordRoutine()
+	{
+		numSwords += 1;
+		numSwords = Mathf.Min(numSwords, maxSwords);    // Cap numSwords to maxSwords (cannot go higher than max)
 
-		EffectPooler.PlayEffect(addSwordAnim, e.transform.position, false, 0.3f);
+		Vector3 effectPos = UtilMethods.RandomOffsetVector2(transform.position, 2f);
+		EffectPooler.PlayEffect(addSwordAnim, effectPos, false, 0.3f);
 		SoundManager.instance.RandomizeSFX(portalOpenSound);
 
+		float frame7time = addSwordAnim.SecondsPerFrame * 7f; // time before the sword rises up in the animation
 		yield return new WaitForSeconds(frame7time);
 
 		indicator.gameObject.SetActive(true);
 		indicator.SetAnimatingOut(false);
-		e.Damage(1);
-		percentActivated = 1f;
+		percentActivated = (float)numSwords / maxSwords;
+
 		SoundManager.instance.RandomizeSFX(swordRiseSound);
 	}
 
-	private IEnumerator ActivateSwordRoutine(Enemy e)
+	private IEnumerator AttackSwordRoutine(Enemy e)
 	{
 		// if enemy is dead, do not activate
 		if (!e.gameObject.activeInHierarchy)
@@ -97,7 +94,7 @@ public class Knight_FlyingSwords : HeroPowerUp
 
 		yield return new WaitForSeconds(frame6time);
 
-		e.Damage(knight.damage * 3);
+		e.Damage(knight.damage * 2);
 		CameraControl.instance.StartShake(0.2f, 0.05f, true, false);
 		SoundManager.instance.RandomizeSFX(swordLandSounds[Random.Range(0, swordLandSounds.Length)]);
 

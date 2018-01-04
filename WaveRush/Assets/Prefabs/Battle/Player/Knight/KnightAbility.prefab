@@ -100,7 +100,6 @@ MonoBehaviour:
   cooldownMultipliers: []
   heroType: 1
   maxHealth: 16
-  baseDamage: 0
   maxComboTimer: 10
   anim:
     animations: []
@@ -136,6 +135,7 @@ MonoBehaviour:
     duration: 0.1
     range: 1
     maxHit: 5
+    loseMomentum: 1
     areaAttackSound: {fileID: 8300000, guid: 577b89f17cf804ac7935a5475e03ab78, type: 3}
     areaAttackState: Shield
   specialRushAbility:
@@ -189,8 +189,8 @@ MonoBehaviour:
     fps: 10
   shieldHitAnim:
     frames:
-    - {fileID: 21300012, guid: 3eaa7cbd1126a48efb4c8c43ae68399d, type: 3}
-    fps: 20
+    - {fileID: 21300000, guid: 3eaa7cbd1126a48efb4c8c43ae68399d, type: 3}
+    fps: 10
   hitSounds:
   - {fileID: 8300000, guid: a1337dc4deb644172a98b040a0a0e3dc, type: 3}
   - {fileID: 8300000, guid: 3c90b2f417a254f08a6948d4882a2e9f, type: 3}
@@ -198,6 +198,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: c1599a3c6bc644ddf89d7c795d64ecce, type: 3}
   - {fileID: 8300000, guid: 87d21ce0dfadf4fda8dd95c7cead15fb, type: 3}
   specialChargeSound: {fileID: 0}
+  shieldHitSound: {fileID: 0}
 --- !u!114 &11457932
 MonoBehaviour:
   m_ObjectHideFlags: 1
