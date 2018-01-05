@@ -3,6 +3,10 @@ using System.Collections;
 
 public class Mage_FireTrail : HeroPowerUp
 {	
+	private const float BURN_DAMAGE_MULTIPLIER = 0.1f;  // Burn deals 0.1x damage per second
+	private const float BURN_DURATION = 10f;            // Burn lasts for 10 seconds
+	private const int NUM_BURN_SPREADS = 1;
+
 	public GameObject fireTrailEmitterPrefab;
 
 	private MageHero mage;
@@ -38,10 +42,12 @@ public class Mage_FireTrail : HeroPowerUp
 
 	private void BurnEnemy(Enemy e)
 	{
-		print("burning enemy");
-		GameObject burn = Instantiate(StatusEffectContainer.instance.GetStatus("Burn"));
-		burn.GetComponent<BurnStatus>().damage = Mathf.CeilToInt(mage.damage * 0.1f);
-		e.AddStatus(burn.gameObject);
+		GameObject burnObj = Instantiate(StatusEffectContainer.instance.GetStatus("Burn"));
+		BurnStatus burn = burnObj.GetComponent<BurnStatus>();
+		burn.damage = Mathf.CeilToInt(mage.damage * BURN_DAMAGE_MULTIPLIER);
+		burn.duration = BURN_DURATION;
+		burn.numSpreads = NUM_BURN_SPREADS;
+		e.AddStatus(burnObj);
 	}
 }
 

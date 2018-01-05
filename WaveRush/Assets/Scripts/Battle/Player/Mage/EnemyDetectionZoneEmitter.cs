@@ -57,7 +57,6 @@ public class EnemyDetectionZoneEmitter : MonoBehaviour
 	{
 		GameObject o = Instantiate(zonePrefab, transform.position, Quaternion.identity) as GameObject;
 		o.transform.SetParent(ObjectPooler.GetObjectPooler("Effect").transform);
-		print("setting onDetectEnemy to " + onDetectEnemy);
 		o.GetComponent<EnemyDetectionZone>().SetOnDetectEnemyCallback(onDetectEnemy);
 	}
 }

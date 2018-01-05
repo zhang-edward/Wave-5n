@@ -18,7 +18,6 @@ public class EnemyDetectionZone : MonoBehaviour
 
 	public void SetOnDetectEnemyCallback(OnDetectEnemyCallback onDetectEnemy)
 	{
-		print(onDetectEnemy);
 		this.onDetectEnemy = onDetectEnemy;
 	}
 

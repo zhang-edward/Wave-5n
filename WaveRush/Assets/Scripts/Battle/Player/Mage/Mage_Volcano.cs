@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MageVolcano : HeroPowerUp
+public class Mage_Volcano : HeroPowerUp
 {
 	private const float RADIUS = 4f;
 	private float activateChance = 0.5f;
