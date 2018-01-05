@@ -51,7 +51,6 @@ MonoBehaviour:
   cooldownMultipliers: []
   heroType: 2
   maxHealth: 16
-  baseDamage: 0
   maxComboTimer: 10
   anim:
     animations: []
@@ -61,20 +60,14 @@ MonoBehaviour:
   chargeMultiplier: 1
   specialAbilityChargeCapacity: 80
   cooldownTime:
-  - 1
+  - 1.1
   - 2
-  projectilePool: {fileID: 0}
   shootProjectileAbility:
     duration: 0.5
     shootState: Shoot
     shootSound: {fileID: 8300000, guid: 302ed52241ce94751ad153a84417b972, type: 3}
-  specialMeteorAbility:
-    duration: -1
-    specialEffect:
-      duration: 1
-    inputListener:
-      duration: 1
-      input: 1
+  specialAbilityEffect:
+    duration: 1
   teleportAbility:
     duration: 1
     teleportOutTime: 0.3

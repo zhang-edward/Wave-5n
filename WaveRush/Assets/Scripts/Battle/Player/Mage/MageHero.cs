@@ -5,53 +5,39 @@ using System.Collections;
 
 public class MageHero : PlayerHero {
 
+	/// <summary>
+	/// Shoot a meteor projectile.
+	/// NOTE: The target must be set with <see cref="PA_ShootProjectile.SetProjectileDirection"/> 
+	/// before running <see cref="PlayerAction.Execute"/>.
+	/// </summary>
 	public class PA_ShootMeteorProjectile : PA_ShootProjectile
 	{
 		protected override void DoAction()
 		{
-			Vector3 target = (Vector3)hero.player.dir + player.transform.position;
-			Vector3 origin = target + new Vector3(Random.Range(-3f, 3f), 10);
+			Vector3 origin = projectileDir + new Vector3(Random.Range(-3f, 3f), 10);
 			SetProjectileOrigin(origin);
-			SetProjectileDirection(target - origin);
+			SetProjectileDirection(projectileDir - origin);
 			base.DoAction();
 		}
 	}
 
-	[System.Serializable]
-	public class PA_Meteor : PA_Sequencer
-	{
-		public PA_SpecialAbilityEffect specialEffect;
-		public PA_InputListener inputListener;
+	private const float TELEPORT_RANGE = 4.0f;
+	private const float SPECIAL_NUM_METEORS = 10f;
 
-		public PA_ShootMeteorProjectile shootMeteor = new PA_ShootMeteorProjectile();
-		private PA_Joint jointAbility = new PA_Joint();
+	private RuntimeObjectPooler fireballPool;
+	private RuntimeObjectPooler meteorPool;
 
-		public void Init(Player player, GameObject meteorPrefab)
-		{
-			RuntimeObjectPooler meteorProjectilePool = (RuntimeObjectPooler)meteorPrefab.GetComponent<Projectile>().GetObjectPooler();
-			shootMeteor.Init(player, meteorProjectilePool);			
-			specialEffect.Init(player, shootMeteor);
-			inputListener.Init(player, shootMeteor);
-			jointAbility.Init(player,
-			                  specialEffect,
-			                  inputListener);
-			base.Init(player,
-			          jointAbility);
-		}
-	}
-
-	[HideInInspector]public  RuntimeObjectPooler projectilePool;
 	[Header("Abilities")]
 	//public PA_Rush specialRushAbility;
 	public PA_ShootProjectile shootProjectileAbility;
-	public PA_Meteor specialMeteorAbility;
+	public PA_SpecialAbilityEffect specialAbilityEffect;
+	public PA_ShootMeteorProjectile shootMeteorAbility = new PA_ShootMeteorProjectile();
 	public PA_Teleport teleportAbility;
 	[Header("Prefabs")]
 	public SimpleAnimation hitEffect;
 	public SimpleAnimation specialHitEffect;
 	public GameObject projectilePrefab;
 	public GameObject meteorPrefab;
-	private float teleportRange = 4.0f;
 	private bool  specialActivated;
 	private float specialRushCooldown = 0.5f;
 	private float specialRushCooldowntimer = 0;
@@ -86,7 +72,8 @@ public class MageHero : PlayerHero {
 	{
 		cooldownTimers = new float[2];
 		map = GameObject.Find ("Map").GetComponent<Map>();
-		projectilePool = (RuntimeObjectPooler)projectilePrefab.GetComponent<Projectile>().GetObjectPooler();
+		fireballPool = (RuntimeObjectPooler)projectilePrefab.GetComponent<Projectile>().GetObjectPooler();
+		meteorPool = (RuntimeObjectPooler)meteorPrefab.GetComponent<Projectile>().GetObjectPooler();
 
 		base.Init (body, player, heroData);
 
@@ -98,8 +85,9 @@ public class MageHero : PlayerHero {
 
 	private void InitAbilities()
 	{
-		shootProjectileAbility.Init(player, projectilePool);
-		specialMeteorAbility.Init(player, meteorPrefab);
+		shootProjectileAbility.Init(player, fireballPool);
+		specialAbilityEffect.Init(player);
+		shootMeteorAbility.Init(player, meteorPool);
 		//specialRushAbility.Init(player, DamageEnemySpecial);
 		teleportAbility.Init(player);
 	}
@@ -149,7 +137,7 @@ public class MageHero : PlayerHero {
 	{
 		if (!CheckIfCooledDownNotify (1))
 			return;
-		player.dir = Vector2.ClampMagnitude(player.dir, teleportRange);
+		player.dir = Vector2.ClampMagnitude(player.dir, TELEPORT_RANGE);
 		teleportAbility.OnTeleportIn += DisableTeleportIndicator;
 		teleportIndicator.transform.position = transform.position + (Vector3)player.dir;
 		teleportIndicator.gameObject.SetActive(true);
@@ -232,28 +220,31 @@ public class MageHero : PlayerHero {
 
 	public override void SpecialAbility()
 	{
-		if (specialAbilityCharge < specialAbilityChargeCapacity ||
-		    specialMeteorAbility.inProgress)
+		if (specialAbilityCharge < specialAbilityChargeCapacity)
 			return;
-		StartCoroutine(SpecialAbilityRoutine());	
+		StartCoroutine(SpecialAbilityRoutine());
 	}
 
 	private IEnumerator SpecialAbilityRoutine()
 	{
 		sound.RandomizeSFX(powerUpSound);
-		onTap -= StartTeleport;
-		specialMeteorAbility.Execute();
-		specialMeteorAbility.shootMeteor.OnExecutedAction += SetMeteorProperties;
-		while (specialMeteorAbility.inProgress)
-			yield return null;
-		yield return new WaitForSeconds(0.5f);
-		onTap += StartTeleport;
+		specialAbilityEffect.Execute();
+		yield return new WaitForSeconds(specialAbilityEffect.duration);
+		for (int i = 0; i < SPECIAL_NUM_METEORS; i ++)
+		{
+			Vector3 randomMapPosition = new Vector3						// Random map position with a buffer of 5 units
+				(Random.Range(5, Map.size - 5), Random.Range(5, Map.size - 5));
+			shootMeteorAbility.SetProjectileDirection(randomMapPosition);
+			shootMeteorAbility.Execute();
+			shootMeteorAbility.OnExecutedAction += SetMeteorProperties;
+			yield return new WaitForSeconds(Random.Range(0.5f, 1f));
+		}
 	}
 
 	private void SetMeteorProperties()
 	{
-		Projectile meteor = specialMeteorAbility.shootMeteor.GetProjectile();
-		meteor.GetComponentInChildren<AreaDamageAction>().damage = Mathf.RoundToInt(damage * 4f);
+		Projectile meteor = shootMeteorAbility.GetProjectile();
+		meteor.GetComponentInChildren<AreaDamageAction>().damage = Mathf.RoundToInt(damage);
 		meteor.OnDie += MeteorImpactEvent;
 		specialAbilityCharge = 0;
 	}
@@ -261,8 +252,7 @@ public class MageHero : PlayerHero {
 	private void MeteorImpactEvent()
 	{
 		CameraControl.instance.StartShake(0.3f, 0.1f, true, false);
-		CameraControl.instance.StartFlashColor(Color.white, 0.8f, 0, 0, 1f);
-		player.StartTempSlowDown(0.2f);
+		CameraControl.instance.StartFlashColor(Color.white, 0.2f, 0, 0, 0.2f);
 	}
 
 	public void SpecialRush()
@@ -270,8 +260,6 @@ public class MageHero : PlayerHero {
 		if (specialRushCooldowntimer > 0)
 			return;
 		specialRushCooldowntimer = specialRushCooldown;
-
-		//specialRushAbility.Execute();
 	}
 
 	public void ResetSpecialAbility()

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MageEruption : HeroPowerUp
+public class MageVolcano : HeroPowerUp
 {
 	private const float RADIUS = 4f;
 	private float activateChance = 0.5f;
@@ -13,10 +13,6 @@ public class MageEruption : HeroPowerUp
 	public AudioClip[] groundBreakSounds;
 	public AudioClip[] eruptionSounds;
 
-	void Awake()
-	{
-		
-	}
 
 	public override void Activate(PlayerHero hero)
 	{
@@ -48,7 +44,6 @@ public class MageEruption : HeroPowerUp
 			{
 				e = col.gameObject.GetComponentInChildren<Enemy>();
 				StartCoroutine(Eruption(e));
-				break;
 			}
 		}
 	}

@@ -32,4 +32,13 @@ public class AnimationSetPlayer : SimpleAnimationPlayer
 		looping = true;
 		Play();
 	}
+
+	/// <summary>
+	/// Checks if an animation is currently being played
+	/// </summary>
+	/// <param name="animationName">Animation to check for.</param>
+	public bool IsPlayingAnimation(string animationName)
+	{
+		return ((AnimationSetAnim)anim).animationName == animationName;
+	}
 }

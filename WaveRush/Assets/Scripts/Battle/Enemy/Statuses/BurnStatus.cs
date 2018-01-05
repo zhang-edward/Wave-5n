@@ -3,6 +3,8 @@ using System.Collections;
 
 public class BurnStatus : EnemyStatus
 {
+	private const float DAMAGE_INTERVAL = 1f;
+
 	public ParticleSystem particles;
 	public float fireSpreadRange = 1.5f;
 	public int spreadLevel = 2;
@@ -14,27 +16,47 @@ public class BurnStatus : EnemyStatus
 	{
 		SoundManager.instance.RandomizeSFX (applySounds [Random.Range (0, applySounds.Length)]);
 		yield return new WaitForSeconds (0.1f);
-		// last spread level should not spread
+		// Last spread level should not spread
 		if (spreadLevel == 0)
 			numSpreads = 0;
-		// make the particle effect box emitter the same size as the entity 
+		StartCoroutine(SpreadToNearbyEnemies());
+		// Make the particle effect box emitter the same size as the entity 
 		ParticleSystem.ShapeModule shapeModule = particles.shape;
 		shapeModule.shapeType = ParticleSystemShapeType.Box;
 		shapeModule.box = enemy.srSize * 0.5f;
 
 		while (timer >= 0)
 		{
-			// if this status can still spread
-			if (numSpreads > 0)
-			{
-				SpreadFire ();
-			}
-			enemy.Damage (damage, false);
-			yield return new WaitForSeconds(Random.Range(0.1f, 0.3f));
+			enemy.Damage(damage, false);
+			yield return new WaitForSeconds(DAMAGE_INTERVAL);
 		}
 
 		Deactivate();
 		yield return null;
+	}
+
+	private IEnumerator SpreadToNearbyEnemies()
+	{
+		while (timer >= 0)
+		{
+			// if this status can still spread
+			if (numSpreads > 0)
+			{
+				// Get a list of all enemies in a range
+				Collider2D[] cols = Physics2D.OverlapCircleAll(transform.position, fireSpreadRange);
+				foreach (Collider2D col in cols)
+				{
+					if (col.CompareTag("Enemy"))
+					{
+						Enemy e = col.GetComponentInChildren<Enemy>();
+						SpreadFire(e);
+						yield return new WaitForSeconds(Random.Range(0.1f, 0.3f));
+					}
+				}
+			}
+			else
+				yield break;
+		}
 	}
 
 	public override void Stack ()
@@ -43,26 +65,18 @@ public class BurnStatus : EnemyStatus
 		spreadLevel++;
 	}
 
-	private void SpreadFire()
+	private void SpreadFire(Enemy e)
 	{
-		// get a list of all enemies in a range
-		Collider2D[] cols = Physics2D.OverlapCircleAll (transform.position, fireSpreadRange);
-		foreach (Collider2D col in cols)
+		// Check if the enemy already has this status
+		bool hasBurnStatus = e.GetStatus(this) != null;
+		// If not, add a burn status but with no spread
+		if (!hasBurnStatus)
 		{
-			if (col.CompareTag ("Enemy"))
-			{
-				Enemy e = col.GetComponentInChildren<Enemy> ();
-				// check if the enemy already has this status
-				bool hasBurnStatus = e.GetStatus(this) != null;
-				// if not, add a burn status but with no spread
-				if (!hasBurnStatus)
-				{
-					GameObject toAdd = Instantiate (this.gameObject);
-					toAdd.GetComponent<BurnStatus> ().spreadLevel = spreadLevel - 1;
-					e.AddStatus (toAdd);
-					numSpreads--;
-				}
-			}
+			GameObject toAdd = Instantiate(this.gameObject);
+			toAdd.GetComponent<BurnStatus>().spreadLevel = spreadLevel - 1;
+			e.AddStatus(toAdd);
+			numSpreads--;
+
 		}
 	}
 }

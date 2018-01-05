@@ -2,14 +2,10 @@
 using PlayerActions;
 using System.Collections;
 
-public class Knight_SuperShield : HeroPowerUp
+public class Knight_SuperShield : HeroPowerUpCharged
 {
-	private const float CHARGE_SPEED = 0.5f;
-
 	public PA_AreaEffect   areaAttackAbility;
 	public GameObject 	   shieldIndicator;
-	public IndicatorEffect chargeEffect;
-	public IndicatorEffect indicatorEffect;
 
 	private KnightHero knight;
 	private PlayerHero.InputAction storedOnTap;
@@ -18,33 +14,21 @@ public class Knight_SuperShield : HeroPowerUp
 	{
 		base.Activate(hero);
 		knight = (KnightHero)hero;
-		percentActivated = 0f;
-
+		// Initialize HeroPowerUpCharged properties
+		chargeSpeed = 0.5f;
+		chargeState = "Special";
 		// Initialize the new ability
 		areaAttackAbility.Init(hero.player, DamageEnemy);
-
-		// Assign new inputs
-		knight.onTapHoldDown += ActivateSuperShield;
-		knight.onTapRelease += () =>
-		{
-			knight.anim.Play("Default");
-			chargeEffect.gameObject.SetActive(false);
-		};
 	}
 
-	public override void Deactivate()
-	{
-		base.Deactivate();
-		knight.OnKnightShield -= ActivateSuperShield;
-	}
 
-	private void ActivateSuperShield()
+	/*private void ActivateSuperShield()
 	{
 		// If the ability is already activated, we don't have to charge
 		if (percentActivated >= 1.0f)
 			return;
 		// Charge
-		percentActivated += CHARGE_SPEED * Time.deltaTime;
+		percentActivated += chargeSpeed * Time.deltaTime;
 		// Animation and Effects
 		knight.player.animPlayer.willResetToDefault = false;
 		knight.anim.Play("Special");
@@ -56,7 +40,14 @@ public class Knight_SuperShield : HeroPowerUp
 			storedOnTap = knight.onTap;
 			knight.onTap = SuperShield;
 			indicatorEffect.gameObject.SetActive(true);
+			chargeEffect.AnimateOut();
 		}
+	}*/
+
+	protected override void ActivateEffect()
+	{
+		storedOnTap = knight.onTap;
+		knight.onTap = SuperShield;
 	}
 
 	public void SuperShield()
@@ -71,9 +62,8 @@ public class Knight_SuperShield : HeroPowerUp
 		areaAttackAbility.Execute();
 		// Reset input action
 		knight.onTap = storedOnTap;
-		// Special Indicator
-		indicatorEffect.AnimateOut();
-		percentActivated = 0f;
+		// Deactivate charge
+		DeactivateEffect();
 	}
 
 	private void DamageEnemy(Enemy e)
@@ -84,7 +74,7 @@ public class Knight_SuperShield : HeroPowerUp
 			stun.duration = 2.0f;
 			print("Stunning enemy");
 			e.AddStatus(stun.gameObject);
-			//knight.DamageEnemy(e, knight.damage, knight.hitEffect, true, knight.hitSounds);
+			knight.DamageEnemy(e, knight.damage, knight.hitEffect, true, knight.hitSounds);
 		}
 	}
 }

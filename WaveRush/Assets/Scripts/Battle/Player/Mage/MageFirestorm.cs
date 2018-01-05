@@ -16,7 +16,7 @@ public class MageFirestorm : HeroPowerUp
 	{
 		base.Activate(hero);
 		mage = (MageHero)hero;
-		originalProjectilePool = mage.projectilePool;
+		//originalProjectilePool = mage.fireballPool;
 		firestormPool = (RuntimeObjectPooler)firestormPrefab.GetComponent<Projectile>().GetObjectPooler();
 		mage.OnMageShotFireball += TryActivateAbility;
 	}
