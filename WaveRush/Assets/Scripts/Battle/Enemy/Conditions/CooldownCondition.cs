@@ -21,7 +21,7 @@ namespace EnemyActions
 
 		void Update()
 		{
-			if (timer > 0)
+			if (timer > 0 && !e.hitDisabled)
 				timer -= Time.deltaTime;
 		}
 

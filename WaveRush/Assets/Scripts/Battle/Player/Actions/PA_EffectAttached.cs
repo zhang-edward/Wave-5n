@@ -3,22 +3,11 @@
 	using UnityEngine;
 
 	[System.Serializable]
-	public class PA_EffectAttached : PlayerAction
+	public class PA_EffectAttached : PA_Effect
 	{
 		/** Set in Inspector */
 		public SimpleAnimationPlayer anim;
-
-		/** Properties */
-		private enum RotationType {
-			None,					// Rotation is Quaternion.identity
-			Same,					// Rotation matches player dir
-			Opposite,				// Rotation is reverse player dir
-			MatchFlipX,				// Match the player sprite's flipX
-			ReverseFlipX			// Match the reverse of the player sprite's flipX
-		}
-		[SerializeField] private RotationType rotationType = RotationType.None;	// Default value doesn't matter, just prevents warning
 		[SerializeField] private bool 		  offsetMatchesFlipX = false;
-		[SerializeField] private Color		  color = Color.white;
 
 		public override void Init(Player player)
 		{
@@ -51,30 +40,6 @@
 				anim.anim.frames[0],
 				info);
 			anim.Play();
-		}
-
-		private Quaternion GetRotation()
-		{
-			float angle;
-			switch (rotationType) 
-			{
-				case RotationType.Same:
-					angle = Mathf.Atan2(player.dir.y, player.dir.x) * Mathf.Rad2Deg;
-					break;
-				case RotationType.Opposite:
-					angle = Mathf.Atan2(-player.dir.y, -player.dir.x) * Mathf.Rad2Deg;
-					break;
-				case RotationType.MatchFlipX:
-					angle = player.sr.flipX ? 180 : 0;
-					break;
-				case RotationType.ReverseFlipX:
-					angle = player.sr.flipX ? 0 : 180;
-					break;
-				default:
-					angle = 0;
-					break;
-			}
-			return Quaternion.Euler(new Vector3(0, 0, angle));
 		}
 	}
 }

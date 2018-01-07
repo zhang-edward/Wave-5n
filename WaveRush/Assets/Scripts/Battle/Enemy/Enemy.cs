@@ -122,9 +122,8 @@ public class Enemy : MonoBehaviour, IDamageable {
 	{
 		if (invincible)
 			return;
-		EnemyStatus statusType = statusObj.GetComponent<EnemyStatus> ();
 		// check if this enemy already has this status
-		EnemyStatus existingStatus = GetStatus (statusType);
+		EnemyStatus existingStatus = GetStatus (statusObj.GetComponent<EnemyStatus>().statusName);
 		if (existingStatus != null)
 		{
 			existingStatus.Stack ();
@@ -140,14 +139,14 @@ public class Enemy : MonoBehaviour, IDamageable {
 		status.Init (this);
 	}
 
-	public EnemyStatus GetStatus(EnemyStatus status)
+	public EnemyStatus GetStatus(string statusName)
 	{
 		for (int i = statuses.Count - 1; i >= 0; i --)
 		{
 			EnemyStatus existingStatus = statuses [i];
 			if (existingStatus == null)
 				statuses.RemoveAt (i);
-			else if (existingStatus.statusName.Equals (status.statusName))
+			else if (existingStatus.statusName.Equals (statusName))
 				return existingStatus;
 		}
 		return null;
@@ -205,6 +204,8 @@ public class Enemy : MonoBehaviour, IDamageable {
 	public virtual void Disable(float time)
 	{
 		StopAllCoroutines ();
+		if (action != null)		// Special enemies have no action (trapped heroes)
+			action.Interrupt();
 		StartCoroutine (HitDisableState (time, 0));
 	}
 

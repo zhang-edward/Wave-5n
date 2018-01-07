@@ -59,7 +59,7 @@ public class LightningStatus : EnemyStatus
 			{
 				Enemy e = col.GetComponentInChildren<Enemy> ();
 				// check if the enemy already has this status
-				bool hasLightning = e.GetStatus (this) != null;
+				bool hasLightning = e.GetStatus (statusName) != null;
 				if (!hasLightning)
 				{
 					GameObject toAdd = Instantiate (this.gameObject);

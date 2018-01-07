@@ -136,21 +136,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initAnimation:
     frames:
-    - {fileID: 21300000, guid: a60fe14718271404499f969766329085, type: 3}
-    - {fileID: 21300002, guid: a60fe14718271404499f969766329085, type: 3}
-    - {fileID: 21300004, guid: a60fe14718271404499f969766329085, type: 3}
-    - {fileID: 21300006, guid: a60fe14718271404499f969766329085, type: 3}
+    - {fileID: 0}
     fps: 10
   loopAnimation:
     frames:
-    - {fileID: 21300008, guid: a60fe14718271404499f969766329085, type: 3}
-    - {fileID: 21300010, guid: a60fe14718271404499f969766329085, type: 3}
-    - {fileID: 21300012, guid: a60fe14718271404499f969766329085, type: 3}
-    - {fileID: 21300014, guid: a60fe14718271404499f969766329085, type: 3}
+    - {fileID: 21300068, guid: 8e60a8074bcc548c1b2771ce2e4924de, type: 3}
+    - {fileID: 21300066, guid: 8e60a8074bcc548c1b2771ce2e4924de, type: 3}
+    - {fileID: 21300064, guid: 8e60a8074bcc548c1b2771ce2e4924de, type: 3}
+    - {fileID: 21300062, guid: 8e60a8074bcc548c1b2771ce2e4924de, type: 3}
+    - {fileID: 21300036, guid: 8e60a8074bcc548c1b2771ce2e4924de, type: 3}
     fps: 10
   onDisableAnimation:
     frames:
-    - {fileID: 21300000, guid: a60fe14718271404499f969766329085, type: 3}
+    - {fileID: 21300050, guid: 8e60a8074bcc548c1b2771ce2e4924de, type: 3}
+    - {fileID: 21300052, guid: 8e60a8074bcc548c1b2771ce2e4924de, type: 3}
+    - {fileID: 21300054, guid: 8e60a8074bcc548c1b2771ce2e4924de, type: 3}
+    - {fileID: 21300056, guid: 8e60a8074bcc548c1b2771ce2e4924de, type: 3}
+    - {fileID: 21300058, guid: 8e60a8074bcc548c1b2771ce2e4924de, type: 3}
+    - {fileID: 21300060, guid: 8e60a8074bcc548c1b2771ce2e4924de, type: 3}
     fps: 10
 --- !u!114 &114718795589136148
 MonoBehaviour:
@@ -212,9 +215,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerHero: {fileID: 0}
   data: {fileID: 11400000, guid: 94c84a843aed04944b9c26ef2c3698bb, type: 2}
-  numBurnSpreads: 2
   chargeEffect: {fileID: 114391316604399554}
   indicatorEffect: {fileID: 114764026061605938}
+  lastShotFireball: {fileID: 0}
 --- !u!212 &212636533387806700
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -9,48 +9,47 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1496389809250580}
+  m_RootGameObject: {fileID: 1142730992842330}
   m_IsPrefabParent: 1
---- !u!1 &1496389809250580
+--- !u!1 &1142730992842330
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 4972686284251668}
-  - component: {fileID: 114658290854887584}
+  - component: {fileID: 4209893647224924}
+  - component: {fileID: 114836317477261998}
   m_Layer: 0
-  m_Name: FireTrailEmitter
+  m_Name: MageTeleportBurst
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4972686284251668
+--- !u!4 &4209893647224924
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1496389809250580}
+  m_GameObject: {fileID: 1142730992842330}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10, y: 10.5, z: 0}
+  m_LocalPosition: {x: 2.2200556, y: 3.6745176, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114658290854887584
+--- !u!114 &114836317477261998
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1496389809250580}
+  m_GameObject: {fileID: 1142730992842330}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd1de7dd4f0aa4ecc878ddbd2716b706, type: 3}
+  m_Script: {fileID: 11500000, guid: 60b533b1d75c84fe1bb908f3ef61eec2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zonePrefab: {fileID: 1843520206350396, guid: 725e035d157c144fc912997716f5999c, type: 2}
-  traceMode: 0
-  timeInterval: 0
+  playerHero: {fileID: 0}
+  data: {fileID: 11400000, guid: f577d449367bf4cc9b1f4e3c342fb7b5, type: 2}

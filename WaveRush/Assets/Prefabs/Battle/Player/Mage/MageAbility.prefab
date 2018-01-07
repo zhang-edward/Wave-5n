@@ -68,6 +68,13 @@ MonoBehaviour:
     shootSound: {fileID: 8300000, guid: 302ed52241ce94751ad153a84417b972, type: 3}
   specialAbilityEffect:
     duration: 1
+  parryAbility:
+    duration: 0.5
+    range: 4
+    maxHit: 5
+    loseMomentum: 0
+    areaAttackSound: {fileID: 0}
+    areaAttackState: Default
   teleportAbility:
     duration: 1
     teleportOutTime: 0.3

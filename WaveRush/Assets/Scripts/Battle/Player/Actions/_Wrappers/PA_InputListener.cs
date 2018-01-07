@@ -35,7 +35,7 @@
 			switch (input)
 			{
 				case InputType.Drag:
-					hero.onDrag += TryExecuteSubAction;
+					hero.onDragRelease += TryExecuteSubAction;
 					break;
 				case InputType.Tap:
 					hero.onTap += TryExecuteSubAction;
@@ -48,7 +48,7 @@
 			switch (input)
 			{
 				case InputType.Drag:
-					hero.onDrag -= TryExecuteSubAction;
+					hero.onDragRelease -= TryExecuteSubAction;
 					break;
 				case InputType.Tap:
 					hero.onTap -= TryExecuteSubAction;

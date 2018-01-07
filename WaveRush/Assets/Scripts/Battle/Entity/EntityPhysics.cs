@@ -44,8 +44,13 @@ public class EntityPhysics : MonoBehaviour {
 		} while (t < time);
 	}
 
-	public void AddRandomImpulse(float amt)
+	public void AddRandomImpulse(float amt = 3f)
 	{
-		rb2d.AddForce (new Vector2 (Random.Range (-amt, amt), Random.Range (-amt, amt)), ForceMode2D.Impulse);
+		rb2d.AddForce(new Vector2 (Random.Range (-amt, amt), Random.Range (-amt, amt)), ForceMode2D.Impulse);
+	}
+
+	public void AddImpulse(Vector2 dir, float amt = 3f)
+	{
+		rb2d.AddForce(dir * amt, ForceMode2D.Impulse);
 	}
 }

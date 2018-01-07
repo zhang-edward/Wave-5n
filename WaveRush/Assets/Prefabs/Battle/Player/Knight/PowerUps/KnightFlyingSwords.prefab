@@ -86,40 +86,48 @@ MonoBehaviour:
   playerHero: {fileID: 0}
   data: {fileID: 11400000, guid: 7a046e98a6e5140388237fed4a04a9ea, type: 2}
   indicator: {fileID: 114489603714614278}
-  addSwordAnim:
-    frames:
-    - {fileID: 21300000, guid: 223199462aa7049c9af14e91170899a7, type: 3}
-    - {fileID: 21300002, guid: 223199462aa7049c9af14e91170899a7, type: 3}
-    - {fileID: 21300004, guid: 223199462aa7049c9af14e91170899a7, type: 3}
-    - {fileID: 21300006, guid: 223199462aa7049c9af14e91170899a7, type: 3}
-    - {fileID: 21300008, guid: 223199462aa7049c9af14e91170899a7, type: 3}
-    - {fileID: 21300010, guid: 223199462aa7049c9af14e91170899a7, type: 3}
-    - {fileID: 21300012, guid: 223199462aa7049c9af14e91170899a7, type: 3}
-    - {fileID: 21300014, guid: 223199462aa7049c9af14e91170899a7, type: 3}
-    - {fileID: 21300016, guid: 223199462aa7049c9af14e91170899a7, type: 3}
-    - {fileID: 21300018, guid: 223199462aa7049c9af14e91170899a7, type: 3}
-    - {fileID: 21300020, guid: 223199462aa7049c9af14e91170899a7, type: 3}
-    - {fileID: 21300022, guid: 223199462aa7049c9af14e91170899a7, type: 3}
-    - {fileID: 21300024, guid: 223199462aa7049c9af14e91170899a7, type: 3}
-    - {fileID: 21300026, guid: 223199462aa7049c9af14e91170899a7, type: 3}
-    fps: 10
-  swordAttackAnim:
-    frames:
-    - {fileID: 21300028, guid: 223199462aa7049c9af14e91170899a7, type: 3}
-    - {fileID: 21300030, guid: 223199462aa7049c9af14e91170899a7, type: 3}
-    - {fileID: 21300032, guid: 223199462aa7049c9af14e91170899a7, type: 3}
-    - {fileID: 21300034, guid: 223199462aa7049c9af14e91170899a7, type: 3}
-    - {fileID: 21300036, guid: 223199462aa7049c9af14e91170899a7, type: 3}
-    - {fileID: 21300038, guid: 223199462aa7049c9af14e91170899a7, type: 3}
-    - {fileID: 21300040, guid: 223199462aa7049c9af14e91170899a7, type: 3}
-    - {fileID: 21300042, guid: 223199462aa7049c9af14e91170899a7, type: 3}
-    - {fileID: 21300044, guid: 223199462aa7049c9af14e91170899a7, type: 3}
-    - {fileID: 21300046, guid: 223199462aa7049c9af14e91170899a7, type: 3}
-    - {fileID: 21300048, guid: 223199462aa7049c9af14e91170899a7, type: 3}
-    - {fileID: 21300050, guid: 223199462aa7049c9af14e91170899a7, type: 3}
-    - {fileID: 21300052, guid: 223199462aa7049c9af14e91170899a7, type: 3}
-    - {fileID: 21300054, guid: 223199462aa7049c9af14e91170899a7, type: 3}
-    fps: 10
+  addSword:
+    duration: -1
+    effect:
+      frames:
+      - {fileID: 21300000, guid: 223199462aa7049c9af14e91170899a7, type: 3}
+      - {fileID: 21300002, guid: 223199462aa7049c9af14e91170899a7, type: 3}
+      - {fileID: 21300004, guid: 223199462aa7049c9af14e91170899a7, type: 3}
+      - {fileID: 21300006, guid: 223199462aa7049c9af14e91170899a7, type: 3}
+      - {fileID: 21300008, guid: 223199462aa7049c9af14e91170899a7, type: 3}
+      - {fileID: 21300010, guid: 223199462aa7049c9af14e91170899a7, type: 3}
+      - {fileID: 21300012, guid: 223199462aa7049c9af14e91170899a7, type: 3}
+      - {fileID: 21300014, guid: 223199462aa7049c9af14e91170899a7, type: 3}
+      - {fileID: 21300016, guid: 223199462aa7049c9af14e91170899a7, type: 3}
+      - {fileID: 21300018, guid: 223199462aa7049c9af14e91170899a7, type: 3}
+      - {fileID: 21300020, guid: 223199462aa7049c9af14e91170899a7, type: 3}
+      - {fileID: 21300022, guid: 223199462aa7049c9af14e91170899a7, type: 3}
+      - {fileID: 21300024, guid: 223199462aa7049c9af14e91170899a7, type: 3}
+      - {fileID: 21300026, guid: 223199462aa7049c9af14e91170899a7, type: 3}
+      fps: 10
+    rotationType: 0
+    color: {r: 1, g: 1, b: 1, a: 0.5019608}
+  attackSword:
+    duration: -1
+    effect:
+      frames:
+      - {fileID: 21300028, guid: 223199462aa7049c9af14e91170899a7, type: 3}
+      - {fileID: 21300030, guid: 223199462aa7049c9af14e91170899a7, type: 3}
+      - {fileID: 21300032, guid: 223199462aa7049c9af14e91170899a7, type: 3}
+      - {fileID: 21300034, guid: 223199462aa7049c9af14e91170899a7, type: 3}
+      - {fileID: 21300036, guid: 223199462aa7049c9af14e91170899a7, type: 3}
+      - {fileID: 21300038, guid: 223199462aa7049c9af14e91170899a7, type: 3}
+      - {fileID: 21300040, guid: 223199462aa7049c9af14e91170899a7, type: 3}
+      - {fileID: 21300042, guid: 223199462aa7049c9af14e91170899a7, type: 3}
+      - {fileID: 21300044, guid: 223199462aa7049c9af14e91170899a7, type: 3}
+      - {fileID: 21300046, guid: 223199462aa7049c9af14e91170899a7, type: 3}
+      - {fileID: 21300048, guid: 223199462aa7049c9af14e91170899a7, type: 3}
+      - {fileID: 21300050, guid: 223199462aa7049c9af14e91170899a7, type: 3}
+      - {fileID: 21300052, guid: 223199462aa7049c9af14e91170899a7, type: 3}
+      - {fileID: 21300054, guid: 223199462aa7049c9af14e91170899a7, type: 3}
+      fps: 10
+    rotationType: 0
+    color: {r: 1, g: 1, b: 1, a: 0.5019608}
   portalOpenSound: {fileID: 8300000, guid: 6fccc87d0aad04ebaa74e9f5096064fb, type: 3}
   swordRiseSound: {fileID: 8300000, guid: 1d753ac6ac4df42d6beb13b71d03efae, type: 3}
   swordLandSounds:

@@ -26,7 +26,7 @@ public abstract class EnemyStatus : MonoBehaviour
 
 	protected abstract IEnumerator Effect ();
 
-	protected void Deactivate(float delay = 0f)
+	public void Deactivate(float delay = 0f)
 	{
 		enemy.statuses.Remove(this);
 		Destroy(gameObject, delay);

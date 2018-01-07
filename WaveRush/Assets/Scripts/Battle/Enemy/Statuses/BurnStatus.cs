@@ -14,7 +14,7 @@ public class BurnStatus : EnemyStatus
 
 	protected override IEnumerator Effect ()
 	{
-		SoundManager.instance.RandomizeSFX (applySounds [Random.Range (0, applySounds.Length)]);
+		SoundManager.instance.PlayInterrupt (applySounds [Random.Range (0, applySounds.Length)]);
 		yield return new WaitForSeconds (0.1f);
 		// Last spread level should not spread
 		if (spreadLevel == 0)
@@ -46,7 +46,7 @@ public class BurnStatus : EnemyStatus
 				Collider2D[] cols = Physics2D.OverlapCircleAll(transform.position, fireSpreadRange);
 				foreach (Collider2D col in cols)
 				{
-					if (col.CompareTag("Enemy"))
+					if (col != null && col.CompareTag("Enemy"))
 					{
 						Enemy e = col.GetComponentInChildren<Enemy>();
 						SpreadFire(e);
@@ -68,7 +68,7 @@ public class BurnStatus : EnemyStatus
 	private void SpreadFire(Enemy e)
 	{
 		// Check if the enemy already has this status
-		bool hasBurnStatus = e.GetStatus(this) != null;
+		bool hasBurnStatus = e.GetStatus(statusName) != null;
 		// If not, add a burn status but with no spread
 		if (!hasBurnStatus)
 		{

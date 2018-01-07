@@ -50,11 +50,11 @@ public class Pawn
 
 	public static float DamageEquation(Pawn pawn)
 	{
-		float answer = (0.08f * Mathf.Pow(pawn.level, 2.8f) + 5.3f);
+		float answer = 1;//(0.08f * Mathf.Pow(pawn.level, 2.8f) + 5.3f);
 		if (pawn.level >= T2_MIN_LEVEL)
-			answer += 5f;
+			answer += 2f;
 		if (pawn.level >= T3_MIN_LEVEL)
-			answer += 5f;
+			answer += 3f;
 		return answer;
 	}
 
