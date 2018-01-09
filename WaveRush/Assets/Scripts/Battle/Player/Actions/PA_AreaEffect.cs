@@ -69,7 +69,7 @@
 					}
 				}
 			}
-//			Debug.Log("Detected " + numEnemiesHit + " enemies");
+			Debug.Log("Detected " + numEnemiesHit + " enemies");
 
 			yield return new WaitForSeconds(duration);
 			player.input.isInputEnabled = true;

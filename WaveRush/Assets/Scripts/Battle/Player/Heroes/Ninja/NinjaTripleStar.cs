@@ -33,7 +33,7 @@ public class NinjaTripleStar : HeroPowerUp
 		{
 			percentActivated = 1;
 			ninja.onTap += TripleStar;
-			ninja.onTap -= ninja.ShootNinjaStar;
+			//ninja.onTap -= ninja.ShootNinjaStar;
 			ninja.player.OnEnemyDamaged -= ChargeTripleStar;
 			numThrows = NUM_THROWS;
 		}
@@ -53,7 +53,7 @@ public class NinjaTripleStar : HeroPowerUp
 			charge = 0;
 			percentActivated = 0;
 			ninja.onTap -= TripleStar;
-			ninja.onTap += ninja.ShootNinjaStar;
+			//ninja.onTap += ninja.ShootNinjaStar;
 			ninja.player.OnEnemyDamaged += ChargeTripleStar;
 		}
 
@@ -73,7 +73,7 @@ public class NinjaTripleStar : HeroPowerUp
 			Vector2 dir = ninja.player.dir.normalized;
 			GameObject o = ninja.InitNinjaStar (dir);
 			if (ninja.activatedSpecialAbility)
-				ninja.ShootNinjaStarFanPattern ();
+			//	ninja.ShootNinjaStarFanPattern ();
 			// set direction
 			ninja.body.Move (dir);
 			ninja.body.rb2d.velocity = Vector2.zero;

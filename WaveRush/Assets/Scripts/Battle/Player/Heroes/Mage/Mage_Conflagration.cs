@@ -14,7 +14,12 @@ public class Mage_Conflagration : HeroPowerUpCharged
 	{
 		base.Activate(hero);
 		mage = (MageHero)hero;
-		chargeSpeed = 1 / 3f;		// 3 seconds charge time
+		hero.player.OnEnemyDamaged += Charge;
+	}
+
+	private void Charge(float foo)
+	{
+		ChargePowerUp(0.05f);
 	}
 
 	protected override void ActivateEffect()

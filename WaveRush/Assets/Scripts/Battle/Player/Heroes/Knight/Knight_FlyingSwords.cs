@@ -85,7 +85,6 @@ public class Knight_FlyingSwords : HeroPowerUp
 			Debug.LogError("PA_EffectCallback invoked the callback on the wrong frame!");
 			return;
 		}
-
 		indicator.gameObject.SetActive(true);
 		indicator.SetAnimatingOut(false);
 		percentActivated = (float)numSwords / maxSwords;

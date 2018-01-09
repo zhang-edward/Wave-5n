@@ -42,6 +42,7 @@ CircleCollider2D:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_UsedByEffector: 0
+  m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
@@ -58,26 +59,52 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   body: {fileID: 0}
-  icons:
-  - {fileID: 21300012, guid: 843b06d1a2541484da35331012753248, type: 3}
-  - {fileID: 21300014, guid: 843b06d1a2541484da35331012753248, type: 3}
-  specialAbilityIcon: {fileID: 21300026, guid: 843b06d1a2541484da35331012753248, type: 3}
+  powerUpManager: {fileID: 0}
+  cooldownMultipliers: []
   heroType: 3
   maxHealth: 16
-  baseDamage: 0
+  maxComboTimer: 10
   anim:
     animations: []
     player: {fileID: 0}
-  powerUpManager: {fileID: 0}
   deathProps:
   - {fileID: 21300000, guid: 843b06d1a2541484da35331012753248, type: 3}
-  maxComboTimer: 10
   chargeMultiplier: 1
   specialAbilityChargeCapacity: 70
   cooldownTime:
   - 1.2
   - 0.8
-  cooldownMultipliers: []
+  ninjaStarAbility:
+    duration: 0.2
+    shootState: Default
+    shootSound: {fileID: 8300000, guid: d9dbdcfceab874d7eb8ab0b127fa5e42, type: 3}
+  dashAbility:
+    duration: 2
+    teleportOutTime: 0.3
+    teleportInTime: 0.3
+    teleportOutState: DashOut
+    teleportInState: DashIn
+    teleportOutSound: {fileID: 8300000, guid: ffd465ef5be894123a3bb74d80e81746, type: 3}
+    teleportInSound: {fileID: 8300000, guid: 1f580ace47b11418094d3fc2310d742d, type: 3}
+    invincibleDuringTeleport: 1
+  shadowBackupDetector:
+    duration: -1
+    range: 4
+    maxHit: 5
+    loseMomentum: 0
+    areaAttackSound: {fileID: 0}
+    areaAttackState: Default
+  shadowBackup:
+    duration: -1
+    effect:
+      frames:
+      - {fileID: 21300000, guid: d1b634dc393db4f5e8b18f75c7399c9d, type: 3}
+      - {fileID: 21300002, guid: d1b634dc393db4f5e8b18f75c7399c9d, type: 3}
+      - {fileID: 21300004, guid: d1b634dc393db4f5e8b18f75c7399c9d, type: 3}
+      - {fileID: 21300006, guid: d1b634dc393db4f5e8b18f75c7399c9d, type: 3}
+      fps: 10
+    rotationType: 0
+    color: {r: 1, g: 1, b: 1, a: 1}
   projectilePrefab: {fileID: 160830, guid: d5e3f55c8ca834b2f9068b26ada0c37d, type: 2}
   specialProjectilePrefab: {fileID: 192602, guid: 44e0f12c2143a4e2aa6760666fedeb68,
     type: 2}

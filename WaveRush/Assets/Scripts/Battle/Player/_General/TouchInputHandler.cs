@@ -8,7 +8,7 @@ public class TouchInputHandler : MonoBehaviour {
 
 	private Vector2 touchStartPos;
 	private float   touchStartTime;		// The time at which the touch has started to move
-	private float   minDragDist = 2.0f;
+	private float   minDragDist = 0.5f;
 	private float   maxTapTime  = 0.3f;
 	private bool 	isDragging;
 
@@ -39,16 +39,16 @@ public class TouchInputHandler : MonoBehaviour {
 			switch (touch.phase)
 			{
 				case (TouchPhase.Began):
-					HandleTouchBegan(touch.position);
+					HandleTouchBegan(Camera.main.ScreenToWorldPoint(touch.position));
 					break;
 				case (TouchPhase.Moved):
-					HandleTouchMoved(touch.position);
+					HandleTouchMoved(Camera.main.ScreenToWorldPoint(touch.position));
 					break;
 				case (TouchPhase.Stationary):
-					HandleTouchHeld(touch.position);
+					HandleTouchHeld(Camera.main.ScreenToWorldPoint(touch.position));
 					break;
 				case (TouchPhase.Ended):
-					HandleTouchBegan(touch.position);
+					HandleTouchEnded(Camera.main.ScreenToWorldPoint(touch.position));
 					break;
 			}
 		}
@@ -90,9 +90,8 @@ public class TouchInputHandler : MonoBehaviour {
 	{
 		Vector2 touchDir = position - touchStartPos;
 		float touchTime = Time.time - touchStartTime;
-		float touchDist = (position - touchStartPos).magnitude;
 
-		if (touchDist > minDragDist)
+		if (isDragging)
 			OnDragRelease(touchDir);
 		else if (!isDragging)
 		{

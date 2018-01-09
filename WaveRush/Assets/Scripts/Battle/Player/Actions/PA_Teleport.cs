@@ -51,7 +51,7 @@
 				OnTeleportOut();
 
 			yield return new WaitForSeconds(teleportOutTime);
-			player.transform.parent.position = (Vector3)player.dir + player.transform.parent.position;
+			player.transform.parent.position = destination;
 
 			/** Teleport In */
 			hero.anim.Play(teleportInState);

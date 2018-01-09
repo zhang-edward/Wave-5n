@@ -5,13 +5,13 @@ public class NinjaFanStar : HeroPowerUp
 {
 	private NinjaHero ninja;
 	private float activateChance;
-	private bool activated;
+	//private bool activated;
 
 	public override void Activate (PlayerHero hero)
 	{
 		base.Activate (hero);
 		ninja = (NinjaHero)hero;
-		ninja.OnNinjaThrewStar += ActivateFanStar;
+		//ninja.OnNinjaThrewStar += ActivateFanStar;
 		activateChance = 0.1f;
 	}
 
@@ -19,7 +19,7 @@ public class NinjaFanStar : HeroPowerUp
 	{
 		base.Deactivate ();
 		activateChance = 0;
-		ninja.OnNinjaThrewStar -= ActivateFanStar;
+		//ninja.OnNinjaThrewStar -= ActivateFanStar;
 	}
 
 	public override void Stack ()
@@ -28,7 +28,7 @@ public class NinjaFanStar : HeroPowerUp
 		activateChance += 0.08f;
 	}
 
-	public void ActivateFanStar()
+	/*public void ActivateFanStar()
 	{
 		if (activated)
 		{
@@ -40,6 +40,6 @@ public class NinjaFanStar : HeroPowerUp
 			ninja.OnNinjaThrewStar += ninja.ShootNinjaStarFanPattern;
 			activated = true;
 		}
-	}
+	}*/
 }
 

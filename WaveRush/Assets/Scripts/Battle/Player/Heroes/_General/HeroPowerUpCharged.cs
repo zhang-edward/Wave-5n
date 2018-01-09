@@ -4,10 +4,7 @@ using UnityEngine;
 
 public abstract class HeroPowerUpCharged : HeroPowerUp 
 {
-	private const float TAPHOLD_BUFFER = 0.3f;
-
-	protected float  chargeSpeed = 0.5f;
-	protected string chargeState = "Default";
+	public string chargeState;
 
 	public IndicatorEffect chargeEffect;
 	public IndicatorEffect indicatorEffect;
@@ -15,63 +12,48 @@ public abstract class HeroPowerUpCharged : HeroPowerUp
 	public delegate void OnActivated();
 	public event OnActivated onActivated;
 
-	private float chargeBuffer;		// The player should hold tap for it this ability to begin charging.
-									// Prevents tiny incremental charges when the player inputs regular taps
-
 
 	public override void Activate(PlayerHero hero)
 	{
 		base.Activate(hero);
-		// Assign new inputs
-		playerHero.onTapHoldDown += ChargePowerUp;
-		playerHero.onDragBegan += StopCharging;
-		playerHero.onTapHoldRelease += StopCharging;
+		hero.onTapHoldDown += Animate;
+		hero.onTapHoldRelease += Activate;
 		percentActivated = 0;
 	}
 
-	public override void Deactivate()
+	protected void ChargePowerUp(float percent)
 	{
-		base.Deactivate();
-		playerHero.onTapHoldDown -= ChargePowerUp;
-		playerHero.onDragBegan -= StopCharging;
-		playerHero.onTapHoldRelease -= StopCharging;
-	}
-
-	private void ChargePowerUp()
-	{
-		// Charge buffer
-		/*if (chargeBuffer < TAPHOLD_BUFFER)
-		{
-			chargeBuffer += Time.deltaTime;
-			return;
-		}*/
 		// If the ability is already activated, we don't have to charge
-		if (percentActivated >= 1.0f)
+		if (percentActivated >= 1)
 			return;
 		// Charge
-		percentActivated += chargeSpeed * Time.deltaTime;
-		// Animation and Effects
-		playerHero.player.animPlayer.willResetToDefault = false;
-		if (!playerHero.player.animPlayer.IsPlayingAnimation(chargeState))
-			playerHero.anim.Play(chargeState);
-		chargeEffect.gameObject.SetActive(true);
+		percentActivated += percent;
 		// On completed charge
-		if (percentActivated >= 1.0f)
+		if (percentActivated >= 1)
 		{
 			percentActivated = 1f;
-			chargeEffect.AnimateOut();
 			indicatorEffect.gameObject.SetActive(true);
-			if (onActivated != null)
-				onActivated();
-			ActivateEffect();
 		}
 	}
 
-	private void StopCharging()
+	private void Animate()
 	{
-		chargeBuffer = 0;
-		playerHero.player.animPlayer.ResetToDefault();
-		chargeEffect.gameObject.SetActive(false);
+		if (percentActivated < 1)
+			return;
+		if (!playerHero.player.animPlayer.IsPlayingAnimation(chargeState))
+			playerHero.anim.Play(chargeState);
+		chargeEffect.gameObject.SetActive(true);
+	}
+
+	private void Activate()
+	{
+		if (percentActivated < 1)
+			return;
+		if (onActivated != null)
+			onActivated();
+		ActivateEffect();
+		chargeEffect.AnimateOut();
+		indicatorEffect.gameObject.SetActive(true);
 	}
 
 	protected void DeactivateEffect()

@@ -8,6 +8,8 @@
 		/** Set in Inspector */
 		public SimpleAnimation effect;
 
+		private TempObject lastPlayedEffect;
+
 		/** Properties */
 		protected enum RotationType
 		{
@@ -40,7 +42,7 @@
 			info.lifeTime = duration;
 			info.fadeOutTime = 0.1f;
 
-			EffectPooler.PlayEffect(effect, position, info);
+			lastPlayedEffect = EffectPooler.PlayEffect(effect, position, info);
 		}
 
 		protected Quaternion GetRotation()
@@ -73,6 +75,11 @@
 		public void SetPosition(Vector3 pos)
 		{
 			position = pos;
+		}
+
+		public TempObject GetLastPlayedEffect()
+		{
+			return lastPlayedEffect;
 		}
 	}
 }

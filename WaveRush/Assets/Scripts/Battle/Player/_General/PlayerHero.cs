@@ -123,7 +123,7 @@ public abstract class PlayerHero : MonoBehaviour {
 		player.dirIndicator.gameObject.SetActive(true);
 		float angle = Mathf.Atan2(player.dir.y, player.dir.x) * Mathf.Rad2Deg;
 		player.dirIndicator.rotation = Quaternion.Euler(0, 0, angle);
-		float dirIndicatorLength = Mathf.Min(Mathf.Pow(player.dir.magnitude, 1.5f) / 4f, 2);			// Max length is 2
+		float dirIndicatorLength = Mathf.Min(player.dir.magnitude, 2);			// Max length is 2
 		player.dirIndicator.localScale = new Vector3(dirIndicatorLength, 0.5f, 1);
 	}
 
@@ -202,8 +202,8 @@ public abstract class PlayerHero : MonoBehaviour {
 		player.input.enabled = true;
 		player.sr.color = Color.white;
 	}
-	protected abstract void ParryEffect();
 
+	protected abstract void ParryEffect();
 
 	public virtual void Init(EntityPhysics body, Player player, Pawn heroData)
 	{

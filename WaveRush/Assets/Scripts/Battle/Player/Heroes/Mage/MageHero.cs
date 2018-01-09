@@ -108,7 +108,7 @@ public class MageHero : PlayerHero {
 	private void ParryEnemy(Enemy e)
 	{
 		e.Disable(0);
-		DamageEnemy(e, Mathf.CeilToInt(damage * 0.05f));
+		DamageEnemy(e, Mathf.CeilToInt(damage * 0.1f));
 	}
 
 	private void ShootFireball()
