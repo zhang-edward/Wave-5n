@@ -177,6 +177,8 @@ public class KnightHero : PlayerHero {
 	{
 		if (OnKnightRushHitEnemy != null)
 			OnKnightRushHitEnemy(e);
+		e.Disable(0.2f);
+		e.body.AddImpulse(e.transform.position - transform.position);
 		HandleOnDamageEnemy(e);
 	}
 

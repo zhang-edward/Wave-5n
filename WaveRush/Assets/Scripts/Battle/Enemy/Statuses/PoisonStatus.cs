@@ -5,6 +5,7 @@ public class PoisonStatus : EnemyStatus
 {
 	public ParticleSystem particles;
 	public float poisonInterval = 1f;
+	public int damage = 1;
 	public AudioClip[] applySounds;
 
 	protected override IEnumerator Effect ()
@@ -31,7 +32,7 @@ public class PoisonStatus : EnemyStatus
 
 	private void Poison()
 	{
-		enemy.Damage (1);
+		enemy.Damage (damage);
 	}
 
 	void OnDisable()
@@ -43,7 +44,6 @@ public class PoisonStatus : EnemyStatus
 	{
 		CancelInvoke ();
 		timer = duration;
-		poisonInterval /= 1.1f;
 		// restart coroutine
 		StopAllCoroutines ();
 		StartCoroutine ("Effect");

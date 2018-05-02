@@ -1,10 +1,12 @@
 using UnityEngine;
 using Projectiles;
 using PlayerActions;
+using System.Collections;
 using System.Collections.Generic;
 
 public class NinjaHero : PlayerHero {
 
+	private const float PARRY_SMOKEBOMB_RADIUS = 2;
 	private const int SHADOW_BACKUP_ACTIONFRAME = 3;
 	private const int MAX_HIT = 5;
 
@@ -14,17 +16,22 @@ public class NinjaHero : PlayerHero {
 	public PA_AreaEffect 	  shadowBackupDetector;
 	public PA_EffectCallback  shadowBackup;
 
+	private Projectile lastShotNinjaStar;
 	private Vector3 lastDashOutPos;
 	private Vector3 lastDashInPos;
 	private Queue<Enemy> enemiesToAttack = new Queue<Enemy>();
 
 	private RuntimeObjectPooler projectilePool;
+	[Header("Prefabs")]
 	public GameObject projectilePrefab;
 	public GameObject specialProjectilePrefab;
+	public GameObject smokeBombPrefab;
 	// public int smokeBombRange = 2;
 	public float dashDistance = 4;
 
+	[Header("Effects")]
 	public SimpleAnimation hitEffect;
+	public SimpleAnimation smokeBombEffect;
 	public SimpleAnimation ninjaStarAnim;
 
 	[HideInInspector]
@@ -59,7 +66,7 @@ public class NinjaHero : PlayerHero {
 	{
 		ninjaStarAbility.Init	 (player, projectilePool);
 		dashAbility.Init		 (player);
-		shadowBackupDetector.Init(player, SpawnShadowBackup);
+		shadowBackupDetector.Init(player, StartSpawnShadowBackupRoutine);
 		shadowBackup.Init		 (player, SHADOW_BACKUP_ACTIONFRAME);
 
 		shadowBackup.onFrameReached += HandleShadowBackupFrameReached;
@@ -68,12 +75,27 @@ public class NinjaHero : PlayerHero {
 
 	protected override void ParryEffect()
 	{
-		cooldownTimers[0] = 0f;
-		cooldownTimers[1] = 0f;
-		body.Move(UtilMethods.DegreeToVector2(Random.Range(0, 360f)));
+		body.Move(UtilMethods.DegreeToVector2(Random.Range(0, 360f)) * 0.5f);
+		SmokeBomb(PARRY_SMOKEBOMB_RADIUS);
 	}
 
-	public void DashAttack()
+	public void SmokeBomb(float radius)
+	{
+		GameObject smokeBomb = Instantiate(smokeBombPrefab, transform.position, Quaternion.identity) as GameObject;
+		EffectPooler.PlayEffect(smokeBombEffect, transform.position, false, 0.2f);
+		smokeBomb.transform.SetParent(ObjectPooler.GetObjectPooler("Effect").transform);
+		smokeBomb.GetComponent<CircleCollider2D>().radius = radius;
+		smokeBomb.GetComponent<EnemyDetectionZone>().SetOnDetectEnemyCallback(StunEnemySmokeBomb);
+		// Particle Properties
+		ParticleSystem particleSystem = smokeBomb.GetComponent<ParticleSystem>();
+		ParticleSystem.ShapeModule shape = particleSystem.shape;
+		ParticleSystem.MinMaxCurve rateOverTime = particleSystem.emission.rateOverTime;
+		shape.radius = radius;
+		rateOverTime.constant = radius * (2 / 5f);
+
+	}
+
+	private void DashAttack()
 	{
 		if (!CheckIfCooledDownNotify(0, true, HandleDragRelease))
 			return;
@@ -88,7 +110,6 @@ public class NinjaHero : PlayerHero {
 		// Execute Ability
 		dashAbility.SetDestination(dest);
 		dashAbility.Execute();
-		//StartCoroutine(DashAttackRoutine ());
 	}
 
 	public override void SpecialAbility ()
@@ -96,17 +117,6 @@ public class NinjaHero : PlayerHero {
 		if (specialAbilityCharge < specialAbilityChargeCapacity || activatedSpecialAbility)
 			return;
 		dashAbility.OnTeleportIn += DetectShadowBackup;
-		// Sound
-		/*SoundManager.instance.PlayImportantSound(powerUpSound);
-		// Properties
-		activatedSpecialAbility = true;
-		projectilePool.SetPooledObject (specialProjectilePrefab);
-		cooldownMultipliers[1] *= 0.3f;
-
-		// Effects
-		CameraControl.instance.StartShake (0.3f, 0.05f, true, true);
-		CameraControl.instance.StartFlashColor (Color.white);
-		CameraControl.instance.SetOverlayColor (Color.red, 0.3f);*/
 		Invoke ("ResetSpecialAbility", 5.0f);
 	}
 
@@ -116,8 +126,14 @@ public class NinjaHero : PlayerHero {
 		shadowBackupDetector.Execute();
 	}
 
-	private void SpawnShadowBackup(Enemy e)
+	private void StartSpawnShadowBackupRoutine(Enemy e)
 	{
+		StartCoroutine(SpawnShadowBackup(e));
+	}
+
+	private IEnumerator SpawnShadowBackup(Enemy e)
+	{
+		yield return new WaitForSeconds(Random.Range(0, 1f));
 		enemiesToAttack.Enqueue(e);
 		float f = UtilMethods.RandSign();	// Which side the shadow attacks from
 		// Set action properties and execute
@@ -140,16 +156,6 @@ public class NinjaHero : PlayerHero {
 	private void ResetSpecialAbility()
 	{
 		dashAbility.OnTeleportIn -= shadowBackupDetector.Execute;
-		// Sound
-		/*SoundManager.instance.PlayImportantSound(powerDownSound);
-
-		specialAbilityCharge = 0;
-		activatedSpecialAbility = false;
-		projectilePool.SetPooledObject (projectilePrefab);
-		cooldownMultipliers[1] /= 0.3f;*/
-
-		//CameraControl.instance.StartFlashColor (Color.white);
-		//CameraControl.instance.SetOverlayColor (Color.clear, 0);
 	}
 
 	private void NinjaStar()
@@ -168,7 +174,9 @@ public class NinjaHero : PlayerHero {
 		ninjaStarAbility.Execute();
 
 		Projectile ninjaStar = ninjaStarAbility.GetProjectile();
-		ninjaStar.GetComponentInChildren<DamageAction>().damage = damage;
+		ninjaStar.GetComponentInChildren<DamageAction>().damage = Mathf.CeilToInt(damage * 1.5f);
+		ninjaStar.OnDamagedTarget += PoisonEnemy;
+		lastShotNinjaStar = ninjaStar;
 
 		// set direction
 		body.Move(dir);
@@ -178,62 +186,12 @@ public class NinjaHero : PlayerHero {
 			OnNinjaThrewStar();
 	}
 
-	// Special ability
-	/*public void ShootNinjaStarFanPattern()
-	{
-		Vector2 dir = player.dir.normalized;
-		float angle = Mathf.Atan2 (dir.y, dir.x) * Mathf.Rad2Deg;
-		float fanAngle1 = angle - 15;
-		float fanAngle2 = angle + 15;
-		InitNinjaStar (UtilMethods.DegreeToVector2 (fanAngle1));
-		InitNinjaStar (UtilMethods.DegreeToVector2 (fanAngle2));
-	}*/
-
 	public GameObject InitNinjaStar(Vector2 dir)
 	{
 		Projectile ninjaStar = projectilePool.GetPooledObject ().GetComponent<Projectile>();
 		ninjaStar.Init (transform.position, dir);
 		return ninjaStar.gameObject;
 	}
-
-	public void ResetAbility()
-	{
-		body.moveSpeed = player.DEFAULT_SPEED;
-	}
-
-	/*private IEnumerator DashAttackRoutine()
-	{
-		int k = player.invincibility.Add(999);
-		player.input.isInputEnabled = false;
-		// Sound
-		SoundManager.instance.RandomizeSFX(dashOutSound);
-		// Animation
-		anim.Play ("DashOut");
-		yield return new WaitForEndOfFrame ();		// wait for the animation state to update before continuing
-		while (anim.player.isPlaying)
-			yield return null;
-
-		// Animation
-		anim.Play("DashIn");
-		// Sound
-		SoundManager.instance.RandomizeSFX(slashSound);
-		// (Animation plays automatically)
-		// Player properties
-		player.invincibility.RemoveTimer(k);
-		float distance = GetDashDistanceClamped (transform.position, player.dir.normalized);
-		Vector3 dest = (Vector3)player.dir.normalized * distance 
-			+ player.transform.parent.position;
-		//DashCircleCast (transform.position, dest);
-		player.transform.parent.position = dest;
-		body.Move (player.dir.normalized);		
-
-
-
-		yield return new WaitForEndOfFrame ();		// wait for the animation state to update before continuing
-		while (anim.player.isPlaying)
-			yield return null;
-		player.input.isInputEnabled = true;
-	}*/
 
 	/// <summary>
 	/// Do the circle cast attack with origin being the original player position and dest
@@ -266,7 +224,10 @@ public class NinjaHero : PlayerHero {
 			}
 		}
 		if (damagedEnemy)
-			SoundManager.instance.PlaySingle (hitSounds [Random.Range (0, hitSounds.Length)]);
+		{
+			SoundManager.instance.PlaySingle(hitSounds[Random.Range(0, hitSounds.Length)]);
+			cooldownTimers[1] -= 0.5f;
+		}
 	}
 
 	private float GetDashDistanceClamped(Vector3 start, Vector2 dir)
@@ -278,7 +239,7 @@ public class NinjaHero : PlayerHero {
 			{
 				//Debug.Log (hit);
 				Debug.DrawRay(start, dir * hit.distance, new Color(1, 1, 1), 5.0f);
-				return hit.distance;		// compensate for linecast starting from middle of body
+				return hit.distance - 0.5f;		// compensate for linecast starting from middle of body
 			}
 		}
 		Debug.DrawRay(start, dir * dashDistance, new Color(1, 1, 1), 5.0f);
@@ -295,5 +256,26 @@ public class NinjaHero : PlayerHero {
 			player.TriggerOnEnemyDamagedEvent(damage);
 			player.TriggerOnEnemyLastHitEvent (e);
 		}
+	}
+
+	private void StunEnemySmokeBomb(EnemyDetectionZone zone, Enemy e)
+	{
+		GameObject o = Instantiate(StatusEffectContainer.instance.GetStatus("Stun"));
+		StunStatus stun = o.GetComponent<StunStatus>();
+		stun.duration = 5.0f;
+		e.AddStatus(o);
+		e.body.AddImpulse(zone.transform.position - e.transform.position);
+	}
+
+	private void PoisonEnemy(IDamageable damageable, int amt)
+	{
+		Enemy e = (Enemy)damageable;
+		GameObject o = Instantiate(StatusEffectContainer.instance.GetStatus("Poison"));
+		PoisonStatus poison = o.GetComponent<PoisonStatus>();
+		poison.duration = 5f;
+		poison.damage = Mathf.CeilToInt(damage * 0.1f);
+		e.AddStatus(o);
+		lastShotNinjaStar.OnDamagedTarget -= PoisonEnemy;
+
 	}
 }

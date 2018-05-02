@@ -4,14 +4,15 @@ using System.Collections;
 [RequireComponent(typeof(CollisionDetector), typeof(CircleCollider2D))]
 public class EnemyDetectionZone : MonoBehaviour
 {
-	public CollisionDetector collision;
 	public float lifetime;
+	public delegate void OnDetectEnemyCallback(EnemyDetectionZone zone, Enemy e);
 
-	public delegate void OnDetectEnemyCallback(Enemy e);
-	public OnDetectEnemyCallback onDetectEnemy;
+	private CollisionDetector collision;
+	private OnDetectEnemyCallback onDetectEnemy;
 
 	void Start()
 	{
+		collision = GetComponent<CollisionDetector>();
 		collision.OnTriggerEnter += HandleCollideWithEnemy;
 		Destroy (gameObject, lifetime);
 	}
@@ -29,7 +30,7 @@ public class EnemyDetectionZone : MonoBehaviour
 			if (!e.invincible)
 			{
 				if (onDetectEnemy != null)
-					onDetectEnemy(e);
+					onDetectEnemy(this, e);
 			}
 		}
 	}

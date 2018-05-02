@@ -62,7 +62,7 @@ MonoBehaviour:
   powerUpManager: {fileID: 0}
   cooldownMultipliers: []
   heroType: 3
-  maxHealth: 16
+  maxHealth: 12
   maxComboTimer: 10
   anim:
     animations: []
@@ -72,8 +72,8 @@ MonoBehaviour:
   chargeMultiplier: 1
   specialAbilityChargeCapacity: 70
   cooldownTime:
-  - 1.2
-  - 0.8
+  - 1
+  - 6
   ninjaStarAbility:
     duration: 0.2
     shootState: Default
@@ -90,7 +90,7 @@ MonoBehaviour:
   shadowBackupDetector:
     duration: -1
     range: 4
-    maxHit: 5
+    maxHit: 3
     loseMomentum: 0
     areaAttackSound: {fileID: 0}
     areaAttackState: Default
@@ -108,11 +108,28 @@ MonoBehaviour:
   projectilePrefab: {fileID: 160830, guid: d5e3f55c8ca834b2f9068b26ada0c37d, type: 2}
   specialProjectilePrefab: {fileID: 192602, guid: 44e0f12c2143a4e2aa6760666fedeb68,
     type: 2}
+  smokeBombPrefab: {fileID: 1098571786953728, guid: 6395dc2fceb774a8a8d23f416331f77d,
+    type: 2}
   dashDistance: 3
   hitEffect:
     frames:
     - {fileID: 21300008, guid: 843b06d1a2541484da35331012753248, type: 3}
     - {fileID: 21300010, guid: 843b06d1a2541484da35331012753248, type: 3}
+    fps: 10
+  smokeBombEffect:
+    frames:
+    - {fileID: 21300000, guid: 71928e39eef524aab842a97f9075fe32, type: 3}
+    - {fileID: 21300002, guid: 71928e39eef524aab842a97f9075fe32, type: 3}
+    - {fileID: 21300004, guid: 71928e39eef524aab842a97f9075fe32, type: 3}
+    - {fileID: 21300006, guid: 71928e39eef524aab842a97f9075fe32, type: 3}
+    - {fileID: 21300008, guid: 71928e39eef524aab842a97f9075fe32, type: 3}
+    - {fileID: 21300010, guid: 71928e39eef524aab842a97f9075fe32, type: 3}
+    - {fileID: 21300012, guid: 71928e39eef524aab842a97f9075fe32, type: 3}
+    - {fileID: 21300014, guid: 71928e39eef524aab842a97f9075fe32, type: 3}
+    - {fileID: 21300016, guid: 71928e39eef524aab842a97f9075fe32, type: 3}
+    - {fileID: 21300018, guid: 71928e39eef524aab842a97f9075fe32, type: 3}
+    - {fileID: 21300020, guid: 71928e39eef524aab842a97f9075fe32, type: 3}
+    - {fileID: 21300022, guid: 71928e39eef524aab842a97f9075fe32, type: 3}
     fps: 10
   ninjaStarAnim:
     frames:

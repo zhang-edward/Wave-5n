@@ -50,6 +50,7 @@ public abstract class PlayerHero : MonoBehaviour {
 	// Misc
 	private Coroutine listenForParryRoutine;
 	private Coroutine queuedActionRoutine;
+	private bool canParry = true;
 
 	/** Delegates and events */
 	// Input Actions
@@ -79,7 +80,7 @@ public abstract class PlayerHero : MonoBehaviour {
 	/// <summary>
 	/// Performs an action on tap
 	/// </summary>
-	public virtual void HandleTap ()
+	public void HandleTap ()
 	{
 		if (onTap != null)
 			onTap();
@@ -88,7 +89,7 @@ public abstract class PlayerHero : MonoBehaviour {
 	/// <summary>
 	/// Performs an action on tap release
 	/// </summary>
-	public virtual void HandleTapHoldRelease()
+	public void HandleTapHoldRelease()
 	{
 		if (onTapHoldRelease != null)
 			onTapHoldRelease();
@@ -97,7 +98,7 @@ public abstract class PlayerHero : MonoBehaviour {
 	/// <summary>
 	/// Performs an action on screen held down
 	/// </summary>
-	public virtual void HandleHoldDown()
+	public void HandleHoldDown()
 	{
 		if (onTapHoldDown != null)
 			onTapHoldDown();
@@ -106,7 +107,7 @@ public abstract class PlayerHero : MonoBehaviour {
 	/// <summary>
 	/// Performs an action on drag
 	/// </summary>
-	public virtual void HandleDragRelease()
+	public void HandleDragRelease()
 	{
 		if (onDragRelease != null)
 			onDragRelease();
@@ -116,7 +117,7 @@ public abstract class PlayerHero : MonoBehaviour {
 	/// <summary>
 	/// Performs an action on dragHoldDown
 	/// </summary>
-	public virtual void HandleDragHold()
+	public void HandleDragHold()
 	{
 		if (onDragHold != null)
 			onDragHold();
@@ -130,13 +131,13 @@ public abstract class PlayerHero : MonoBehaviour {
 	/// <summary>
 	/// Performs an action on started drag
 	/// </summary>
-	public virtual void HandleDragBegan()
+	public void HandleDragBegan()
 	{
 		if (onDragBegan != null)
 			onDragBegan();
 	}
 
-	public virtual void HandleDragCancel()
+	public void HandleDragCancel()
 	{
 		player.dirIndicator.gameObject.SetActive(false);
 	}
@@ -168,6 +169,8 @@ public abstract class PlayerHero : MonoBehaviour {
 		// If the player was dragging
 		player.dirIndicator.gameObject.SetActive(false);
 
+		if (!canParry)
+			return;
 		player.OnPlayerTryHit += Parry;		// This is not inside the coroutine because of frame lag
 		listenForParryRoutine = StartCoroutine(ListenForParry());
 	}
@@ -175,32 +178,55 @@ public abstract class PlayerHero : MonoBehaviour {
 	/** Parry */
 	private IEnumerator ListenForParry()
 	{
+		// Effect
 		EffectPooler.PlayEffect(player.parryEffect, transform.position, true, 0.1f);
 		player.StrobeColor(Color.yellow, PARRY_TIME - 0.1f);
+		// Lose Momentum
 		body.Move(Vector2.zero);
+		// Player Properties
 		player.input.enabled = false;
+		canParry = false;
+		// Sound
 		sound.PlaySingle(player.parrySound);
+
 		yield return new WaitForSeconds(PARRY_TIME);
+
+		// Effect
 		player.FlashColor(Color.gray, PARRY_COOLDOWN_TIME);
+		// Player Properties
 		player.OnPlayerTryHit -= Parry;
+
 		yield return new WaitForSeconds(PARRY_COOLDOWN_TIME);
+
+		// Effect
 		player.sr.color = Color.white;
+		// Player Properties
 		player.input.enabled = true;
+		canParry = true;
 	}
 
 	private void Parry()
 	{
 		if (onParry != null)
 			onParry();
-		player.invincibility.Add(1.0f);
-		sound.PlaySingle(player.parrySuccessSound);
-		player.HitDisable(0.5f);
-		ParryEffect();
+		// Effect
 		CameraControl.instance.StartFlashColor(Color.white, 0.5f, 0, 0f, 0.5f);
-		StopCoroutine(listenForParryRoutine);
-		player.OnPlayerTryHit -= Parry;
+		// Player properties
+		player.invincibility.Add(1.0f);
 		player.input.enabled = true;
 		player.sr.color = Color.white;
+		player.OnPlayerTryHit -= Parry;
+		StopCoroutine(listenForParryRoutine);
+		// Sound
+		sound.PlaySingle(player.parrySuccessSound);
+		// Effect
+		ParryEffect();
+		Invoke("ParryCooldown", PARRY_COOLDOWN_TIME);
+	}
+
+	private void ParryCooldown()
+	{
+		canParry = true;
 	}
 
 	protected abstract void ParryEffect();

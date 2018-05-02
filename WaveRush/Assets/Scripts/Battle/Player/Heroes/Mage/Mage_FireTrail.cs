@@ -40,7 +40,7 @@ public class Mage_FireTrail : HeroPowerUp
 		mage.OnMageShotFireball -= CreateFireTrail;
 	}
 
-	private void BurnEnemy(Enemy e)
+	private void BurnEnemy(EnemyDetectionZone zone, Enemy e)
 	{
 		GameObject burnObj = Instantiate(StatusEffectContainer.instance.GetStatus("Burn"));
 		BurnStatus burn = burnObj.GetComponent<BurnStatus>();
