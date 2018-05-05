@@ -20,7 +20,7 @@ public class GUIManager : MonoBehaviour {
 	public GameObject gameOverUI;   	// game over panel
 	public ScoreReport scorePanel;  	// score report in game over panel
 	//public GameObject upgradeButton;    // button for upgrading the player character
-	public HeroesRescuedMenu heroesRescuedMenu;
+	//public HeroesRescuedMenu heroesRescuedMenu;
 
 	[Header("Data")]
 	public EnemyManager enemyManager;
@@ -69,7 +69,7 @@ public class GUIManager : MonoBehaviour {
 
 	public void InitializeHeroesRescuedMenu()
 	{
-		heroesRescuedMenu.Init(BattleSceneManager.instance.acquiredPawns);
+		//heroesRescuedMenu.Init(BattleSceneManager.instance.acquiredPawns);
 	}
 
 	private IEnumerator GameOverUIRoutine(ScoreReport.ScoreReportData data)

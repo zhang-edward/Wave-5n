@@ -24,7 +24,6 @@ public class BattleSceneManager : MonoBehaviour
 	public Button continueButton;
 	public GameObject pauseButton;
 
-	public List<Pawn> acquiredPawns { get; private set; }   // pawns acquired this session
 	public int moneyEarned { get; private set; } 			// money earned in this session
 	public int soulsEarned { get; private set; }            // souls earned in this session
 	public bool leaveOrContinueOptionOpen { get; private set; }
@@ -41,7 +40,7 @@ public class BattleSceneManager : MonoBehaviour
 			Destroy(this.gameObject);
 
 		// Do BattleSceneManager-specific initialization which has no external dependencies
-		acquiredPawns = new List<Pawn>();
+		//acquiredPawns = new List<Pawn>();
 		gm = GameManager.instance;
 		enemyManager.OnStageCompleted += () => { StartCoroutine(StageCompleteRoutine()); };
 		player.OnPlayerDied += UpdateData;
@@ -136,7 +135,7 @@ public class BattleSceneManager : MonoBehaviour
 		);
 
 		gui.gameOverUI.SetActive(true);
-		losePanel.Init(data, acquiredPawns, gm.GetStage(gm.selectedSeriesIndex, gm.selectedStageIndex).stageName);
+		//losePanel.Init(data, acquiredPawns, gm.GetStage(gm.selectedSeriesIndex, gm.selectedStageIndex).stageName);
 
 		if (enemyManager.isStageComplete)
 		{
@@ -148,11 +147,11 @@ public class BattleSceneManager : MonoBehaviour
 			}
 		}
 
-		gm.saveGame.pawnWallet.RemovePawn(gm.selectedPawn.id);
-		foreach(Pawn pawn in acquiredPawns)
-		{
-			gm.saveGame.pawnWallet.AddPawn(pawn);
-		}
+		//gm.saveGame.pawnWallet.RemovePawn(gm.selectedPawn.id);
+		//foreach(Pawn pawn in acquiredPawns)
+		//{
+		//	gm.saveGame.pawnWallet.AddPawn(pawn);
+		//}
 
 		int enemiesDefeated = enemyManager.enemiesKilled;
 		int wavesSurvived = enemyManager.waveNumber;
@@ -169,10 +168,10 @@ public class BattleSceneManager : MonoBehaviour
 				gm.selectedSeriesIndex == gm.saveGame.latestUnlockedSeriesIndex);
 	}
 
-	public void AddPawn(Pawn pawn)
-	{
-		acquiredPawns.Add(pawn);
-	}
+	//public void AddPawn(Pawn pawn)
+	//{
+	//	acquiredPawns.Add(pawn);
+	//}
 
 	public void AddMoney(int amt)
 	{

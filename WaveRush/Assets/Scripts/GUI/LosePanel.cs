@@ -11,14 +11,14 @@ public class LosePanel : MonoBehaviour
 
 	public ScrollViewSnap scrollView;
 	public ScoreReport scoreReport;
-	public HeroesRescuedMenu heroesRescuedMenu;
+	//public HeroesRescuedMenu heroesRescuedMenu;
 
-	private List<Pawn> acquiredPawns;
+	//private List<Pawn> acquiredPawns;
 	private ScoreReport.ScoreReportData scoreReportData;
 
 	public void Init(ScoreReport.ScoreReportData scoreReportData, List<Pawn> acquiredPawns, string stageName) {
 		this.scoreReportData = scoreReportData;
-		this.acquiredPawns = acquiredPawns;
+		//this.acquiredPawns = acquiredPawns;
 
 		stageNameText.text = stageName;
 		InitScoreReportView();
@@ -26,7 +26,7 @@ public class LosePanel : MonoBehaviour
 
 	void InitHeroesRescuedView() {
 		scrollView.ScrollRight();
-		heroesRescuedMenu.Init(acquiredPawns);
+		//heroesRescuedMenu.Init(acquiredPawns);
 		proceedButton.onClick.RemoveAllListeners();
 		proceedButton.onClick.AddListener(GoToMenuScene);
 	}
@@ -45,13 +45,13 @@ public class LosePanel : MonoBehaviour
 		yield return new WaitForSeconds(1.5f);
 		scoreReport.ReportScore(scoreReportData);
 		// If we don't have any heroes acquired
-		if (acquiredPawns.Count <= 0) {
-			proceedButton.onClick.AddListener(GoToMenuScene);
-		}
-		// Otherwise, show the heroes rescued menu
-		else {
+		//if (acquiredPawns.Count <= 0) {
+		//	proceedButton.onClick.AddListener(GoToMenuScene);
+		//}
+		//// Otherwise, show the heroes rescued menu
+		//else {
 			proceedButton.onClick.AddListener(InitHeroesRescuedView);
-		}
+		//}
 	}
 
 	private void GoToMenuScene()

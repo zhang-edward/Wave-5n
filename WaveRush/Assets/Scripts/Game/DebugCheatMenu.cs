@@ -51,15 +51,15 @@ public class DebugCheatMenu : MonoBehaviour
 		SaveLoad.Save();
 	}
 
-	public void AddNewPawn(string level)
-	{
-		int numHeroTypes = Enum.GetNames(typeof(HeroType)).Length;
-		//HeroType type = (HeroType)Enum.GetValues(typeof(HeroType)).GetValue(UnityEngine.Random.Range(1, numHeroTypes));
-		Pawn pawn = new Pawn(HeroType.Knight);
-		pawn.level = Convert.ToInt32(level);
-		GameManager.instance.saveGame.pawnWallet.AddPawn(pawn);
-		SaveLoad.Save();
-	}
+	//public void AddNewPawn(string level)
+	//{
+	//	int numHeroTypes = Enum.GetNames(typeof(HeroType)).Length;
+	//	//HeroType type = (HeroType)Enum.GetValues(typeof(HeroType)).GetValue(UnityEngine.Random.Range(1, numHeroTypes));
+	//	Pawn pawn = new Pawn(HeroType.Knight);
+	//	pawn.level = Convert.ToInt32(level);
+	//	GameManager.instance.saveGame.pawnWallet.AddPawn(pawn);
+	//	SaveLoad.Save();
+	//}
 
 	public void ClearSaveData()
 	{
@@ -104,6 +104,6 @@ public class DebugCheatMenu : MonoBehaviour
 
 	public void ResetTutorials()
 	{
-		MainMenuSceneManager.instance.tutorialDialogueManager.ResetTutorials();
+		//MainMenuSceneManager.instance.tutorialDialogueManager.ResetTutorials();
 	}
 }

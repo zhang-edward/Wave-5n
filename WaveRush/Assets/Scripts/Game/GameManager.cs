@@ -12,8 +12,8 @@ public class GameManager : MonoBehaviour {
 	public const float LOADING_SCREEN_SPEED = 8; 
 	public static GameManager instance;
 
-	[Header("Realtime Timer")]
-	public RealtimeTimerCounter timerCounter;
+	//[Header("Realtime Timer")]
+	//public RealtimeTimerCounter timerCounter;
 	[Header("Quest Manager")]
 	public QuestManager questManager;
 	[Header("Save Game")]
@@ -42,7 +42,6 @@ public class GameManager : MonoBehaviour {
 	public SaveStateUpdate OnHasViewedDictionaryUpdated;
 
 
-
 	void Awake()
 	{
 		if (instance == null)
@@ -56,35 +55,35 @@ public class GameManager : MonoBehaviour {
 
 		//print("GameManager awake");
 		SaveLoad.Load ();
-		InitPawnTimers();
+		//InitPawnTimers();
 		questManager.Init();
 		loadingOverlay.gameObject.SetActive(false);
 	}
 
-	public void InitPawnTimers()
-	{
-		foreach (Pawn pawn in saveGame.pawnWallet.pawns)
-		{
-			if (pawn != null && pawn.unlockTime > 0)
-			{
-				timerCounter.SetTimer(pawn.GetTimerID(), pawn.unlockTime);
-			}
-		}
-		foreach (Pawn pawn in saveGame.pawnWallet.extraPawns)
-		{
-			if (pawn != null && pawn.unlockTime > 0)
-			{
-				timerCounter.SetTimer(pawn.GetTimerID(), pawn.unlockTime);
-			}
-		}
-		timerCounter.UpdateTimersSinceLastClosed();
-	}
+	//public void InitPawnTimers()
+	//{
+	//	foreach (Pawn pawn in saveGame.pawnWallet.pawns)
+	//	{
+	//		if (pawn != null && pawn.unlockTime > 0)
+	//		{
+	//			timerCounter.SetTimer(pawn.GetTimerID(), pawn.unlockTime);
+	//		}
+	//	}
+	//	foreach (Pawn pawn in saveGame.pawnWallet.extraPawns)
+	//	{
+	//		if (pawn != null && pawn.unlockTime > 0)
+	//		{
+	//			timerCounter.SetTimer(pawn.GetTimerID(), pawn.unlockTime);
+	//		}
+	//	}
+	//	timerCounter.UpdateTimersSinceLastClosed();
+	//}
 
-	public void AddPawnTimer(int id)
-	{
-		Pawn pawn = saveGame.pawnWallet.GetPawn(id);
-		timerCounter.SetTimer(pawn.GetTimerID(), pawn.unlockTime);
-	}
+	//public void AddPawnTimer(int id)
+	//{
+	//	Pawn pawn = saveGame.pawnWallet.GetPawn(id);
+	//	timerCounter.SetTimer(pawn.GetTimerID(), pawn.unlockTime);
+	//}
 
 	void Start()
 	{
@@ -114,39 +113,39 @@ public class GameManager : MonoBehaviour {
 			PlayerPrefs.SetString(RealtimeTimerCounter.LAST_CLOSED_KEY, System.DateTime.Now.ToString());
 			if (OnAppClosed != null)
 				OnAppClosed();
-			SavePawnTimers();
+			//SavePawnTimers();
 		}
 		else
 		{
 			//print("Application Unpaused");
 			if (OnAppLoaded != null)
 				OnAppLoaded();
-			timerCounter.UpdateTimersSinceLastClosed();
+			//timerCounter.UpdateTimersSinceLastClosed();
 			if (OnTimersUpdated != null)
 				OnTimersUpdated();
 		}
 	}
 
-	private void SavePawnTimers()
-	{
-		foreach (Pawn pawn in saveGame.pawnWallet.pawns)
-		{
-			if (pawn != null && pawn.unlockTime > 0)
-			{
-				RealtimeTimer timer = timerCounter.GetTimer(pawn.GetTimerID());
-				pawn.unlockTime = timer.time;
-			}
-		}
-		foreach (Pawn pawn in saveGame.pawnWallet.extraPawns)
-		{
-			if (pawn != null && pawn.unlockTime > 0)
-			{
-				RealtimeTimer timer = timerCounter.GetTimer(pawn.GetTimerID());
-				pawn.unlockTime = timer.time;
-			}
-		}
-		SaveLoad.Save();
-	}
+	//private void SavePawnTimers()
+	//{
+	//	foreach (Pawn pawn in saveGame.pawnWallet.pawns)
+	//	{
+	//		if (pawn != null && pawn.unlockTime > 0)
+	//		{
+	//			RealtimeTimer timer = timerCounter.GetTimer(pawn.GetTimerID());
+	//			pawn.unlockTime = timer.time;
+	//		}
+	//	}
+	//	foreach (Pawn pawn in saveGame.pawnWallet.extraPawns)
+	//	{
+	//		if (pawn != null && pawn.unlockTime > 0)
+	//		{
+	//			RealtimeTimer timer = timerCounter.GetTimer(pawn.GetTimerID());
+	//			pawn.unlockTime = timer.time;
+	//		}
+	//	}
+	//	SaveLoad.Save();
+	//}
 
 	private void OnApplicationQuit()
 	{
@@ -154,7 +153,7 @@ public class GameManager : MonoBehaviour {
 		print("Application Quit");
 		if (OnAppClosed != null)
 			OnAppClosed();
-		SavePawnTimers();
+		//SavePawnTimers();
 		SaveLoad.Save();
 	}
 

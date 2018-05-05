@@ -9,7 +9,6 @@ public class SaveGame
 	public const string TUTORIAL_COMPLETE_KEY = "TutorialComplete";
 
 	public Dictionary<string, bool> hasPlayerViewedDict { get; private set; }
-	public PawnWallet pawnWallet;
 
 	public int latestUnlockedSeriesIndex;   // the number of series unlocked in the regular collection (main storyline)
 	public int latestUnlockedStageIndex;	// the number of stages unlocked in the current latest series
@@ -24,7 +23,6 @@ public class SaveGame
 	public SaveGame()
 	{
 		// Initialize variables
-		pawnWallet = new PawnWallet();
 		hasPlayerViewedDict = new Dictionary<string, bool>();
 		timers = new Dictionary<string, float>();
 		wallet = new Wallet();

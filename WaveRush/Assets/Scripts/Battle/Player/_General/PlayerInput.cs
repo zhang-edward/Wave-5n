@@ -13,7 +13,7 @@ public class PlayerInput : MonoBehaviour
 	public TouchInputHandler touchInputHandler;
 	//private Vector3 calibratedAccelerometer;
 	//private Vector3 accel;
-	public float tiltSensitivity = 10f;
+	//public float tiltSensitivity = 10f;
 
 	void Start()
 	{
@@ -25,7 +25,6 @@ public class PlayerInput : MonoBehaviour
 		touchInputHandler.OnTap += HandleTap;
 		touchInputHandler.OnTapHold += HandleTapHold;
 		touchInputHandler.OnTapHoldRelease += HandleTapHoldRelease;
-
 		touchInputHandler.MultiTouch += player.hero.HandleMultiTouch;
 		touchInputHandler.OnDragCancel += player.hero.HandleDragCancel;
 	}
@@ -58,10 +57,11 @@ public class PlayerInput : MonoBehaviour
 	{
 		if (EventSystem.current.IsPointerOverGameObject())
 			return;
+		Vector3 mousePosition = Camera.main.ScreenToViewportPoint(Input.mousePosition) * 4;
 		if (Input.GetMouseButtonDown(0))
 		{
-			pointerStartPos = Input.mousePosition;
-			touchInputHandler.HandleTouchBegan(Camera.main.ScreenToViewportPoint(pointerStartPos * 3f));
+			pointerStartPos = mousePosition;
+			touchInputHandler.HandleTouchBegan(pointerStartPos);
 		}
 		if (Input.GetMouseButton(0))
 		{
@@ -69,11 +69,10 @@ public class PlayerInput : MonoBehaviour
 			Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 			player.dir = ((Vector2)(mousePos - transform.position));
 			player.hero.HandleHoldDown();*/
-			Vector2 curPointerPos = Input.mousePosition * 3f;
-			if (Vector2.Distance(pointerStartPos, curPointerPos) > 0.05f)
-				touchInputHandler.HandleTouchMoved(Camera.main.ScreenToViewportPoint(curPointerPos));
+			if (Vector2.Distance(pointerStartPos, mousePosition) > 0.05f)
+				touchInputHandler.HandleTouchMoved(mousePosition);
 			else
-				touchInputHandler.HandleTouchHeld(Camera.main.ScreenToViewportPoint(curPointerPos));
+				touchInputHandler.HandleTouchHeld(mousePosition);
 		}
 		if (Input.GetMouseButtonUp(0))
 		{
@@ -81,7 +80,7 @@ public class PlayerInput : MonoBehaviour
 				player.hero.HandleTap();
 			player.hero.HandleTapRelease();
 			timeInputHeldDown = 0;*/
-			touchInputHandler.HandleTouchEnded(Camera.main.ScreenToViewportPoint(Input.mousePosition * 3f));
+			touchInputHandler.HandleTouchEnded(mousePosition);
 		}
 		/*if (Input.GetMouseButton(1))
 		{
@@ -98,6 +97,7 @@ public class PlayerInput : MonoBehaviour
 			player.hero.HandleMultiTouch();
 		}
 	}
+
 	private void HandleDragBegan(Vector3 dir)
 	{
 		player.dir = dir;

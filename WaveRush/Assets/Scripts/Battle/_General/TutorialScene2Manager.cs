@@ -181,7 +181,7 @@ public class TutorialScene2Manager : MonoBehaviour
 			Pawn pawn = new Pawn(HeroType.Knight);
 			pawn.level = 0;
 			acquiredPawns.Add(pawn);
-			gm.saveGame.pawnWallet.AddPawn(pawn);
+			//gm.saveGame.pawnWallet.AddPawn(pawn);
 		}
 		PlayerPrefs.SetInt(SaveGame.TUTORIAL_COMPLETE_KEY, 1);
 		GameManager.instance.GoToScene("MainMenu", 0.1f);

@@ -39,16 +39,16 @@ public class TouchInputHandler : MonoBehaviour {
 			switch (touch.phase)
 			{
 				case (TouchPhase.Began):
-					HandleTouchBegan(Camera.main.ScreenToWorldPoint(touch.position));
+					HandleTouchBegan(Camera.main.ScreenToViewportPoint(touch.position * 4));
 					break;
 				case (TouchPhase.Moved):
-					HandleTouchMoved(Camera.main.ScreenToWorldPoint(touch.position));
+					HandleTouchMoved(Camera.main.ScreenToViewportPoint(touch.position * 4));
 					break;
 				case (TouchPhase.Stationary):
-					HandleTouchHeld(Camera.main.ScreenToWorldPoint(touch.position));
+					HandleTouchHeld(Camera.main.ScreenToViewportPoint(touch.position * 4));
 					break;
 				case (TouchPhase.Ended):
-					HandleTouchEnded(Camera.main.ScreenToWorldPoint(touch.position));
+					HandleTouchEnded(Camera.main.ScreenToViewportPoint(touch.position * 4));
 					break;
 			}
 		}
@@ -76,7 +76,10 @@ public class TouchInputHandler : MonoBehaviour {
 				OnDragMove(touchDir);
 		}
 		else if (isDragging)
+		{
+			isDragging = false;
 			OnDragCancel();
+		}
 	}
 
 	public void HandleTouchHeld(Vector2 position)
@@ -96,9 +99,9 @@ public class TouchInputHandler : MonoBehaviour {
 		else if (!isDragging)
 		{
 			if (touchTime > maxTapTime)
-				OnTapHoldRelease(position);
+				OnTapHoldRelease(Camera.main.ViewportToWorldPoint(position / 4));
 			else
-				OnTap(position);
+				OnTap(Camera.main.ViewportToWorldPoint(position / 4));
 		}
 
 		isDragging = false;
