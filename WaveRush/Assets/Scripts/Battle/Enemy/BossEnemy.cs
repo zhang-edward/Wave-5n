@@ -106,12 +106,8 @@ public class BossEnemy : Enemy
 
 	private static int SoulsFormula(int level)
 	{
-		if (level < Pawn.T2_MIN_LEVEL)
-			return 1;
-		else if (level < Pawn.T3_MIN_LEVEL)
-			return Random.Range(1, 3);
-		else
-			return Random.Range(2, 4);
+		int ans = Mathf.CeilToInt(level * 1.5f);
+		return Random.Range(ans - 1, ans + 1);
 	}
 }
 

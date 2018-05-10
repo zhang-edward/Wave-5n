@@ -28,6 +28,8 @@ public class BattleSceneManager : MonoBehaviour
 	public int soulsEarned { get; private set; }            // souls earned in this session
 	public bool leaveOrContinueOptionOpen { get; private set; }
 
+	private int pawnId;
+
 	public delegate void BattleSceneEvent();
 	public BattleSceneEvent OnStageCompleted;
 
@@ -63,6 +65,7 @@ public class BattleSceneManager : MonoBehaviour
 		// Get data from GameManager
 		Pawn pawn = gm.selectedPawn;
 		StageData stage = gm.GetStage(gm.selectedSeriesIndex, gm.selectedStageIndex);
+		pawnId = pawn.id;
 
 		// Initialize components
 		map.chosenMap = stage.mapType;
@@ -128,9 +131,9 @@ public class BattleSceneManager : MonoBehaviour
 			enemiesDefeated: 	enemyManager.enemiesKilled,
 			wavesSurvived: 		Mathf.Max(enemyManager.waveNumber - 1, 0),
 			maxCombo: 			player.hero.maxCombo,
-			money: 				gm.wallet.money,
+			money: 				gm.save.money,
 			moneyEarned: 		moneyEarned,
-			souls: 				gm.wallet.souls,
+			souls: 				gm.save.souls,
 			soulsEarned:		soulsEarned
 		);
 
@@ -146,6 +149,7 @@ public class BattleSceneManager : MonoBehaviour
 				gm.UnlockNextStage();
 			}
 		}
+		gm.save.AddExperience(pawnId, 10);
 
 		//gm.saveGame.pawnWallet.RemovePawn(gm.selectedPawn.id);
 		//foreach(Pawn pawn in acquiredPawns)
@@ -157,15 +161,15 @@ public class BattleSceneManager : MonoBehaviour
 		int wavesSurvived = enemyManager.waveNumber;
 		int maxCombo = player.hero.maxCombo;
 
-		gm.wallet.AddMoney(moneyEarned);
-		gm.wallet.AddSouls(soulsEarned);
+		gm.save.AddMoney(moneyEarned);
+		gm.save.AddSouls(soulsEarned);
 		gm.UpdateScores(enemiesDefeated, wavesSurvived, maxCombo);
 	}
 
 	private bool IsPlayerOnLatestStage()
 	{
-		return (gm.selectedStageIndex == gm.saveGame.latestUnlockedStageIndex &&
-				gm.selectedSeriesIndex == gm.saveGame.latestUnlockedSeriesIndex);
+		return (gm.selectedStageIndex  == gm.save.LatestStageIndex &&
+		        gm.selectedSeriesIndex == gm.save.LatestSeriesIndex);
 	}
 
 	//public void AddPawn(Pawn pawn)
@@ -183,5 +187,10 @@ public class BattleSceneManager : MonoBehaviour
 	{
 		soulsEarned += amt;
 		gui.UpdateSouls(soulsEarned);
+	}
+
+	// DEBUG
+	public void DebugCompleteStage() {
+		StartCoroutine(StageCompleteRoutine());
 	}
 }

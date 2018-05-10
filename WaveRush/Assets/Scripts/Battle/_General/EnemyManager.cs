@@ -200,7 +200,7 @@ public class EnemyManager : MonoBehaviour {
 
 	public void SpawnBoss()
 	{
-		SpawnTrappedHeroes();
+		//SpawnTrappedHeroes();
 		hasBossSpawned = true;
 		bossSpawn.PlayAnimation ();
 		GameObject o = Instantiate (stageData.bossPrefabs [Random.Range (0, stageData.bossPrefabs.Count)]);

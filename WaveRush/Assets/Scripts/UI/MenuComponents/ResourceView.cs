@@ -5,7 +5,7 @@ using System.Collections;
 
 public class ResourceView : MonoBehaviour
 {
-	private Wallet wallet;
+	private SaveModifier save;
 	public IncrementingText text;
 	public enum ResourceType {
 		Money,
@@ -15,19 +15,19 @@ public class ResourceView : MonoBehaviour
 
 	void Start()
 	{
-		wallet = GameManager.instance.wallet;
+		save = GameManager.instance.save;
 		if (resourceType == ResourceType.Money)
-			text.GetComponent<TMP_Text>().text = wallet.money.ToString();
+			text.GetComponent<TMP_Text>().text = save.money.ToString();
 		if (resourceType == ResourceType.Souls)
-			text.GetComponent<TMP_Text>().text = wallet.souls.ToString();
+			text.GetComponent<TMP_Text>().text = save.souls.ToString();
 
 	}
 
 	void Update()
 	{
 		if (resourceType == ResourceType.Money)
-			text.DisplayNumber(wallet.money);
+			text.DisplayNumber(save.money);
 		if (resourceType == ResourceType.Souls)
-			text.DisplayNumber(wallet.souls);
+			text.DisplayNumber(save.souls);
 	}
 }

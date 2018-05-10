@@ -32,9 +32,9 @@ public class GUIManager : MonoBehaviour {
 		enemyManager.OnEnemyWaveCompleted += OnEnemyWaveCompletedText;
 		enemyManager.OnStageCompleted += OnStageCompletedText;
 		enemyManager.OnQueueBossMessage += ShowBossIncomingText;
-		Wallet wallet = GameManager.instance.wallet;
-		moneyText.text = wallet.money.ToString();
-		soulsText.text = wallet.souls.ToString();
+		SaveModifier save = GameManager.instance.save;
+		moneyText.text = save.money.ToString();
+		soulsText.text = save.souls.ToString();
 	}
 
 	void OnDisabled()

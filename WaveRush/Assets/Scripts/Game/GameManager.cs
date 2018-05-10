@@ -7,17 +7,16 @@ using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour {
 
-	public const string BattleSceneName = "Game";
-
-	public const float LOADING_SCREEN_SPEED = 8; 
+	public const string BATTLE_SCREEN_NAME = "Game";
+	public const float LOADING_SCREEN_SPEED = 8;
 	public static GameManager instance;
 
-	//[Header("Realtime Timer")]
-	//public RealtimeTimerCounter timerCounter;
+	/** Public Fields */
 	[Header("Quest Manager")]
 	public QuestManager questManager;
-	[Header("Save Game")]
-	public SaveGame saveGame;
+	//[Header("Save Game")]
+	private SaveGame sg;
+	public SaveModifier save;	// Use this to modify the save game. Allows events to be handled properly
 	[Header("Selected Items for Battle Scene")]
 	public Pawn selectedPawn;
 	public int selectedSeriesIndex;
@@ -25,7 +24,6 @@ public class GameManager : MonoBehaviour {
 	[Header("Data")]
 	public StageCollectionData regularStages;
 	public ScoreManager scoreManager;
-	public Wallet wallet;
 	[Header("Persistent UI")]
 	public Image loadingOverlay;
 	public GameObject debugPanel;
@@ -33,13 +31,12 @@ public class GameManager : MonoBehaviour {
 	public MessageText alertText;
 	public Text fpsDisplay;
 
+	/** Delegates and Events */
 	public delegate void GameStateUpdate();
 	public GameStateUpdate OnSceneLoaded;
 	public GameStateUpdate OnAppLoaded;
 	public GameStateUpdate OnAppClosed;
 	public GameStateUpdate OnTimersUpdated;
-	public delegate void SaveStateUpdate();
-	public SaveStateUpdate OnHasViewedDictionaryUpdated;
 
 
 	void Awake()
@@ -53,37 +50,12 @@ public class GameManager : MonoBehaviour {
 		}
 		DontDestroyOnLoad (this);
 
-		//print("GameManager awake");
-		SaveLoad.Load ();
+		SaveLoad.Load (out sg);
+		save = new SaveModifier(sg);
 		//InitPawnTimers();
 		questManager.Init();
 		loadingOverlay.gameObject.SetActive(false);
 	}
-
-	//public void InitPawnTimers()
-	//{
-	//	foreach (Pawn pawn in saveGame.pawnWallet.pawns)
-	//	{
-	//		if (pawn != null && pawn.unlockTime > 0)
-	//		{
-	//			timerCounter.SetTimer(pawn.GetTimerID(), pawn.unlockTime);
-	//		}
-	//	}
-	//	foreach (Pawn pawn in saveGame.pawnWallet.extraPawns)
-	//	{
-	//		if (pawn != null && pawn.unlockTime > 0)
-	//		{
-	//			timerCounter.SetTimer(pawn.GetTimerID(), pawn.unlockTime);
-	//		}
-	//	}
-	//	timerCounter.UpdateTimersSinceLastClosed();
-	//}
-
-	//public void AddPawnTimer(int id)
-	//{
-	//	Pawn pawn = saveGame.pawnWallet.GetPawn(id);
-	//	timerCounter.SetTimer(pawn.GetTimerID(), pawn.unlockTime);
-	//}
 
 	void Start()
 	{
@@ -113,39 +85,16 @@ public class GameManager : MonoBehaviour {
 			PlayerPrefs.SetString(RealtimeTimerCounter.LAST_CLOSED_KEY, System.DateTime.Now.ToString());
 			if (OnAppClosed != null)
 				OnAppClosed();
-			//SavePawnTimers();
 		}
 		else
 		{
 			//print("Application Unpaused");
 			if (OnAppLoaded != null)
 				OnAppLoaded();
-			//timerCounter.UpdateTimersSinceLastClosed();
 			if (OnTimersUpdated != null)
 				OnTimersUpdated();
 		}
 	}
-
-	//private void SavePawnTimers()
-	//{
-	//	foreach (Pawn pawn in saveGame.pawnWallet.pawns)
-	//	{
-	//		if (pawn != null && pawn.unlockTime > 0)
-	//		{
-	//			RealtimeTimer timer = timerCounter.GetTimer(pawn.GetTimerID());
-	//			pawn.unlockTime = timer.time;
-	//		}
-	//	}
-	//	foreach (Pawn pawn in saveGame.pawnWallet.extraPawns)
-	//	{
-	//		if (pawn != null && pawn.unlockTime > 0)
-	//		{
-	//			RealtimeTimer timer = timerCounter.GetTimer(pawn.GetTimerID());
-	//			pawn.unlockTime = timer.time;
-	//		}
-	//	}
-	//	SaveLoad.Save();
-	//}
 
 	private void OnApplicationQuit()
 	{
@@ -154,7 +103,7 @@ public class GameManager : MonoBehaviour {
 		if (OnAppClosed != null)
 			OnAppClosed();
 		//SavePawnTimers();
-		SaveLoad.Save();
+		SaveLoad.Save(sg);
 	}
 
 	public void GoToScene(string sceneName, float fadeInSpeed = 1f)
@@ -187,7 +136,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	// ==========
-	// Stages and Series methods
+	/** Stages and Series methods */
 	// ==========
 
 	/// <summary>
@@ -204,23 +153,23 @@ public class GameManager : MonoBehaviour {
 		if (!GetLatestSeries().seriesName.Equals(seriesName))
 			return GetSeries(seriesName).stages.Length;
 		else
-			return saveGame.latestUnlockedStageIndex + 1;
+			return save.LatestStageIndex + 1;
 	}
 
 	public void UnlockNextStage()
 	{
-		if (saveGame.latestUnlockedStageIndex < regularStages.series[saveGame.latestUnlockedSeriesIndex].stages.Length - 1)
-			saveGame.latestUnlockedStageIndex++;
+		if (save.LatestStageIndex < regularStages.series[save.LatestSeriesIndex].stages.Length - 1)
+			sg.saveDict[SaveGame.LATEST_UNLOCKED_STAGE_INDEX_KEY]++;
 		else
 		{
-			saveGame.latestUnlockedSeriesIndex++;
-			saveGame.latestUnlockedStageIndex = 0;
+			sg.saveDict[SaveGame.LATEST_UNLOCKED_SERIES_INDEX_KEY]++;
+			sg.saveDict[SaveGame.LATEST_UNLOCKED_STAGE_INDEX_KEY] = 0;
 		}
 	}
 
 	public StageSeriesData GetLatestSeries()
 	{
-		return regularStages.series[saveGame.latestUnlockedSeriesIndex];
+		return regularStages.series[save.LatestSeriesIndex];
 	}
 
 	public bool IsSeriesUnlocked(string seriesName)
@@ -242,7 +191,7 @@ public class GameManager : MonoBehaviour {
 	private List<StageSeriesData> GetAllUnlockedSeries()
 	{
 		List<StageSeriesData> answer = new List<StageSeriesData>();
-		for (int i = 0; i <= saveGame.latestUnlockedSeriesIndex; i ++)
+		for (int i = 0; i <= save.LatestSeriesIndex; i ++)
 		{
 			answer.Add(regularStages.series[i]);
 		}
@@ -265,7 +214,7 @@ public class GameManager : MonoBehaviour {
 	{
 		HeroType type = selectedPawn.type;
 		scoreManager.SubmitScore(type, new ScoreManager.Score (enemiesKilled, wavesSurvived, maxCombo));
-		SaveLoad.Save ();
+		SaveLoad.Save(sg);
 	}
 
 	// ==========
@@ -308,44 +257,25 @@ public class GameManager : MonoBehaviour {
 
 	public void PrepareSaveFile()
 	{
-		saveGame.highScores = scoreManager.highScores;
-		saveGame.wallet = wallet;
+		sg.highScores = scoreManager.highScores;
 	}
 
 	public void LoadSaveFile()
 	{
-		scoreManager.highScores = saveGame.highScores;
-		wallet = saveGame.wallet;
+		scoreManager.highScores = sg.highScores;
 	}
 
 	public void DeleteSaveData()
 	{
-		saveGame = new SaveGame ();
+		sg = new SaveGame ();
+		int foo;
+		sg.pawnWallet.AddPawn(new Pawn(HeroType.Knight, HeroTier.tier1), out foo);
 		LoadSaveFile ();
-		SaveLoad.Save ();
+		SaveLoad.Save(sg);
 	}
 
-	/// <summary>
-	/// Sets the key in the viewed dictionary to the given value
-	/// </summary>
-	/// <param name="key">Key.</param>
-	/// <param name="val">value to set</param>
-	public void SetHasPlayerViewedKey(string key, bool val)
-	{
-//		print("Key: " + key);
-		if (!saveGame.hasPlayerViewedDict.ContainsKey(key))
-			saveGame.hasPlayerViewedDict.Add(key, val);
-		else
-			saveGame.hasPlayerViewedDict[key] = val;
-		// Event for NewFeatureIndicators to refresh their 
-		if (OnHasViewedDictionaryUpdated != null)
-			OnHasViewedDictionaryUpdated();
-	}
-
-	public void InitHasPlayerViewedKey(string key, bool val)
-	{
-		Assert.IsTrue(!saveGame.hasPlayerViewedDict.ContainsKey(key));
-		saveGame.hasPlayerViewedDict.Add(key, val);
+	public void Save() {
+		SaveLoad.Save(sg);
 	}
 
 	public void DisplayAlert(string message)
@@ -354,9 +284,7 @@ public class GameManager : MonoBehaviour {
 		alertText.Display(new MessageText.Message(message, 1, 0, 2f, 1f, Color.white));
 	}
 
-	// ==========
-	// Debug Text UI
-	// ==========
+	/** Debug Text UI */
 
 	public void DisplayMessage(string message)
 	{

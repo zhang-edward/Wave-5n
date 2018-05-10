@@ -21,7 +21,7 @@ public class DebugCheatMenu : MonoBehaviour
 
 	void UpdateDebugMenuOptions()
 	{
-		bool isBattleSceneOpen = SceneManager.GetActiveScene().name.Equals(GameManager.BattleSceneName) ||
+		bool isBattleSceneOpen = SceneManager.GetActiveScene().name.Equals(GameManager.BATTLE_SCREEN_NAME) ||
 		                                     SceneManager.GetActiveScene().name.Equals("Tutorial2");
 		menuSceneDebugOptions.SetActive(!isBattleSceneOpen);
 		battleSceneDebugOptions.SetActive(isBattleSceneOpen);
@@ -37,18 +37,18 @@ public class DebugCheatMenu : MonoBehaviour
 	// ==========
 	public void SetMoneyDebugString(string amt)
 	{
-		gm.wallet.SetMoneyDebug(Convert.ToInt32(amt));
+		gm.save.SetMoneyDebug(Convert.ToInt32(amt));
 	}
 
 	public void SetSoulsDebugString(string amt)
 	{
-		gm.wallet.SetSoulsDebug(Convert.ToInt32(amt));
+		gm.save.SetSoulsDebug(Convert.ToInt32(amt));
 	}
 
 	public void SaveGame()
 	{
 		GameManager.instance.PrepareSaveFile();
-		SaveLoad.Save();
+		GameManager.instance.Save();
 	}
 
 	//public void AddNewPawn(string level)
@@ -100,6 +100,11 @@ public class DebugCheatMenu : MonoBehaviour
 	public void AddPowerUp(string name)
 	{
 		player.hero.powerUpManager.AddPowerUp(name);
+	}
+
+	public void CompleteStage()
+	{
+		BattleSceneManager.instance.DebugCompleteStage();
 	}
 
 	public void ResetTutorials()
