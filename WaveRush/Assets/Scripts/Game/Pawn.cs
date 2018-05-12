@@ -13,11 +13,12 @@ public class Pawn
 
 	public HeroType type;		// the type of the hero
 	public int level;           // the level of the hero
+	private int maxExperience;	// the experience of the hero
 	public int id		  { get; private set; }
 	public int experience { get; private set; }
 	public int MaxExperience {
 		get {
-			return (int)Mathf.Sqrt(level * 64);
+			return maxExperience;
 		}
 	}
 	public int MaxLevel {
@@ -34,7 +35,6 @@ public class Pawn
 			}
 		}
 	}
-
 
 	/// <summary>
 	/// Gets the tier. 0 if T1, 1 if T2, 2 if T3.
@@ -54,6 +54,7 @@ public class Pawn
 		this.type = type;
 		this.tier = tier;
 		this.level = level;
+		maxExperience = (int)Mathf.Sqrt(level * 64);
 	}
 
 	public void SetID(int id) {
@@ -63,18 +64,22 @@ public class Pawn
 	/// <summary>
 	/// Increases the experience of the pawn
 	/// </summary>
-	/// <returns><c>true</c>, if the pawn gained a level, <c>false</c> otherwise.</returns>
+	/// <returns>How many levels the pawn gained</returns>
 	/// <param name="amt">Amt.</param>
-	public void AddExperience(int amt) {
+	public int AddExperience(int amt) {
 		Debug.Log("Added experience to " + this);
+		int numLevelsGained = 0;
 		if (level > MaxLevel)
-			return;
+			return 0;
 		experience += amt;
 		while (experience > MaxExperience) {
 			experience -= MaxExperience;
 			level++;
+			maxExperience = (int)Mathf.Sqrt(level * 64);
+			numLevelsGained++;
 			Debug.Log(this + " gained a level");
 		}
+		return numLevelsGained;
 	}
 
 	public override string ToString()
@@ -111,6 +116,10 @@ public class Pawn
 				throw new UnityEngine.Assertions.AssertionException("Pawn.cs", "Pawn is out of the level range?");
 		}
 		return answer;
+	}
+
+	public static int GetMaxExperience(int level) {
+		return (int)Mathf.Sqrt(level * 64);
 	}
 
 	//public string GetTimerID()

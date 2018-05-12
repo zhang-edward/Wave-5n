@@ -296,7 +296,7 @@ public abstract class PlayerHero : MonoBehaviour {
 		if (cooldownTimers[index] > 0)
 		{
 			// If we can buffer the action, buffer it
-			if (bufferAction && cooldownTimers [index]< 0.1f)
+			if (bufferAction && cooldownTimers [index]< 0.3f)
 			{
 				inputAction = input;
 				QueueAction (cooldownTimers [index]);

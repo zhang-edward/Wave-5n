@@ -14,7 +14,7 @@ public class PawnIconStandard : PawnIcon {
 	[SerializeField] private bool levelInShortFormat;
 	[SerializeField] private Image heroPortrait;
 	[Header("Optional UI Elements")]
-	[SerializeField] private Slider experienceSlider;
+	[SerializeField] protected Slider experienceSlider;
 	[SerializeField] private GameObject highlight;
 	[SerializeField] private Image heroPortraitBorder;
 	[SerializeField] private Image heroStars;
@@ -32,6 +32,7 @@ public class PawnIconStandard : PawnIcon {
 		// initialize button interactivity
 		if (button != null)
 			button.onClick.AddListener(() => OnClick());
+		experienceSlider.maxValue = 1f;
 	}
 
 	public override void Init(Pawn pawnData)
@@ -39,10 +40,7 @@ public class PawnIconStandard : PawnIcon {
 		base.Init(pawnData);
 		// initialize display items
 		heroNameText.text = pawnData.type.ToString();
-		if (levelInShortFormat)
-			heroLevelText.text = pawnData.level.ToString();
-		else
-			heroLevelText.text = "lv." + pawnData.level.ToString();
+		SetLevel(pawnData.level);
 
 		switch (pawnData.tier)
 		{
@@ -58,6 +56,13 @@ public class PawnIconStandard : PawnIcon {
 		}
 		InitOptionalElements();
 		initialized = true;
+	}
+
+	protected void SetLevel(int level) {
+		if (levelInShortFormat)
+			heroLevelText.text = level.ToString();
+		else
+			heroLevelText.text = "lv." + level.ToString();
 	}
 
 	void Update()
@@ -111,10 +116,8 @@ public class PawnIconStandard : PawnIcon {
 		}
 	}
 
-	private void SetPanels(Sprite s)
-	{
-		foreach (Image img in panels)
-		{
+	private void SetPanels(Sprite s) {
+		foreach (Image img in panels) {
 			img.sprite = s;
 		}
 	}

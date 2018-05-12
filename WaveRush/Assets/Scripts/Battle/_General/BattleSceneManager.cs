@@ -127,7 +127,10 @@ public class BattleSceneManager : MonoBehaviour
 
 	private void UpdateData()
 	{
-		ScoreReport.ScoreReportData data = new ScoreReport.ScoreReportData(
+		int startingLevel = gm.save.GetPawn(pawnId).level;
+		int numLevelUps = gm.save.AddExperience(pawnId, 50);
+
+		ScoreReport.ScoreReportData scoreData = new ScoreReport.ScoreReportData(
 			enemiesDefeated: 	enemyManager.enemiesKilled,
 			wavesSurvived: 		Mathf.Max(enemyManager.waveNumber - 1, 0),
 			maxCombo: 			player.hero.maxCombo,
@@ -136,20 +139,22 @@ public class BattleSceneManager : MonoBehaviour
 			souls: 				gm.save.souls,
 			soulsEarned:		soulsEarned
 		);
+		HeroExpMenu.HeroExpMenuData expData = new HeroExpMenu.HeroExpMenuData(
+			endingExperience: (float)gm.selectedPawn.experience / Pawn.GetMaxExperience(gm.save.GetPawn(pawnId).level),
+			numLevelUps: numLevelUps,
+			startingLevel: startingLevel
+		);
 
 		gui.gameOverUI.SetActive(true);
-		//losePanel.Init(data, acquiredPawns, gm.GetStage(gm.selectedSeriesIndex, gm.selectedStageIndex).stageName);
-
-		if (enemyManager.isStageComplete)
-		{
+		losePanel.Init(scoreData, expData, gm.GetStage(gm.selectedSeriesIndex, gm.selectedStageIndex).stageName);
+	
+		if (enemyManager.isStageComplete) {
 			if (OnStageCompleted != null)
 				OnStageCompleted();
-			if (IsPlayerOnLatestStage())
-			{
+			if (IsPlayerOnLatestStage()) {
 				gm.UnlockNextStage();
 			}
 		}
-		gm.save.AddExperience(pawnId, 10);
 
 		//gm.saveGame.pawnWallet.RemovePawn(gm.selectedPawn.id);
 		//foreach(Pawn pawn in acquiredPawns)

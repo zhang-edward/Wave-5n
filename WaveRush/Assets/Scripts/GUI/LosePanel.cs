@@ -4,28 +4,33 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
-public class LosePanel : MonoBehaviour
-{
+public class LosePanel : MonoBehaviour {
+	
 	public Button proceedButton;
 	public TMP_Text stageNameText;
 
 	public ScrollViewSnap scrollView;
 	public ScoreReport scoreReport;
+	public HeroExpMenu heroesExpMenu;
 	//public HeroesRescuedMenu heroesRescuedMenu;
 
 	//private List<Pawn> acquiredPawns;
 	private ScoreReport.ScoreReportData scoreReportData;
+	private HeroExpMenu.HeroExpMenuData heroExpMenuData;
 
-	public void Init(ScoreReport.ScoreReportData scoreReportData, List<Pawn> acquiredPawns, string stageName) {
+	public void Init(ScoreReport.ScoreReportData scoreReportData, 
+	                 HeroExpMenu.HeroExpMenuData heroExpMenuData, 
+	                 string stageName) {
 		this.scoreReportData = scoreReportData;
-		//this.acquiredPawns = acquiredPawns;
+		this.heroExpMenuData = heroExpMenuData;
 
 		stageNameText.text = stageName;
 		InitScoreReportView();
 	}
 
-	void InitHeroesRescuedView() {
+	void InitHeroExpMenu() {
 		scrollView.ScrollRight();
+		heroesExpMenu.Init(GameManager.instance.selectedPawn, heroExpMenuData);
 		//heroesRescuedMenu.Init(acquiredPawns);
 		proceedButton.onClick.RemoveAllListeners();
 		proceedButton.onClick.AddListener(GoToMenuScene);
@@ -38,10 +43,10 @@ public class LosePanel : MonoBehaviour
 
 	private IEnumerator InitScoreReportViewRoutine()
 	{
-		scoreReport.moneyText.text.text = scoreReportData.money.ToString();
-		scoreReport.moneyEarned.text.text = scoreReportData.moneyEarned.ToString();
-		scoreReport.soulsText.text.text = scoreReportData.souls.ToString();
-		scoreReport.soulsEarned.text.text = scoreReportData.soulsEarned.ToString();		
+		scoreReport.moneyText.text.text 	= scoreReportData.money.ToString();
+		scoreReport.moneyEarned.text.text	= scoreReportData.moneyEarned.ToString();
+		scoreReport.soulsText.text.text 	= scoreReportData.souls.ToString();
+		scoreReport.soulsEarned.text.text 	= scoreReportData.soulsEarned.ToString();		
 		yield return new WaitForSeconds(1.5f);
 		scoreReport.ReportScore(scoreReportData);
 		// If we don't have any heroes acquired
@@ -50,7 +55,7 @@ public class LosePanel : MonoBehaviour
 		//}
 		//// Otherwise, show the heroes rescued menu
 		//else {
-			proceedButton.onClick.AddListener(InitHeroesRescuedView);
+			proceedButton.onClick.AddListener(InitHeroExpMenu);
 		//}
 	}
 

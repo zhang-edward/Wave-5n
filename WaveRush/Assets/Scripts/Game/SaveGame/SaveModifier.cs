@@ -87,7 +87,7 @@ public class SaveModifier {
 		return false;
 	}
 
-	public bool AddExperience(int id, int amt) {
+	public int AddExperience(int id, int amt) {
 		return pawnWallet.AddExperience(id, amt);
 	}
 

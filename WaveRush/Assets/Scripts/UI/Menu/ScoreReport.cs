@@ -4,7 +4,7 @@ using System.Collections;
 
 public class ScoreReport : MonoBehaviour {
 
-	public class ScoreReportData
+	public struct ScoreReportData
 	{
 		public int enemiesDefeated, wavesSurvived, maxCombo;
 		public int money, moneyEarned, souls, soulsEarned;

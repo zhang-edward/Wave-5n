@@ -4,13 +4,14 @@ using System.Collections;
 
 public class PlayerInput : MonoBehaviour
 {
+	public const float INPUT_POSITION_SCALAR = 5;
+
 	public Player player;
+	public TouchInputHandler touchInputHandler;
+	public bool isInputEnabled = true;
 
 	private Vector2 pointerStartPos;
 
-	public bool isInputEnabled = true;
-
-	public TouchInputHandler touchInputHandler;
 	//private Vector3 calibratedAccelerometer;
 	//private Vector3 accel;
 	//public float tiltSensitivity = 10f;
@@ -57,7 +58,7 @@ public class PlayerInput : MonoBehaviour
 	{
 		if (EventSystem.current.IsPointerOverGameObject())
 			return;
-		Vector3 mousePosition = Camera.main.ScreenToViewportPoint(Input.mousePosition) * 4;
+		Vector3 mousePosition = Camera.main.ScreenToViewportPoint(Input.mousePosition) * INPUT_POSITION_SCALAR;
 		if (Input.GetMouseButtonDown(0))
 		{
 			pointerStartPos = mousePosition;
