@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class HeroSelectMenu : MonoBehaviour
-{
+public class HeroSelectMenu : MonoBehaviour  {
+
 	public PawnSelectionView pawnSelectionView;
 	public PawnIconStandard selectedPawnIcon;		// The big view of the selected pawn icon
 	private PawnIconStandard highlightedPawnIcon;	// The highlighted pawn icon in pawnSelectionView
@@ -12,7 +12,7 @@ public class HeroSelectMenu : MonoBehaviour
 
 	void Start()
 	{
-		pawnSelectionView.Init();
+		pawnSelectionView.Init(GameManager.instance.save.pawns, GameManager.instance.save.OnPawnListUpdated);
 		Init();
 	}
 
@@ -32,9 +32,9 @@ public class HeroSelectMenu : MonoBehaviour
 				{
 					// Select this pawnIcon and deselect previous pawn icon (if it exists)
 					if (highlightedPawnIcon != null)
-						highlightedPawnIcon.highlight.SetActive(false);
+						highlightedPawnIcon.SetHighlight(false);
 					highlightedPawnIcon = iconData;
-					highlightedPawnIcon.highlight.SetActive(true);
+					highlightedPawnIcon.SetHighlight(true);
 
 					selectedPawnIcon.Init(iconData.pawnData);
 					// Set gameobject to false then true so animation plays
@@ -45,7 +45,7 @@ public class HeroSelectMenu : MonoBehaviour
 				else
 				{
 					// Deselect this pawnIcon
-					highlightedPawnIcon.highlight.SetActive(false);
+					highlightedPawnIcon.SetHighlight(false);
 					highlightedPawnIcon = null;
 
 					selectedPawnIcon.pawnData = null;

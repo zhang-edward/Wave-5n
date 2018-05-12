@@ -286,7 +286,7 @@ public class GameManager : MonoBehaviour {
 
 	/** Debug Text UI */
 
-	public void DisplayMessage(string message)
+	public void DisplayDebugMessage(string message)
 	{
 		debugText.SetColor (Color.white);
 		debugText.Display (new MessageText.Message(message, 1, 0, 2f, 1f, Color.white));

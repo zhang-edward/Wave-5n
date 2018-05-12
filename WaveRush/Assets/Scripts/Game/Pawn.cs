@@ -13,9 +13,8 @@ public class Pawn
 
 	public HeroType type;		// the type of the hero
 	public int level;           // the level of the hero
-	public int id { get; private set; }
-
-	private int experience;
+	public int id		  { get; private set; }
+	public int experience { get; private set; }
 	public int MaxExperience {
 		get {
 			return (int)Mathf.Sqrt(level * 64);

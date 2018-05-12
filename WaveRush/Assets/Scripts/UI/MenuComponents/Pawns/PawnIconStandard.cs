@@ -3,21 +3,23 @@ using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
 
-public class PawnIconStandard : PawnIcon
-{
+public class PawnIconStandard : PawnIcon {
+#pragma warning disable 0649
 	[Header("Card Decorative Elements")]
-	public Sprite[] panelTierSprites;
-	public Sprite[] starSprites;
+	[SerializeField] private Sprite[] panelTierSprites;
+	[SerializeField] private Sprite[] starSprites;
 	[Header("Card UI Elements")]
-	public TMP_Text heroNameText;
-	public TMP_Text heroLevelText;
-	public bool levelInShortFormat;
-	public Image heroPortrait;
+	[SerializeField] private TMP_Text heroNameText;
+	[SerializeField] private TMP_Text heroLevelText;
+	[SerializeField] private bool levelInShortFormat;
+	[SerializeField] private Image heroPortrait;
 	[Header("Optional UI Elements")]
-	public GameObject highlight;
-	public Image heroPortraitBorder;
-	public Image heroStars;
-	public Image[] panels;
+	[SerializeField] private Slider experienceSlider;
+	[SerializeField] private GameObject highlight;
+	[SerializeField] private Image heroPortraitBorder;
+	[SerializeField] private Image heroStars;
+	[SerializeField] private Image[] panels;
+#pragma warning restore 0649
 
 	public Button button;       // if it is interactable
 	public delegate void Click(PawnIconStandard iconData);
@@ -64,6 +66,10 @@ public class PawnIconStandard : PawnIcon
 			return;
 	}
 
+	public void SetHighlight(bool active) {
+		highlight.SetActive(active);
+	}
+
 	private void OnClick()
 	{
 		if (onClick != null)
@@ -72,15 +78,15 @@ public class PawnIconStandard : PawnIcon
 
 	private void InitOptionalElements()
 	{
-		if (heroStars != null)
-		{
-			if (pawnData.level == 0)
-			{
+		if (experienceSlider != null) {
+			experienceSlider.value = (float)pawnData.experience / pawnData.MaxExperience;
+		}
+		if (heroStars != null) {
+			if (pawnData.level == 0) {
 				heroStars.enabled = false;
 				heroStars.color = Color.clear;
 			}
-			else
-			{
+			else {
 				int index = pawnData.level - 1;
 				if (index > 8)
 					index = 8;
@@ -89,8 +95,7 @@ public class PawnIconStandard : PawnIcon
 				heroStars.sprite = starSprites[index];
 			}
 		}
-		if (panels.Length > 0)
-		{
+		if (panels.Length > 0) {
 			switch(pawnData.tier)
 			{
 				case HeroTier.tier1:

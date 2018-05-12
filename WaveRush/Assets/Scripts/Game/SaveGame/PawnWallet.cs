@@ -29,6 +29,7 @@ public class PawnWallet
 				return true;
 			}
 		}
+		Debug.LogWarning("Add Pawn Failed");
 		id = -1;
 		return false;
 	}
