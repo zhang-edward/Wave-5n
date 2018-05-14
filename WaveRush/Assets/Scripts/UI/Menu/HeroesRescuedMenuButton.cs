@@ -1,17 +1,17 @@
-﻿using UnityEngine;
+﻿//using UnityEngine;
 
-public class HeroesRescuedMenuButton : MonoBehaviour {
+//public class HeroesRescuedMenuButton : MonoBehaviour {
 
-	public HeroesRescuedMenu hrm;
-	public GameObject button;
+//	public HeroesRescuedMenu hrm;
+//	public GameObject button;
 
-	void Update()
-	{
-		if (hrm.AllIconsRevealed())
-			button.SetActive(true);
-	}
+//	void Update()
+//	{
+//		if (hrm.AllIconsRevealed())
+//			button.SetActive(true);
+//	}
 
-	void OnDisable() {
-		button.SetActive(false);
-	}
-}
+//	void OnDisable() {
+//		button.SetActive(false);
+//	}
+//}

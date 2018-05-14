@@ -1,14 +1,14 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿//using UnityEngine;
+//using System.Collections;
 
-public class PartyViewMenu : MonoBehaviour
-{
-	public PawnSelectionView pawnSelectionView;
+//public class PartyViewMenu : MonoBehaviour
+//{
+//	public PawnSelectionView pawnSelectionView;
 
-	void Awake()
-	{
-		pawnSelectionView.Init();
-	}
+//	void Awake()
+//	{
+//		pawnSelectionView.Init();
+//	}
 
 
-}
+//}

@@ -167,7 +167,7 @@ public class TutorialScene1Manager : MonoBehaviour
 		//tutorialTaskView.Init("Parry 5 times (0/5)", false);
 		Enemy attackingDummy = enemyManager.SpawnEnemy(attackingDummyPrefab, map.CenterPosition + (Vector3.right * 2f)).GetComponentInChildren<Enemy>();
 		attackingDummy.invincible = true;
-		knight.onParry += IncrementParryCount;
+		knight.onParrySuccess += IncrementParryCount;
 		tutorialTaskView.SetCompleted(false);
 		while (parryCount < 5)
 		{
@@ -180,7 +180,7 @@ public class TutorialScene1Manager : MonoBehaviour
 		attackingDummy.invincible = false;
 		attackingDummy.GetComponentInChildren<Enemy>().Damage(999);
 		parryCount = 0;
-		knight.onParry -= IncrementParryCount;
+		knight.onParrySuccess -= IncrementParryCount;
 
 		// Step 3: Finish tutorial
 		PlayKnightCharDialogue(3);

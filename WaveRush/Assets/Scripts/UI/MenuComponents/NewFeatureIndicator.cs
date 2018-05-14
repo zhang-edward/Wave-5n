@@ -7,7 +7,7 @@ using System.Collections;
 /// </summary>
 public class NewFeatureIndicator : MonoBehaviour
 {
-	protected SaveGame saveGame;
+	protected SaveModifier saveGame;
 	protected GameManager gm;
 	public string key;
 	public bool selfInit;
@@ -15,7 +15,7 @@ public class NewFeatureIndicator : MonoBehaviour
 	void Awake()
 	{
 		gm = GameManager.instance;
-		saveGame = gm.saveGame;
+		saveGame = gm.save;
 	}
 
 	protected void Start()
@@ -26,12 +26,12 @@ public class NewFeatureIndicator : MonoBehaviour
 
 	void OnEnable()
 	{
-		gm.OnHasViewedDictionaryUpdated += UpdateShouldEnable;
+		gm.save.OnHasViewedDictionaryUpdated += UpdateShouldEnable;
 	}
 
 	void OnDisable()
 	{
-		gm.OnHasViewedDictionaryUpdated -= UpdateShouldEnable;
+		gm.save.OnHasViewedDictionaryUpdated -= UpdateShouldEnable;
 	}
 
 	public void RegisterKey(string key)
@@ -40,7 +40,7 @@ public class NewFeatureIndicator : MonoBehaviour
 		print("Registered: " + key);
 		if (!saveGame.hasPlayerViewedDict.ContainsKey(key))
 		{
-			gm.InitHasPlayerViewedKey(key, false);
+			gm.save.InitHasPlayerViewedKey(key, false);
 		}
 		else
 			UpdateShouldEnable();
@@ -57,7 +57,7 @@ public class NewFeatureIndicator : MonoBehaviour
 
 	public void SetViewed() 
 	{
-		gm.SetHasPlayerViewedKey(key, true);
+		gm.save.SetHasPlayerViewedKey(key, true);
 		gameObject.SetActive(false);
 	}
 

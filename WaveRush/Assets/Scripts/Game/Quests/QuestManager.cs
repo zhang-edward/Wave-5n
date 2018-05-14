@@ -42,7 +42,7 @@ public class QuestManager : MonoBehaviour
 
 	private void OnSceneLoaded()
 	{
-		if (SceneManager.GetActiveScene().name.Equals(GameManager.BattleSceneName))
+		if (SceneManager.GetActiveScene().name.Equals(GameManager.BATTLE_SCREEN_NAME))
 		{
 			InitBattleSceneListeners();
 			UpdateOnBeganStage();

@@ -24,10 +24,11 @@ public class BattleSceneManager : MonoBehaviour
 	public Button continueButton;
 	public GameObject pauseButton;
 
-	public List<Pawn> acquiredPawns { get; private set; }   // pawns acquired this session
 	public int moneyEarned { get; private set; } 			// money earned in this session
 	public int soulsEarned { get; private set; }            // souls earned in this session
 	public bool leaveOrContinueOptionOpen { get; private set; }
+
+	private int pawnId;
 
 	public delegate void BattleSceneEvent();
 	public BattleSceneEvent OnStageCompleted;
@@ -41,7 +42,7 @@ public class BattleSceneManager : MonoBehaviour
 			Destroy(this.gameObject);
 
 		// Do BattleSceneManager-specific initialization which has no external dependencies
-		acquiredPawns = new List<Pawn>();
+		//acquiredPawns = new List<Pawn>();
 		gm = GameManager.instance;
 		enemyManager.OnStageCompleted += () => { StartCoroutine(StageCompleteRoutine()); };
 		player.OnPlayerDied += UpdateData;
@@ -64,6 +65,7 @@ public class BattleSceneManager : MonoBehaviour
 		// Get data from GameManager
 		Pawn pawn = gm.selectedPawn;
 		StageData stage = gm.GetStage(gm.selectedSeriesIndex, gm.selectedStageIndex);
+		pawnId = pawn.id;
 
 		// Initialize components
 		map.chosenMap = stage.mapType;
@@ -125,54 +127,60 @@ public class BattleSceneManager : MonoBehaviour
 
 	private void UpdateData()
 	{
-		ScoreReport.ScoreReportData data = new ScoreReport.ScoreReportData(
+		int startingLevel = gm.save.GetPawn(pawnId).level;
+		int numLevelUps = gm.save.AddExperience(pawnId, 50);
+
+		ScoreReport.ScoreReportData scoreData = new ScoreReport.ScoreReportData(
 			enemiesDefeated: 	enemyManager.enemiesKilled,
 			wavesSurvived: 		Mathf.Max(enemyManager.waveNumber - 1, 0),
 			maxCombo: 			player.hero.maxCombo,
-			money: 				gm.wallet.money,
+			money: 				gm.save.money,
 			moneyEarned: 		moneyEarned,
-			souls: 				gm.wallet.souls,
+			souls: 				gm.save.souls,
 			soulsEarned:		soulsEarned
+		);
+		HeroExpMenu.HeroExpMenuData expData = new HeroExpMenu.HeroExpMenuData(
+			endingExperience: (float)gm.selectedPawn.experience / Pawn.GetMaxExperience(gm.save.GetPawn(pawnId).level),
+			numLevelUps: numLevelUps,
+			startingLevel: startingLevel
 		);
 
 		gui.gameOverUI.SetActive(true);
-		losePanel.Init(data, acquiredPawns, gm.GetStage(gm.selectedSeriesIndex, gm.selectedStageIndex).stageName);
-
-		if (enemyManager.isStageComplete)
-		{
+		losePanel.Init(scoreData, expData, gm.GetStage(gm.selectedSeriesIndex, gm.selectedStageIndex).stageName);
+	
+		if (enemyManager.isStageComplete) {
 			if (OnStageCompleted != null)
 				OnStageCompleted();
-			if (IsPlayerOnLatestStage())
-			{
+			if (IsPlayerOnLatestStage()) {
 				gm.UnlockNextStage();
 			}
 		}
 
-		gm.saveGame.pawnWallet.RemovePawn(gm.selectedPawn.id);
-		foreach(Pawn pawn in acquiredPawns)
-		{
-			gm.saveGame.pawnWallet.AddPawn(pawn);
-		}
+		//gm.saveGame.pawnWallet.RemovePawn(gm.selectedPawn.id);
+		//foreach(Pawn pawn in acquiredPawns)
+		//{
+		//	gm.saveGame.pawnWallet.AddPawn(pawn);
+		//}
 
 		int enemiesDefeated = enemyManager.enemiesKilled;
 		int wavesSurvived = enemyManager.waveNumber;
 		int maxCombo = player.hero.maxCombo;
 
-		gm.wallet.AddMoney(moneyEarned);
-		gm.wallet.AddSouls(soulsEarned);
+		gm.save.AddMoney(moneyEarned);
+		gm.save.AddSouls(soulsEarned);
 		gm.UpdateScores(enemiesDefeated, wavesSurvived, maxCombo);
 	}
 
 	private bool IsPlayerOnLatestStage()
 	{
-		return (gm.selectedStageIndex == gm.saveGame.latestUnlockedStageIndex &&
-				gm.selectedSeriesIndex == gm.saveGame.latestUnlockedSeriesIndex);
+		return (gm.selectedStageIndex  == gm.save.LatestStageIndex &&
+		        gm.selectedSeriesIndex == gm.save.LatestSeriesIndex);
 	}
 
-	public void AddPawn(Pawn pawn)
-	{
-		acquiredPawns.Add(pawn);
-	}
+	//public void AddPawn(Pawn pawn)
+	//{
+	//	acquiredPawns.Add(pawn);
+	//}
 
 	public void AddMoney(int amt)
 	{
@@ -184,5 +192,10 @@ public class BattleSceneManager : MonoBehaviour
 	{
 		soulsEarned += amt;
 		gui.UpdateSouls(soulsEarned);
+	}
+
+	// DEBUG
+	public void DebugCompleteStage() {
+		StartCoroutine(StageCompleteRoutine());
 	}
 }

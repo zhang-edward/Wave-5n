@@ -1,8 +1,8 @@
 ﻿using System;
 public enum HeroType
 {
-	Null,
-	Knight,
-	Mage,
-	Ninja
+	Null	= 0,
+	Knight	= 1,
+	Mage 	= 2,
+	Ninja	= 3,
 }

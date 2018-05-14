@@ -33,7 +33,7 @@
 					yield return new WaitForSeconds(action.duration);
 				}
 			}
-			Debug.Log("Done");
+			//Debug.Log("Done");
 			inProgress = false;
 		}
 	}

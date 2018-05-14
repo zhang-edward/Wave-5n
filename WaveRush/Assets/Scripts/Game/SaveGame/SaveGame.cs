@@ -7,27 +7,32 @@ public class SaveGame
 {
 	//	public const int INITIAL_PAWN_CAPACITY = 20;
 	public const string TUTORIAL_COMPLETE_KEY = "TutorialComplete";
-
-	public Dictionary<string, bool> hasPlayerViewedDict { get; private set; }
-	public PawnWallet pawnWallet;
-
-	public int latestUnlockedSeriesIndex;   // the number of series unlocked in the regular collection (main storyline)
-	public int latestUnlockedStageIndex;	// the number of stages unlocked in the current latest series
+	public const string LATEST_UNLOCKED_SERIES_INDEX_KEY = "SeriesIndex";
+	public const string LATEST_UNLOCKED_STAGE_INDEX_KEY = "StageIndex";
 
 	public Dictionary<HeroType, ScoreManager.Score> highScores;
 	public Wallet wallet;
+	public PawnWallet pawnWallet;
 
-	private Dictionary<string, float> timers;   // list of various timers in the game, such as daily rewards and quests
-	public Dictionary<string, int> saveDict;	// Dictionary containing any misc. data
-	public int numDailyHeroRewards;
+	//private Dictionary<string, float> timers;   // list of various timers in the game, such as daily rewards and quests
+	public Dictionary<string, int> saveDict;    // Dictionary containing any all data
+	public Dictionary<string, bool> hasPlayerViewedDict { get; private set; }
+	public bool[] ownedHeroes;
 
 	public SaveGame()
 	{
 		// Initialize variables
-		pawnWallet = new PawnWallet();
+		saveDict = new Dictionary<string, int>();
+
+		saveDict[LATEST_UNLOCKED_SERIES_INDEX_KEY] = 0;
+		saveDict[LATEST_UNLOCKED_STAGE_INDEX_KEY]  = 0;
+
 		hasPlayerViewedDict = new Dictionary<string, bool>();
-		timers = new Dictionary<string, float>();
 		wallet = new Wallet();
+		pawnWallet = new PawnWallet();
+		// Initialize owned heroes to 
+		ownedHeroes = new bool[(Enum.GetValues(typeof(HeroType)).Length - 1) * 3];
+		ownedHeroes[0] = true;
 		// high scores are all 0 by default
 		ClearHighScores();
 	}
@@ -37,19 +42,21 @@ public class SaveGame
 		highScores = new Dictionary<HeroType, ScoreManager.Score>();
 	}
 
-	public float GetSavedTimer(string key)
-	{
-		if (timers.ContainsKey(key))
-			return timers[key];
-		else
-			return -1;
-	}
 
-	public void SetSavedTimer(string key, float time)
-	{
-		if (timers.ContainsKey(key))
-			timers[key] = time;
-		else
-			timers.Add(key, time);
-	}
+
+	//public float GetSavedTimer(string key)
+	//{
+	//	if (timers.ContainsKey(key))
+	//		return timers[key];
+	//	else
+	//		return -1;
+	//}
+
+	//public void SetSavedTimer(string key, float time)
+	//{
+	//	if (timers.ContainsKey(key))
+	//		timers[key] = time;
+	//	else
+	//		timers.Add(key, time);
+	//}
 }

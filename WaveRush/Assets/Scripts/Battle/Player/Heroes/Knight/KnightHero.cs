@@ -79,6 +79,8 @@ public class KnightHero : PlayerHero {
 		onDragRelease = RushAbility;
 		onTap = AreaAttack;
 		player.OnPlayerTryHit += CheckKnightShieldHit;
+		player.invincibility.OnTimerOn += () => { player.hurtbox.radius *= 3f; };
+		player.invincibility.OnTimerOff += () => { player.hurtbox.radius /= 3f; };
 	}
 
 	private void InitAbilities()

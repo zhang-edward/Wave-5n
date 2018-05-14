@@ -41,6 +41,6 @@ public class HeroPowerUpInfoIcon : MonoBehaviour
 
 	public void SetViewedPower(bool foo)
 	{
-		GameManager.instance.SetHasPlayerViewedKey(key, true);
+		GameManager.instance.save.SetHasPlayerViewedKey(key, true);
 	}
 }

@@ -178,10 +178,10 @@ public class TutorialScene2Manager : MonoBehaviour
 		List<Pawn> acquiredPawns = new List<Pawn>();
 		for (int i = 0; i < 6; i ++)
 		{
-			Pawn pawn = new Pawn(HeroType.Knight);
-			pawn.level = 0;
+			Pawn pawn = new Pawn(HeroType.Knight, 0);
+			//pawn.level = 0;
 			acquiredPawns.Add(pawn);
-			gm.saveGame.pawnWallet.AddPawn(pawn);
+			//gm.saveGame.pawnWallet.AddPawn(pawn);
 		}
 		PlayerPrefs.SetInt(SaveGame.TUTORIAL_COMPLETE_KEY, 1);
 		GameManager.instance.GoToScene("MainMenu", 0.1f);

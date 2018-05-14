@@ -63,7 +63,7 @@ public abstract class PlayerHero : MonoBehaviour {
 	public    InputAction onTapHoldRelease;
 	public    InputAction onTapHoldDown;
 	public    InputAction onSpecialAbility;
-	public    InputAction onParry;
+	public    InputAction onParrySuccess;
 	// Miscellaneous
 	public event Player.PlayerLifecycleEvent OnSpecialAbilityCharged;
 	public delegate void OnAbility(int i);
@@ -205,10 +205,10 @@ public abstract class PlayerHero : MonoBehaviour {
 		canParry = true;
 	}
 
-	private void Parry()
+	public void Parry()
 	{
-		if (onParry != null)
-			onParry();
+		if (onParrySuccess != null)
+			onParrySuccess();
 		// Effect
 		CameraControl.instance.StartFlashColor(Color.white, 0.5f, 0, 0f, 0.5f);
 		// Player properties
@@ -242,7 +242,7 @@ public abstract class PlayerHero : MonoBehaviour {
 		anim.Init(player.animPlayer);
 		anim.player.Init();
 		damageMultiplier = 1f;
-		baseDamage = Mathf.RoundToInt(Pawn.DamageEquation(heroData));
+		baseDamage = Mathf.RoundToInt(heroData.level);
 		// init cooldownMultipliers
 		cooldownMultipliers = new float[cooldownTime.Length];
 		for(int i = 0; i < cooldownTime.Length; i ++)
@@ -296,7 +296,7 @@ public abstract class PlayerHero : MonoBehaviour {
 		if (cooldownTimers[index] > 0)
 		{
 			// If we can buffer the action, buffer it
-			if (bufferAction && cooldownTimers [index]< 0.1f)
+			if (bufferAction && cooldownTimers [index]< 0.3f)
 			{
 				inputAction = input;
 				QueueAction (cooldownTimers [index]);

@@ -21,7 +21,7 @@ public class DebugCheatMenu : MonoBehaviour
 
 	void UpdateDebugMenuOptions()
 	{
-		bool isBattleSceneOpen = SceneManager.GetActiveScene().name.Equals(GameManager.BattleSceneName) ||
+		bool isBattleSceneOpen = SceneManager.GetActiveScene().name.Equals(GameManager.BATTLE_SCREEN_NAME) ||
 		                                     SceneManager.GetActiveScene().name.Equals("Tutorial2");
 		menuSceneDebugOptions.SetActive(!isBattleSceneOpen);
 		battleSceneDebugOptions.SetActive(isBattleSceneOpen);
@@ -37,29 +37,29 @@ public class DebugCheatMenu : MonoBehaviour
 	// ==========
 	public void SetMoneyDebugString(string amt)
 	{
-		gm.wallet.SetMoneyDebug(Convert.ToInt32(amt));
+		gm.save.SetMoneyDebug(Convert.ToInt32(amt));
 	}
 
 	public void SetSoulsDebugString(string amt)
 	{
-		gm.wallet.SetSoulsDebug(Convert.ToInt32(amt));
+		gm.save.SetSoulsDebug(Convert.ToInt32(amt));
 	}
 
 	public void SaveGame()
 	{
 		GameManager.instance.PrepareSaveFile();
-		SaveLoad.Save();
+		GameManager.instance.Save();
 	}
 
-	public void AddNewPawn(string level)
-	{
-		int numHeroTypes = Enum.GetNames(typeof(HeroType)).Length;
-		//HeroType type = (HeroType)Enum.GetValues(typeof(HeroType)).GetValue(UnityEngine.Random.Range(1, numHeroTypes));
-		Pawn pawn = new Pawn(HeroType.Knight);
-		pawn.level = Convert.ToInt32(level);
-		GameManager.instance.saveGame.pawnWallet.AddPawn(pawn);
-		SaveLoad.Save();
-	}
+	//public void AddNewPawn(string level)
+	//{
+	//	int numHeroTypes = Enum.GetNames(typeof(HeroType)).Length;
+	//	//HeroType type = (HeroType)Enum.GetValues(typeof(HeroType)).GetValue(UnityEngine.Random.Range(1, numHeroTypes));
+	//	Pawn pawn = new Pawn(HeroType.Knight);
+	//	pawn.level = Convert.ToInt32(level);
+	//	GameManager.instance.saveGame.pawnWallet.AddPawn(pawn);
+	//	SaveLoad.Save();
+	//}
 
 	public void ClearSaveData()
 	{
@@ -102,8 +102,13 @@ public class DebugCheatMenu : MonoBehaviour
 		player.hero.powerUpManager.AddPowerUp(name);
 	}
 
+	public void CompleteStage()
+	{
+		BattleSceneManager.instance.DebugCompleteStage();
+	}
+
 	public void ResetTutorials()
 	{
-		MainMenuSceneManager.instance.tutorialDialogueManager.ResetTutorials();
+		//MainMenuSceneManager.instance.tutorialDialogueManager.ResetTutorials();
 	}
 }

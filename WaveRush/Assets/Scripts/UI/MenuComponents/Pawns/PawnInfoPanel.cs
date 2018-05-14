@@ -15,10 +15,10 @@ public class PawnInfoPanel : MonoBehaviour
 	public ToggleGroup infoIconsToggleGroup;
 	public ToggleGroup midPanelTabToggleGroup;
 	public ScrollViewSnap midPanelScrollView;
-	[Header("NewIndicators")]
-	public NewFeatureIndicator newSpecial;
-	public NewFeatureIndicator[] newAbility;
-	public NewFeatureIndicator newTextAbilities, newTextPowers;
+	//[Header("NewIndicators")]
+	//public NewFeatureIndicator newSpecial;
+	//public NewFeatureIndicator[] newAbility;
+	//public NewFeatureIndicator newTextAbilities, newTextPowers;
 	[Header("Prefabs")]
 	public GameObject heroPowerUpInfoPrefab;
 	private GameObject[] heroPowerUpInfoIcons;
@@ -82,11 +82,11 @@ public class PawnInfoPanel : MonoBehaviour
 		infoText.defaultText = heroData.heroDescription;
 		infoText.SetToDefaultText();
 		// Initialize NewFeatureIndicator
-		newTextPowers.RegisterKey(HasPlayerViewedPowersTabKey);
-		newTextAbilities.RegisterKey(HasPlayerViewedAbilitiesTabKey);
-		newAbility[0].RegisterKey(GetViewedAbilityKey('0'));
-		newAbility[1].RegisterKey(GetViewedAbilityKey('1'));
-		newSpecial.RegisterKey(GetViewedAbilityKey('S'));
+		//newTextPowers.RegisterKey(HasPlayerViewedPowersTabKey);
+		//newTextAbilities.RegisterKey(HasPlayerViewedAbilitiesTabKey);
+		//newAbility[0].RegisterKey(GetViewedAbilityKey('0'));
+		//newAbility[1].RegisterKey(GetViewedAbilityKey('1'));
+		//newSpecial.RegisterKey(GetViewedAbilityKey('S'));
 
 		// Initialize Abilities Panel
 		abilityIcon1.GetComponent<Image>().sprite = heroData.abilityIcons[0];

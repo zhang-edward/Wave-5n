@@ -37,6 +37,6 @@ public class TutorialDialogueManager : MonoBehaviour
 		{
 			PlayerPrefs.SetInt(GetPlayerPrefsKey(i), 0);
 		}
-		PlayerPrefs.SetInt(DailyHeroRewardButton.TUTORIAL_KEY, 0);
+		//PlayerPrefs.SetInt(DailyHeroRewardButton.TUTORIAL_KEY, 0);
 	}
 }
