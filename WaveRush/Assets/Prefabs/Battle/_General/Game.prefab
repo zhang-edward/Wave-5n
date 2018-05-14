@@ -75,7 +75,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1144353332037222
 GameObject:
   m_ObjectHideFlags: 1
@@ -1493,9 +1493,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 114493654895252084}
-  isInputEnabled: 1
   touchInputHandler: {fileID: 114838847251220054}
-  tiltSensitivity: 10
+  isInputEnabled: 1
 --- !u!114 &114140219759301382
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1607,6 +1606,7 @@ MonoBehaviour:
     animationName: 
     looping: 0
     ignoreTimeScale: 0
+  willResetToDefault: 1
 --- !u!114 &114302477262485974
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1728,6 +1728,7 @@ MonoBehaviour:
   animPlayer: {fileID: 114216123116737578}
   input: {fileID: 114126643502235696}
   body: {fileID: 114975205127975220}
+  hurtbox: {fileID: 58804806076899590}
   hero: {fileID: 0}
   dir: {x: 0, y: 0}
   dirIndicator: {fileID: 4092547095987462}
@@ -1852,6 +1853,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sr: {fileID: 212351658536300956}
   moveSpeed: 5
+  ragdolled: 0
 --- !u!198 &198060647182639850
 ParticleSystem:
   m_ObjectHideFlags: 1

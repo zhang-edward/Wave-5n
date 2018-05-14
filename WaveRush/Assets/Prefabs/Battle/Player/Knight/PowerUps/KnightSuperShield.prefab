@@ -209,15 +209,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerHero: {fileID: 0}
   data: {fileID: 11400000, guid: aa582130d6e684725b312b7a006244a4, type: 2}
+  chargeState: Default
+  chargeEffect: {fileID: 114189092235630292}
+  indicatorEffect: {fileID: 114780241612128270}
   areaAttackAbility:
     duration: 1
     range: 2
     maxHit: 7
+    loseMomentum: 0
     areaAttackSound: {fileID: 8300000, guid: 577b89f17cf804ac7935a5475e03ab78, type: 3}
     areaAttackState: Shield
   shieldIndicator: {fileID: 1259696208572924}
-  chargeEffect: {fileID: 114189092235630292}
-  indicatorEffect: {fileID: 114780241612128270}
 --- !u!114 &114260424549322282
 MonoBehaviour:
   m_ObjectHideFlags: 1

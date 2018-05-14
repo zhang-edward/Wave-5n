@@ -63,7 +63,7 @@ public abstract class PlayerHero : MonoBehaviour {
 	public    InputAction onTapHoldRelease;
 	public    InputAction onTapHoldDown;
 	public    InputAction onSpecialAbility;
-	public    InputAction onParry;
+	public    InputAction onParrySuccess;
 	// Miscellaneous
 	public event Player.PlayerLifecycleEvent OnSpecialAbilityCharged;
 	public delegate void OnAbility(int i);
@@ -205,10 +205,10 @@ public abstract class PlayerHero : MonoBehaviour {
 		canParry = true;
 	}
 
-	private void Parry()
+	public void Parry()
 	{
-		if (onParry != null)
-			onParry();
+		if (onParrySuccess != null)
+			onParrySuccess();
 		// Effect
 		CameraControl.instance.StartFlashColor(Color.white, 0.5f, 0, 0f, 0.5f);
 		// Player properties

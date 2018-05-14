@@ -121,10 +121,13 @@ MonoBehaviour:
       drag: 3
     effect:
       duration: 0.5
-      anim: {fileID: 114029588287594704}
+      effect:
+        frames: []
+        fps: 10
       rotationType: 1
-      offsetMatchesFlipX: 0
       color: {r: 1, g: 1, b: 1, a: 0.5019608}
+      anim: {fileID: 114029588287594704}
+      offsetMatchesFlipX: 0
     collision: {fileID: 114649125542082660}
     lockInput: 0
     maxHit: 5
@@ -145,10 +148,13 @@ MonoBehaviour:
       state: Special
     chargeEffect:
       duration: -1
-      anim: {fileID: 114053776494803900}
+      effect:
+        frames: []
+        fps: 10
       rotationType: 0
-      offsetMatchesFlipX: 0
       color: {r: 1, g: 1, b: 1, a: 1}
+      anim: {fileID: 114053776494803900}
+      offsetMatchesFlipX: 0
     specialEffect:
       duration: 1
     inputListener:
@@ -163,10 +169,13 @@ MonoBehaviour:
         drag: 5
       effect:
         duration: -1
-        anim: {fileID: 114557815516394738}
+        effect:
+          frames: []
+          fps: 10
         rotationType: 1
-        offsetMatchesFlipX: 0
         color: {r: 1, g: 1, b: 1, a: 0.5019608}
+        anim: {fileID: 114557815516394738}
+        offsetMatchesFlipX: 0
       collision: {fileID: 114844941905777280}
       lockInput: 1
       maxHit: 20

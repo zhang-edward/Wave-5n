@@ -11,14 +11,14 @@ public class Ninja_SmokeScreen : HeroPowerUp
 	{
 		base.Activate(hero);
 		ninja = (NinjaHero)hero;
-		ninja.onParry += ActivateAbility;
+		ninja.onParrySuccess += ActivateAbility;
 		ninja.OnNinjaDash += SmokeBomb;
 	}
 
 	public override void Deactivate()
 	{
 		base.Deactivate();
-		ninja.onParry -= ActivateAbility;
+		ninja.onParrySuccess -= ActivateAbility;
 		ninja.OnNinjaDash -= SmokeBomb;
 	}
 

@@ -11,7 +11,12 @@ public class Player : MonoBehaviour, IDamageable
 	/// </summary>
 	public class StatusTimers
 	{
+		public delegate void TimerStatusUpdated();
+		public event TimerStatusUpdated OnTimerOff;
+		public event TimerStatusUpdated OnTimerOn;
+
 		private float[] timers = new float[10];
+		private bool isOn;	// Whether all timers are <= 0
 
 		/// <summary>
 		/// Adds a new timer
@@ -42,27 +47,39 @@ public class Player : MonoBehaviour, IDamageable
 		/// Decrements each timer.
 		/// </summary>
 		/// <param name="amt">Amount to decrement by.</param>
-		public void DecrementTimer(float amt) 
-		{
-			for (int i = timers.Length - 1; i >= 0; i--)
-			{
-				if (timers[i] >= 0)
+		public void DecrementTimer(float amt) {
+			bool foundTimer = false;
+			for (int i = timers.Length - 1; i >= 0; i--) {
+				if (timers[i] >= 0) {
 					timers[i] -= amt;
+					foundTimer = true;
+					// Turn timer on
+					if (!isOn) {
+						if (OnTimerOn != null)
+							OnTimerOn();
+						isOn = true;
+					}
+				}
+			}
+			// Turn timer off
+			if (!foundTimer && isOn) {
+				if (OnTimerOff != null)
+					OnTimerOff();
+				isOn = false;
 			}
 		}
 
-		public void RemoveTimer(int i) 
-		{
+		public void RemoveTimer(int i) {
 			timers[i] = 0;
 		}
 
-		public bool IsOn()
-		{
-			for (int i = 0; i < timers.Length; i ++) {
-				if (timers[i] > 0)
-					return true;
-			}
-			return false;
+		public bool IsOn() {
+			//for (int i = 0; i < timers.Length; i ++) {
+			//	if (timers[i] > 0)
+			//		return true;
+			//}
+			//return false;
+			return isOn;
 		}
 	}
 
@@ -77,6 +94,7 @@ public class Player : MonoBehaviour, IDamageable
 	public AnimationSetPlayer animPlayer;
 	public PlayerInput 		  input;
 	public EntityPhysics      body;
+	public CircleCollider2D   hurtbox;
 
 	[Header("Player Ability")]
 	public PlayerHero hero;
@@ -99,8 +117,8 @@ public class Player : MonoBehaviour, IDamageable
 	public SimpleAnimation sacrificeEffect;
 	public SimpleAnimation parryEffect;
 
-	[Header("Audio")]
 	private SoundManager sound;
+	[Header("Audio")]
 	public AudioClip hurtSound;
 	public AudioClip gameOverSound;
 	public AudioClip heartBreakBuildUpSound;
@@ -108,7 +126,6 @@ public class Player : MonoBehaviour, IDamageable
 	public AudioClip heartExtractSound;
 	public AudioClip parrySound;
 	public AudioClip parrySuccessSound;
-	public AudioClip parryFailSound;
 
 	[HideInInspector]
 	public ObjectPooler deathPropPool;
