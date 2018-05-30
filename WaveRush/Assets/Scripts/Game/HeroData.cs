@@ -17,7 +17,11 @@ public class HeroData : ScriptableObject
 
 	[Header("Descriptions")]
 	[TextArea(2, 5)] public string[] tips;
-	[TextArea(3, 10)] public string heroDescription, ability1Description, ability2Description, specialDescription;
+	[TextArea(3, 10)]public string heroDescription,
+		ability1Description,
+		ability2Description,
+		specialDescription,
+		parryDescription;
 
 	[Header("Graphics")]
 	public AnimationSet t1Skin, t2Skin, t3Skin;

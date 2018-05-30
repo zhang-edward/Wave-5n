@@ -102,7 +102,7 @@ public class ScrollViewSnap : MonoBehaviour {
 		while (Mathf.Abs(panel.anchoredPosition.x - dest) > 0.05f)
 		{
 			// set new position
-			float newX = Mathf.Lerp (panel.anchoredPosition.x, dest, Time.deltaTime * scrollSpeed);
+			float newX = Mathf.Lerp (panel.anchoredPosition.x, dest, Time.unscaledDeltaTime * scrollSpeed);
 			panel.anchoredPosition = new Vector2 (newX, panel.anchoredPosition.y);
 			yield return null;
 		}

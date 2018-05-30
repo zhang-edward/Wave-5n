@@ -7,7 +7,8 @@ using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour {
 
-	public const string BATTLE_SCREEN_NAME = "Game";
+	public const string SCENE_MAINMENU = "MainMenu";
+	public const string SCENE_BATTLE = "Game";
 	public const float LOADING_SCREEN_SPEED = 8;
 	public static GameManager instance;
 

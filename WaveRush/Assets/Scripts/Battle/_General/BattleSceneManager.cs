@@ -105,6 +105,7 @@ public class BattleSceneManager : MonoBehaviour
 		{
 			pauseButton.gameObject.SetActive(false);
 			player.input.isInputEnabled = false;
+			// "Leave" option selected
 			if (selection == 1)
 			{
 				player.transform.parent.gameObject.SetActive(false);
@@ -112,6 +113,7 @@ public class BattleSceneManager : MonoBehaviour
 				UpdateData();
 				yield break;
 			}
+			// "Continue" option selected
 			if (selection == 0)
 			{
 				leaveOrContinueOptionOpen = false;

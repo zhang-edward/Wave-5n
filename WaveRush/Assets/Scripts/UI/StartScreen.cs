@@ -12,7 +12,7 @@ public class StartScreen : MonoBehaviour
 		}
 		else
 		{
-			GameManager.instance.GoToScene("MainMenu");
+			GameManager.instance.GoToScene(GameManager.SCENE_MAINMENU);
 		}
 	}
 }

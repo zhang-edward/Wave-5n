@@ -61,6 +61,6 @@ public class LosePanel : MonoBehaviour {
 
 	private void GoToMenuScene()
 	{
-		GameManager.instance.GoToScene("MainMenu");
+		GameManager.instance.GoToScene(GameManager.SCENE_MAINMENU);
 	}
 }

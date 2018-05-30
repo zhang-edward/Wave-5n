@@ -89,7 +89,7 @@ public class GUIManager : MonoBehaviour {
 	private IEnumerator StageCompleteViewRoutine()
 	{
 		yield return new WaitForSeconds(1.0f);
-		GameManager.instance.GoToScene("MainMenu");
+		GameManager.instance.GoToScene(GameManager.SCENE_MAINMENU);
 		yield return null;
 	}
 

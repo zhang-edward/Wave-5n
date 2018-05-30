@@ -13,7 +13,7 @@ public class DialogueView : MonoBehaviour
 	public event DialogueLifecycleEvent onDialogueFinished;
 	
 	private DialogueSet[] dialogueSets;					// Dialogue data
-	private bool proceed;								// 
+	private bool proceed;								
 	private bool willAcceptScreenPress;
 
 	public void Init(params DialogueSet[] dialogueSets)
@@ -42,6 +42,7 @@ public class DialogueView : MonoBehaviour
 		int i = 0;
 		while (i < dialogueSets.Length)
 		{
+			// Initialize UI elements
 			dialogueSet = dialogueSets[i];
 			nameText.text = dialogueSet.character.characterName;
 			nameText.color = dialogueSet.character.nameColor;
@@ -58,7 +59,7 @@ public class DialogueView : MonoBehaviour
 					yield return null;
 				yield return new WaitForSeconds(0.2f);		// Prevents the player from accidentally skipping things
 				willAcceptScreenPress = true;
-				while (!proceed)
+				while (!proceed)							// Continue on screen press
 					yield return null;
 				proceed = false;
 				j++;

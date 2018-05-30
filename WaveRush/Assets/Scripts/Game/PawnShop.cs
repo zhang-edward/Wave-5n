@@ -41,7 +41,8 @@ public class PawnShop {
 		for (int i = 0; i < Pawns.Length; i++) {
 			Pawn pawn = Pawns[i];
 			HeroData data = DataManager.GetHeroData(pawn.type);
-			if (latestSeries >= data.unlockSeries[(int)pawn.tier] &&
+			if (data.unlockSeries[(int)pawn.tier] > 0 &&
+			    latestSeries >= data.unlockSeries[(int)pawn.tier] &&
 				latestStage >= data.unlockStage[(int)pawn.tier]) {
 				Unlocked[i] = true;
 				AvailablePawns.Add(pawn);

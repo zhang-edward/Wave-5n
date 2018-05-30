@@ -184,7 +184,7 @@ public class TutorialScene2Manager : MonoBehaviour
 			//gm.saveGame.pawnWallet.AddPawn(pawn);
 		}
 		PlayerPrefs.SetInt(SaveGame.TUTORIAL_COMPLETE_KEY, 1);
-		GameManager.instance.GoToScene("MainMenu", 0.1f);
+		GameManager.instance.GoToScene(GameManager.SCENE_MAINMENU, 0.1f);
 	}
 
 	private void PlayKnightCharDialogue(int step)

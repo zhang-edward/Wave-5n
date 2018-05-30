@@ -15,7 +15,7 @@ public class Player : MonoBehaviour, IDamageable
 		public event TimerStatusUpdated OnTimerOff;
 		public event TimerStatusUpdated OnTimerOn;
 
-		private float[] timers = new float[10];
+		private float[] timers = new float[8];
 		private bool isOn;	// Whether all timers are <= 0
 
 		/// <summary>
@@ -25,6 +25,8 @@ public class Player : MonoBehaviour, IDamageable
 		/// <param name="time">Time to initialize the timer to.</param>
 		public int Add(float time)
 		{
+			if (time > 0)
+				isOn = true;
 			for (int i = 0; i < timers.Length; i++)
 			{
 				if (timers[i] <= 0f)
@@ -107,6 +109,7 @@ public class Player : MonoBehaviour, IDamageable
 	public int  maxHealth = 10;
 	public int  health { get; private set; }
 	public StatusTimers invincibility = new StatusTimers();
+	private StatusTimers hitstun = new StatusTimers();
 
 	public float damagedCooldownTime = 1.0f;
 
@@ -155,6 +158,8 @@ public class Player : MonoBehaviour, IDamageable
 		deathPropPool = ObjectPooler.GetObjectPooler ("DeathProp");
 		DEFAULT_SPEED = body.moveSpeed;
 		input.isInputEnabled = false;
+		hitstun.OnTimerOn  += () => { input.isInputEnabled = false; };
+		hitstun.OnTimerOff += () => { input.isInputEnabled = true;  };
 		sound = SoundManager.instance;
 	}
 
@@ -191,6 +196,7 @@ public class Player : MonoBehaviour, IDamageable
 	void Update()
 	{
 		invincibility.DecrementTimer(Time.deltaTime);
+		hitstun.DecrementTimer(Time.deltaTime);
 	}
 
 	/// <summary>
@@ -244,6 +250,7 @@ public class Player : MonoBehaviour, IDamageable
 
 	public void HitDisable(float time)
 	{
+		hitstun.Add(time / 2f);
 		invincibility.Add(time);
 	}
 

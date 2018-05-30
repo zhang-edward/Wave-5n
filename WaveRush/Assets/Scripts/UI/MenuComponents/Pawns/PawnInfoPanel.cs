@@ -11,7 +11,7 @@ public class PawnInfoPanel : MonoBehaviour
 	public ScrollingText infoText;
 	[Header("Mid Panel Menus")]
 	public Transform powersPanel;
-	public GameObject abilityIcon1, abilityIcon2, specialAbilityIcon;
+	public GameObject abilityIcon1, abilityIcon2, sAbilityIcon, parryIcon;
 	public ToggleGroup infoIconsToggleGroup;
 	public ToggleGroup midPanelTabToggleGroup;
 	public ScrollViewSnap midPanelScrollView;
@@ -37,8 +37,7 @@ public class PawnInfoPanel : MonoBehaviour
 	void Awake()
 	{
 		heroPowerUpInfoIcons = new GameObject[HeroPowerUpListData.powerUpUnlockLevels.Length];
-		for (int i = 0; i < HeroPowerUpListData.powerUpUnlockLevels.Length; i++)
-		{
+		for (int i = 0; i < HeroPowerUpListData.powerUpUnlockLevels.Length; i++) {
 			GameObject o = Instantiate(heroPowerUpInfoPrefab);
 			o.transform.SetParent(powersPanel, false);
 			o.GetComponent<ScrollingTextOption>().scrollingText = infoText;
@@ -58,9 +57,8 @@ public class PawnInfoPanel : MonoBehaviour
 	public void Init(Pawn pawn)
 	{
 		pawnIcon.Init(pawn);
-		// Get Hero data
 		HeroData heroData = DataManager.GetHeroData(pawn.type);
-		// Initialize the hero's power up info
+		/** Initialize the hero's power up info */
 		HeroPowerUpListData powerUpListData = DataManager.GetPowerUpListData(pawn.type);
 		int numPowerUpsUnlocked = HeroPowerUpListData.GetNumPowerUpsUnlocked(pawn.level);
 		for (int i = 0; i < HeroPowerUpListData.powerUpUnlockLevels.Length; i++)
@@ -88,16 +86,23 @@ public class PawnInfoPanel : MonoBehaviour
 		//newAbility[1].RegisterKey(GetViewedAbilityKey('1'));
 		//newSpecial.RegisterKey(GetViewedAbilityKey('S'));
 
-		// Initialize Abilities Panel
+		/** Initialize Abilities Panel */
+		// Set image
 		abilityIcon1.GetComponent<Image>().sprite = heroData.abilityIcons[0];
 		abilityIcon2.GetComponent<Image>().sprite = heroData.abilityIcons[1];
-		specialAbilityIcon.GetComponent<Image>().sprite = heroData.specialAbilityIcon;
+		sAbilityIcon.GetComponent<Image>().sprite = heroData.specialAbilityIcon;
+
+		// Set text option
 		abilityIcon1.GetComponent<ScrollingTextOption>().text = heroData.ability1Description;
 		abilityIcon2.GetComponent<ScrollingTextOption>().text = heroData.ability2Description;
-		specialAbilityIcon.GetComponent<ScrollingTextOption>().text = heroData.specialDescription;
+		sAbilityIcon.GetComponent<ScrollingTextOption>().text = heroData.specialDescription;
+		parryIcon	.GetComponent<ScrollingTextOption>().text = heroData.parryDescription;
+
+		// Set toggle to false
 		abilityIcon1.GetComponent<Toggle>().isOn = false;
 		abilityIcon2.GetComponent<Toggle>().isOn = false;
-		specialAbilityIcon.GetComponent<Toggle>().isOn = false;
+		sAbilityIcon.GetComponent<Toggle>().isOn = false;
+		parryIcon	.GetComponent<Toggle>().isOn = false;
 	}
 
 	private IEnumerator ForcePosAfter1Frame()

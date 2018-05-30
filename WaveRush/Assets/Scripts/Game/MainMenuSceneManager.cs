@@ -13,7 +13,7 @@ public class MainMenuSceneManager : MonoBehaviour
 	public MainMenu mainMenu;
 	//public DailyHeroRewardButton dailyHeroRewardButton;
 
-	//public GameObject[] lockedObjects0;
+	public GameObject[] lockedObjects0;
 	//public GameObject[] lockedObjects1;
 
 	void Awake()
@@ -40,26 +40,26 @@ public class MainMenuSceneManager : MonoBehaviour
 
 	private void Init()
 	{
-		//if (CheckStage(0, 0))
-		//{
-		//	// Disable all locked objects
-		//	foreach (GameObject o in lockedObjects0)
-		//		o.SetActive(false);
-		//	// Play tutorial dialogue
-		//	tutorialDialogueManager.Init(0);
-		//	// Play a tutorial dialogue upon pressing the "Battle" button
-		//	if (!tutorialDialogueManager.HasPlayedTutorial(1))
-		//	{
-		//		print("player has not played 1");
-		//		mainMenu.OnGoToBattle -= GoToBattle;
-		//		mainMenu.OnGoToBattle += () =>
-		//		{
-		//			print("button pressed");
-		//			tutorialDialogueManager.Init(1);
-		//			tutorialDialogueManager.dialogueView.onDialogueFinished += GoToBattle;
-		//		};
-		//	}
-		//}
+		if (CheckStage(0, 0))
+		{
+			// Disable all locked objects
+			foreach (GameObject o in lockedObjects0)
+				o.SetActive(false);
+			// Play tutorial dialogue
+			tutorialDialogueManager.Init(0);
+			// Play a tutorial dialogue upon pressing the "Battle" button
+			if (!tutorialDialogueManager.HasPlayedTutorial(1))
+			{
+				print("player has not played 1");
+				mainMenu.OnGoToBattle -= GoToBattle;
+				mainMenu.OnGoToBattle += () =>
+				{
+					print("button pressed");
+					tutorialDialogueManager.Init(1);
+					tutorialDialogueManager.dialogueView.onDialogueFinished += GoToBattle;
+				};
+			}
+		}
 		//if (CheckStage(0, 1))
 		//{
 		//	// Disable all locked objects
