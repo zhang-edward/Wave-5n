@@ -7,6 +7,7 @@ using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour {
 
+	public const string SCENE_TUTORIAL = "Tutorial1";
 	public const string SCENE_MAINMENU = "MainMenu";
 	public const string SCENE_BATTLE = "Game";
 	public const float LOADING_SCREEN_SPEED = 8;
@@ -83,7 +84,7 @@ public class GameManager : MonoBehaviour {
 		if (!focus)
 		{
 			//print("Application Paused");
-			PlayerPrefs.SetString(RealtimeTimerCounter.LAST_CLOSED_KEY, System.DateTime.Now.ToString());
+			//PlayerPrefs.SetString(RealtimeTimerCounter.LAST_CLOSED_KEY, System.DateTime.Now.ToString());
 			if (OnAppClosed != null)
 				OnAppClosed();
 		}
@@ -99,7 +100,7 @@ public class GameManager : MonoBehaviour {
 
 	private void OnApplicationQuit()
 	{
-		PlayerPrefs.SetString(RealtimeTimerCounter.LAST_CLOSED_KEY, System.DateTime.Now.ToString());
+		//PlayerPrefs.SetString(RealtimeTimerCounter.LAST_CLOSED_KEY, System.DateTime.Now.ToString());
 		print("Application Quit");
 		if (OnAppClosed != null)
 			OnAppClosed();

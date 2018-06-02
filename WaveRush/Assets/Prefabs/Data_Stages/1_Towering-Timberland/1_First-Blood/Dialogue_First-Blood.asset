@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37d5d23629e1248d888af00e3959de60, type: 3}
+  m_Name: Dialogue_First-Blood
+  m_EditorClassIdentifier: 
+  character: {fileID: 11400000, guid: 059a984ee1be244bb931e02bf27a7816, type: 2}
+  dialogues:
+  - expression: Default
+    text: Here we are, the <color=yellow>Towering Timberland</color>.
+  - expression: 
+    text: The monsters here should be only a small challenge for you.
+  - expression: 
+    text: Hmm... but something tells me that after you have defeated enough monsters,
+      a <color=yellow>powerful enemy will appear</color>.
+  - expression: 
+    text: Should they best you, you will be sent back to the castle and your <color=yellow>experience
+      level</color> will drop.
+  - expression: 
+    text: Oh! And one more thing.
+  - expression: 
+    text: If you see an <color=yellow>enemy outlined in red</color>, you will take
+      damage when you touch them.
+  - expression: 
+    text: But this can be <color=yellow>parried</color> if timed correctly.
+  - expression: 
+    text: Best of luck to you.

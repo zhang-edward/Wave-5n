@@ -33,8 +33,11 @@ public class SaveGame
 		// Initialize owned heroes to 
 		ownedHeroes = new bool[(Enum.GetValues(typeof(HeroType)).Length - 1) * 3];
 		ownedHeroes[0] = true;
+
 		// high scores are all 0 by default
 		ClearHighScores();
+
+		PlayerPrefs.DeleteAll();
 	}
 
 	public void ClearHighScores()
