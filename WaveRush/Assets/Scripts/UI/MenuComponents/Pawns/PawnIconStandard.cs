@@ -87,18 +87,10 @@ public class PawnIconStandard : PawnIcon {
 			experienceSlider.value = pawnData.Experience;
 		}
 		if (heroStars != null) {
-			if (pawnData.level == 0) {
-				heroStars.enabled = false;
-				heroStars.color = Color.clear;
-			}
-			else {
-				int index = pawnData.level - 1;
-				if (index > 8)
-					index = 8;
-				heroStars.color = Color.white;
-				heroStars.enabled = true;
-				heroStars.sprite = starSprites[index];
-			}
+			int index = (int)pawnData.tier;
+			heroStars.color = Color.white;
+			heroStars.enabled = true;
+			heroStars.sprite = starSprites[index];
 		}
 		if (panels.Length > 0) {
 			switch(pawnData.tier)
