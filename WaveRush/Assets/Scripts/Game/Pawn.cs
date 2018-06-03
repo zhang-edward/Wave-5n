@@ -14,6 +14,8 @@ public class Pawn : System.IComparable<Pawn>
 	public HeroType type;		// the type of the hero
 	public int level;           // the level of the hero
 	private int maxExperience;	// the experience of the hero
+
+	/** Properties */
 	public int Id		  { get; private set; }
 	public int Experience { get; private set; }
 	public int MaxExperience {
@@ -21,6 +23,7 @@ public class Pawn : System.IComparable<Pawn>
 			return maxExperience;
 		}
 	}
+
 	public int MaxLevel {
 		get {
 			switch (tier) {
@@ -34,6 +37,10 @@ public class Pawn : System.IComparable<Pawn>
 					return -1;
 			}
 		}
+	}
+
+	public bool AtMaxLevel {
+		get { return level == MaxLevel; }
 	}
 
 	/// <summary>
@@ -61,6 +68,7 @@ public class Pawn : System.IComparable<Pawn>
 		this.type = other.type;
 		this.tier = other.tier;
 		this.level = other.level;
+		this.Experience = other.Experience;
 		maxExperience = Formulas.ExperienceFormula(level);
 	}
 
@@ -76,14 +84,19 @@ public class Pawn : System.IComparable<Pawn>
 	public int AddExperience(int amt) {
 		Debug.Log("Added experience to " + this);
 		int numLevelsGained = 0;
-		if (level > MaxLevel)
+		if (level >= MaxLevel)
 			return 0;
 		Experience += amt;
 		while (Experience > MaxExperience) {
 			Experience -= MaxExperience;
 			level++;
-			maxExperience = Formulas.ExperienceFormula(level);
 			numLevelsGained++;
+			maxExperience = Formulas.ExperienceFormula(level);
+			if (level >= MaxLevel)
+			{
+				Experience = 0;
+				return numLevelsGained;
+			}
 			Debug.Log(this + " gained a level");
 		}
 		return numLevelsGained;

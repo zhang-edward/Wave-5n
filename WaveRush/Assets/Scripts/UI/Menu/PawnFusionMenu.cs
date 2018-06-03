@@ -3,8 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 using System.Collections;
 
-public class PawnFusionMenu : MonoBehaviour
-{
+public class PawnFusionMenu : MonoBehaviour {
 	private int numSelected;
 	private PawnIconStandard highlightedIcon;
 	private GameObject[] selectedIcons = new GameObject[2];
@@ -21,12 +20,10 @@ public class PawnFusionMenu : MonoBehaviour
 	public GameObject highlightMenu;
 	public Button selectButton, infoButton;
 
-	public void Init()
-	{
-		pawnSelectionView.Init();
+	public void Init() {
+		pawnSelectionView.Init(GameManager.instance.save.pawns, PawnSelectionView.PawnSelectionViewMode.Sorted);
 		// Clicking on the fuseMatIcons deselects that pawn for fusion
-		fuseMatIcon1.onClick = (iconData) =>
-		{
+		fuseMatIcon1.onClick = (iconData) => {
 			selectedIcons[0].SetActive(true);
 			fuseMatIcon1.pawnData = null;
 			fuseMatIcon1.gameObject.SetActive(false);
@@ -34,8 +31,7 @@ public class PawnFusionMenu : MonoBehaviour
 			UpdatePawnSelectionViewInteractability();
 			UpdateCostText();
 		};
-		fuseMatIcon2.onClick = (iconData) =>
-		{
+		fuseMatIcon2.onClick = (iconData) => {
 			selectedIcons[1].SetActive(true);
 			fuseMatIcon2.pawnData = null;
 			fuseMatIcon2.gameObject.SetActive(false);
@@ -45,16 +41,15 @@ public class PawnFusionMenu : MonoBehaviour
 		};
 	}
 
-	void OnEnable()
-	{
+	void OnEnable() {
 		// Clicking on a pawn in the pawnSelectionView brings up the highlight menu
 		pawnSelectionView.Refresh();
-		foreach (PawnIcon pawnIcon in pawnSelectionView.pawnIcons)
-		{
+		foreach (PawnIcon pawnIcon in pawnSelectionView.pawnIcons) {
 			PawnIconStandard icon = (PawnIconStandard)pawnIcon;
-			icon.onClick = (iconData) =>
-			{
-				highlightMenu.SetActive(false);		// Disable then enable so the animation plays
+			if (!pawnIcon.pawnData.AtMaxLevel)
+				icon.button.interactable = false;
+			icon.onClick = (iconData) => {
+				highlightMenu.SetActive(false);     // Disable then enable so the animation plays
 				highlightedIcon = iconData;
 				highlightMenu.SetActive(true);
 				highlightMenu.transform.SetParent(iconData.transform, false);
@@ -62,14 +57,12 @@ public class PawnFusionMenu : MonoBehaviour
 		}
 	}
 
-	private void OnDisable()
-	{
+	private void OnDisable() {
 		Reset();
 	}
 
 
-	public void Reset()
-	{
+	public void Reset() {
 		foreach (GameObject icon in selectedIcons)
 			if (icon != null)
 				icon.SetActive(true);
@@ -80,15 +73,18 @@ public class PawnFusionMenu : MonoBehaviour
 		numSelected = 0;
 		UpdatePawnSelectionViewInteractability();
 		pawnSelectionView.Refresh();
+		foreach (PawnIcon pawnIcon in pawnSelectionView.pawnIcons) {
+			PawnIconStandard icon = (PawnIconStandard)pawnIcon;
+			if (!pawnIcon.pawnData.AtMaxLevel)
+				icon.button.interactable = false;
+		}
 	}
 
-	private void UpdatePawnSelectionViewInteractability()
-	{
+	private void UpdatePawnSelectionViewInteractability() {
 		pawnSelectionView.GetComponent<CanvasGroup>().interactable = numSelected < 2;
 	}
 
-	private void UpdateCostText()
-	{
+	private void UpdateCostText() {
 		Pawn pawn1 = fuseMatIcon1.pawnData;
 		Pawn pawn2 = fuseMatIcon2.pawnData;
 		moneyCostText.text = GetFusionCost(pawn1, pawn2).ToString();
@@ -96,17 +92,14 @@ public class PawnFusionMenu : MonoBehaviour
 	}
 
 	// Called by selectButton (in inspector, in the highlight menu)
-	public void SelectPawnIcon()
-	{
+	public void SelectPawnIcon() {
 		PawnIcon fuseMatIcon;
 		int index;
-		if (!fuseMatIcon1.gameObject.activeInHierarchy)
-		{
+		if (!fuseMatIcon1.gameObject.activeInHierarchy) {
 			fuseMatIcon = fuseMatIcon1;
 			index = 0;
 		}
-		else
-		{
+		else {
 			fuseMatIcon = fuseMatIcon2;
 			index = 1;
 		}
@@ -126,14 +119,12 @@ public class PawnFusionMenu : MonoBehaviour
 	}
 
 	// Called by infoButton (in inspector, in the highlight menu)
-	public void OpenInfoPanel()
-	{
+	public void OpenInfoPanel() {
 		infoPanel.gameObject.SetActive(true);
 		infoPanel.Init(highlightedIcon.pawnData);
 	}
 
-	public void ConfirmResult()
-	{
+	public void ConfirmResult() {
 		print("Refreshing page");
 		pawnSelectionView.Refresh();
 		Reset();
@@ -143,12 +134,10 @@ public class PawnFusionMenu : MonoBehaviour
 	// Pawn Fusion Logic
 	// ==========
 
-	public void FusePawns()
-	{
+	public void FusePawns() {
 		GameManager gm = GameManager.instance;
-		PawnWallet pawnWallet = GameManager.instance.saveGame.pawnWallet;
-		if (numSelected != 2)
-		{
+		SaveModifier save = gm.save;
+		if (numSelected != 2) {
 			gm.DisplayAlert("You must select 2 heroes!");
 			return;
 		}
@@ -157,20 +146,18 @@ public class PawnFusionMenu : MonoBehaviour
 		Debug.Log("Pawn1:" + pawn1 +
 		  "\nPawn2:" + pawn2);
 
-		if (CheckCanFusePawns(pawn1, pawn2))
-		{
+		if (CheckCanFusePawns(pawn1, pawn2)) {
 			// Add the pawns to the save file
 			Pawn pawn = GetFusedPawn(pawn1, pawn2);
-			pawnWallet.RemovePawn(pawn1.id);
-			pawnWallet.RemovePawn(pawn2.id);
-			pawnWallet.AddPawn(pawn, true, 100);
-			gm.AddPawnTimer(pawn.id);
+			save.RemovePawn(pawn1.Id);
+			save.RemovePawn(pawn2.Id);
+			save.AddPawn(pawn);
 			// Spend resources
-			bool spentMoney = gm.wallet.TrySpendMoney(GetFusionCost(pawn1, pawn2));
-			bool spentSouls = gm.wallet.TrySpendSouls(GetFusionSoulsCost(pawn1, pawn2));
+			bool spentMoney = save.TrySpendMoney(GetFusionCost(pawn1, pawn2));
+			bool spentSouls = save.TrySpendSouls(GetFusionSoulsCost(pawn1, pawn2));
 			UnityEngine.Assertions.Assert.IsTrue(spentMoney && spentSouls);
 			// Save Game
-			SaveLoad.Save();
+			gm.Save();
 			// Update UI
 			fuseMatIcon1.gameObject.SetActive(false);
 			fuseMatIcon1.pawnData = null;
@@ -183,48 +170,32 @@ public class PawnFusionMenu : MonoBehaviour
 	}
 
 	// NOTE: Order of the condition checks here matters!
-	public bool CheckCanFusePawns(Pawn pawn1, Pawn pawn2)
-	{
+	public bool CheckCanFusePawns(Pawn pawn1, Pawn pawn2) {
 		GameManager gm = GameManager.instance;
-		if (pawn1.type != pawn2.type)
-		{
+		if (pawn1.type != pawn2.type) {
 			gm.DisplayAlert("Heroes must be the same type!");
 			return false;
 		}
-		if (pawn1.level >= Pawn.MAX_LEVEL || pawn2.level >= Pawn.MAX_LEVEL)
-		{
-			gm.DisplayAlert("You cannot fuse a max level hero!");
-			return false;
-		}
-		if (pawn1.tier != pawn2.tier)
-		{
+		if (pawn1.tier != pawn2.tier) {
 			gm.DisplayAlert("The heroes must be the same tier!");
 			return false;
 		}
-		if (pawn1.atThresholdLevel != pawn2.atThresholdLevel) // Either they are both at threshold or both aren't
-		{
-			gm.DisplayAlert("Heroes must both be at max level to ascend tiers!");
-			return false;
-		}
-		if (!CanAffordFusion(pawn1, pawn2))
-		{
+		if (!CanAffordFusion(pawn1, pawn2)) {
 			resourceReqAnim.CrossFade("Warning", 0);
 			return false;
 		}
 		return true;
 	}
 
-	private bool CanAffordFusion(Pawn pawn1, Pawn pawn2)
-	{
-		Wallet wallet = GameManager.instance.wallet;
-		if (wallet.money < GetFusionCost(pawn1, pawn2) ||
-			wallet.souls < GetFusionSoulsCost(pawn1, pawn2))
+	private bool CanAffordFusion(Pawn pawn1, Pawn pawn2) {
+		SaveModifier save = GameManager.instance.save;
+		if (save.money < GetFusionCost(pawn1, pawn2) ||
+			save.souls < GetFusionSoulsCost(pawn1, pawn2))
 			return false;
 		return true;
 	}
 
-	private int GetFusionCost(Pawn pawn1, Pawn pawn2)
-	{
+	private int GetFusionCost(Pawn pawn1, Pawn pawn2) {
 		int pawn1Level = 0;
 		int pawn2Level = 0;
 		if (pawn1 != null)
@@ -235,26 +206,17 @@ public class PawnFusionMenu : MonoBehaviour
 		return cost;
 	}
 
-	private int GetFusionSoulsCost(Pawn pawn1, Pawn pawn2)
-	{
+	private int GetFusionSoulsCost(Pawn pawn1, Pawn pawn2) {
 		int pawn1Level = 0;
 		int pawn2Level = 0;
 		if (pawn1 != null)
 			pawn1Level = pawn1.level;
 		if (pawn2 != null)
 			pawn2Level = pawn2.level;
-		if (pawn1Level == Pawn.T2_MIN_LEVEL - 1 ||
-		    pawn2Level == Pawn.T2_MIN_LEVEL - 1)
-			return 2;
-		else if (pawn1Level == Pawn.T3_MIN_LEVEL - 1 ||
-		         pawn2Level == Pawn.T2_MIN_LEVEL - 1)
-			return 5;
-		else
-			return 0;
+		return 0;
 	}
 
-	private Pawn GetFusedPawn(Pawn pawn1, Pawn pawn2)
-	{
+	private Pawn GetFusedPawn(Pawn pawn1, Pawn pawn2) {
 		UnityEngine.Assertions.Assert.IsTrue(CheckCanFusePawns(pawn1, pawn2));
 
 		int level;  // the level of the fused pawn
@@ -264,7 +226,7 @@ public class PawnFusionMenu : MonoBehaviour
 		else
 			level = pawn2.level + 1;
 		// Make the new pawn
-		Pawn pawn = new Pawn(pawn1.type);
+		Pawn pawn = new Pawn(pawn1.type, pawn1.tier);
 		pawn.level = level;
 		return pawn;
 	}

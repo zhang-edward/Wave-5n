@@ -15,7 +15,7 @@ public class StageData : ScriptableObject
 	[Header("Stage Properties")]
 	public string stageName;
 	public MapType mapType;
-	[Range(1, 50)] public int levelRaw;
+	[Range(1, 50)] public int levelRaw = 1;
 	[Header("Difficulty Curve Variables")]
 	public float upperAsymptote = 15;					// The maximum number of enemies possible
 	public float lowerAsymptote = 5;					// The minimum number of enemies possible

@@ -93,10 +93,10 @@ public class PawnInfoPanel : MonoBehaviour
 		sAbilityIcon.GetComponent<Image>().sprite = heroData.specialAbilityIcon;
 
 		// Set text option
-		abilityIcon1.GetComponent<ScrollingTextOption>().text = heroData.ability1Description;
-		abilityIcon2.GetComponent<ScrollingTextOption>().text = heroData.ability2Description;
-		sAbilityIcon.GetComponent<ScrollingTextOption>().text = heroData.specialDescription;
-		parryIcon	.GetComponent<ScrollingTextOption>().text = heroData.parryDescription;
+		abilityIcon1.GetComponent<ScrollingTextOption>().text = heroData.ability1Name.ToUpper() + ": " + heroData.ability1Description;
+		abilityIcon2.GetComponent<ScrollingTextOption>().text = heroData.ability2Name.ToUpper() + ": " + heroData.ability2Description;
+		sAbilityIcon.GetComponent<ScrollingTextOption>().text = heroData.specialName.ToUpper()  + ": " + heroData.specialDescription;
+		parryIcon	.GetComponent<ScrollingTextOption>().text = "PARRY: " + heroData.parryDescription;
 
 		// Set toggle to false
 		abilityIcon1.GetComponent<Toggle>().isOn = false;

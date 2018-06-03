@@ -16,9 +16,10 @@ public class HeroData : ScriptableObject
 	public int[] unlockStage  = new int[3];
 
 	[Header("Descriptions")]
-	[TextArea(2, 5)] public string[] tips;
-	[TextArea(3, 10)]public string heroDescription,
-		ability1Description,
+	[TextArea(2, 5)]  public string[] tips;
+	[TextArea(3, 10)] public string heroDescription;
+	public string ability1Name, ability2Name, specialName;
+	[TextArea(3, 10)] public string ability1Description,
 		ability2Description,
 		specialDescription,
 		parryDescription;

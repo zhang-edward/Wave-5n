@@ -7,6 +7,7 @@ public class MainMenu : MonoBehaviour
 
 	[Header("Primary Menus")]
 	public PawnSelectionView partyView;
+	public PawnFusionMenu fusionMenu;
 	//public PawnRetireMenu pawnRetireMenu;
 
 	[Header("Secondary Views")]
@@ -27,7 +28,7 @@ public class MainMenu : MonoBehaviour
 				pawnInfoPanel.Init(iconData.pawnData);
 			};
 		}
-		//pawnFusionMenu.Init();
+		fusionMenu.Init();
 		//pawnRetireMenu.Init();
 	}
 

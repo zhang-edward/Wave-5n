@@ -25,8 +25,6 @@ public class PawnIconStandard : PawnIcon {
 	public delegate void Click(PawnIconStandard iconData);
 	public Click onClick;
 
-	private bool initialized = false;
-
 	void Awake()
 	{
 		// initialize button interactivity
@@ -54,7 +52,6 @@ public class PawnIconStandard : PawnIcon {
 				break;
 		}
 		InitOptionalElements();
-		initialized = true;
 	}
 
 	protected void SetLevel(int level) {
@@ -66,8 +63,6 @@ public class PawnIconStandard : PawnIcon {
 
 	void Update()
 	{
-		if (!initialized)
-			return;
 	}
 
 	public void SetHighlight(bool active) {
@@ -83,6 +78,8 @@ public class PawnIconStandard : PawnIcon {
 	private void InitOptionalElements()
 	{
 		if (experienceSlider != null) {
+			print("Pawn: " + pawnData);
+			print("Max value: " + pawnData.MaxExperience + ", " + pawnData.Experience);
 			experienceSlider.maxValue = pawnData.MaxExperience;
 			experienceSlider.value = pawnData.Experience;
 		}
