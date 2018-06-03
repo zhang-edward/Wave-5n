@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 public class Enemy : MonoBehaviour, IDamageable {
 
+	public static int MAX_LEVEL_RAW = 50;
 	public static int MAX_ABILITIES = 4;
 
 	protected string DEFAULT_STATE = "MoveState";
@@ -359,6 +360,6 @@ public class Enemy : MonoBehaviour, IDamageable {
 
 	private static int EnemyHealthEquation(int level, int baseHealth)
 	{
-		return Mathf.RoundToInt(baseHealth * (Pawn.DamageEquation(level)) * (Mathf.Sqrt(level) / 2));
+		return Mathf.RoundToInt(baseHealth * (0.8f * level + 10) * (Mathf.Sqrt(level) / 2));
 	}
 }

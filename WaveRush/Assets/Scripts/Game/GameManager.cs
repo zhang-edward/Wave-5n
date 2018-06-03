@@ -269,6 +269,7 @@ public class GameManager : MonoBehaviour {
 
 	public void DeleteSaveData()
 	{
+		PlayerPrefs.DeleteAll();
 		sg = new SaveGame ();
 		int foo;
 		sg.pawnWallet.AddPawn(new Pawn(HeroType.Knight, HeroTier.tier1), out foo);

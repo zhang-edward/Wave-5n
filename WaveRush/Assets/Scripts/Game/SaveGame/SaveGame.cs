@@ -17,7 +17,7 @@ public class SaveGame
 	//private Dictionary<string, float> timers;   // list of various timers in the game, such as daily rewards and quests
 	public Dictionary<string, int> saveDict;    // Dictionary containing any all data
 	public Dictionary<string, bool> hasPlayerViewedDict { get; private set; }
-	public bool[] ownedHeroes;
+	public bool[] unlockedHeroes;
 
 	public SaveGame()
 	{
@@ -30,21 +30,20 @@ public class SaveGame
 		hasPlayerViewedDict = new Dictionary<string, bool>();
 		wallet = new Wallet();
 		pawnWallet = new PawnWallet();
-		// Initialize owned heroes to 
-		ownedHeroes = new bool[(Enum.GetValues(typeof(HeroType)).Length - 1) * 3];
-		ownedHeroes[0] = true;
+
+		// Get hero types
+		int numHeroTypes = Enum.GetValues(typeof(HeroType)).Length;
+		unlockedHeroes = new bool[numHeroTypes];
+		unlockedHeroes[0] = true;
 
 		// high scores are all 0 by default
 		ClearHighScores();
-
-		PlayerPrefs.DeleteAll();
 	}
 
 	public void ClearHighScores()
 	{
 		highScores = new Dictionary<HeroType, ScoreManager.Score>();
 	}
-
 
 
 	//public float GetSavedTimer(string key)

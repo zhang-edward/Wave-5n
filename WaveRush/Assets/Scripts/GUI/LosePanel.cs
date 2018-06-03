@@ -30,7 +30,7 @@ public class LosePanel : MonoBehaviour {
 
 	void InitHeroExpMenu() {
 		scrollView.ScrollRight();
-		heroesExpMenu.Init(GameManager.instance.selectedPawn, heroExpMenuData);
+		heroesExpMenu.Init(heroExpMenuData);
 		//heroesRescuedMenu.Init(acquiredPawns);
 		proceedButton.onClick.RemoveAllListeners();
 		proceedButton.onClick.AddListener(GoToMenuScene);

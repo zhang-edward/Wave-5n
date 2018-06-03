@@ -52,7 +52,7 @@
 
 		private float HealAmt()
 		{
-			return baseHealAmt * Pawn.DamageEquation(e.level);
+			return baseHealAmt * Formulas.DamageFormula(e.level);
 		}
 	}
 }

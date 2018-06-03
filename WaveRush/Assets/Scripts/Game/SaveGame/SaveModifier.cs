@@ -15,6 +15,7 @@ public class SaveModifier {
 
 	public int LatestSeriesIndex { get { return sg.saveDict[SaveGame.LATEST_UNLOCKED_SERIES_INDEX_KEY]; } }
 	public int LatestStageIndex  { get { return sg.saveDict[SaveGame.LATEST_UNLOCKED_STAGE_INDEX_KEY] ; } }
+	public bool[] UnlockedHeroes { get { return sg.unlockedHeroes; } }
 
 	private SaveGame sg;
 	private Wallet wallet;
@@ -24,7 +25,6 @@ public class SaveModifier {
 	public SaveStateUpdate OnHasViewedDictionaryUpdated;
 	public delegate void PawnStateUpdate(int id);
 	public PawnStateUpdate OnPawnListUpdated;
-
 
 
 	public SaveModifier(SaveGame saveGame) {

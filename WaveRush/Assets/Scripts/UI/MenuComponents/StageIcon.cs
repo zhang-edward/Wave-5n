@@ -24,7 +24,7 @@ public class StageIcon : MonoBehaviour
 	public void Init(StageData stage)
 	{
 		stageNameText.text = stage.stageName;
-		stageLevelText.text = "lv" + stage.level.ToString();
+		stageLevelText.text = "lv" + (Mathf.CeilToInt(stage.levelRaw * (2f/5f))).ToString();
 	}
 
 	private void OnClick()

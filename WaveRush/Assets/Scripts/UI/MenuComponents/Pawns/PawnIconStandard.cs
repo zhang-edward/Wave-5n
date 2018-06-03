@@ -32,7 +32,6 @@ public class PawnIconStandard : PawnIcon {
 		// initialize button interactivity
 		if (button != null)
 			button.onClick.AddListener(() => OnClick());
-		experienceSlider.maxValue = 1f;
 	}
 
 	public override void Init(Pawn pawnData)
@@ -84,7 +83,8 @@ public class PawnIconStandard : PawnIcon {
 	private void InitOptionalElements()
 	{
 		if (experienceSlider != null) {
-			experienceSlider.value = (float)pawnData.experience / pawnData.MaxExperience;
+			experienceSlider.maxValue = pawnData.MaxExperience;
+			experienceSlider.value = pawnData.Experience;
 		}
 		if (heroStars != null) {
 			if (pawnData.level == 0) {

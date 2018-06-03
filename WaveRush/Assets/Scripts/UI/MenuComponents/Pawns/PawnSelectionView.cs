@@ -10,56 +10,55 @@ public class PawnSelectionView : MonoBehaviour {
 	public List<PawnIcon> pawnIcons { get; private set; }
 
 	private Pawn[] pawns;
-	private SaveModifier.PawnStateUpdate pawnStateUpdateEvent;
-	private bool initialized;	// Variable to deal with the event assignment for pawnStateUpdateEvent
+	private bool initialized;   // Variable to deal with the event assignment for pawnStateUpdateEvent
+	public enum PawnSelectionViewMode { Sorted, Shuffled }
+	[SerializeField]private PawnSelectionViewMode defaultMode;
 
 	void Awake() {
 	}
 
-	public void Init(Pawn[] pawns, SaveModifier.PawnStateUpdate pawnStateUpdateEvent) {
+	public void Init(Pawn[] pawns, PawnSelectionViewMode defaultMode) {
 		this.pawns = pawns;
-		this.pawnStateUpdateEvent = pawnStateUpdateEvent;
+		this.defaultMode = defaultMode;
 
-		pawnStateUpdateEvent += UpdatePawn;
 		initialized = true;
 
 		pawnIcons = new List<PawnIcon>();
 		Refresh();
+		if (defaultMode == PawnSelectionViewMode.Shuffled)
+			Shuffle();
 	}
 
 	void OnEnable() {
-		if (initialized) {
-			pawnStateUpdateEvent += UpdatePawn;
-		}
+		if (initialized)
+			Refresh();
 	}
 
 	void OnDisable() {
-		if (initialized) {
-			pawnStateUpdateEvent -= UpdatePawn;
-		}
 	}
 
-	private void UpdatePawn(int id) {
-		// Find the pawnIcon UI object for the specified id and update it
-		for (int i = 0; i < pawnIcons.Count; i ++) {
-			PawnIcon icon = pawnIcons[i];
-			if (icon.pawnData.id == id) {
-				if (pawns[id] == null) {
-					icon.gameObject.SetActive(false);
-					return;
-				}
-				else {
-					icon.gameObject.SetActive(true);
-					icon.Init(pawns[id]);
-					return;
-				}
-			}
-		}
-		// If we couldn't find a pawnIcon
-		if (pawns[id] != null) {
-			AddNewPawnIcon(pawns[id]);
-		}
-	}
+	//private void UpdatePawn(int id) {
+	//	print("Updating");
+	//	// Find the pawnIcon UI object for the specified id and update it
+	//	for (int i = 0; i < pawnIcons.Count; i ++) {
+	//		PawnIcon icon = pawnIcons[i];
+	//		if (icon.pawnData.Id == id) {
+	//			if (pawns[id] == null) {
+	//				icon.gameObject.SetActive(false);
+	//				return;
+	//			}
+	//			else {
+	//				icon.gameObject.SetActive(true);
+	//				icon.Init(pawns[id]);
+	//				return;
+	//			}
+	//		}
+	//	}
+	//	// If we couldn't find a pawnIcon
+	//	if (pawns[id] != null) {
+	//		AddNewPawnIcon(pawns[id]);
+	//	}
+	//}
 
 	public void Refresh()
 	{
@@ -83,28 +82,28 @@ public class PawnSelectionView : MonoBehaviour {
 				j++;
 			}
 		}
-		SortByHeroType();
+		if (defaultMode == PawnSelectionViewMode.Sorted)
+			Sort();
 	}
 
 	/// <summary>
 	/// Sorts the list of pawnIcons by the hero type, and also by level within each hero type.
 	/// Also sets the sibling index so the order is rendered in any layout groups. Uses insertion sort.
 	/// </summary>
-	public void SortByHeroType()
+	public void Sort()
 	{
-		// Insertion sort
-		for (int i = 1; i < pawnIcons.Count; i ++) {
-			PawnIcon x = pawnIcons[i];
-			int j = i - 1;
-			while (j >= 0 && CompareHeroAndLevel(pawnIcons[j].pawnData, x.pawnData) < 0) {
-				pawnIcons[j + 1] = pawnIcons[j];
-				j--;
-			}
-			pawnIcons[j + 1] = x;
-		}
-
+		pawnIcons.Sort();
+		pawnIcons.Reverse();
 		// Set sibling index (hierarchy position)
 		for (int i = 0; i < pawnIcons.Count; i ++) {
+			pawnIcons[i].transform.SetSiblingIndex(i);
+		}
+	}
+
+	public void Shuffle() {
+		pawnIcons.Shuffle();
+		// Set sibling index (hierarchy position)
+		for (int i = 0; i < pawnIcons.Count; i++) {
 			pawnIcons[i].transform.SetSiblingIndex(i);
 		}
 	}
@@ -113,26 +112,26 @@ public class PawnSelectionView : MonoBehaviour {
 	/// Sorts the list of pawnIcons by level.
 	/// Also sets the sibling index so the order is rendered in any layout groups. Uses insertion sort.
 	/// </summary>
-	public void SortByLevel()
-	{
-		for (int i = 1; i < pawnIcons.Count; i++)
-		{
-			PawnIcon x = pawnIcons[i];
-			int j = i - 1;
-			while (j >= 0 && 
-			       pawnIcons[j].pawnData.level < x.pawnData.level && 
-			       pawnIcons[j].pawnData.tier  < x.pawnData.tier)
-			{
-				pawnIcons[j + 1] = pawnIcons[j];
-				j--;
-			}
-			pawnIcons[j + 1] = x;
-		}
-		for (int i = 0; i < pawnIcons.Count; i++)       // set the hierarchy position of each pawnIcon
-		{
-			pawnIcons[i].transform.SetSiblingIndex(i);
-		}
-	}
+	//public void SortByLevel()
+	//{
+	//	for (int i = 1; i < pawnIcons.Count; i++)
+	//	{
+	//		PawnIcon x = pawnIcons[i];
+	//		int j = i - 1;
+	//		while (j >= 0 && 
+	//		       pawnIcons[j].pawnData.level < x.pawnData.level && 
+	//		       pawnIcons[j].pawnData.tier  < x.pawnData.tier)
+	//		{
+	//			pawnIcons[j + 1] = pawnIcons[j];
+	//			j--;
+	//		}
+	//		pawnIcons[j + 1] = x;
+	//	}
+	//	for (int i = 0; i < pawnIcons.Count; i++)       // set the hierarchy position of each pawnIcon
+	//	{
+	//		pawnIcons[i].transform.SetSiblingIndex(i);
+	//	}
+	//}
 
 	public int IndexOfPawnIcon(PawnIcon icon) {
 		return pawnIcons.IndexOf(icon);

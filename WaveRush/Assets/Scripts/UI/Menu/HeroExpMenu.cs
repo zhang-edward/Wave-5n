@@ -4,13 +4,12 @@ using System.Collections;
 public class HeroExpMenu : MonoBehaviour
 {
 	public struct HeroExpMenuData {
-		public float endingExperience;
-		public int numLevelUps;
-		public int startingLevel;
-		public HeroExpMenuData(float endingExperience, int numLevelUps, int startingLevel) {
-			this.endingExperience = endingExperience;
-			this.numLevelUps = numLevelUps;
-			this.startingLevel = startingLevel;
+		public Pawn startState;
+		public Pawn endState;
+
+		public HeroExpMenuData(Pawn startState, Pawn endState) {
+			this.startState = startState;
+			this.endState = endState;
 		}
 	}
 
@@ -20,25 +19,21 @@ public class HeroExpMenu : MonoBehaviour
 	public GameObject pawnIconAnimatedPrefab;
 
 	private PawnIconAnimated pawnIcon;
-	private Pawn pawn;
 	private float endingExperience;
 	private int numLevelUps;
 
 	void Start() {
 	}
 
-	public void Init(Pawn p, HeroExpMenuData data) {
-		this.pawn = p;
-		this.endingExperience = data.endingExperience;
-		this.numLevelUps = data.numLevelUps;
+	public void Init(HeroExpMenuData data) {
 		pawnIcon = Instantiate(pawnIconAnimatedPrefab).GetComponent<PawnIconAnimated>();
 		pawnIcon.transform.SetParent(contentFolder, false);
-		pawnIcon.Init(pawn, data.startingLevel);
+		pawnIcon.Init(data.startState, data.endState);
 
 		Invoke("StartAnimation", 1.0f);
 	}
 
 	private void StartAnimation() {
-		pawnIcon.AnimateGetExperience(endingExperience, numLevelUps);
+		pawnIcon.AnimateGetExperience();
 	}
 }

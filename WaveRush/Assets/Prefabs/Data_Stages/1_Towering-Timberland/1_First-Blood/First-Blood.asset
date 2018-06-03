@@ -11,15 +11,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2379bde86d183432688c3e33d4537570, type: 3}
   m_Name: First-Blood
   m_EditorClassIdentifier: 
-  dialogueSets: []
+  dialogueSets:
+  - {fileID: 11400000, guid: 7c557fd22363f4a338f8faf6ded6e423, type: 2}
   stageName: First Blood
   mapType: 1
-  level: 1
+  levelRaw: 1
   upperAsymptote: 10
   lowerAsymptote: 5
   maxDifficultyVelocity: 2
-  goalWave: 5
-  bossWave: 5
+  goalWave: 4
+  bossWave: 4
   enemyPrefabs:
   - prefab: {fileID: 177460, guid: 54fe2fdc3252847f08f15a8590667d5b, type: 2}
     spawnFrequency: 1

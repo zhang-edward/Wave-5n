@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [System.Serializable]
-public class Pawn
+public class Pawn : System.IComparable<Pawn>
 {
 	//public const int T1_MIN_LEVEL = 1;
 	//public const int T2_MIN_LEVEL = 5;
@@ -14,8 +14,8 @@ public class Pawn
 	public HeroType type;		// the type of the hero
 	public int level;           // the level of the hero
 	private int maxExperience;	// the experience of the hero
-	public int id		  { get; private set; }
-	public int experience { get; private set; }
+	public int Id		  { get; private set; }
+	public int Experience { get; private set; }
 	public int MaxExperience {
 		get {
 			return maxExperience;
@@ -54,11 +54,18 @@ public class Pawn
 		this.type = type;
 		this.tier = tier;
 		this.level = level;
-		maxExperience = (int)Mathf.Sqrt(level * 64);
+		maxExperience = Formulas.ExperienceFormula(level);
+	}
+
+	public Pawn(Pawn other) {
+		this.type = other.type;
+		this.tier = other.tier;
+		this.level = other.level;
+		maxExperience = Formulas.ExperienceFormula(level);
 	}
 
 	public void SetID(int id) {
-		this.id = id;
+		this.Id = id;
 	}
 
 	/// <summary>
@@ -71,11 +78,11 @@ public class Pawn
 		int numLevelsGained = 0;
 		if (level > MaxLevel)
 			return 0;
-		experience += amt;
-		while (experience > MaxExperience) {
-			experience -= MaxExperience;
+		Experience += amt;
+		while (Experience > MaxExperience) {
+			Experience -= MaxExperience;
 			level++;
-			maxExperience = (int)Mathf.Sqrt(level * 64);
+			maxExperience = Formulas.ExperienceFormula(level);
 			numLevelsGained++;
 			Debug.Log(this + " gained a level");
 		}
@@ -87,15 +94,15 @@ public class Pawn
 		return string.Format("[Pawn: type={0}, tier={1}, level={2}]", type.ToString(), tier.ToString(), level);
 	}
 
-	public static float DamageEquation(int level)
-	{
-		float answer = (0.08f * Mathf.Pow(level, 2.8f) + 5.3f);
-		//if (tier == HeroTier.tier2)
-		//	answer += 5f;
-		//else if (tier == HeroTier.tier3)
-		//	answer += 10f;
-		return answer;
-	}
+	//public static float DamageEquation(int level)
+	//{
+	//	float answer = (0.08f * Mathf.Pow(level, 2.8f) + 5.3f);
+	//	//if (tier == HeroTier.tier2)
+	//	//	answer += 5f;
+	//	//else if (tier == HeroTier.tier3)
+	//	//	answer += 10f;
+	//	return answer;
+	//}
 
 	public AnimationSet GetAnimationSet()
 	{
@@ -119,13 +126,26 @@ public class Pawn
 	}
 
 	public static int GetMaxExperience(int level) {
-		return (int)Mathf.Sqrt(level * 64);
+		return Formulas.ExperienceFormula(level);
 	}
 
 	//public string GetTimerID()
 	//{
 	//	return "Pawn:" + id;
 	//}
+
+	public int CompareTo(Pawn other) {
+		if (other == null) 
+			return 1;
+
+		if (type.CompareTo(other.type) != 0)
+			return type.CompareTo(other.type);
+		if (tier.CompareTo(other.tier) != 0)
+			return tier.CompareTo(other.tier);
+		else if (level.CompareTo(other.level) != 0)
+			return level.CompareTo(other.level);
+		return 0;
+	}
 }
 
 public enum HeroTier {

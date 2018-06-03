@@ -25,8 +25,8 @@ public class PawnShopMenu : MonoBehaviour
 		gm = GameManager.instance;
 		// Initialize pawn selection view
 		pawnShop.OnSaveGameLoaded(gm.save);
-		pawnSelectionView.Init(pawnShop.AvailablePawns.ToArray(), pawnShop.OnPawnListUpdated);
-		pawnSelectionView.SortByLevel();
+		pawnSelectionView.Init(pawnShop.AvailablePawns.ToArray(), PawnSelectionView.PawnSelectionViewMode.Shuffled);
+		//pawnSelectionView.SortByLevel();
 		// Set onClick for each pawnIcon
 		foreach (PawnIcon p in pawnSelectionView.pawnIcons) {
 			PawnIconStandard icon = (PawnIconStandard)p;

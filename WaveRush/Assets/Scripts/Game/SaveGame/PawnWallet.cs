@@ -3,7 +3,7 @@ using System.Collections.Generic;
 [System.Serializable]
 public class PawnWallet
 {
-	public const int INITIAL_PAWN_CAPACITY = 2;
+	public const int INITIAL_PAWN_CAPACITY = 10;
 
 	public int pawnCapacity { private get; set; }	// the total amount of pawns that the player can possess at one time
 	public int numPawns;							// how many pawns the player has

@@ -12,7 +12,7 @@ public class HeroSelectMenu : MonoBehaviour  {
 
 	void Start()
 	{
-		pawnSelectionView.Init(GameManager.instance.save.pawns, GameManager.instance.save.OnPawnListUpdated);
+		pawnSelectionView.Init(GameManager.instance.save.pawns, PawnSelectionView.PawnSelectionViewMode.Sorted);
 		Init();
 	}
 
