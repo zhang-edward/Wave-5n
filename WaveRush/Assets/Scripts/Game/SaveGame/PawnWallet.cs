@@ -5,9 +5,9 @@ public class PawnWallet
 {
 	public const int INITIAL_PAWN_CAPACITY = 10;
 
-	public int pawnCapacity { private get; set; }	// the total amount of pawns that the player can possess at one time
 	public int numPawns;							// how many pawns the player has
-	public Pawn[] pawns { get; private set; }       // the master list of the different pawns the player possesses
+	public int pawnCapacity { get; private set; }	// the total amount of pawns that the player can possess at one time
+	public Pawn[] pawns { get; private set; }	// the master list of the different pawns the player possesses
 
 	public PawnWallet()
 	{
@@ -15,9 +15,6 @@ public class PawnWallet
 		pawns = new Pawn[pawnCapacity];
 	}
 
-	// ========== 
-	// Pawns
-	// ==========
 	public bool AddPawn(Pawn pawn, out int id)
 	{
 		for (int i = 0; i < pawns.Length; i++) {
@@ -28,8 +25,10 @@ public class PawnWallet
 				Debug.Log("New Pawn:" + pawn);
 				return true;
 			}
+			else
+				Debug.Log(pawns[i]);
 		}
-		Debug.LogWarning("Add Pawn Failed");
+		Debug.LogError("Add Pawn Failed");
 		id = -1;
 		return false;
 	}
@@ -72,5 +71,13 @@ public class PawnWallet
 				return true;
 		}
 		return false;
+	}
+
+	public void ChangePawnCapacity(int newCapacity) {
+		UnityEngine.Assertions.Assert.IsTrue(newCapacity > pawnCapacity);
+		pawnCapacity = newCapacity;
+		Pawn[] newPawns = new Pawn[newCapacity];
+		pawns.CopyTo(newPawns, 0);
+		pawns = newPawns;
 	}
 }

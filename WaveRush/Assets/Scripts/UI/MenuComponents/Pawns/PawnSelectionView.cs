@@ -9,7 +9,7 @@ public class PawnSelectionView : MonoBehaviour {
 	public Transform selectedContentFolder;
 	public List<PawnIcon> pawnIcons { get; private set; }
 
-	private Pawn[] pawns;
+	private Pawn[] pawns;	// Reference to a pawn list for this view to display
 	private bool initialized;   // Variable to deal with the event assignment for pawnStateUpdateEvent
 	public enum PawnSelectionViewMode { Sorted, Shuffled }
 	[SerializeField]private PawnSelectionViewMode defaultMode;
@@ -19,10 +19,9 @@ public class PawnSelectionView : MonoBehaviour {
 
 	public void Init(Pawn[] pawns, PawnSelectionViewMode defaultMode) {
 		this.pawns = pawns;
+		Debug.Log("Pawns: " + pawns.Length);
 		this.defaultMode = defaultMode;
-
 		initialized = true;
-
 		pawnIcons = new List<PawnIcon>();
 		Refresh();
 		if (defaultMode == PawnSelectionViewMode.Shuffled)
@@ -64,24 +63,39 @@ public class PawnSelectionView : MonoBehaviour {
 	{
 		foreach (PawnIcon icon in pawnIcons)
 			icon.gameObject.SetActive(false);
-		int j = 0;									// Track the pawnIcons list position
-		for (int i = 0; i < pawns.Length; i ++)		// Iterate through the master list of pawns (may contain holes)
-		{
+		for (int i = 0; i < pawns.Length; i ++) {
 			Pawn pawn = pawns[i];
-			if (pawn != null)
-			{
-				if (j >= pawnIcons.Count)			// If we need more pawn icons, add new ones to the list
-				{
+			if (pawn != null) {
+				PawnIcon icon = FindPawnIcon(pawn);		// Find the pawn icon responsible for this pawn
+				if (icon == null) {
 					AddNewPawnIcon(pawn);
 				}
-				else
-				{
-					pawnIcons[j].Init(pawn);        // If not, re-initialize the pawn icon
-					pawnIcons[j].gameObject.SetActive(true);
+				else {
+					icon.Init(pawn);
+					icon.gameObject.SetActive(true);
 				}
-				j++;
 			}
 		}
+		//foreach (PawnIcon icon in pawnIcons)
+		//	icon.gameObject.SetActive(false);
+		//int j = 0;									// Track the pawnIcons list position
+		//for (int i = 0; i < pawns.Count; i ++)		// Iterate through the master list of pawns (may contain holes)
+		//{
+		//	Pawn pawn = pawns[i];
+		//	if (pawn != null)
+		//	{
+		//		if (j >= pawnIcons.Count)			// If we need more pawn icons, add new ones to the list
+		//		{
+		//			AddNewPawnIcon(pawn);
+		//		}
+		//		else
+		//		{
+		//			pawnIcons[j].Init(pawn);        // If not, re-initialize the pawn icon
+		//			pawnIcons[j].gameObject.SetActive(true);
+		//		}
+		//		j++;
+		//	}
+		//}
 		if (defaultMode == PawnSelectionViewMode.Sorted)
 			Sort();
 	}
@@ -106,6 +120,14 @@ public class PawnSelectionView : MonoBehaviour {
 		for (int i = 0; i < pawnIcons.Count; i++) {
 			pawnIcons[i].transform.SetSiblingIndex(i);
 		}
+	}
+
+	public PawnIcon FindPawnIcon(Pawn pawn) {
+		foreach (PawnIcon icon in pawnIcons) {
+			if (icon.pawnData == pawn)
+				return icon;
+		}
+		return null;
 	}
 
 	/// <summary>
@@ -146,6 +168,7 @@ public class PawnSelectionView : MonoBehaviour {
 		PawnIcon pawnIcon = o.GetComponent<PawnIcon>();
 		pawnIcon.Init(pawn);                                // initialize PawnIcon data
 		pawnIcons.Add(pawnIcon);                            // add this object to the list for future manipulation
+		pawnIcon.gameObject.SetActive(true);
 	}
 
 	/// <summary>

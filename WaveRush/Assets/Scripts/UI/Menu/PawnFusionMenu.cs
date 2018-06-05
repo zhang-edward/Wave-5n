@@ -39,15 +39,25 @@ public class PawnFusionMenu : MonoBehaviour {
 			UpdatePawnSelectionViewInteractability();
 			UpdateCostText();
 		};
+
 	}
 
 	void OnEnable() {
-		// Clicking on a pawn in the pawnSelectionView brings up the highlight menu
 		pawnSelectionView.Refresh();
+		// Clicking on a pawn in the pawnSelectionView brings up the highlight menu
 		foreach (PawnIcon pawnIcon in pawnSelectionView.pawnIcons) {
 			PawnIconStandard icon = (PawnIconStandard)pawnIcon;
-			if (!pawnIcon.pawnData.AtMaxLevel)
+
+			print("Icon: " + icon.pawnData + ":");
+			if (!icon.pawnData.AtMaxLevel) {
+				print("Not interactable");
 				icon.button.interactable = false;
+			}
+			else {
+				print("Interactable");
+				icon.button.interactable = true;
+			}
+
 			icon.onClick = (iconData) => {
 				highlightMenu.SetActive(false);     // Disable then enable so the animation plays
 				highlightedIcon = iconData;
@@ -73,11 +83,6 @@ public class PawnFusionMenu : MonoBehaviour {
 		numSelected = 0;
 		UpdatePawnSelectionViewInteractability();
 		pawnSelectionView.Refresh();
-		foreach (PawnIcon pawnIcon in pawnSelectionView.pawnIcons) {
-			PawnIconStandard icon = (PawnIconStandard)pawnIcon;
-			if (!pawnIcon.pawnData.AtMaxLevel)
-				icon.button.interactable = false;
-		}
 	}
 
 	private void UpdatePawnSelectionViewInteractability() {
@@ -126,7 +131,6 @@ public class PawnFusionMenu : MonoBehaviour {
 
 	public void ConfirmResult() {
 		print("Refreshing page");
-		pawnSelectionView.Refresh();
 		Reset();
 	}
 

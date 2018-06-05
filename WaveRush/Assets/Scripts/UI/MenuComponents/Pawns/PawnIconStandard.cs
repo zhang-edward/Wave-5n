@@ -78,8 +78,6 @@ public class PawnIconStandard : PawnIcon {
 	private void InitOptionalElements()
 	{
 		if (experienceSlider != null) {
-			print("Pawn: " + pawnData);
-			print("Max value: " + pawnData.MaxExperience + ", " + pawnData.Experience);
 			experienceSlider.maxValue = pawnData.MaxExperience;
 			experienceSlider.value = pawnData.Experience;
 		}
