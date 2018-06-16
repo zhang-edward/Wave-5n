@@ -54,17 +54,17 @@ public class TouchInputHandler : MonoBehaviour {
 		}
 	}
 
-	public void HandleTouchBegan(Vector2 position)
+	public void HandleTouchBegan(Vector2 viewportPos)
 	{
-		touchStartPos = position;
+		touchStartPos = viewportPos;
 		touchStartTime = Time.time;
 		//Debug.Log("Touch began:" + touchStartPos);
 	}
 
-	public void HandleTouchMoved(Vector2 position)
+	public void HandleTouchMoved(Vector2 viewportPos)
 	{
-		Vector2 touchDir = position - touchStartPos;
-		float touchDist = (position - touchStartPos).magnitude;
+		Vector2 touchDir = viewportPos - touchStartPos;
+		float touchDist = (viewportPos - touchStartPos).magnitude;
 		if (touchDist > minDragDist)
 		{
 			if (!isDragging)
@@ -82,16 +82,16 @@ public class TouchInputHandler : MonoBehaviour {
 		}
 	}
 
-	public void HandleTouchHeld(Vector2 position)
+	public void HandleTouchHeld(Vector2 viewportPos)
 	{
 		float touchTime = Time.time - touchStartTime;
 		if (touchTime > maxTapTime)
-			OnTapHold(position);
+			OnTapHold(Camera.main.ViewportToWorldPoint(viewportPos / PlayerInput.INPUT_POSITION_SCALAR));
 	}
 
-	public void HandleTouchEnded(Vector2 position)
+	public void HandleTouchEnded(Vector2 viewportPos)
 	{
-		Vector2 touchDir = position - touchStartPos;
+		Vector2 touchDir = viewportPos - touchStartPos;
 		float touchTime = Time.time - touchStartTime;
 
 		if (isDragging)
@@ -99,9 +99,9 @@ public class TouchInputHandler : MonoBehaviour {
 		else if (!isDragging)
 		{
 			if (touchTime > maxTapTime)
-				OnTapHoldRelease(Camera.main.ViewportToWorldPoint(position / PlayerInput.INPUT_POSITION_SCALAR));
+				OnTapHoldRelease(Camera.main.ViewportToWorldPoint(viewportPos / PlayerInput.INPUT_POSITION_SCALAR));
 			else
-				OnTap(Camera.main.ViewportToWorldPoint(position / PlayerInput.INPUT_POSITION_SCALAR));
+				OnTap(Camera.main.ViewportToWorldPoint(viewportPos / PlayerInput.INPUT_POSITION_SCALAR));
 		}
 
 		isDragging = false;

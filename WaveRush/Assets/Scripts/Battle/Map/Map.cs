@@ -86,28 +86,30 @@ public class Map : MonoBehaviour {
 
 	private void GetIntegerMaps()
 	{
+		/** Process the terrainMap, collidersMap, and objectsMap images */
 		for (int x = 0; x < size; x ++)
 		{
-			for (int y = 0; y < size; y ++)
-			{
-				// process terrainMap
-				int id = 0;
-				if (Mathf.RoundToInt(terrainMap.GetPixel (x, y).r) == 1)
-				{
-					id = 1;
-					openCells.Add (new Vector2 (x, y));	// add to a list of empty cells
+			for (int y = 0; y < size; y++) {
+				// TerrainMap
+				if (Mathf.RoundToInt(terrainMap.GetPixel(x, y).r) == 1) {
+					terrain[y, x] = 1;
+					openCells.Add(new Vector2(x, y));   // add to a list of empty cells
 				}
-				terrain [y, x] = id;
-				// process collidersMap
-				colliders [y, x] = (int)collidersMap.GetPixel (x, y).a;
-				// process objectsMap
-				if (Random.value < objectsMap.GetPixel(x, y).a)
-				{
-					CreateRandomObject (x, y);
+				else {
+					terrain[y, x] = 0;
+				}
+
+				// CollidersMap
+				colliders[y, x] = (int)collidersMap.GetPixel(x, y).a;
+
+				// ObjectsMap
+				if (Random.value < objectsMap.GetPixel(x, y).a) {
+					CreateRandomObject(x, y);
 				}
 			}
 		}
 
+		/** Create integer map */
 		int[,] temp = new int[size, size];
 		Int2DArrayUtil.CopyArray (terrain, temp);
 		for (int x = 0; x < size; x++)

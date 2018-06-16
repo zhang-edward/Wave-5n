@@ -2,25 +2,33 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class PawnShop {
+	private List<Pawn> pawnPool = new List<Pawn>();     // The list of pawns which AvailablePawns selects from
+	private SaveModifier save;
 
-	private List<Pawn> pawnPool = new List<Pawn>();		// The list of pawns which AvailablePawns selects from
 	public List<Pawn> AvailablePawns { get; private set; }	// The available pawns in the pawn shop
-
 	public SaveModifier.PawnStateUpdate OnPawnListUpdated;
+
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="PawnShop"/> class.
 	/// </summary>
-	public PawnShop() {
+	public PawnShop(SaveModifier save) {
+		this.save = save;
 		AvailablePawns = new List<Pawn>();
 	}
 
 	/// <summary>
 	/// Called when the save game is loaded. Initializes <see cref="Unlocked"/> array
 	/// </summary>
-	/// <param name="save">Save.</param>
-	public void OnSaveGameLoaded(SaveModifier save) {
-		
+	public void OnSaveGameLoaded() {
+		RefreshPawnPool();
+		if (save.AvailableHeroes == null)
+			RefreshAvailablePawns();
+		else
+			AvailablePawns = save.AvailableHeroes;
+	}
+
+	public void RefreshPawnPool() {
 		bool[] unlockedHeroes = save.UnlockedHeroes;
 		for (int i = 0; i < unlockedHeroes.Length; i++) {
 			if (unlockedHeroes[i]) {
@@ -29,10 +37,21 @@ public class PawnShop {
 				pawnPool.Add(new Pawn(type, tier));
 			}
 		}
-		for (int i = 0; i < 5; i ++) {
+	}
+
+	public void RefreshAvailablePawns() {
+		AvailablePawns.Clear();
+		for (int i = 0; i < 5; i++) {
 			// Randomly modify a pawn from the pawn pool, then add it to the available pawns
-			AvailablePawns.Add(RandomlyModify(pawnPool[Random.Range(0, pawnPool.Count)]));
+			Pawn pawn = RandomlyModify(pawnPool[Random.Range(0, pawnPool.Count)]);
+			pawn.SetID(i);
+			AvailablePawns.Add(pawn);
 		}
+		save.AvailableHeroes = AvailablePawns;
+	}
+
+	public void RemovePawn(Pawn pawn) {
+		AvailablePawns.Remove(pawn);
 	}
 
 	private Pawn RandomlyModify(Pawn pawn) {

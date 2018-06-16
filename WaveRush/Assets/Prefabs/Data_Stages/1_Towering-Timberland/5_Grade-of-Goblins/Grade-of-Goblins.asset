@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2379bde86d183432688c3e33d4537570, type: 3}
+  m_Name: Grade-of-Goblins
+  m_EditorClassIdentifier: 
+  dialogueSets:
+  - {fileID: 11400000, guid: 33955a1e7c5c6481190e125841ffbff8, type: 2}
+  stageName: Grade of Goblins
+  mapType: 1
+  levelRaw: 3
+  upperAsymptote: 15
+  lowerAsymptote: 5
+  maxDifficultyVelocity: 3
+  goalWave: 6
+  bossWave: 3
+  enemyPrefabs:
+  - prefab: {fileID: 177460, guid: 54fe2fdc3252847f08f15a8590667d5b, type: 2}
+    spawnFrequency: 0.8
+    waveLimit: 1
+  - prefab: {fileID: 187912, guid: 284e652b2eabe43a9a8e564bf3fd4337, type: 2}
+    spawnFrequency: 1
+    waveLimit: 1
+  - prefab: {fileID: 147880, guid: 15e9f10dbfa7c46efa83cfa7afe1f851, type: 2}
+    spawnFrequency: 1
+    waveLimit: 1
+  bossPrefabs:
+  - {fileID: 1749041344119536, guid: 6311e2f073abc4c8c8d14bc3002cc09e, type: 2}
+  - {fileID: 1759745790581580, guid: eaf68b7ae9fba476da7a0712648fb6fd, type: 2}
+  - {fileID: 1100782129152658, guid: 43fe31a6282784925be868202d2bf5e1, type: 2}

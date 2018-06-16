@@ -14,10 +14,11 @@ public class SaveGame
 	public Wallet wallet;
 	public PawnWallet pawnWallet;
 
-	//private Dictionary<string, float> timers;   // list of various timers in the game, such as daily rewards and quests
+	//private Dictionary<string, float> timers; // list of various timers in the game, such as daily rewards and quests
 	public Dictionary<string, int> saveDict;    // Dictionary containing any all data
 	public Dictionary<string, bool> hasPlayerViewedDict { get; private set; }
-	public bool[] unlockedHeroes;
+	public bool[] unlockedHeroes;				// Heroes potentially available for hire
+	public List<Pawn> availableHeroes;			// Heroes available for hire
 
 	public SaveGame()
 	{

@@ -4,87 +4,6 @@ using System.Collections.Generic;
 
 public class Player : MonoBehaviour, IDamageable
 {
-	// TODO: Move this class to its own file
-	/// <summary>
-	/// Aids in statuses having multiple factors. For example, invincibility might be affected by post-player-damage,
-	/// an ability activation, powerups, etc. so each ability can have its own timer.
-	/// </summary>
-	public class StatusTimers
-	{
-		public delegate void TimerStatusUpdated();
-		public event TimerStatusUpdated OnTimerOff;
-		public event TimerStatusUpdated OnTimerOn;
-
-		private float[] timers = new float[8];
-		private bool isOn;	// Whether all timers are <= 0
-
-		/// <summary>
-		/// Adds a new timer
-		/// </summary>
-		/// <returns>The index of the new timer</returns>
-		/// <param name="time">Time to initialize the timer to.</param>
-		public int Add(float time)
-		{
-			if (time > 0)
-				isOn = true;
-			for (int i = 0; i < timers.Length; i++)
-			{
-				if (timers[i] <= 0f)
-				{
-					timers[i] = time;
-					return i;
-				}
-			}
-			// If there are no empty timer slots, double the array size and copy the old array over
-			int oldLength = timers.Length;
-			float[] newArr = new float[oldLength * 2];
-			timers.CopyTo(newArr, 0);
-			// Add the timer value to the new, bigger array
-			timers = newArr;
-			timers[oldLength] = time;
-			return oldLength;
-		}
-
-		/// <summary>
-		/// Decrements each timer.
-		/// </summary>
-		/// <param name="amt">Amount to decrement by.</param>
-		public void DecrementTimer(float amt) {
-			bool foundTimer = false;
-			for (int i = timers.Length - 1; i >= 0; i--) {
-				if (timers[i] >= 0) {
-					timers[i] -= amt;
-					foundTimer = true;
-					// Turn timer on
-					if (!isOn) {
-						if (OnTimerOn != null)
-							OnTimerOn();
-						isOn = true;
-					}
-				}
-			}
-			// Turn timer off
-			if (!foundTimer && isOn) {
-				if (OnTimerOff != null)
-					OnTimerOff();
-				isOn = false;
-			}
-		}
-
-		public void RemoveTimer(int i) {
-			timers[i] = 0;
-		}
-
-		public bool IsOn() {
-			//for (int i = 0; i < timers.Length; i ++) {
-			//	if (timers[i] > 0)
-			//		return true;
-			//}
-			//return false;
-			return isOn;
-		}
-	}
-
 	public const float HIT_DISABLE_TIME = 1.0f;
 
 	[HideInInspector]public float DEFAULT_SPEED;
@@ -111,7 +30,14 @@ public class Player : MonoBehaviour, IDamageable
 	public StatusTimers invincibility = new StatusTimers();
 	private StatusTimers hitstun = new StatusTimers();
 
-	public float damagedCooldownTime = 1.0f;
+	/** Stats Dict */
+	/// <summary>
+	/// Contains buffable modifiers applicable to all hero types, such as 
+	/// crit chance, crit effect, health boost, gold boost, special charge boost
+	/// attack boost, exp boost, 
+	/// </summary>
+	public Dictionary<string, int> stats;
+	/** Stats Dict*/
 
 	[Header("Effects")]
 	public ParticleSystem  healEffect;

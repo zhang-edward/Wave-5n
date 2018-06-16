@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviour {
 	public GameStateUpdate OnSceneLoaded;
 	public GameStateUpdate OnAppLoaded;
 	public GameStateUpdate OnAppClosed;
-	public GameStateUpdate OnTimersUpdated;
+	public GameStateUpdate OnDeletedData;
 
 
 	void Awake()
@@ -54,7 +54,6 @@ public class GameManager : MonoBehaviour {
 
 		SaveLoad.Load (out sg);
 		save = new SaveModifier(sg);
-		//InitPawnTimers();
 		questManager.Init();
 		loadingOverlay.gameObject.SetActive(false);
 	}
@@ -66,7 +65,6 @@ public class GameManager : MonoBehaviour {
 
 		Application.targetFrameRate = 60;
 		StartCoroutine(FPS());
-		//ScheduleSimple();
 	}
 
 	void Update()
@@ -84,7 +82,7 @@ public class GameManager : MonoBehaviour {
 		if (!focus)
 		{
 			//print("Application Paused");
-			//PlayerPrefs.SetString(RealtimeTimerCounter.LAST_CLOSED_KEY, System.DateTime.Now.ToString());
+			PlayerPrefs.SetString(RealtimeTimerCounter.LAST_CLOSED_KEY, System.DateTime.Now.ToString());
 			if (OnAppClosed != null)
 				OnAppClosed();
 		}
@@ -93,14 +91,12 @@ public class GameManager : MonoBehaviour {
 			//print("Application Unpaused");
 			if (OnAppLoaded != null)
 				OnAppLoaded();
-			if (OnTimersUpdated != null)
-				OnTimersUpdated();
 		}
 	}
 
 	private void OnApplicationQuit()
 	{
-		//PlayerPrefs.SetString(RealtimeTimerCounter.LAST_CLOSED_KEY, System.DateTime.Now.ToString());
+		PlayerPrefs.SetString(RealtimeTimerCounter.LAST_CLOSED_KEY, System.DateTime.Now.ToString());
 		print("Application Quit");
 		if (OnAppClosed != null)
 			OnAppClosed();
@@ -269,10 +265,13 @@ public class GameManager : MonoBehaviour {
 
 	public void DeleteSaveData()
 	{
-		PlayerPrefs.DeleteAll();
+		if (OnDeletedData != null)
+			OnDeletedData();
 		sg = new SaveGame ();
+
 		int foo;
 		sg.pawnWallet.AddPawn(new Pawn(HeroType.Knight, HeroTier.tier1), out foo);
+
 		LoadSaveFile ();
 		SaveLoad.Save(sg);
 	}

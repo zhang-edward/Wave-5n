@@ -139,8 +139,9 @@ public class MageHero : PlayerHero {
 			return;
 		player.dir = Vector2.ClampMagnitude(player.dir, FIREZONE_RANGE);
 		teleportAbility.OnTeleportIn += DisableTeleportIndicator;
-		teleportIndicator.transform.position = transform.position + (Vector3)player.dir;
 		teleportIndicator.gameObject.SetActive(true);
+		teleportIndicator.transform.position = transform.position + (Vector3)player.dir;
+		teleportAbility.SetDestination(transform.position + (Vector3)player.dir);
 		teleportAbility.Execute();
 		ResetCooldownTimer(1);
 	}

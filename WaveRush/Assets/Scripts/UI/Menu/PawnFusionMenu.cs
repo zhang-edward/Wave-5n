@@ -48,13 +48,13 @@ public class PawnFusionMenu : MonoBehaviour {
 		foreach (PawnIcon pawnIcon in pawnSelectionView.pawnIcons) {
 			PawnIconStandard icon = (PawnIconStandard)pawnIcon;
 
-			print("Icon: " + icon.pawnData + ":");
+			//print("Icon: " + icon.pawnData + ":");
 			if (!icon.pawnData.AtMaxLevel) {
-				print("Not interactable");
+				//print("Not interactable");
 				icon.button.interactable = false;
 			}
 			else {
-				print("Interactable");
+				//print("Interactable");
 				icon.button.interactable = true;
 			}
 

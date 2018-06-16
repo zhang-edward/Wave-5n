@@ -25,8 +25,6 @@ public class PawnWallet
 				Debug.Log("New Pawn:" + pawn);
 				return true;
 			}
-			else
-				Debug.Log(pawns[i]);
 		}
 		Debug.LogError("Add Pawn Failed");
 		id = -1;

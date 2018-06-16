@@ -56,6 +56,7 @@ public class PawnInfoPanel : MonoBehaviour
 
 	public void Init(Pawn pawn)
 	{
+		print(pawn);
 		pawnIcon.Init(pawn);
 		HeroData heroData = DataManager.GetHeroData(pawn.type);
 		/** Initialize the hero's power up info */

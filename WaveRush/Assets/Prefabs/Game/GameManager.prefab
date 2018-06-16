@@ -444,13 +444,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   questManager: {fileID: 114362485652048620}
-  saveGame:
-    latestUnlockedSeriesIndex: 0
-    latestUnlockedStageIndex: 0
-    pawnWallet:
-      numPawns: 0
-    ownedHeroes: 010000000000000000
-    numDailyHeroRewards: 0
   selectedPawn:
     type: 3
     level: 5
@@ -3378,6 +3371,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b8426204d69e420d8f727fe404fad44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gm: {fileID: 11441932}
   timerPrefab: {fileID: 1080843243142760, guid: 1d632229d0f4e4f97b0cbd44d902b4bd,
     type: 2}
 --- !u!114 &114847690842016042

@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using UnityEngine.UI;
 
 /// <summary>
 /// Manages MainMenu Scene State
@@ -11,10 +11,10 @@ public class MainMenuSceneManager : MonoBehaviour
 
 	public TutorialDialogueManager tutorialDialogueManager;
 	public MainMenu mainMenu;
-	//public DailyHeroRewardButton dailyHeroRewardButton;
+	public Button pawnShopButton;
 
 	public GameObject[] lockedObjects0;
-	//public GameObject[] lockedObjects1;
+	public GameObject[] lockedObjects1;
 
 	void Awake()
 	{
@@ -58,10 +58,10 @@ public class MainMenuSceneManager : MonoBehaviour
 				};
 			}
 		}
-		if (CheckStage(0, 1))
+		if (CheckStage(0, 4))
 		{
 			// Disable all locked objects
-			foreach (GameObject o in lockedObjects0)
+			foreach (GameObject o in lockedObjects1)
 				o.SetActive(false);
 			// Play tutorial dialogue
 			tutorialDialogueManager.Init(2);
@@ -72,16 +72,16 @@ public class MainMenuSceneManager : MonoBehaviour
 			//	PlayerPrefs.SetInt(DailyHeroRewardButton.TUTORIAL_KEY, 1);
 			//}
 		}
-		//if (CheckStage(0, 2))
-		//{
-		//	// Disable all locked objects
-		//	foreach (GameObject o in lockedObjects1)
-		//		o.SetActive(false);
-		//}
-		//if (CheckStage(0, 3))
-		//{
-		//	tutorialDialogueManager.Init(3);
-		//}
+		if (CheckStage(0, 2))
+		{
+			// Disable all locked objects
+			//foreach (GameObject o in lockedObjects1)
+				//o.SetActive(false);
+		}
+		if (CheckStage(0, 3))
+		{
+			tutorialDialogueManager.Init(3);
+		}
 		gm.OnSceneLoaded -= Init; // Since this only runs once per scene
 	}
 

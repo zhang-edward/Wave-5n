@@ -16,6 +16,7 @@ public class SaveModifier {
 	public int LatestSeriesIndex { get { return sg.saveDict[SaveGame.LATEST_UNLOCKED_SERIES_INDEX_KEY]; } }
 	public int LatestStageIndex  { get { return sg.saveDict[SaveGame.LATEST_UNLOCKED_STAGE_INDEX_KEY] ; } }
 	public bool[] UnlockedHeroes { get { return sg.unlockedHeroes; } }
+	public List<Pawn> AvailableHeroes { get { return sg.availableHeroes; } set { sg.availableHeroes = value; }}
 
 	private SaveGame sg;
 	private Wallet wallet;

@@ -9,29 +9,28 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2379bde86d183432688c3e33d4537570, type: 3}
-  m_Name: Goblin-Magic
+  m_Name: Gaggle-of-Goblins
   m_EditorClassIdentifier: 
-  dialogueSets: []
-  stageName: Goblin Magic
+  dialogueSets:
+  - {fileID: 11400000, guid: 00546b9c0fe8348379be2e357216504b, type: 2}
+  stageName: Gaggle of Goblins
   mapType: 1
-  levelRaw: 2
-  upperAsymptote: 12
-  lowerAsymptote: 4
-  maxDifficultyVelocity: 2
-  goalWave: 5
-  bossWave: 5
+  levelRaw: 3
+  upperAsymptote: 15
+  lowerAsymptote: 6
+  maxDifficultyVelocity: 5
+  goalWave: 8
+  bossWave: 4
   enemyPrefabs:
   - prefab: {fileID: 177460, guid: 54fe2fdc3252847f08f15a8590667d5b, type: 2}
-    spawnFrequency: 0.3
+    spawnFrequency: 0.8
     waveLimit: 1
   - prefab: {fileID: 187912, guid: 284e652b2eabe43a9a8e564bf3fd4337, type: 2}
     spawnFrequency: 1
     waveLimit: 1
-  - prefab: {fileID: 1993395448840182, guid: 6973bbaf5c4fc4079bd5bd23d17e8482, type: 2}
-    spawnFrequency: 0.5
-    waveLimit: 2
   - prefab: {fileID: 147880, guid: 15e9f10dbfa7c46efa83cfa7afe1f851, type: 2}
-    spawnFrequency: 0.5
-    waveLimit: 3
+    spawnFrequency: 1
+    waveLimit: 1
   bossPrefabs:
   - {fileID: 1759745790581580, guid: eaf68b7ae9fba476da7a0712648fb6fd, type: 2}
+  - {fileID: 1100782129152658, guid: 43fe31a6282784925be868202d2bf5e1, type: 2}

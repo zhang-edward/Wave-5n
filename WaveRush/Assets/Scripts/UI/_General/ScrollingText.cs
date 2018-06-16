@@ -43,6 +43,7 @@ public class ScrollingText : MonoBehaviour {
 		// prevents a little audio blip when resetting the text to an empty string
 		if (text.Equals(""))
 		{
+			this.text = text;
 			textBox.text = "";
 			return;
 		}

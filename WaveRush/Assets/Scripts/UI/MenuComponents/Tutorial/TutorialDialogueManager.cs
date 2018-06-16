@@ -8,6 +8,14 @@ public class TutorialDialogueManager : MonoBehaviour
 	public DialogueView dialogueView;
 	public DialogueSet[] tutorialDialogueSets;
 
+	private void OnEnable() {
+		GameManager.instance.OnDeletedData += ResetTutorials;
+	}
+
+	private void OnDisable() {
+		GameManager.instance.OnDeletedData -= ResetTutorials;
+	}
+
 	public bool Init(int tutorialIndex)
 	{
 		if (!HasPlayedTutorial(tutorialIndex))
@@ -33,6 +41,7 @@ public class TutorialDialogueManager : MonoBehaviour
 
 	public void ResetTutorials()
 	{
+		print("Tutorials reset");
 		for (int i = 0; i < tutorialDialogueSets.Length; i ++)
 		{
 			PlayerPrefs.SetInt(GetPlayerPrefsKey(i), 0);

@@ -14,6 +14,7 @@ public class RealtimeTimer : MonoBehaviour
 		this.id = id;
 		this.time = time;
 		this.onFinishedTimer = onFinishedTimer;
+
 		StartCoroutine(UpdateTimer());
 	}
 
@@ -41,5 +42,18 @@ public class RealtimeTimer : MonoBehaviour
 	public void SubtractTime(float time)
 	{
 		this.time -= time;
+	}
+
+	public int GetHours() {
+		return Mathf.CeilToInt(time) / 3600;
+
+	}
+
+	public int GetMinutes() {
+		return Mathf.CeilToInt(time) % 3600 / 60;
+	}
+
+	public int GetSeconds() {
+		return Mathf.CeilToInt(time) % 60;
 	}
 }

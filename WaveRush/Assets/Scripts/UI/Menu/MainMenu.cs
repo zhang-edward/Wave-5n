@@ -8,6 +8,7 @@ public class MainMenu : MonoBehaviour
 	[Header("Primary Menus")]
 	public PawnSelectionView partyView;
 	public PawnFusionMenu fusionMenu;
+	public PawnShopMenu pawnShopMenu;
 	//public PawnRetireMenu pawnRetireMenu;
 
 	[Header("Secondary Views")]
@@ -29,7 +30,7 @@ public class MainMenu : MonoBehaviour
 			};
 		}
 		fusionMenu.Init();
-		//pawnRetireMenu.Init();
+		pawnShopMenu.Init();
 	}
 
 	public void GoToBattle()

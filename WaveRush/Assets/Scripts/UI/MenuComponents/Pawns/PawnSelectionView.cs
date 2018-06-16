@@ -19,7 +19,7 @@ public class PawnSelectionView : MonoBehaviour {
 
 	public void Init(Pawn[] pawns, PawnSelectionViewMode defaultMode) {
 		this.pawns = pawns;
-		Debug.Log("Pawns: " + pawns.Length);
+		//Debug.Log("Pawns: " + pawns.Length);
 		this.defaultMode = defaultMode;
 		initialized = true;
 		pawnIcons = new List<PawnIcon>();
@@ -59,10 +59,38 @@ public class PawnSelectionView : MonoBehaviour {
 	//	}
 	//}
 
-	public void Refresh()
-	{
+	public void UpdatePawnList(Pawn[] pawns) {
+		this.pawns = pawns;
+		foreach (PawnIcon icon in pawnIcons) {
+			icon.gameObject.SetActive(false);
+		}
 		foreach (PawnIcon icon in pawnIcons)
 			icon.gameObject.SetActive(false);
+		int j = 0;									// Track the pawnIcons list position
+		for (int i = 0; i < pawns.Length; i ++)		// Iterate through the master list of pawns (may contain holes)
+		{
+			Pawn pawn = pawns[i];
+			if (pawn != null)
+			{
+				if (j >= pawnIcons.Count)			// If we need more pawn icons, add new ones to the list
+				{
+					AddNewPawnIcon(pawn);
+				}
+				else
+				{
+					pawnIcons[j].Init(pawn);        // If not, re-initialize the pawn icon
+					pawnIcons[j].gameObject.SetActive(true);
+				}
+				j++;
+			}
+		}
+	}
+
+	public void Refresh()
+	{
+		foreach (PawnIcon icon in pawnIcons) {
+			icon.gameObject.SetActive(false);
+		}
 		for (int i = 0; i < pawns.Length; i ++) {
 			Pawn pawn = pawns[i];
 			if (pawn != null) {
@@ -156,7 +184,7 @@ public class PawnSelectionView : MonoBehaviour {
 	//}
 
 	public int IndexOfPawnIcon(PawnIcon icon) {
-		return pawnIcons.IndexOf(icon);
+		return icon.transform.GetSiblingIndex();
 	}
 
 
