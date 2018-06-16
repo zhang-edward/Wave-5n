@@ -14,7 +14,7 @@ public class FreezeStatus : EnemyStatus
 		// make the particle effect box emitter the same size as the entity 
 		ParticleSystem.ShapeModule shapeModule = particles.shape;
 		shapeModule.shapeType = ParticleSystemShapeType.Box;
-		shapeModule.box = enemy.srSize * 0.5f;
+		//shapeModule.scale = enemy.srSize * 0.5f;
 
 		if (frozen)
 		{

@@ -51,6 +51,7 @@ public abstract class PlayerHero : MonoBehaviour {
 	private Coroutine listenForParryRoutine;
 	private Coroutine queuedActionRoutine;
 	private bool canParry = true;
+	private int parryDisableTimerId;
 
 	/** Delegates and events */
 	// Input Actions
@@ -184,7 +185,7 @@ public abstract class PlayerHero : MonoBehaviour {
 		// Lose Momentum
 		body.Move(Vector2.zero);
 		// Player Properties
-		player.input.enabled = false;
+		parryDisableTimerId = player.inputDisabled.Add(PARRY_TIME);
 		canParry = false;
 		// Sound
 		sound.PlaySingle(player.parrySound);
@@ -195,13 +196,13 @@ public abstract class PlayerHero : MonoBehaviour {
 		player.FlashColor(Color.gray, PARRY_COOLDOWN_TIME);
 		// Player Properties
 		player.OnPlayerTryHit -= Parry;
+		player.inputDisabled.Add(PARRY_COOLDOWN_TIME);
 
 		yield return new WaitForSeconds(PARRY_COOLDOWN_TIME);
 
 		// Effect
 		player.sr.color = Color.white;
 		// Player Properties
-		player.input.enabled = true;
 		canParry = true;
 	}
 
@@ -213,7 +214,7 @@ public abstract class PlayerHero : MonoBehaviour {
 		CameraControl.instance.StartFlashColor(Color.white, 0.5f, 0, 0f, 0.5f);
 		// Player properties
 		player.invincibility.Add(1.0f);
-		player.input.enabled = true;
+		player.inputDisabled.RemoveTimer(parryDisableTimerId);
 		player.sr.color = Color.white;
 		player.OnPlayerTryHit -= Parry;
 		StopCoroutine(listenForParryRoutine);

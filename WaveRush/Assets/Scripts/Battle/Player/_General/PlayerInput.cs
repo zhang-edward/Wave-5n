@@ -4,7 +4,7 @@ using System.Collections;
 
 public class PlayerInput : MonoBehaviour
 {
-	public const float INPUT_POSITION_SCALAR = 5;
+	public const float INPUT_POSITION_SCALAR = 8;
 
 	public Player player;
 	public TouchInputHandler touchInputHandler;
@@ -12,13 +12,8 @@ public class PlayerInput : MonoBehaviour
 
 	private Vector2 pointerStartPos;
 
-	//private Vector3 calibratedAccelerometer;
-	//private Vector3 accel;
-	//public float tiltSensitivity = 10f;
-
-	void Start()
+	public void Init()
 	{
-		Invoke("CalibrateAccelerometer", 0.5f);
 		touchInputHandler.enabled = true;
 		touchInputHandler.OnDragBegan += HandleDragBegan;
 		touchInputHandler.OnDragMove += HandleDragHold;
@@ -28,16 +23,6 @@ public class PlayerInput : MonoBehaviour
 		touchInputHandler.OnTapHoldRelease += HandleTapHoldRelease;
 		touchInputHandler.MultiTouch += player.hero.HandleMultiTouch;
 		touchInputHandler.OnDragCancel += player.hero.HandleDragCancel;
-	}
-
-
-
-	private void CalibrateAccelerometer()
-	{
-		//calibratedAccelerometer = Input.acceleration;
-		//calibratedAccelerometer = new Vector2(0, -0.f);
-		//Debug.Log (calibratedAccelerometer);
-
 	}
 
 	void Update()
@@ -56,11 +41,11 @@ public class PlayerInput : MonoBehaviour
 
 	public void HandleMouseKeyboardInput()
 	{
-		if (EventSystem.current.IsPointerOverGameObject())
-			return;
 		Vector3 mousePosition = Camera.main.ScreenToViewportPoint(Input.mousePosition) * INPUT_POSITION_SCALAR;
 		if (Input.GetMouseButtonDown(0))
 		{
+			if (EventSystem.current.IsPointerOverGameObject())
+				return;
 			pointerStartPos = mousePosition;
 			touchInputHandler.HandleTouchBegan(pointerStartPos);
 		}

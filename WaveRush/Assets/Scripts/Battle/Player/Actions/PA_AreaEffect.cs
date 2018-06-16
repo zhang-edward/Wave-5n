@@ -48,7 +48,7 @@
 			// Animation
 			hero.anim.Play(areaAttackState);
 			// Player properties
-			player.input.isInputEnabled = false;
+			player.inputDisabled.Add(duration);
 
 			if (loseMomentum)
 				hero.body.Move(Vector2.zero);
@@ -69,10 +69,7 @@
 					}
 				}
 			}
-			//Debug.Log("Detected " + numEnemiesHit + " enemies");
-
-			yield return new WaitForSeconds(duration);
-			player.input.isInputEnabled = true;
+			yield return null;
 		}
 	}
 }

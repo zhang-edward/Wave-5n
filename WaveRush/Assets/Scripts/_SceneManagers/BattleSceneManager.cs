@@ -77,13 +77,13 @@ public class BattleSceneManager : MonoBehaviour
 		// Do dialogue before starting the game
 		if (stage.dialogueSets.Length > 0)
 			dialogueView.Init(stage.dialogueSets);
-		player.input.enabled = false;
+		player.GetComponent<PlayerInput>().enabled = false;
 		gui.enemyWaveText.gameObject.SetActive(false);
 		while (dialogueView.dialoguePlaying)
 			yield return null;
 
 		SoundManager.instance.PlayMusicLoop(map.data.musicLoop, map.data.musicIntro);
-		player.input.enabled = true;
+		player.GetComponent<PlayerInput>().enabled = true;
 		gui.enemyWaveText.gameObject.SetActive(true);
 		enemyManager.Init(stage);
 		gui.DisplayIntroMessage();
@@ -106,7 +106,6 @@ public class BattleSceneManager : MonoBehaviour
 		while (leaveOrContinueOptionOpen)
 		{
 			pauseButton.gameObject.SetActive(false);
-			player.input.isInputEnabled = false;
 			// "Leave" option selected
 			if (selection == 1)
 			{
@@ -123,7 +122,6 @@ public class BattleSceneManager : MonoBehaviour
 			yield return null;
 		}
 		pauseButton.gameObject.SetActive(true);
-		player.input.isInputEnabled = true;
 		enemyManager.paused = false;
 		stageCompleteOptions.GetComponent<UIAnimatorControl>().AnimateOut();
 		//print("No sacrifice detected; continue");

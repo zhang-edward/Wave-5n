@@ -11,6 +11,7 @@ public class TouchInputHandler : MonoBehaviour {
 	private float   minDragDist = 0.5f;
 	private float   maxTapTime  = 0.3f;
 	private bool 	isDragging;
+	private bool 	touchStarted;
 
 	public delegate void DirectionalTouchInput(Vector3 vec);
 	public event DirectionalTouchInput OnDragBegan;
@@ -29,8 +30,6 @@ public class TouchInputHandler : MonoBehaviour {
 	{
 		if (Input.touchCount > 0)	// user touched the screen
 		{
-			if (IsPointerOverUIObject ())
-				return;
 			Touch touch = Input.touches[0];
 			if (Input.touchCount >= 2)
 				MultiTouch();
@@ -39,13 +38,15 @@ public class TouchInputHandler : MonoBehaviour {
 			switch (touch.phase)
 			{
 				case (TouchPhase.Began):
+					if (IsPointerOverUIObject())
+						return;
 					HandleTouchBegan(Camera.main.ScreenToViewportPoint(touch.position * PlayerInput.INPUT_POSITION_SCALAR));
 					break;
 				case (TouchPhase.Moved):
 					HandleTouchMoved(Camera.main.ScreenToViewportPoint(touch.position * PlayerInput.INPUT_POSITION_SCALAR));
 					break;
 				case (TouchPhase.Stationary):
-					HandleTouchHeld(Camera.main.ScreenToViewportPoint(touch.position * PlayerInput.INPUT_POSITION_SCALAR));
+					HandleTouchHeld (Camera.main.ScreenToViewportPoint(touch.position * PlayerInput.INPUT_POSITION_SCALAR));
 					break;
 				case (TouchPhase.Ended):
 					HandleTouchEnded(Camera.main.ScreenToViewportPoint(touch.position * PlayerInput.INPUT_POSITION_SCALAR));
@@ -56,6 +57,7 @@ public class TouchInputHandler : MonoBehaviour {
 
 	public void HandleTouchBegan(Vector2 viewportPos)
 	{
+		touchStarted = true;
 		touchStartPos = viewportPos;
 		touchStartTime = Time.time;
 		//Debug.Log("Touch began:" + touchStartPos);
@@ -63,6 +65,8 @@ public class TouchInputHandler : MonoBehaviour {
 
 	public void HandleTouchMoved(Vector2 viewportPos)
 	{
+		if (!touchStarted)
+			return;
 		Vector2 touchDir = viewportPos - touchStartPos;
 		float touchDist = (viewportPos - touchStartPos).magnitude;
 		if (touchDist > minDragDist)
@@ -84,6 +88,8 @@ public class TouchInputHandler : MonoBehaviour {
 
 	public void HandleTouchHeld(Vector2 viewportPos)
 	{
+		if (!touchStarted)
+			return;
 		float touchTime = Time.time - touchStartTime;
 		if (touchTime > maxTapTime)
 			OnTapHold(Camera.main.ViewportToWorldPoint(viewportPos / PlayerInput.INPUT_POSITION_SCALAR));
@@ -91,6 +97,8 @@ public class TouchInputHandler : MonoBehaviour {
 
 	public void HandleTouchEnded(Vector2 viewportPos)
 	{
+		if (!touchStarted)
+			return;
 		Vector2 touchDir = viewportPos - touchStartPos;
 		float touchTime = Time.time - touchStartTime;
 
@@ -104,6 +112,7 @@ public class TouchInputHandler : MonoBehaviour {
 				OnTap(Camera.main.ViewportToWorldPoint(viewportPos / PlayerInput.INPUT_POSITION_SCALAR));
 		}
 
+		touchStarted = false;
 		isDragging = false;
 	}
 

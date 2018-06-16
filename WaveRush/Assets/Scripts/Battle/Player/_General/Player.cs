@@ -13,9 +13,9 @@ public class Player : MonoBehaviour, IDamageable
 	[Header("Entity Base Values")]
 	public SpriteRenderer 	  sr;
 	public AnimationSetPlayer animPlayer;
-	public PlayerInput 		  input;
 	public EntityPhysics      body;
 	public CircleCollider2D   hurtbox;
+	private PlayerInput		  input;
 
 	[Header("Player Ability")]
 	public PlayerHero hero;
@@ -28,7 +28,7 @@ public class Player : MonoBehaviour, IDamageable
 	public int  maxHealth = 10;
 	public int  health { get; private set; }
 	public StatusTimers invincibility = new StatusTimers();
-	private StatusTimers hitstun = new StatusTimers();
+	public StatusTimers inputDisabled = new StatusTimers();
 
 	/** Stats Dict */
 	/// <summary>
@@ -79,24 +79,27 @@ public class Player : MonoBehaviour, IDamageable
 	public delegate void PlayerUpgradesUpdated(int numUpgrades);
 	public event PlayerUpgradesUpdated OnPlayerUpgradesUpdated;
 
-	void Start()
-	{
-		deathPropPool = ObjectPooler.GetObjectPooler ("DeathProp");
+	void Awake() {
+		input = GetComponent<PlayerInput>();
+	}
+
+	void Start() {
+		deathPropPool = ObjectPooler.GetObjectPooler("DeathProp");
 		DEFAULT_SPEED = body.moveSpeed;
 		input.isInputEnabled = false;
-		hitstun.OnTimerOn  += () => { input.isInputEnabled = false; };
-		hitstun.OnTimerOff += () => { input.isInputEnabled = true;  };
+		inputDisabled.OnTimerOn += () => { input.isInputEnabled = false; };
+		inputDisabled.OnTimerOff += () => { input.isInputEnabled = true; };
 		sound = SoundManager.instance;
 	}
 
-	public void Init(Pawn heroData)
-	{
-		InitPlayerHero (heroData);
+	public void Init(Pawn heroData) {
+		InitPlayerHero(heroData);
+		input.Init();
 		health = maxHealth;
 
 		if (OnPlayerInitialized != null)
-			OnPlayerInitialized ();
-		StartCoroutine (SpawnState ());
+			OnPlayerInitialized();
+		StartCoroutine(SpawnState());
 	}
 
 	private void InitPlayerHero(Pawn heroData)
@@ -122,7 +125,7 @@ public class Player : MonoBehaviour, IDamageable
 	void Update()
 	{
 		invincibility.DecrementTimer(Time.deltaTime);
-		hitstun.DecrementTimer(Time.deltaTime);
+		inputDisabled.DecrementTimer(Time.deltaTime);
 	}
 
 	/// <summary>
@@ -176,7 +179,7 @@ public class Player : MonoBehaviour, IDamageable
 
 	public void HitDisable(float time)
 	{
-		hitstun.Add(time / 2f);
+		inputDisabled.Add(time / 2f);
 		invincibility.Add(time);
 	}
 

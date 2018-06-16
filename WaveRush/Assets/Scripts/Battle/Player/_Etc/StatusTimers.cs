@@ -16,8 +16,11 @@ public class StatusTimers {
 	/// <returns>The index of the new timer</returns>
 	/// <param name="time">Time to initialize the timer to.</param>
 	public int Add(float time) {
-		if (time > 0)
+		if (time > 0 && !isOn) {
 			isOn = true;
+			if (OnTimerOn != null)
+				OnTimerOn();
+		}
 		for (int i = 0; i < timers.Length; i++) {
 			if (timers[i] <= 0f) {
 				timers[i] = time;

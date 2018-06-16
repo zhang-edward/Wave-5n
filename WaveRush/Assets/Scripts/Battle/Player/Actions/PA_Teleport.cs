@@ -54,7 +54,7 @@
 			if (teleportOutEffect.frames.Length > 0)
 				EffectPooler.PlayEffect(teleportOutEffect, hero.transform.position, teleportOutEffectProperties);
 			hero.anim.Play(teleportOutState);
-			player.input.isInputEnabled = false;
+			player.inputDisabled.Add(duration);
 			sound.RandomizeSFX(teleportOutSound);
 			if (OnTeleportOut != null)
 				OnTeleportOut();
@@ -66,7 +66,6 @@
 			if (teleportInEffect.frames.Length > 0)
 				EffectPooler.PlayEffect(teleportInEffect, hero.transform.position, teleportInEffectProperties);
 			hero.anim.Play(teleportInState);
-			player.input.isInputEnabled = true;
 			sound.RandomizeSFX(teleportInSound);
 			if (OnTeleportIn != null)
 				OnTeleportIn();

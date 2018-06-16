@@ -50,15 +50,13 @@
 			movement.Execute();
 			rushHitBoxOn = true;
 			if (lockInput)
-				player.input.isInputEnabled = false;
+				player.inputDisabled.Add(duration);
 
 			yield return new WaitForSeconds(duration);
 
 			player.animPlayer.ResetToDefault();	// Animation
 			hitEnemies.Clear();             	// Reset hit list
 			rushHitBoxOn = false;
-			if (lockInput)
-				player.input.isInputEnabled = true;
 		}
 
 

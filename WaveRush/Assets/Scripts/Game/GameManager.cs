@@ -52,7 +52,7 @@ public class GameManager : MonoBehaviour {
 		}
 		DontDestroyOnLoad (this);
 
-		SaveLoad.Load (out sg);
+		SaveLoad.Load (ref sg);
 		save = new SaveModifier(sg);
 		questManager.Init();
 		loadingOverlay.gameObject.SetActive(false);
@@ -267,13 +267,17 @@ public class GameManager : MonoBehaviour {
 	{
 		if (OnDeletedData != null)
 			OnDeletedData();
-		sg = new SaveGame ();
-
-		int foo;
-		sg.pawnWallet.AddPawn(new Pawn(HeroType.Knight, HeroTier.tier1), out foo);
+		PlayerPrefs.SetInt(SaveGame.TUTORIAL_COMPLETE_KEY, 0);
+		CreateNewSave();
 
 		LoadSaveFile ();
 		SaveLoad.Save(sg);
+	}
+
+	public void CreateNewSave() {
+		sg = new SaveGame();
+		int foo;
+		sg.pawnWallet.AddPawn(new Pawn(HeroType.Knight, HeroTier.tier1), out foo);
 	}
 
 	public void Save() {
