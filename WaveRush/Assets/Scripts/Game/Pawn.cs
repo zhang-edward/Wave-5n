@@ -102,6 +102,12 @@ public class Pawn : System.IComparable<Pawn>
 		return numLevelsGained;
 	}
 
+	public void LoseExperience(int amt) {
+		Experience -= amt;
+		if (Experience < 0)
+			Experience = 0;
+	}
+
 	public override string ToString()
 	{
 		return string.Format("[Pawn: type={0}, tier={1}, level={2}]", type.ToString(), tier.ToString(), level);

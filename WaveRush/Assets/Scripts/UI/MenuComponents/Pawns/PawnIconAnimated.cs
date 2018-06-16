@@ -31,20 +31,20 @@ public class PawnIconAnimated : PawnIconStandard
 		int numLevelUps = endState.level - pawnData.level;
 		float endingExp = endState.Experience;
 		while (numLevelUps > 0) {
-			while (experienceSlider.value < experienceSlider.maxValue) {
-				experienceSlider.value += experienceSlider.maxValue / 64;
+			while (Mathf.Abs(experienceSlider.value - experienceSlider.maxValue) > 0.2f) {
+				//experienceSlider.value += experienceSlider.maxValue / 64;
+				experienceSlider.value = Mathf.Lerp(experienceSlider.value, experienceSlider.maxValue, 0.2f);
 				yield return null;
 			}
-			if (experienceSlider.value >= experienceSlider.maxValue) {
-				PlayAnim(STATE_LEVELUP);
-				SetLevel(++levelCounter);
-				experienceSlider.value = 0;
-			}
+			PlayAnim(STATE_LEVELUP);
+			SetLevel(++levelCounter);
+			experienceSlider.value = 0;
 			numLevelUps--;
 		}
 		experienceSlider.maxValue = endState.MaxExperience;
-		while (experienceSlider.value < endingExp) {
-			experienceSlider.value += experienceSlider.maxValue / 64;
+		while (Mathf.Abs(experienceSlider.value - endingExp) > 0.2f) {
+			//experienceSlider.value += experienceSlider.maxValue / 64;
+			experienceSlider.value = Mathf.Lerp(experienceSlider.value, endingExp, 0.2f);
 			yield return null;
 		}
 

@@ -212,6 +212,7 @@ public class TutorialScene1Manager : MonoBehaviour
 		yield return new WaitUntil(() => !dialogueView.dialoguePlaying);
 		yield return new WaitForSeconds(1.0f);
 
+		PlayerPrefs.SetInt(SaveGame.TUTORIAL_COMPLETE_KEY, 1);
 		GameManager.instance.GoToScene("MainMenu");
 	}
 

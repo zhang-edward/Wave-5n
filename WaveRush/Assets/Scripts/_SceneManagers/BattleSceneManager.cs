@@ -46,7 +46,7 @@ public class BattleSceneManager : MonoBehaviour
 		//acquiredPawns = new List<Pawn>();
 		gm = GameManager.instance;
 		enemyManager.OnStageCompleted += () => { StartCoroutine(StageCompleteRoutine()); };
-		player.OnPlayerDied += UpdateData;
+		player.OnPlayerDied += () => { UpdateData(false); };
 		//gm.OnSceneLoaded += Init;
 	}
 
@@ -112,7 +112,7 @@ public class BattleSceneManager : MonoBehaviour
 			{
 				player.transform.parent.gameObject.SetActive(false);
 				stageCompleteOptions.GetComponent<UIAnimatorControl>().AnimateOut();
-				UpdateData();
+				UpdateData(true);
 				yield break;
 			}
 			// "Continue" option selected
@@ -129,11 +129,15 @@ public class BattleSceneManager : MonoBehaviour
 		//print("No sacrifice detected; continue");
 	}
 
-	private void UpdateData()
+	private void UpdateData(bool completedStage)
 	{
 		int startingLevel = gm.save.GetPawn(pawnId).level;
-		int numLevelUps = gm.save.AddExperience(pawnId, (int)(Formulas.ExperienceFormula(enemyManager.level) * 0.3f));
-
+		int numLevelUps = 0;
+		if (completedStage)
+			numLevelUps = gm.save.AddExperience(pawnId, (int)(Formulas.ExperienceFormula(enemyManager.level) * 0.3f));
+		else
+			gm.save.LoseExperience(pawnId, (int)(Formulas.ExperienceFormula(enemyManager.level) * 0.2f));
+		
 		ScoreReport.ScoreReportData scoreData = new ScoreReport.ScoreReportData(
 			enemiesDefeated: 	enemyManager.enemiesKilled,
 			wavesSurvived: 		Mathf.Max(enemyManager.waveNumber - 1, 0),

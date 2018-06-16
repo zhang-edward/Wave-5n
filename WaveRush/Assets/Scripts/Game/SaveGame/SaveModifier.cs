@@ -92,6 +92,10 @@ public class SaveModifier {
 		return pawnWallet.AddExperience(id, amt);
 	}
 
+	public void LoseExperience(int id, int amt) {
+		pawnWallet.LoseExperience(id, amt);
+	}
+
 	/** PawnWallet Getters */
 	public bool HasPawns() {
 		return pawnWallet.HasPawns();

@@ -46,7 +46,7 @@ public class PlayerInput : MonoBehaviour
 		if (isInputEnabled)
 		{
 			// Get mouse or touch input
-#if UNITY_ANDROID || UNITY_IOS || UNITY_IOS
+#if UNITY_ANDROID || UNITY_IOS
 			touchInputHandler.ListenForTouchInput();
 #else
 			HandleMouseKeyboardInput();

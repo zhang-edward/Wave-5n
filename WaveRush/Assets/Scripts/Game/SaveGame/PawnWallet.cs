@@ -55,11 +55,20 @@ public class PawnWallet
 	public int AddExperience(int id, int amt) {
 		if (id < pawnCapacity) {
 			if (pawns[id] != null) {
-				Debug.Log("Added pawn " + amt + " experience to pawn " + pawns[id]);
+				Debug.Log("Added " + amt + " experience to pawn " + pawns[id]);
 				return pawns[id].AddExperience(amt);
 			}
 		}
 		return -1;
+	}
+
+	public void LoseExperience(int id, int amt) {
+		if (id < pawnCapacity) {
+			if (pawns[id] != null) {
+				Debug.Log("Lost " + amt + " experience for pawn " + pawns[id]);
+				pawns[id].LoseExperience(amt);
+			}
+		}
 	}
 
 	public bool HasPawns() {

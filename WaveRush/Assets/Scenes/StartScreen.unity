@@ -599,6 +599,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5392b6116a53473f82920c9eb3369b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  logoAnimator: {fileID: 1617394359}
+  music: {fileID: 8300000, guid: 1536e81a499644bc78f1f14908bfeaa8, type: 3}
+  tappedScreenSound: {fileID: 8300000, guid: e02f49737eac247f6878004beb602fe7, type: 3}
 --- !u!4 &729349388
 Transform:
   m_ObjectHideFlags: 0
@@ -1297,6 +1300,7 @@ GameObject:
   - component: {fileID: 1617394358}
   - component: {fileID: 1617394360}
   - component: {fileID: 1617394359}
+  - component: {fileID: 1617394361}
   m_Layer: 5
   m_Name: Logo
   m_TagString: Untagged
@@ -1352,6 +1356,20 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1617394357}
+--- !u!114 &1617394361
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1617394357}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0517fa5d90d3d41f588d9e96efa35e04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clips:
+  - {fileID: 8300000, guid: 3f003eb109da34cfaa3f8de4efd406aa, type: 3}
+  - {fileID: 8300000, guid: f9b7643f5813f434582731c10a1a5a91, type: 3}
 --- !u!1 &1619137843
 GameObject:
   m_ObjectHideFlags: 0
@@ -1746,6 +1764,14 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11441932, guid: f71241c0d323a46628e5b6056acd62dd, type: 2}
       propertyPath: selectedPawn.type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11441932, guid: f71241c0d323a46628e5b6056acd62dd, type: 2}
+      propertyPath: selectedPawn.level
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1080825989483214, guid: f71241c0d323a46628e5b6056acd62dd, type: 2}
+      propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
