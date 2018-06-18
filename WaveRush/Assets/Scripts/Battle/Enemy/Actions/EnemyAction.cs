@@ -19,7 +19,7 @@ namespace EnemyActions
 			this.onActionFinished = onActionFinished;
 			foreach (EnemyCondition condition in conditions)
 			{
-				condition.Init(this, e, e.player);
+				condition.Init(this, e, e.playerTransform);
 			}
 		}
 

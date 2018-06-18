@@ -1,7 +1,5 @@
 fileFormatVersion: 2
 guid: c970dbddb61b646458481aa6db45d54d
-timeCreated: 1480116266
-licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
     21300000: enemy_ogre_0
@@ -64,14 +62,17 @@ TextureImporter:
     21300114: enemy_ogre_57
     21300116: enemy_ogre_58
     21300118: enemy_ogre_59
-  serializedVersion: 2
+  externalObjects: {}
+  serializedVersion: 5
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
+    sRGBTexture: 1
     linearTexture: 0
-    correctGamma: 0
     fadeOut: 0
     borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
     mipMapFadeDistanceStart: 1
     mipMapFadeDistanceEnd: 3
   bumpmap:
@@ -81,34 +82,84 @@ TextureImporter:
     normalMapFilter: 0
   isReadable: 1
   grayScaleToAlpha: 0
-  generateCubemap: 0
+  generateCubemap: 6
   cubemapConvolution: 0
-  cubemapConvolutionSteps: 7
-  cubemapConvolutionExponent: 1.5
   seamlessCubemap: 0
   textureFormat: -3
   maxTextureSize: 2048
   textureSettings:
+    serializedVersion: 2
     filterMode: 0
     aniso: 16
     mipBias: -1
-    wrapMode: 1
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
   nPOTScale: 0
   lightmap: 0
-  rGBM: 0
   compressionQuality: 50
-  allowsAlphaSplitting: 0
   spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 10
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
   textureType: 8
-  buildTargetSettings: []
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - serializedVersion: 2
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: iPhone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -124,7 +175,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 4f5f70cd3133b4db6b5a35e5850089b9
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_1
       rect:
@@ -137,7 +195,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 0bc3d51ece6354dffb8ba52c65a69b5f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_2
       rect:
@@ -150,7 +215,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: bd4a82b22af5f4b9487352ce2f35dc7c
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_3
       rect:
@@ -163,7 +235,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 84d60b8164d18429b9e62d54e2386fa4
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_4
       rect:
@@ -176,7 +255,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 77e086df75b364b1daed30844c286dfe
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_5
       rect:
@@ -189,7 +275,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 1ef2ea1f8e1e344e4be8b6fc23a7b868
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_6
       rect:
@@ -202,7 +295,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 7d19346488035467ebd3ef188a5e08af
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_7
       rect:
@@ -215,7 +315,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: f35f3575ee0a54553a0d442053f78ce9
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_8
       rect:
@@ -228,7 +335,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 6310e4f1d4e6b4c0581955a0f0ee62e5
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_9
       rect:
@@ -241,7 +355,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: d52c39dc2edbb480e97032f4431e3801
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_10
       rect:
@@ -254,7 +375,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: f638a2433487249278191fc19b9e02ba
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_11
       rect:
@@ -267,7 +395,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 48aefb225a9d946b7bd9d9e79acd255b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_12
       rect:
@@ -280,7 +415,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 0e064eff05be044cb910f678426f34b1
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_13
       rect:
@@ -293,7 +435,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: ee2fe9072aa5a431f9a43977daee433c
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_14
       rect:
@@ -306,7 +455,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 22fe68488260a40eea8719255239edae
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_15
       rect:
@@ -319,7 +475,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 34ae36163ac7d4c01b82c87edd1ba0de
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_16
       rect:
@@ -332,7 +495,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 4e02bc0f4f64042b896bb466f6f542f2
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_17
       rect:
@@ -345,7 +515,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 14c4bb3d3e5a94f0a86bad3ebd662cae
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_18
       rect:
@@ -358,7 +535,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: ac5d7bbb51776474caf23fa3c444dc7f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_19
       rect:
@@ -371,7 +555,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 8818bbedec48a409e8b5f5d629f994d3
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_20
       rect:
@@ -384,7 +575,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 1eb0d68a482b64338a47d5fe050afa36
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_21
       rect:
@@ -397,7 +595,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 4b91160b65a124deda7e414cbca60c5e
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_22
       rect:
@@ -410,7 +615,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 5f3cd833125c34adcaf5726a068382c4
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_23
       rect:
@@ -423,7 +635,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 033fd893a029f4720b67273714143989
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_24
       rect:
@@ -436,7 +655,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 66f28eb86d7204228aea0a6936a3098f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_25
       rect:
@@ -449,7 +675,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 5208496162a9c447e811ed070fb0ca23
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_26
       rect:
@@ -462,7 +695,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 3b4bdc03be83346d0aca3e22485273a7
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_27
       rect:
@@ -475,7 +715,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: a3dfb796c8ba64a85b5f09553962dfda
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_28
       rect:
@@ -488,7 +735,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: a407e0d5f38944c58abd74d81d12902f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_29
       rect:
@@ -501,7 +755,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 3d40aff9632e4406faf0b50446c0140c
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_30
       rect:
@@ -514,7 +775,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 19bbf904944cd47fe8ba6b1bfa2259b1
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_31
       rect:
@@ -527,7 +795,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: f84fc43df033b4aae9f1098d60fac30e
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_32
       rect:
@@ -540,7 +815,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 970aeffb68f7e4ef89fd43ed81accfa7
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_33
       rect:
@@ -553,7 +835,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 4e4057cb98bef4526868a0c306e7c9f8
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_34
       rect:
@@ -566,7 +855,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 49be5ba56b3554fa394c4f56eac9af5f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_35
       rect:
@@ -579,7 +875,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: f97245886387b4765befddf0632051d7
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_36
       rect:
@@ -592,7 +895,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: ea406ee9d36b24f1080f11632c945feb
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_37
       rect:
@@ -605,7 +915,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 8326daf9ac8f94d4084423f9bcbc842f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_38
       rect:
@@ -618,7 +935,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: f01f582f6a1ef43e9b30d723ad37a5f7
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_39
       rect:
@@ -631,7 +955,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 4299de4c07d784b9f926f46ce7867c67
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_40
       rect:
@@ -644,7 +975,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: b3bfbf56726b44f5db1a93a0ddda7b6d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_41
       rect:
@@ -657,7 +995,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: b29a2957aafb0432e8e634bc1002ac84
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_42
       rect:
@@ -670,7 +1015,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 6b9fe0d14e9a94c36ab5c412f99399e5
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_43
       rect:
@@ -683,7 +1035,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 833e8270152f5487d98bbdf83272afdf
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_44
       rect:
@@ -696,7 +1055,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 339cb51e10867422f9d73e8e995ed1d7
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_45
       rect:
@@ -709,7 +1075,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 7b99805c86f6846f6b3b8ece2218192d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_46
       rect:
@@ -722,7 +1095,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 6e81e742d5b46415d95f83087aeb2c3d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_47
       rect:
@@ -735,7 +1115,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: aa5466924da204809880e7b25a36632e
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_48
       rect:
@@ -748,7 +1135,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 6c5686f14b7ac4b74886bdaab72662a4
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_49
       rect:
@@ -761,7 +1155,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 717e7f43d550d47ea8ba69d4eaa0c97e
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_50
       rect:
@@ -774,7 +1175,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 873075700ff9540578f329c693fb4834
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_51
       rect:
@@ -787,7 +1195,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 92ce4ca9b60d340d49850ae30d20869b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_52
       rect:
@@ -800,7 +1215,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: c8e10ed3d41a140f8a1d591d5ea04a27
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_53
       rect:
@@ -813,7 +1235,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: fe0fb1e31529a4e3b86c476770f5abd2
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_54
       rect:
@@ -826,7 +1255,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 9e9bf64c4285c49ae96db0f70b7f768f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_55
       rect:
@@ -839,7 +1275,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 3d48224f2ad51456d8e870ad99d8f59e
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_56
       rect:
@@ -852,7 +1295,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 965e8ed8366cb440c91e48ee17debebb
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_57
       rect:
@@ -865,7 +1315,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 623546e55fd5f404cacbb188a7686ba2
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_58
       rect:
@@ -878,7 +1335,14 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 4dd38d25841294d76b8fe5cb20994514
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: enemy_ogre_59
       rect:
@@ -891,8 +1355,22 @@ TextureImporter:
       pivot: {x: 0.525, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 6e2c1ffc0a0d147738cc3e0686a37fd6
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
   spritePackingTag: 
   userData: 
   assetBundleName: 

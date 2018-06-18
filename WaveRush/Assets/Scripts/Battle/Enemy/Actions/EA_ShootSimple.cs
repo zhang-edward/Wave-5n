@@ -21,7 +21,7 @@
 			p.speed = speed;
 			p.GetComponentInChildren<DamageAction>().damage = damage;
 			p.projectileAnim = projectileAnimation;
-			p.Init(shootPoint.position, dir);
+			p.Init(shootPoint.position, dir, e.gameObject);
 			SoundManager.instance.RandomizeSFX(shootSound);
 		}
 	}

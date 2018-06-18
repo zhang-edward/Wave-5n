@@ -251,7 +251,7 @@ public class EnemyManager : MonoBehaviour {
 	// Helper method for spawning enemies
 	private void InitEnemy(Enemy e, Vector3 spawnPos)
 	{
-		e.player = player.transform;
+		e.playerTransform = player.transform;
 		e.moneyPickupPrefab = moneyPickup;
 		e.Init(spawnPos, map, level);
 		e.OnEnemyDied += IncrementEnemiesKilled;

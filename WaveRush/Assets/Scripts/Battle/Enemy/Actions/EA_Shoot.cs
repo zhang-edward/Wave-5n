@@ -53,7 +53,7 @@
 			Charge();
 
 			// adjust for player hitbox
-			Vector2 dir = e.player.transform.position - shootPoint.position;
+			Vector2 dir = e.playerTransform.transform.position - shootPoint.position;
 			yield return new WaitForSeconds(chargeTime);
 
 			if (e.sr.flipX)
@@ -84,7 +84,7 @@
 			anim.CrossFade(shootState, 0f);     // triggers are unreliable, crossfade forces state to execute
 			Projectile p = projectilePool.GetPooledObject().GetComponent<Projectile>();
 			UnityEngine.Assertions.Assert.IsNotNull(p);
-			p.Init(shootPoint.position, dir);
+			p.Init(shootPoint.position, dir, e.gameObject);
 			SoundManager.instance.RandomizeSFX(shootSound);
 		}
 	}

@@ -14,13 +14,14 @@ namespace Projectiles
 		[Header("Properties")]
 		[Tooltip("This MUST be unique for each projectile!")]
 		public string projectileName;       // unique identifier for this particular prefab
-		public float speed;
-		public bool setAngle = true;
 		public string target;
+		public float speed;
 		public float lifeTime;
+		public bool setAngle = true;
 		public bool destroyOnCollide;
 		public Vector2 size;
 		public SimpleAnimation projectileAnim;
+		public GameObject source;
 
 		public delegate void ProjectileLifeCycleEvent();
 		public event ProjectileLifeCycleEvent OnShoot;
@@ -44,11 +45,6 @@ namespace Projectiles
 			animator = GetComponent<SimpleAnimationPlayer>();
 			// set the collider size to match the sprite
 			box.size = size;
-		}
-
-		void Start()
-		{
-			
 		}
 
 		void OnDrawGizmosSelected()
@@ -91,8 +87,9 @@ namespace Projectiles
 			gameObject.SetActive(false);
 		}
 
-		public void Init(Vector3 pos, Vector2 dir)
+		public void Init(Vector3 pos, Vector2 dir, GameObject src)
 		{
+			source = src;
 			gameObject.SetActive(true);
 
 			transform.position = pos;
@@ -142,8 +139,18 @@ namespace Projectiles
 			}
 		}
 
-		public void DamageTarget(IDamageable damageable, int damage)
+		public void DamageTarget(IDamageable damageable, int baseDamage)
 		{
+			// Check if the source of this projectile was an enemy and if so, scale damage accordingly
+			Enemy e = source.GetComponent<Enemy>();
+			int damage;
+			if (e != null) {
+				damage = Formulas.EnemyDamageFormula(baseDamage, e.GetLevelDiff());
+			}
+			else {
+				damage = baseDamage;
+			}
+
 			damageable.Damage(damage);
 			// Event
 			if (OnDamagedTarget != null)

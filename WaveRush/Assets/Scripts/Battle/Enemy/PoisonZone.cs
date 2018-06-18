@@ -29,6 +29,8 @@ public class PoisonZone : MonoBehaviour
 		{
 			if (col.CompareTag("Player"))
 			{
+				// TODO: Fix this so it's scaled damage
+				Debug.LogWarning("Warning: Unscaled damage; needs to be fixed!");
 				col.GetComponentInChildren<Player>().Damage(damage);
 				timer = interval;
 			}

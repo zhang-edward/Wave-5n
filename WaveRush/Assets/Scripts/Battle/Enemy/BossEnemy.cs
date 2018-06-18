@@ -88,7 +88,7 @@ public class BossEnemy : Enemy
 		for (int i = 0; i < numSouls; i++)
 		{
 			GameObject o = Instantiate(soulPickupPrefab, transform.position, Quaternion.identity) as GameObject;
-			o.GetComponent<SoulPickup>().Init(player);
+			o.GetComponent<SoulPickup>().Init(playerTransform);
 		}
 	}
 

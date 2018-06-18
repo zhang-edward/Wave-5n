@@ -1,7 +1,5 @@
 fileFormatVersion: 2
 guid: 44e2aee9c325c4fc0b11174bb983ab0a
-timeCreated: 1471214568
-licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
     21300000: enemy_demon_dogLunger_0
@@ -26,14 +24,17 @@ TextureImporter:
     21300038: enemy_demon_dogLunger_19
     21300040: enemy_demon_dogLunger_20
     21300042: enemy_demon_dogLunger_21
-  serializedVersion: 2
+  externalObjects: {}
+  serializedVersion: 5
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
+    sRGBTexture: 1
     linearTexture: 0
-    correctGamma: 0
     fadeOut: 0
     borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
     mipMapFadeDistanceStart: 1
     mipMapFadeDistanceEnd: 3
   bumpmap:
@@ -43,36 +44,89 @@ TextureImporter:
     normalMapFilter: 0
   isReadable: 0
   grayScaleToAlpha: 0
-  generateCubemap: 0
+  generateCubemap: 6
   cubemapConvolution: 0
-  cubemapConvolutionSteps: 7
-  cubemapConvolutionExponent: 1.5
   seamlessCubemap: 0
   textureFormat: -3
   maxTextureSize: 2048
   textureSettings:
+    serializedVersion: 2
     filterMode: 0
     aniso: 16
     mipBias: -1
-    wrapMode: 1
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
   nPOTScale: 0
   lightmap: 0
-  rGBM: 0
   compressionQuality: 50
-  allowsAlphaSplitting: 0
   spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 16
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
   alphaIsTransparency: 1
+  spriteTessellationDetail: -1
   textureType: 8
-  buildTargetSettings: []
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - serializedVersion: 2
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: iPhone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
   spriteSheet:
+    serializedVersion: 2
     sprites:
-    - name: enemy_demon_dogLunger_0
+    - serializedVersion: 2
+      name: enemy_demon_dogLunger_0
       rect:
         serializedVersion: 2
         x: 0
@@ -83,7 +137,16 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: enemy_demon_dogLunger_1
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1223eb596163c4edb98e340c69267659
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_demon_dogLunger_1
       rect:
         serializedVersion: 2
         x: 32
@@ -94,7 +157,16 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: enemy_demon_dogLunger_2
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ad70536ec5a7346d49b2355e16305b86
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_demon_dogLunger_2
       rect:
         serializedVersion: 2
         x: 64
@@ -105,7 +177,16 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: enemy_demon_dogLunger_3
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c8ff62327c64c42b7ac175270748112a
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_demon_dogLunger_3
       rect:
         serializedVersion: 2
         x: 96
@@ -116,7 +197,16 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: enemy_demon_dogLunger_4
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fffaab942b3244920bb14fdc1d3c391b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_demon_dogLunger_4
       rect:
         serializedVersion: 2
         x: 128
@@ -127,7 +217,16 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: enemy_demon_dogLunger_5
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cfc70c620d155466b9e54fc9fecb817b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_demon_dogLunger_5
       rect:
         serializedVersion: 2
         x: 160
@@ -138,7 +237,16 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: enemy_demon_dogLunger_6
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 365f95c1c98234b35969c758204e07c3
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_demon_dogLunger_6
       rect:
         serializedVersion: 2
         x: 0
@@ -149,7 +257,16 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: enemy_demon_dogLunger_7
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 514cd91ada7f546dcad9c849b2f1bef6
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_demon_dogLunger_7
       rect:
         serializedVersion: 2
         x: 32
@@ -160,7 +277,16 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: enemy_demon_dogLunger_8
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aa1a7287a3a3b4b0887e5c852a62c1ad
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_demon_dogLunger_8
       rect:
         serializedVersion: 2
         x: 64
@@ -171,7 +297,16 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: enemy_demon_dogLunger_9
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5b0e397fab270485386f55373e998373
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_demon_dogLunger_9
       rect:
         serializedVersion: 2
         x: 96
@@ -182,7 +317,16 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: enemy_demon_dogLunger_10
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d4cc8025978e74f46a8c70e85915b440
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_demon_dogLunger_10
       rect:
         serializedVersion: 2
         x: 128
@@ -193,7 +337,16 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: enemy_demon_dogLunger_11
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 497dc12666f504159be5772e079c0f41
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_demon_dogLunger_11
       rect:
         serializedVersion: 2
         x: 160
@@ -204,7 +357,16 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: enemy_demon_dogLunger_12
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 120a63ac72be74f2ba81180e64ec44bf
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_demon_dogLunger_12
       rect:
         serializedVersion: 2
         x: 0
@@ -215,7 +377,16 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: enemy_demon_dogLunger_13
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 666cdde63e0d549b2825b5c248568058
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_demon_dogLunger_13
       rect:
         serializedVersion: 2
         x: 32
@@ -226,7 +397,16 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: enemy_demon_dogLunger_14
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fb8b7e829e27344a08540d401623aba8
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_demon_dogLunger_14
       rect:
         serializedVersion: 2
         x: 64
@@ -237,7 +417,16 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: enemy_demon_dogLunger_15
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 17696e18dc431423fb08d52831f7a1fb
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_demon_dogLunger_15
       rect:
         serializedVersion: 2
         x: 96
@@ -248,7 +437,16 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: enemy_demon_dogLunger_16
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f89557eb486e345dd9dc7aef1aa42884
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_demon_dogLunger_16
       rect:
         serializedVersion: 2
         x: 128
@@ -259,7 +457,16 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: enemy_demon_dogLunger_17
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 105b25f7244354130ababffe56b3af6f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_demon_dogLunger_17
       rect:
         serializedVersion: 2
         x: 160
@@ -270,7 +477,16 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: enemy_demon_dogLunger_18
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3db6a1fa80b5a4b33958a8abb654bda9
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_demon_dogLunger_18
       rect:
         serializedVersion: 2
         x: 0
@@ -281,7 +497,16 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: enemy_demon_dogLunger_19
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eb8a9b1b1ee0145288b7709069620403
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_demon_dogLunger_19
       rect:
         serializedVersion: 2
         x: 32
@@ -292,7 +517,16 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: enemy_demon_dogLunger_20
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d811eb89bdd654bb69cc04de93d29232
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_demon_dogLunger_20
       rect:
         serializedVersion: 2
         x: 64
@@ -303,7 +537,16 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: enemy_demon_dogLunger_21
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0370b68ba1bd24e3fb174ac329fbf5df
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_demon_dogLunger_21
       rect:
         serializedVersion: 2
         x: 96
@@ -314,7 +557,22 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 56892a04007874ef28358d8e4b50b64f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
   spritePackingTag: 
   userData: 
   assetBundleName: 

@@ -9,7 +9,7 @@ public class BounceState : MoveState
 	{
 		this.enemy = enemy;
 		body = enemy.body;
-		player = enemy.player;
+		player = enemy.playerTransform;
 		enemy.OnCollideWithMapBorder += Bounce;
 		Bounce ();
 	}

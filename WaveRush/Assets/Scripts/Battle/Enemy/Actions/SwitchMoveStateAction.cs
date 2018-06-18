@@ -15,7 +15,7 @@ namespace EnemyActions
 		public override void Init(Enemy e, EnemyAction.OnActionStateChanged onActionFinished)
 		{
 			base.Init(e, onActionFinished);
-			conditionalMoveState.Init(e, e.player);
+			conditionalMoveState.Init(e, e.playerTransform);
 		}
 
 		public override void Execute()

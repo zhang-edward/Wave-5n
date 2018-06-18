@@ -7,8 +7,8 @@ public class ComboMeter : MonoBehaviour {
 	public Player player;
 	private PlayerHero hero;
 
-	public Text text;
-	public Slider slider;
+	public TMPro.TMP_Text text;
+	public Image fillImage;
 
 	private int oldCombo;
 
@@ -30,9 +30,8 @@ public class ComboMeter : MonoBehaviour {
 	public void Init()
 	{
 		hero = player.GetComponentInChildren<PlayerHero> ();
-		slider.maxValue = hero.maxComboTimer;
 		text.gameObject.SetActive (false);
-		slider.gameObject.SetActive (false);
+		fillImage.fillAmount = 0;
 		StartCoroutine(UpdateRoutine());
 	}
 
@@ -44,7 +43,7 @@ public class ComboMeter : MonoBehaviour {
 			if (hero.combo > 0)
 			{
 				text.gameObject.SetActive(true);
-				slider.gameObject.SetActive(true);
+				fillImage.fillAmount = (float)hero.comboTimer / hero.maxComboTimer;
 				text.text = "x" + hero.combo;
 				// on combo changed
 				if (hero.combo != oldCombo)
@@ -56,9 +55,7 @@ public class ComboMeter : MonoBehaviour {
 			else
 			{
 				text.gameObject.SetActive(false);
-				slider.gameObject.SetActive(false);
 			}
-			slider.value = hero.comboTimer;
 			yield return null;
 		}
 	}

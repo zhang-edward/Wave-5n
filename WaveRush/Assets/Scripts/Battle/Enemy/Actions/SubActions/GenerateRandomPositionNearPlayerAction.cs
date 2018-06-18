@@ -13,7 +13,7 @@ namespace EnemyActions
 		public override void Init(Enemy e, EnemyAction.OnActionStateChanged onActionFinished)
 		{
 			base.Init(e, onActionFinished);
-			playerTransform = e.player;
+			playerTransform = e.playerTransform;
 		}
 
 		public override void Interrupt()

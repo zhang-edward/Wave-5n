@@ -4,7 +4,10 @@ using System.Collections.Generic;
 
 public class Player : MonoBehaviour, IDamageable
 {
-	public const float HIT_DISABLE_TIME = 1.0f;
+	public const float	HIT_DISABLE_TIME = 0.5f;
+	public const float	SOFT_HEALTH_RECOVERY_DELAY = 1.0f;
+	public const int	HEALTH_PER_QUARTER_HEART = 10;
+	public const int	HEALTH_PER_HEART = HEALTH_PER_QUARTER_HEART * 4;
 
 	[HideInInspector]public float DEFAULT_SPEED;
 
@@ -25,10 +28,12 @@ public class Player : MonoBehaviour, IDamageable
 	public Transform dirIndicator;
 
 	[Header("Stats")]
-	public int  maxHealth = 10;
-	public int  health { get; private set; }
+	public int  maxHealth;
+	public int  hardHealth { get; private set; }
+	public int	softHealth { get; private set; }
 	public StatusTimers invincibility = new StatusTimers();
 	public StatusTimers inputDisabled = new StatusTimers();
+	private int softHealthTarget;
 
 	/** Stats Dict */
 	/// <summary>
@@ -79,6 +84,10 @@ public class Player : MonoBehaviour, IDamageable
 	public delegate void PlayerUpgradesUpdated(int numUpgrades);
 	public event PlayerUpgradesUpdated OnPlayerUpgradesUpdated;
 
+	private Coroutine updateSoftHealthRoutine;
+
+
+	/** Initialization */
 	void Awake() {
 		input = GetComponent<PlayerInput>();
 	}
@@ -95,7 +104,7 @@ public class Player : MonoBehaviour, IDamageable
 	public void Init(Pawn heroData) {
 		InitPlayerHero(heroData);
 		input.Init();
-		health = maxHealth;
+		hardHealth = softHealth = softHealthTarget = maxHealth;
 
 		if (OnPlayerInitialized != null)
 			OnPlayerInitialized();
@@ -122,6 +131,8 @@ public class Player : MonoBehaviour, IDamageable
 															"Cannot find hero with name " + heroData.type.ToString() + "!");
 	}
 
+
+	/** Update Timers */
 	void Update()
 	{
 		invincibility.DecrementTimer(Time.deltaTime);
@@ -158,7 +169,7 @@ public class Player : MonoBehaviour, IDamageable
 	}
 
 	/// <summary>
-	/// Flashes a color. Used when the player is damaged by an enemy.
+	/// The player sprite flashes a color. Used when the player is damaged by an enemy.
 	/// </summary>
 	public void FlashColor(Color color, float time = 0.5f)
 	{
@@ -211,29 +222,32 @@ public class Player : MonoBehaviour, IDamageable
 		sr.color = Color.white;
 	}
 
-
-	/// <summary>
-	/// Damage by the specified amt.
-	/// </summary>
-	/// <param name="amt">Amount to deduct from health.</param>
+	/** IDamageable */
 	public void Damage(int amt)
 	{
+		// Pre-damage effects
 		if (OnPlayerTryHit != null)
 			OnPlayerTryHit();
 		if (invincibility.IsOn() || amt <= 0)
 			return;
-		health -= amt;
-		OnPlayerDamaged(amt);
 
+		// Damage
+		hardHealth -= amt;
+		softHealth = softHealthTarget;
+		softHealthTarget = hardHealth;
+		UpdateSoftHealth();
 		body.AddRandomImpulse (3f);
 		HitDisable(HIT_DISABLE_TIME);
 		FlashColor(Color.red);
 
-		if (health <= 0 && OnPlayerWillDie != null)	
-			OnPlayerWillDie ();	// for events that prevent the player's death
+		// Post-damage effects
+		if (OnPlayerDamaged != null)
+			OnPlayerDamaged(amt);
+
+		if (hardHealth <= 0 && OnPlayerWillDie != null)	
+			OnPlayerWillDie ();	// For events that prevent the player's death
 		// Player Died
-		if (health <= 0)
-		{
+		if (hardHealth <= 0) {	// Check if the player still has health left
 			StartCoroutine(DieRoutine());
 		}
 		else
@@ -262,9 +276,44 @@ public class Player : MonoBehaviour, IDamageable
 			OnPlayerDied();
 	}
 
-	public void LeaveEffect()
+
+	/// <summary>
+	/// Heal the specified amt.
+	/// </summary>
+	/// <param name="amt">Amount to add to health.</param>
+	public void Heal(int amt)
 	{
-		//StartCoroutine(SacrificeRoutine());
+		hardHealth += amt;
+		if (hardHealth >= maxHealth)
+			hardHealth = maxHealth;
+		softHealth = softHealthTarget = hardHealth;
+		OnPlayerHealed (amt);
+	}
+
+	/// <summary>
+	/// Heal function with an option to play the healing effect
+	/// </summary>
+	/// <param name="amt">Amt.</param>
+	/// <param name="playEffect">If set to <c>true</c> play effect.</param>
+	public void HealEffect (int amt, bool playEffect)
+	{
+		if (playEffect)
+			healEffect.Play ();
+		Heal (amt);
+	}
+
+	private void UpdateSoftHealth() {
+		if (updateSoftHealthRoutine != null)
+			StopCoroutine(updateSoftHealthRoutine);
+		updateSoftHealthRoutine = StartCoroutine(UpdateSoftHealthRoutine());
+	}
+
+	private IEnumerator UpdateSoftHealthRoutine() {
+		yield return new WaitForSeconds(SOFT_HEALTH_RECOVERY_DELAY);
+		while (softHealth > softHealthTarget) {
+			softHealth --;
+			yield return new WaitForSeconds(1f / hero.softHealthDecayRate);
+		}
 	}
 
 	private IEnumerator SacrificeRoutine()
@@ -285,30 +334,6 @@ public class Player : MonoBehaviour, IDamageable
 		transform.parent.gameObject.SetActive(false);
 		Time.timeScale = 1f;
 		CameraControl.instance.DisableOverlay(1.0f);
-	}
-
-	/// <summary>
-	/// Heal the specified amt.
-	/// </summary>
-	/// <param name="amt">Amount to add to health.</param>
-	public void Heal(int amt)
-	{
-		health += amt;
-		if (health >= maxHealth)
-			health = maxHealth;
-		OnPlayerHealed (amt);
-	}
-
-	/// <summary>
-	/// Heal function with an option to play the healing effect
-	/// </summary>
-	/// <param name="amt">Amt.</param>
-	/// <param name="playEffect">If set to <c>true</c> play effect.</param>
-	public void HealEffect (int amt, bool playEffect)
-	{
-		if (playEffect)
-			healEffect.Play ();
-		Heal (amt);
 	}
 
 	/// <summary>

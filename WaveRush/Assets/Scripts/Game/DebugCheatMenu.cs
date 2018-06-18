@@ -71,12 +71,12 @@ public class DebugCheatMenu : MonoBehaviour
 	// ==========
 	public void KillPlayer()
 	{
-		player.Damage(player.health);
+		player.Damage(player.hardHealth);
 	}
 
 	public void HealPlayer()
 	{
-		player.Heal(player.health);
+		player.Heal(player.hardHealth);
 	}
 
 	public void FullChargeSpecial()

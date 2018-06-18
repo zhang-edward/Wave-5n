@@ -8,7 +8,7 @@
 		private float attackBuildUp = 0.4f; // time for the player to be in contact with the enemy before the player is damaged
 		private float buildUp;              // timer for attackBuildUp
 
-		public int damage = 1;
+		public int baseDamage = 1;
 		public bool activated;
 		public float attackCooldown = 1f;
 
@@ -37,6 +37,7 @@
 				Player player = col.GetComponentInChildren<Player>();
 				if (cooldown <= 0 && e.health > 0 && !e.hitDisabled && buildUp >= attackBuildUp)
 				{
+					int damage = Formulas.EnemyDamageFormula(baseDamage, player.hero.level - e.level);
 					player.Damage(damage);
 					cooldown = attackCooldown;
 				}

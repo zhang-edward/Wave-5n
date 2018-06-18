@@ -1,7 +1,5 @@
 fileFormatVersion: 2
 guid: 9672d9b85b4e24d9994c2689f53be277
-timeCreated: 1469484488
-licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
     21300000: enemy_demon_towerShooter_0
@@ -22,14 +20,17 @@ TextureImporter:
     21300030: enemy_demon_towerShooter_15
     21300032: enemy_demon_towerShooter_16
     21300034: enemy_demon_towerShooter_17
-  serializedVersion: 2
+  externalObjects: {}
+  serializedVersion: 5
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
+    sRGBTexture: 1
     linearTexture: 0
-    correctGamma: 0
     fadeOut: 0
     borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
     mipMapFadeDistanceStart: 1
     mipMapFadeDistanceEnd: 3
   bumpmap:
@@ -39,36 +40,89 @@ TextureImporter:
     normalMapFilter: 0
   isReadable: 0
   grayScaleToAlpha: 0
-  generateCubemap: 0
+  generateCubemap: 6
   cubemapConvolution: 0
-  cubemapConvolutionSteps: 7
-  cubemapConvolutionExponent: 1.5
   seamlessCubemap: 0
   textureFormat: -3
   maxTextureSize: 2048
   textureSettings:
+    serializedVersion: 2
     filterMode: 0
     aniso: 16
     mipBias: -1
-    wrapMode: 1
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
   nPOTScale: 0
   lightmap: 0
-  rGBM: 0
   compressionQuality: 50
-  allowsAlphaSplitting: 0
   spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 16
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
   alphaIsTransparency: 1
+  spriteTessellationDetail: -1
   textureType: 8
-  buildTargetSettings: []
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - serializedVersion: 2
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: iPhone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
   spriteSheet:
+    serializedVersion: 2
     sprites:
-    - name: enemy_demon_towerShooter_0
+    - serializedVersion: 2
+      name: enemy_demon_towerShooter_0
       rect:
         serializedVersion: 2
         x: 0
@@ -79,7 +133,16 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: enemy_demon_towerShooter_1
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f9ce62fb8868143bc89161934d829bbc
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_demon_towerShooter_1
       rect:
         serializedVersion: 2
         x: 16
@@ -90,7 +153,16 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: enemy_demon_towerShooter_2
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 21cf7049dafff4ec49074ee25b88a2ae
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_demon_towerShooter_2
       rect:
         serializedVersion: 2
         x: 32
@@ -101,7 +173,16 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: enemy_demon_towerShooter_3
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d66bf450764bb43298a69f98de8f0ce6
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_demon_towerShooter_3
       rect:
         serializedVersion: 2
         x: 48
@@ -112,7 +193,16 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: enemy_demon_towerShooter_4
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e58943c0366ec47dcb595e53b434ea42
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_demon_towerShooter_4
       rect:
         serializedVersion: 2
         x: 64
@@ -123,7 +213,16 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: enemy_demon_towerShooter_5
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b228b7f25c1464fcbaefa5f0816aa5c0
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_demon_towerShooter_5
       rect:
         serializedVersion: 2
         x: 80
@@ -134,7 +233,16 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: enemy_demon_towerShooter_6
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4d22e0fe1578e43e88f2635efe1100d2
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_demon_towerShooter_6
       rect:
         serializedVersion: 2
         x: 0
@@ -145,7 +253,16 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: enemy_demon_towerShooter_7
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0c52a29aec4c34283a5211a6db81b47a
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_demon_towerShooter_7
       rect:
         serializedVersion: 2
         x: 16
@@ -156,7 +273,16 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: enemy_demon_towerShooter_8
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 445bdb747cfe04ae7bac265f79e75553
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_demon_towerShooter_8
       rect:
         serializedVersion: 2
         x: 32
@@ -167,7 +293,16 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: enemy_demon_towerShooter_9
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 476e08b26ff284161bc1bf1e772a10f9
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_demon_towerShooter_9
       rect:
         serializedVersion: 2
         x: 48
@@ -178,7 +313,16 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: enemy_demon_towerShooter_10
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 74a564f7ebcf244f0aedfee62d9bcd5b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_demon_towerShooter_10
       rect:
         serializedVersion: 2
         x: 64
@@ -189,7 +333,16 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: enemy_demon_towerShooter_11
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a7b620625abd94e26bd9d1027fb7f654
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_demon_towerShooter_11
       rect:
         serializedVersion: 2
         x: 80
@@ -200,7 +353,16 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: enemy_demon_towerShooter_12
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8c635c92aa5744268a45e3b03c9df505
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_demon_towerShooter_12
       rect:
         serializedVersion: 2
         x: 0
@@ -211,7 +373,16 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: enemy_demon_towerShooter_13
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 32018352be73f41e094c4b08d3a1a2f7
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_demon_towerShooter_13
       rect:
         serializedVersion: 2
         x: 16
@@ -222,7 +393,16 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: enemy_demon_towerShooter_14
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fad1a4718868c405fb9b895d009fea67
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_demon_towerShooter_14
       rect:
         serializedVersion: 2
         x: 32
@@ -233,7 +413,16 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: enemy_demon_towerShooter_15
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d818361aa4947440eb13b3609a365a0c
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_demon_towerShooter_15
       rect:
         serializedVersion: 2
         x: 48
@@ -244,7 +433,16 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: enemy_demon_towerShooter_16
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e6c22b32c3eea4ccea5db9eb7292bbe6
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_demon_towerShooter_16
       rect:
         serializedVersion: 2
         x: 64
@@ -255,7 +453,16 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: enemy_demon_towerShooter_17
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f060e41b8d50e430d8ffd3bcc135ee48
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_demon_towerShooter_17
       rect:
         serializedVersion: 2
         x: 80
@@ -266,7 +473,22 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d62c85790432e4620928bddfa29a86af
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
   spritePackingTag: 
   userData: 
   assetBundleName: 

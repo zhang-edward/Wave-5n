@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 public class Enemy : MonoBehaviour, IDamageable {
 
+	public static int SCALETYPE_DAMAGE = 0;
 	public static int MAX_LEVEL_RAW = 50;
 	public static int MAX_ABILITIES = 4;
 
@@ -12,7 +13,7 @@ public class Enemy : MonoBehaviour, IDamageable {
 	protected int DEFAULT_LAYER;
 
 	[HideInInspector] public float DEFAULT_SPEED;
-	[HideInInspector] public Transform player;
+	[HideInInspector] public Transform playerTransform;
 	[HideInInspector] public GameObject moneyPickupPrefab;
 	[HideInInspector] public Map map;						// used only for walk-in spawners
 
@@ -57,6 +58,7 @@ public class Enemy : MonoBehaviour, IDamageable {
 	public EnemyAction action;
 	public SpawnMethod spawnMethod;		// whether this enemy walks onto the arena or not
 
+	private Player player;
 
 	public delegate void EnemyLifecycleEvent();
 	public event EnemyLifecycleEvent OnEnemyInit;
@@ -90,8 +92,10 @@ public class Enemy : MonoBehaviour, IDamageable {
 		deathPropPool = ObjectPooler.GetObjectPooler ("DeathProp");			// instantiate set object pooler
 
 		// init movement and action
-		movementMethod.Init(this, player);		
+		movementMethod.Init(this, playerTransform);		
 		action.Init (this, ToMoveState);
+
+		player = playerTransform.GetComponentInChildren<Player>();
 
 		Spawn (spawnLocation);
 	}
@@ -284,10 +288,10 @@ public class Enemy : MonoBehaviour, IDamageable {
 		GameObject o = Instantiate (moneyPickupPrefab, transform.position, Quaternion.identity) as GameObject;
 		MoneyPickup moneyPickup = o.GetComponent<MoneyPickup>();
 		moneyPickup.value = moneyValue;
-		moneyPickup.Init(player);
+		moneyPickup.Init(playerTransform);
 	}
 
-	// ===== IDamageable methods ===== //
+	// ============================== IDamageable Methods ==============================
 	public virtual void Damage(int amt)
 	{
 		Damage(amt, false);
@@ -336,6 +340,11 @@ public class Enemy : MonoBehaviour, IDamageable {
 		health += amt;
 		if (health > maxHealth)
 			health = maxHealth;
+	}
+
+	// ============================== Misc Methods ==============================
+	public int GetLevelDiff() {
+		return player.hero.level - level;
 	}
 
 	protected virtual void OnTriggerEnter2D(Collider2D col)

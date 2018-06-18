@@ -1,7 +1,5 @@
 fileFormatVersion: 2
 guid: e6b46310baf244d82b83ee13394d8e1c
-timeCreated: 1486255747
-licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
     21300000: slime_boss_0
@@ -64,7 +62,8 @@ TextureImporter:
     21300114: slime_boss_57
     21300116: slime_boss_58
     21300118: slime_boss_59
-  serializedVersion: 4
+  externalObjects: {}
+  serializedVersion: 5
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -72,6 +71,8 @@ TextureImporter:
     linearTexture: 0
     fadeOut: 0
     borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
     mipMapFadeDistanceStart: 1
     mipMapFadeDistanceEnd: 3
   bumpmap:
@@ -87,10 +88,13 @@ TextureImporter:
   textureFormat: 1
   maxTextureSize: 2048
   textureSettings:
+    serializedVersion: 2
     filterMode: 0
     aniso: -1
     mipBias: -1
-    wrapMode: 1
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -99,49 +103,63 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 16
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
   textureType: 8
   textureShape: 1
+  singleChannelComponent: 0
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
   platformSettings:
-  - buildTarget: DefaultTexturePlatform
+  - serializedVersion: 2
+    buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
+    resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 2
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
-  - buildTarget: Standalone
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Standalone
     maxTextureSize: 2048
+    resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 2
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
-  - buildTarget: iPhone
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: iPhone
     maxTextureSize: 2048
+    resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 2
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
-  - buildTarget: Android
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Android
     maxTextureSize: 2048
+    resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 2
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    androidETC2FallbackOverride: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -157,7 +175,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 72fbacfa4fff64eb4b8dbeece1ca9711
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_1
       rect:
@@ -170,7 +195,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 40f4477b253664e4d8bfaede3b63f949
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_2
       rect:
@@ -183,7 +215,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 5ffe626ae731e4cdf8195b81b54d824f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_3
       rect:
@@ -196,7 +235,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: ce4e0af2f67ee45eea00dba9747ce039
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_4
       rect:
@@ -209,7 +255,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 06293af7c19da4efa975197dcbb29d7e
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_5
       rect:
@@ -222,7 +275,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: c52770b3ae0374068811254ca41b1ac0
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_6
       rect:
@@ -235,7 +295,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 49afe3e070f5943c79b3188d74f513ba
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_7
       rect:
@@ -248,7 +315,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 413c20e0b8d7a45139d27215a0a1b744
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_8
       rect:
@@ -261,7 +335,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 26aa5abfa519f432ca45e9a3202ec41f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_9
       rect:
@@ -274,7 +355,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 08126d4c8315a4c83a817c5636aff07d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_10
       rect:
@@ -287,7 +375,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 7e2ac5f72aba845dca6b95b6c06bdcfa
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_11
       rect:
@@ -300,7 +395,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 23192c8d9f9f94f778274027100a8816
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_12
       rect:
@@ -313,7 +415,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 7adbec8469d8b43539b294297374d012
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_13
       rect:
@@ -326,7 +435,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 52adfe4694e09473a92fb9a109226744
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_14
       rect:
@@ -339,7 +455,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 1177e736472a34b04863bd366b327166
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_15
       rect:
@@ -352,7 +475,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: ad25e3b8bd2b6418b9d8842bb84ab916
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_16
       rect:
@@ -365,7 +495,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: a3699b3a2fa4c4190814952a2ebf9812
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_17
       rect:
@@ -378,7 +515,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: e54ca5e1930d44d2186ce8be9ff6d01e
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_18
       rect:
@@ -391,7 +535,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 42908ea6a6c3e4aebaf2c1d3097e743e
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_19
       rect:
@@ -404,7 +555,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 89be84e91dcb54bf2854524d7eeaacf2
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_20
       rect:
@@ -417,7 +575,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 2955d2b7982364193afd0e4c43846a4c
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_21
       rect:
@@ -430,7 +595,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: be2d240c334e140c28ed6a742a6dfa6a
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_22
       rect:
@@ -443,7 +615,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: ea44852fba63444b78de3db35d60b127
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_23
       rect:
@@ -456,7 +635,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: e7b22a5a12ef747a8b973410ab4ac594
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_24
       rect:
@@ -469,7 +655,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 5efd290113e094f49b0779d70f55179e
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_25
       rect:
@@ -482,7 +675,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 74f24e83a47ff4bde8a5cd69f2e32057
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_26
       rect:
@@ -495,7 +695,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: d4929d8d40be946a8a77fbe2903cacf4
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_27
       rect:
@@ -508,7 +715,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: c9a41a9e8adfc4a03a07ecb9ae07bbbf
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_28
       rect:
@@ -521,7 +735,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 8865627d6d2324851b52770392aea9e4
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_29
       rect:
@@ -534,7 +755,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: e551f98afedbb498280d4b759124702d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_30
       rect:
@@ -547,7 +775,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: ef31bcb1656794ebdb2703fe1e6b7fb0
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_31
       rect:
@@ -560,7 +795,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 12854565382734da3ac0374ae5414503
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_32
       rect:
@@ -573,7 +815,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 35cb1080f3fce4d39a9b41cdd798379a
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_33
       rect:
@@ -586,7 +835,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 1a4960297fab14e61aeb553f61cef493
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_34
       rect:
@@ -599,7 +855,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: a44a187841a7043b098a6b6a8e6cc0c1
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_35
       rect:
@@ -612,7 +875,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 473c6d6064a0347a68ca1c452693277a
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_36
       rect:
@@ -625,7 +895,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: f6108b20beda246328bc98a821620de0
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_37
       rect:
@@ -638,7 +915,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: a651c77e8b9244a6781fa91adb921a8c
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_38
       rect:
@@ -651,7 +935,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: d747d7165a9794bf685231254b9bdcc5
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_39
       rect:
@@ -664,7 +955,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 635d9932b71304c4296f84aae5f058cd
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_40
       rect:
@@ -677,7 +975,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 6935fc64fc072470eafa93905c61b98b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_41
       rect:
@@ -690,7 +995,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 25ad9f649cf5246dbb4f91b41fb16fe7
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_42
       rect:
@@ -703,7 +1015,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: a41f6f9773d1a442883a5b3ed3c4a878
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_43
       rect:
@@ -716,7 +1035,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: fb6e9daee8f114640a7236323240a5e1
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_44
       rect:
@@ -729,7 +1055,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: b6e60c658c45e4ae79f53853eb43abd1
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_45
       rect:
@@ -742,7 +1075,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: fe0d86b7748d848f89ce582e79c72747
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_46
       rect:
@@ -755,7 +1095,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: b67bd0dde41574db68f2cdbf8f1f396e
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_47
       rect:
@@ -768,7 +1115,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: e124d91f73c7147d6ad5c64d28e62da2
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_48
       rect:
@@ -781,7 +1135,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: fb6664c4a508141eba576cd9102626a4
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_49
       rect:
@@ -794,7 +1155,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 9d480c059d7f0466981bfc51fca0adee
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_50
       rect:
@@ -807,7 +1175,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: f724585734b0d495b88db30cf02c15f4
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_51
       rect:
@@ -820,7 +1195,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 80aba9fb4faab40d2b7f61f1d5d1633b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_52
       rect:
@@ -833,7 +1215,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 3776de2ec02a04f889cd3c7b59e7b137
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_53
       rect:
@@ -846,7 +1235,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 2ab41243fe517443485eb4b64ec16dec
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_54
       rect:
@@ -859,7 +1255,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 6c3ed2237a8504c2caa246c738b9404a
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_55
       rect:
@@ -872,7 +1275,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 244dc6e16b2064641990bf9d3c8cbfe2
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_56
       rect:
@@ -885,7 +1295,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 6525905921f7a4b1c8a1f961a3d948ac
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_57
       rect:
@@ -898,7 +1315,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: da5fd171f54f8428f8caa0944c797567
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_58
       rect:
@@ -911,7 +1335,14 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: 888109fcdfc404319bb97e8b7ddf53b4
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: slime_boss_59
       rect:
@@ -924,8 +1355,22 @@ TextureImporter:
       pivot: {x: 0.53, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: -1
+      bones: []
+      spriteID: c6b8ab20ae69641bab2b68f29af243c4
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
   spritePackingTag: 
   userData: 
   assetBundleName: 

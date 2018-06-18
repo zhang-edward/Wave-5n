@@ -12,7 +12,7 @@ namespace EnemyActions
 
 		[Header("Properties")]
 		public float lungeSpeed = 10.0f;
-		public int damage;
+		public int baseDamage;
 
 
 		public override void Init(Enemy e, OnActionStateChanged onActionFinished)
@@ -35,7 +35,7 @@ namespace EnemyActions
 			base.Charge();
 			//anim.ResetTrigger ("Charge");
 			body.Move(Vector2.zero);
-			dir = (Vector2)(e.player.position - transform.position); // freeze moving direction
+			dir = (Vector2)(e.playerTransform.position - transform.position); // freeze moving direction
 		}
 
 		protected override void Action()
@@ -61,6 +61,7 @@ namespace EnemyActions
 				if (attacking)
 				{
 					Player player = col.GetComponentInChildren<Player>();
+					int damage = Formulas.EnemyDamageFormula(baseDamage, player.hero.level - e.level);
 					player.Damage(damage);
 				}
 			}

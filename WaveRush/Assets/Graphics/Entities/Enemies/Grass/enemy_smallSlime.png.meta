@@ -1,7 +1,5 @@
 fileFormatVersion: 2
 guid: 31974223f051b47788868d09cb66cbb3
-timeCreated: 1472369107
-licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
     21300000: enemy_smallSlime_0
@@ -16,14 +14,17 @@ TextureImporter:
     21300018: enemy_smallSlime_9
     21300020: enemy_smallSlime_10
     21300022: enemy_smallSlime_11
-  serializedVersion: 2
+  externalObjects: {}
+  serializedVersion: 5
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
+    sRGBTexture: 1
     linearTexture: 0
-    correctGamma: 0
     fadeOut: 0
     borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
     mipMapFadeDistanceStart: 1
     mipMapFadeDistanceEnd: 3
   bumpmap:
@@ -33,36 +34,89 @@ TextureImporter:
     normalMapFilter: 0
   isReadable: 0
   grayScaleToAlpha: 0
-  generateCubemap: 0
+  generateCubemap: 6
   cubemapConvolution: 0
-  cubemapConvolutionSteps: 7
-  cubemapConvolutionExponent: 1.5
   seamlessCubemap: 0
   textureFormat: -3
   maxTextureSize: 2048
   textureSettings:
+    serializedVersion: 2
     filterMode: 0
     aniso: 16
     mipBias: -1
-    wrapMode: 1
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
   nPOTScale: 0
   lightmap: 0
-  rGBM: 0
   compressionQuality: 50
-  allowsAlphaSplitting: 0
   spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 16
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
   alphaIsTransparency: 1
+  spriteTessellationDetail: -1
   textureType: 8
-  buildTargetSettings: []
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - serializedVersion: 2
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: iPhone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
   spriteSheet:
+    serializedVersion: 2
     sprites:
-    - name: enemy_smallSlime_0
+    - serializedVersion: 2
+      name: enemy_smallSlime_0
       rect:
         serializedVersion: 2
         x: 0
@@ -73,7 +127,16 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: enemy_smallSlime_1
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7248af7062d0a4e77a250d86d242e104
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_smallSlime_1
       rect:
         serializedVersion: 2
         x: 16
@@ -84,7 +147,16 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: enemy_smallSlime_2
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6c7696f1382b8460a9f5165576686153
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_smallSlime_2
       rect:
         serializedVersion: 2
         x: 32
@@ -95,7 +167,16 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: enemy_smallSlime_3
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3ef1b2f95b59b46a6a6fbbff1a821c75
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_smallSlime_3
       rect:
         serializedVersion: 2
         x: 48
@@ -106,7 +187,16 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: enemy_smallSlime_4
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 12a7582e3516744d189ed01f22437c66
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_smallSlime_4
       rect:
         serializedVersion: 2
         x: 0
@@ -117,7 +207,16 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: enemy_smallSlime_5
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0fc70229455fe450296c52e20651d68f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_smallSlime_5
       rect:
         serializedVersion: 2
         x: 16
@@ -128,7 +227,16 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: enemy_smallSlime_6
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8c990813dc0ac431aa3f839ed0164c95
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_smallSlime_6
       rect:
         serializedVersion: 2
         x: 32
@@ -139,7 +247,16 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: enemy_smallSlime_7
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 758a9ff312fbb4c8eadc994350c26d2f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_smallSlime_7
       rect:
         serializedVersion: 2
         x: 48
@@ -150,7 +267,16 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: enemy_smallSlime_8
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9b684dcea3b4a4c1895e529ac4ea8aa0
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_smallSlime_8
       rect:
         serializedVersion: 2
         x: 64
@@ -161,7 +287,16 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: enemy_smallSlime_9
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5c2e8ec7a43524f85b29b7c4fb1a57bb
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_smallSlime_9
       rect:
         serializedVersion: 2
         x: 0
@@ -172,7 +307,16 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: enemy_smallSlime_10
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0cb57c3b44bb146b48337a5de7ce86b1
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_smallSlime_10
       rect:
         serializedVersion: 2
         x: 16
@@ -183,7 +327,16 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: enemy_smallSlime_11
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f1693bc4f9df04862aee836195586871
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_smallSlime_11
       rect:
         serializedVersion: 2
         x: 32
@@ -194,7 +347,22 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9332accd72c2e467ea59731722e5a554
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
   spritePackingTag: 
   userData: 
   assetBundleName: 

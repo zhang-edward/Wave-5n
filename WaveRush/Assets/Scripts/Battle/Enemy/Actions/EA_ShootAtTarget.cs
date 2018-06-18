@@ -54,7 +54,7 @@
 			Charge();
 
 			// adjust for player hitbox
-			Vector2 dir = e.player.transform.position - shootPoint.position;
+			Vector2 dir = e.playerTransform.transform.position - shootPoint.position;
 			yield return new WaitForSeconds(chargeTime);
 
 			if (e.sr.flipX)
@@ -87,7 +87,7 @@
 			float lifeTime = Vector3.Distance(shootPoint.position, posGenerator.GetGeneratedPosition()) / p.speed;
 			p.lifeTime = lifeTime;
 			UnityEngine.Assertions.Assert.IsNotNull(p);
-			p.Init(shootPoint.position, dir);
+			p.Init(shootPoint.position, dir, e.gameObject);
 			SoundManager.instance.RandomizeSFX(shootSound);
 		}
 	}

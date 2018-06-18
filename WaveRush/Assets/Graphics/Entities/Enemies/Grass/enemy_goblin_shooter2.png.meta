@@ -1,7 +1,5 @@
 fileFormatVersion: 2
 guid: 6e01e2f42364f4dd1b90ff4618ac8352
-timeCreated: 1469997338
-licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
     21300000: enemy_goblin_shooter2_0
@@ -13,14 +11,17 @@ TextureImporter:
     21300012: enemy_goblin_shooter2_6
     21300014: enemy_goblin_shooter2_7
     21300016: enemy_goblin_shooter2_8
-  serializedVersion: 2
+  externalObjects: {}
+  serializedVersion: 5
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
+    sRGBTexture: 1
     linearTexture: 0
-    correctGamma: 0
     fadeOut: 0
     borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
     mipMapFadeDistanceStart: 1
     mipMapFadeDistanceEnd: 3
   bumpmap:
@@ -30,36 +31,89 @@ TextureImporter:
     normalMapFilter: 0
   isReadable: 0
   grayScaleToAlpha: 0
-  generateCubemap: 0
+  generateCubemap: 6
   cubemapConvolution: 0
-  cubemapConvolutionSteps: 7
-  cubemapConvolutionExponent: 1.5
   seamlessCubemap: 0
   textureFormat: -2
   maxTextureSize: 2048
   textureSettings:
+    serializedVersion: 2
     filterMode: 0
     aniso: 16
     mipBias: -1
-    wrapMode: 1
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
   nPOTScale: 0
   lightmap: 0
-  rGBM: 0
   compressionQuality: 50
-  allowsAlphaSplitting: 0
   spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 16
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
   alphaIsTransparency: 1
+  spriteTessellationDetail: -1
   textureType: 8
-  buildTargetSettings: []
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - serializedVersion: 2
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: 2
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: 2
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: iPhone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: 2
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: 2
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
   spriteSheet:
+    serializedVersion: 2
     sprites:
-    - name: enemy_goblin_shooter2_0
+    - serializedVersion: 2
+      name: enemy_goblin_shooter2_0
       rect:
         serializedVersion: 2
         x: 0
@@ -70,7 +124,16 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: enemy_goblin_shooter2_1
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 410d4f252f8714e8e98f297fa28abeaa
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_goblin_shooter2_1
       rect:
         serializedVersion: 2
         x: 16
@@ -81,7 +144,16 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: enemy_goblin_shooter2_2
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 946fdb0446a534c55b7f21a7990e0787
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_goblin_shooter2_2
       rect:
         serializedVersion: 2
         x: 0
@@ -92,7 +164,16 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: enemy_goblin_shooter2_3
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8180d7d319f4649dd8b4eea99cc71058
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_goblin_shooter2_3
       rect:
         serializedVersion: 2
         x: 16
@@ -103,7 +184,16 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: enemy_goblin_shooter2_4
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fd614931f093d4b21b3dcf05fc7b6b8a
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_goblin_shooter2_4
       rect:
         serializedVersion: 2
         x: 32
@@ -114,7 +204,16 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: enemy_goblin_shooter2_5
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bd65c7a900ec2447b9255d53f231e42e
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_goblin_shooter2_5
       rect:
         serializedVersion: 2
         x: 48
@@ -125,7 +224,16 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: enemy_goblin_shooter2_6
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6e915758003884da2821805f53699061
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_goblin_shooter2_6
       rect:
         serializedVersion: 2
         x: 0
@@ -136,7 +244,16 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: enemy_goblin_shooter2_7
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fd33985c3405b4c8d8eb1c6e9983573f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_goblin_shooter2_7
       rect:
         serializedVersion: 2
         x: 16
@@ -147,7 +264,16 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: enemy_goblin_shooter2_8
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3c31974f6e209476688c4559aaed7cfd
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_goblin_shooter2_8
       rect:
         serializedVersion: 2
         x: 32
@@ -158,7 +284,22 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: def4105d017484fc7a63f9e7027fdada
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
   spritePackingTag: 
   userData: 
   assetBundleName: 

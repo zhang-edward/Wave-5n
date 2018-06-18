@@ -1,27 +1,22 @@
 ﻿using UnityEngine;
 namespace Projectiles
 {
-	public class DamageAction : ProjectileAction
-	{
+	public class DamageAction : ProjectileAction {
+
 		public int damage;
 
-		void OnEnable()
-		{
+		void OnEnable() {
 			projectile.OnCollidedTarget += DamageTarget;
 		}
 
-		void OnDisable()
-		{
+		void OnDisable() {
 			projectile.OnCollidedTarget -= DamageTarget;
 		}
 
-		public void DamageTarget(IDamageable target)
-		{
+		public void DamageTarget(IDamageable target) {
 			projectile.DamageTarget(target, damage);
 		}
 
-		public override void Execute()
-		{
-		}
+		public override void Execute() {}
 	}
 }

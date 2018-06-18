@@ -189,7 +189,7 @@ public class NinjaHero : PlayerHero {
 	public GameObject InitNinjaStar(Vector2 dir)
 	{
 		Projectile ninjaStar = projectilePool.GetPooledObject ().GetComponent<Projectile>();
-		ninjaStar.Init (transform.position, dir);
+		ninjaStar.Init (transform.position, dir, player.gameObject);
 		return ninjaStar.gameObject;
 	}
 

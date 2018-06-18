@@ -14,13 +14,16 @@ public abstract class PlayerHero : MonoBehaviour {
 	[HideInInspector]public EntityPhysics body;
 	[HideInInspector]public HeroPowerUpManager powerUpManager;
 	[HideInInspector]public float[] cooldownMultipliers;	// The cooldown time multipliers, modified by powerups or abilities
+	[HideInInspector]public int level;
+	private int baseDamage;
 	protected SoundManager sound;
 
 	/** Hero properties */
 	[Header("PlayerHero Properties")]
-	private int baseDamage;
 	public HeroType heroType;
-	public int maxHealth;
+	public int numHearts;
+	public float softHealthDecayRate = 10f;
+
 	public float damageMultiplier { get; set; }
 	public int damage {
 		get { return Mathf.RoundToInt(baseDamage * damageMultiplier); }	// Final damage calculation
@@ -29,7 +32,7 @@ public abstract class PlayerHero : MonoBehaviour {
 	// TODO: Remove scores from the game
 	public int   maxCombo   { get; private set; }	// The highest combo for this run
 	public int   combo      { get; private set; }	// Combo score
-	public float comboTimer { get; private set; }	// Combo timer-if this reaches 0, reset combo to 0
+	public float comboTimer { get; private set; }	// Combo timer - if this reaches 0, reset combo to 0
 	public float maxComboTimer = 3.0f;
 
 	[Header("Animations/Skins")]
@@ -242,15 +245,16 @@ public abstract class PlayerHero : MonoBehaviour {
 		anim = heroData.GetAnimationSet();
 		anim.Init(player.animPlayer);
 		anim.player.Init();
+		level = heroData.level;
 		damageMultiplier = 1f;
-		baseDamage = Mathf.RoundToInt(Formulas.DamageFormula(heroData.level));
+		baseDamage = Mathf.RoundToInt(Formulas.PlayerDamageFormula(heroData.level));
 		// init cooldownMultipliers
 		cooldownMultipliers = new float[cooldownTime.Length];
 		for(int i = 0; i < cooldownTime.Length; i ++)
 		{
 			cooldownMultipliers [i] = 1;
 		}
-		player.maxHealth = maxHealth;
+		player.maxHealth = numHearts * Player.HEALTH_PER_QUARTER_HEART * 4;
 		powerUpManager.Init (heroData);
 		player.OnPlayerDamaged += ResetCombo;
 		player.OnEnemyDamaged += IncrementCombo;

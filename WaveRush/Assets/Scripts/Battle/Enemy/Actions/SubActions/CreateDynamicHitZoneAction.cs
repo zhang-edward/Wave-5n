@@ -8,7 +8,8 @@ namespace EnemyActions
 	{
 		public PlayerDetectionCircle hitZone;
 		public GenerateRandomPositionNearPlayerAction posGenerator;
-		public int damage;
+		public Enemy enemy;
+		public int baseDamage;
 
 		public override void Interrupt()
 		{
@@ -20,8 +21,10 @@ namespace EnemyActions
 			base.Execute();
 			hitZone.transform.position = posGenerator.GetGeneratedPosition();
 			Player player = hitZone.Activate();
-			if (player != null)
-				player.Damage(damage);
+			if (player != null) {
+				int damage = Formulas.EnemyDamageFormula(baseDamage, player.hero.level - enemy.level);
+				player.Damage(damage);	
+			}
 		}
 	}
 }
