@@ -11,10 +11,11 @@ public class GUIManager : MonoBehaviour {
 	public GameObject gameUI;
 	public EnemyWaveText enemyWaveText;
 	public TMP_Text waveIndicatorText;
-	public TMP_Text moneyText;
-	public TMP_Text soulsText;
 	public IncrementingText moneyEarnedText;
 	public IncrementingText soulsEarnedText;
+	public PartyView partyView;
+	public UIAnimatorControl partyViewMenu;
+	public UIAnimatorControl nextWaveButton;
 
 	[Header("Game Over Panel")]
 	public GameObject gameOverUI;   	// game over panel
@@ -29,20 +30,35 @@ public class GUIManager : MonoBehaviour {
 	void OnEnable()
 	{
 		enemyManager.OnEnemyWaveSpawned += ShowEnemyWaveText;
+		enemyManager.OnEnemyWaveSpawned += DisableWaveCompletedMenus;
+		enemyManager.OnEnemyWaveCompleted += EnableWaveCompletedMenus;
 		enemyManager.OnEnemyWaveCompleted += OnEnemyWaveCompletedText;
 		enemyManager.OnStageCompleted += OnStageCompletedText;
 		enemyManager.OnQueueBossMessage += ShowBossIncomingText;
+		partyView.SwitchHero += SwitchHero;
 		SaveModifier save = GameManager.instance.save;
-		moneyText.text = save.money.ToString();
-		soulsText.text = save.souls.ToString();
 	}
 
 	void OnDisabled()
 	{
 		enemyManager.OnEnemyWaveSpawned -= ShowEnemyWaveText;
+		enemyManager.OnEnemyWaveSpawned -= DisableWaveCompletedMenus;
+		enemyManager.OnEnemyWaveCompleted -= EnableWaveCompletedMenus;
 		enemyManager.OnEnemyWaveCompleted -= OnEnemyWaveCompletedText;
 		enemyManager.OnStageCompleted -= OnStageCompletedText;
 		enemyManager.OnQueueBossMessage -= ShowBossIncomingText;
+		partyView.SwitchHero -= SwitchHero;
+	}
+
+	private void EnableWaveCompletedMenus() {
+		nextWaveButton.gameObject.SetActive(true);
+		partyViewMenu.gameObject.SetActive(true);
+	}
+
+	private void DisableWaveCompletedMenus(int foo) {
+		nextWaveButton.AnimateOut();
+		partyViewMenu.AnimateOut();
+		partyView.gameObject.SetActive(false);
 	}
 
 	public void GameOverUI(ScoreReport.ScoreReportData data)
@@ -96,7 +112,11 @@ public class GUIManager : MonoBehaviour {
 	private void ShowEnemyWaveText(int waveNumber)
 	{
 		int goalWave = enemyManager.stageData.goalWave;
-		waveIndicatorText.text = (waveNumber % goalWave).ToString() + "/" + goalWave.ToString();
+		if (waveNumber % goalWave == 0)
+			waveIndicatorText.text = goalWave.ToString() + "/" + goalWave.ToString();
+		else
+			waveIndicatorText.text = (waveNumber % goalWave).ToString() + "/" + goalWave.ToString();
+
 		enemyWaveText.DisplayWaveNumber (waveNumber);
 	}
 
@@ -123,5 +143,14 @@ public class GUIManager : MonoBehaviour {
 	public void UpdateSouls(int num)
 	{
 		soulsEarnedText.DisplayNumber(num);
+	}
+
+	private void SwitchHero(int index) {
+		partyView.DeactivateCard(index);
+		partyView.ActivateCard(player.activePartyMember);
+		partyView.UpdatePartyCard(player.activePartyMember, 
+								  (float)player.hero.hardHealth / player.maxHealth, 
+								  player.hero.specialAbilityCharge / player.hero.specialAbilityChargeCapacity);
+		player.SetHero(index);
 	}
 } 

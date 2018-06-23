@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class EnemyManager : MonoBehaviour {
 
-	private const float DIFFICULTY_CURVE = 5f;
+	public const float WAVE_SPAWN_DELAY = 10.0f;
 
 	[Header("Set from Scene Hierarchy")]
 	public Player player;
@@ -27,21 +27,19 @@ public class EnemyManager : MonoBehaviour {
 	[Header("Pickups and Prefabs")]
 	public GameObject heartPickup;
 	public GameObject upgradePickup;
-	public GameObject moneyPickup;
-	public GameObject soulPickup;
 	public GameObject trappedHeroPrefab;
 	public GameObject endPortalPrefab;
-	//public EndPortal endPortalEnemy { get; private set; }
 	[Header("EnemyManager Properties")]
 	public bool paused;
 	public int waveNumber { get; private set; }
 	public bool isStageComplete { get; private set; }
 	private int difficultyCurve = 0;	// number to determine the number of enemies to spawn
-	//public ShopNPC shopNPC;
 	[Header("Effects")]
 	public SimpleAnimation bossDeathEffect;
 
-	public List<BossEnemy> bosses;
+	// Hidden properties
+	[HideInInspector] public List<BossEnemy> bosses;
+	[HideInInspector] public float timeLeftBeforeNextWave; 
 
 	public delegate void EnemyWaveSpawned (int waveNumber);
 	public event EnemyWaveSpawned OnEnemyWaveSpawned;
@@ -74,9 +72,9 @@ public class EnemyManager : MonoBehaviour {
 			{
 				if (waveNumber >= 1)
 				{
+					// If the stage is completed
 					if (waveNumber % stageData.goalWave == 0)
 					{
-						print("Stage completed");
 						if (OnStageCompleted != null)
 							OnStageCompleted();
 						isStageComplete = true;
@@ -84,29 +82,32 @@ public class EnemyManager : MonoBehaviour {
 							yield return null;
 
 						isStageComplete = false;
-						//SpawnEndPortal();
-						/*while (endPortalEnemy != null)
-							yield return null;*/
 					}
-					else
-					{
-						OnEnemyWaveCompleted();
+					// If the stage is not completed
+					else {
+						if (OnEnemyWaveCompleted != null)
+							OnEnemyWaveCompleted();
+						
+						timeLeftBeforeNextWave = WAVE_SPAWN_DELAY;
+						while (timeLeftBeforeNextWave > 0) {
+							timeLeftBeforeNextWave -= Time.deltaTime;
+							yield return null;
+						}
 					}
 				}
+
 				waveNumber++;
 				difficultyCurve++;
-				// if it is the wave after a boss wave (just defeated boss), spawn heart pickup
-				if (waveNumber % stageData.bossWave == 1 && waveNumber != 1)
-				{
+				// Spawn a heart pickup after each boss
+				if (waveNumber % stageData.bossWave == 1 && waveNumber != 1) {
 					Instantiate(heartPickup, map.CenterPosition, Quaternion.identity);
 				}
 				StartNextWave();
-				// every 'bossWave' waves, spawn a boss
+				// Boss wave
 				if (waveNumber % stageData.bossWave == 0)
 				{
 					StartBossIncoming();
 					hasBossSpawned = false;
-					level++;
 				}
 			}
 			yield return null;
@@ -154,13 +155,6 @@ public class EnemyManager : MonoBehaviour {
 		OnQueueBossMessage ();
 		Invoke ("SpawnBoss", bossSpawnDelay);
 	}
-
-	/*public void SpawnEndPortal()
-	{
-		endPortalEnemy = SpawnEnemy(endPortalPrefab, map.CenterPosition).GetComponentInChildren<EndPortal>();
-		if (OnEndPortalSpawned != null)
-			OnEndPortalSpawned();
-	}*/
 
 	public GameObject SpawnEnemy(GameObject prefab, Vector3 pos)
 	{
@@ -211,38 +205,37 @@ public class EnemyManager : MonoBehaviour {
 		InitEnemy(e, bossSpawn.transform.position);
 		e.OnEnemyObjectDisabled += RemoveEnemyFromBossesList;
 		BossEnemy boss = (BossEnemy)e;
-		boss.soulPickupPrefab = soulPickup;
 
 		bossHealthBar.Init (e);
 		bossHealthBar.abilityIconBar.GetComponent<UIFollow> ().Init(o.transform, e.healthBarOffset);
 		bosses.Add (boss);
 	}
 
-	public void SpawnTrappedHeroes()
-	{
-		List<Vector3> positions = new List<Vector3>();
-		float offset = 3f;
-		positions.Add(Vector3.right * offset);
-		positions.Add(Vector3.left * offset);
-		positions.Add(Vector3.up * offset);
-		positions.Add(Vector3.down * offset);
+	// public void SpawnTrappedHeroes()
+	// {
+	// 	List<Vector3> positions = new List<Vector3>();
+	// 	float offset = 3f;
+	// 	positions.Add(Vector3.right * offset);
+	// 	positions.Add(Vector3.left * offset);
+	// 	positions.Add(Vector3.up * offset);
+	// 	positions.Add(Vector3.down * offset);
 
-		float spawnChance = 0.6f;
-		for (int i = 0; i < 4; i ++)
-		{
-			if (Random.value < spawnChance)
-			{
-				int randIndex = Random.Range(0, positions.Count);
-				SpawnEnemy(trappedHeroPrefab, bossSpawn.transform.position + positions[randIndex]);
-				positions.RemoveAt(randIndex);
-				spawnChance *= 0.4f;
-			}
-			else
-			{
-				break;
-			}
-		}
-	}
+	// 	float spawnChance = 0.6f;
+	// 	for (int i = 0; i < 4; i ++)
+	// 	{
+	// 		if (Random.value < spawnChance)
+	// 		{
+	// 			int randIndex = Random.Range(0, positions.Count);
+	// 			SpawnEnemy(trappedHeroPrefab, bossSpawn.transform.position + positions[randIndex]);
+	// 			positions.RemoveAt(randIndex);
+	// 			spawnChance *= 0.4f;
+	// 		}
+	// 		else
+	// 		{
+	// 			break;
+	// 		}
+	// 	}
+	// }
 
 	/* ==========
 	 * Helper methods
@@ -252,7 +245,6 @@ public class EnemyManager : MonoBehaviour {
 	private void InitEnemy(Enemy e, Vector3 spawnPos)
 	{
 		e.playerTransform = player.transform;
-		e.moneyPickupPrefab = moneyPickup;
 		e.Init(spawnPos, map, level);
 		e.OnEnemyDied += IncrementEnemiesKilled;
 		e.OnEnemyObjectDisabled += RemoveEnemyFromEnemiesList;
@@ -295,5 +287,9 @@ public class EnemyManager : MonoBehaviour {
 	public void SetWave(int waveNumber)
 	{
 		this.waveNumber = waveNumber;
+	}
+
+	public void SkipWaveDelay() {
+		timeLeftBeforeNextWave = 0;
 	}
 }

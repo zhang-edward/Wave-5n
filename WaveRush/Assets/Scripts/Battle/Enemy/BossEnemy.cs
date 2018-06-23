@@ -3,9 +3,9 @@ using System.Collections;
 
 public class BossEnemy : Enemy
 {
+	public const string POOL_SOULS = "Souls";
+	
 	protected EnemyManager enemyManager;
-	[HideInInspector]
-	public GameObject soulPickupPrefab;
 	[Header("Boss Attributes")]
 	public AudioClip deathSound;
 	public bool dying { get; private set; }
@@ -87,7 +87,9 @@ public class BossEnemy : Enemy
 	{
 		for (int i = 0; i < numSouls; i++)
 		{
-			GameObject o = Instantiate(soulPickupPrefab, transform.position, Quaternion.identity) as GameObject;
+			GameObject o = ObjectPooler.GetObjectPooler(POOL_SOULS).GetPooledObject();
+			o.SetActive(true);
+			o.transform.position = transform.position;
 			o.GetComponent<SoulPickup>().Init(playerTransform);
 		}
 	}

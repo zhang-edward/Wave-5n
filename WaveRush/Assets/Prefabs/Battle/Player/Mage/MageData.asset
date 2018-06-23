@@ -22,6 +22,9 @@ MonoBehaviour:
   tips: []
   heroDescription: The Mage relies on ranged fireballs and strategic teleports to
     burn his foes to a crisp.
+  ability1Name: 
+  ability2Name: 
+  specialName: 
   ability1Description: 'FIREBALL: <color=yellow>Swipe</color> to shoot a fireball
     in that direction.'
   ability2Description: 'TELEPORT: <color=yellow>Tap</color> to teleport to that location
@@ -36,7 +39,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 5d821329e7e6747cf9e3de634972b908, type: 3}
       fps: 1
       animationName: Default
-      looping: 0
+      looping: 1
       ignoreTimeScale: 0
     - frames:
       - {fileID: 21300002, guid: 5d821329e7e6747cf9e3de634972b908, type: 3}
@@ -53,7 +56,7 @@ MonoBehaviour:
       - {fileID: 21300014, guid: 5d821329e7e6747cf9e3de634972b908, type: 3}
       - {fileID: 21300016, guid: 5d821329e7e6747cf9e3de634972b908, type: 3}
       - {fileID: 21300018, guid: 5d821329e7e6747cf9e3de634972b908, type: 3}
-      fps: 15
+      fps: 26.666666
       animationName: TeleOut
       looping: 0
       ignoreTimeScale: 0
@@ -64,7 +67,7 @@ MonoBehaviour:
       - {fileID: 21300006, guid: fe3ed6fd1a76b4d7dadddcc3fd015d72, type: 3}
       - {fileID: 21300008, guid: fe3ed6fd1a76b4d7dadddcc3fd015d72, type: 3}
       - {fileID: 21300010, guid: fe3ed6fd1a76b4d7dadddcc3fd015d72, type: 3}
-      fps: 15
+      fps: 12
       animationName: TeleIn
       looping: 0
       ignoreTimeScale: 0
@@ -119,7 +122,7 @@ MonoBehaviour:
       - {fileID: 21300014, guid: 350c675461e6945a282ac8e1c58b24fb, type: 3}
       fps: 10
       animationName: Default
-      looping: 0
+      looping: 1
       ignoreTimeScale: 0
     - frames:
       - {fileID: 21300016, guid: 350c675461e6945a282ac8e1c58b24fb, type: 3}

@@ -5,7 +5,7 @@ public class SoulPickup : MonoBehaviour
 {
 	private Rigidbody2D rb2d;
 	private Transform player;
-
+	private SimpleAnimationPlayer anim;
 
 	public AudioClip soulPickupSound;
 	public SimpleAnimation pickupEffect;
@@ -13,6 +13,11 @@ public class SoulPickup : MonoBehaviour
 	void Awake()
 	{
 		rb2d = GetComponent<Rigidbody2D>();
+		anim = GetComponent<SimpleAnimationPlayer>();
+	}
+
+	void OnEnable() {
+		anim.Play();
 	}
 
 	public void Init(Transform player)
@@ -39,7 +44,7 @@ public class SoulPickup : MonoBehaviour
 		BattleSceneManager.instance.AddSouls(1);
 		SoundManager.instance.PlaySingle(soulPickupSound);
 		EffectPooler.PlayEffect(pickupEffect, transform.position);
-		Destroy(gameObject);
+		gameObject.SetActive(false);
 	}
 }
 

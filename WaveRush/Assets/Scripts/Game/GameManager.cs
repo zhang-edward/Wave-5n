@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour {
 	private SaveGame sg;
 	public SaveModifier save;	// Use this to modify the save game. Allows events to be handled properly
 	[Header("Selected Items for Battle Scene")]
-	public Pawn selectedPawn;
+	public Pawn[] selectedPawns;
 	public int selectedSeriesIndex;
 	public int selectedStageIndex;
 	[Header("Data")]
@@ -80,6 +80,23 @@ public class GameManager : MonoBehaviour {
 	private void OnApplicationFocus(bool focus)
 	{
 		if (!focus)
+		{
+			//print("Application Paused");
+			PlayerPrefs.SetString(RealtimeTimerCounter.LAST_CLOSED_KEY, System.DateTime.Now.ToString());
+			if (OnAppClosed != null)
+				OnAppClosed();
+		}
+		else
+		{
+			//print("Application Unpaused");
+			if (OnAppLoaded != null)
+				OnAppLoaded();
+		}
+	}
+
+	private void OnApplicationPause(bool pause)
+	{
+		if (pause)
 		{
 			//print("Application Paused");
 			PlayerPrefs.SetString(RealtimeTimerCounter.LAST_CLOSED_KEY, System.DateTime.Now.ToString());
@@ -208,10 +225,11 @@ public class GameManager : MonoBehaviour {
 		return null;
 	}
 
+	// TODO: Remove these scores from the game
 	public void UpdateScores(int enemiesKilled, int wavesSurvived, int maxCombo)
 	{
-		HeroType type = selectedPawn.type;
-		scoreManager.SubmitScore(type, new ScoreManager.Score (enemiesKilled, wavesSurvived, maxCombo));
+		//HeroType type = selectedPawn.type;
+		scoreManager.SubmitScore(HeroType.Knight, new ScoreManager.Score (enemiesKilled, wavesSurvived, maxCombo));
 		SaveLoad.Save(sg);
 	}
 

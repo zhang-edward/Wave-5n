@@ -14,10 +14,11 @@
 
 		protected override bool CheckCompleted()
 		{
-			if (gm.selectedPawn.type == type)
-			{
-				progress = 1;
-				return true;
+			foreach (Pawn p in gm.selectedPawns) {
+				if (p.type == type) {
+					progress = 1;
+					return true;
+				}	
 			}
 			return false;
 		}

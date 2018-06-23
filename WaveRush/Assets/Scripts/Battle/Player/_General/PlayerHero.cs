@@ -14,7 +14,8 @@ public abstract class PlayerHero : MonoBehaviour {
 	[HideInInspector]public EntityPhysics body;
 	[HideInInspector]public HeroPowerUpManager powerUpManager;
 	[HideInInspector]public float[] cooldownMultipliers;	// The cooldown time multipliers, modified by powerups or abilities
-	[HideInInspector]public int level;
+	[HideInInspector]public int level;						// This hero's level
+	[HideInInspector]public int hardHealth;					// The health of this hero, so when this hero is enabled the Player class will set the proper health
 	private int baseDamage;
 	protected SoundManager sound;
 
@@ -48,7 +49,6 @@ public abstract class PlayerHero : MonoBehaviour {
 	public float[] cooldownTime;		// The regular cooldown time for each ability. Set in inspector
 
 	public float[] 	cooldownTimers	{ get; protected set; }
-	public int 		NumAbilities 	{ get { return cooldownTimers.Length; } }
 
 	// Misc
 	private Coroutine listenForParryRoutine;
@@ -72,14 +72,61 @@ public abstract class PlayerHero : MonoBehaviour {
 	public event Player.PlayerLifecycleEvent OnSpecialAbilityCharged;
 	public delegate void OnAbility(int i);
 	public event OnAbility OnAbilityFailed;
+	private bool initialized;
 
+#region Initialization
+	/// <summary>
+	/// This is called once at the beginning of the game
+	/// and initializes any essential fields
+	/// </summary>
+	public virtual void Init(EntityPhysics body, Player player, Pawn heroData) {
+		this.body = body;
+		this.player = player;
 
-	void OnDisable()
-	{
+		powerUpManager = GetComponent<HeroPowerUpManager> ();
+		sound = SoundManager.instance;
+
+		// AnimationSet
+		anim = heroData.GetAnimationSet();
+		anim.Init(player.animPlayer);
+		anim.player.Init();
+
+		level = heroData.level;
+		damageMultiplier = 1f;
+		baseDamage = Mathf.RoundToInt(Formulas.PlayerDamageFormula(heroData.level));
+		
+		// Init cooldownMultipliers to x1
+		cooldownMultipliers = new float[cooldownTime.Length];
+		for(int i = 0; i < cooldownTime.Length; i ++)
+			cooldownMultipliers [i] = 1;
+
+		hardHealth = numHearts * Player.HEALTH_PER_HEART;
+		powerUpManager.Init (heroData);
+		player.OnPlayerDamaged += ResetCombo;
+		player.OnEnemyDamaged += IncrementCombo;
+		player.OnEnemyDamaged += IncrementSpecialAbilityCharge;
+		initialized = true;
+	}
+#endregion
+
+	void OnEnable() {
+		if (!initialized)
+			return;
+		anim.Init(player.animPlayer);
+		anim.Play("Default");
+		player.OnPlayerDamaged += ResetCombo;
+		player.OnEnemyDamaged += IncrementCombo;
+		player.OnEnemyDamaged += IncrementSpecialAbilityCharge;
+
+	}
+
+	void OnDisable() {
+		player.OnPlayerDamaged -= ResetCombo;
 		player.OnEnemyDamaged -= IncrementCombo;
 		player.OnEnemyDamaged -= IncrementSpecialAbilityCharge;
 	}
 
+#region Input Handlers
 	/** Player Inputs */
 	/// <summary>
 	/// Performs an action on tap
@@ -235,38 +282,13 @@ public abstract class PlayerHero : MonoBehaviour {
 
 	protected abstract void ParryEffect();
 
-	public virtual void Init(EntityPhysics body, Player player, Pawn heroData)
-	{
-		powerUpManager = GetComponent<HeroPowerUpManager> ();
-		this.body = body;
-		this.player = player;
-		sound = SoundManager.instance;
-
-		anim = heroData.GetAnimationSet();
-		anim.Init(player.animPlayer);
-		anim.player.Init();
-		level = heroData.level;
-		damageMultiplier = 1f;
-		baseDamage = Mathf.RoundToInt(Formulas.PlayerDamageFormula(heroData.level));
-		// init cooldownMultipliers
-		cooldownMultipliers = new float[cooldownTime.Length];
-		for(int i = 0; i < cooldownTime.Length; i ++)
-		{
-			cooldownMultipliers [i] = 1;
-		}
-		player.maxHealth = numHearts * Player.HEALTH_PER_QUARTER_HEART * 4;
-		powerUpManager.Init (heroData);
-		player.OnPlayerDamaged += ResetCombo;
-		player.OnEnemyDamaged += IncrementCombo;
-		player.OnEnemyDamaged += IncrementSpecialAbilityCharge;
-	}
-
 	private IEnumerator Spawn()
 	{
 		EffectPooler.PlayEffect(player.spawnEffect, transform.position);
 		yield return new WaitForSeconds(player.spawnEffect.GetSecondsUntilFrame(10));
 
 	}
+#endregion
 
 	protected virtual void Update()
 	{

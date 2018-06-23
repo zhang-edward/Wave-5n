@@ -45,6 +45,7 @@ public class ComboMeter : MonoBehaviour {
 				text.gameObject.SetActive(true);
 				fillImage.fillAmount = (float)hero.comboTimer / hero.maxComboTimer;
 				text.text = "x" + hero.combo;
+				
 				// on combo changed
 				if (hero.combo != oldCombo)
 				{

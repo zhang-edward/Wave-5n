@@ -15,6 +15,7 @@ public class AbilityIconBar : MonoBehaviour {
 
 	private void Awake()
 	{
+		abilityIcons = new AbilityIcon[2];
 		player = GetComponentInParent<GUIManager>().player;
 	}
 
@@ -34,14 +35,17 @@ public class AbilityIconBar : MonoBehaviour {
 		playerWasInitialized = true;
 		hero = player.hero;
 		player.hero.OnAbilityFailed += FlashRedAbilityIcon;
-		abilityIcons = new AbilityIcon[hero.NumAbilities];
-		//Debug.Log ("There are " + abilityIcons.Length + " player abilities");
-		for (int i = 0; i < hero.NumAbilities; i ++)
+		for (int i = 0; i < 2; i ++)
 		{
-			GameObject o = Instantiate (iconPrefab);
-			o.transform.SetParent (transform, false);
-			abilityIcons [i] = o.GetComponent<AbilityIcon> ();
-			abilityIcons [i].image.sprite = DataManager.GetHeroData(player.hero.heroType).abilityIcons [i];
+			if (abilityIcons[i] != null) {
+				abilityIcons [i].image.sprite = DataManager.GetHeroData(player.hero.heroType).abilityIcons [i];
+			}
+			else {
+				GameObject o = Instantiate (iconPrefab);
+				o.transform.SetParent (transform, false);
+				abilityIcons [i] = o.GetComponent<AbilityIcon> ();
+				abilityIcons [i].image.sprite = DataManager.GetHeroData(player.hero.heroType).abilityIcons [i];
+			}
 		}
 		specialAbilityIcon.icon.sprite = DataManager.GetHeroData(player.hero.heroType).specialAbilityIcon;
 		specialAbilityIcon.transform.parent.SetSiblingIndex (0);
@@ -51,7 +55,7 @@ public class AbilityIconBar : MonoBehaviour {
 	{
 		if (!playerWasInitialized)
 			return;
-		for (int i = 0; i < hero.NumAbilities; i ++)
+		for (int i = 0; i < 2; i ++)
 		{
 			float percentCooldown = (hero.cooldownTimers[i] / hero.GetCooldownTime(i));
 			//print (i + ": " + hero.GetCooldownTime (i));

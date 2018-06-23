@@ -24,12 +24,20 @@ public class PowerUpsMeter : MonoBehaviour {
 	{
 		powerUpHolder = player.hero.powerUpManager;
 		UpdatePowerUpsMeter ();
-		player.hero.powerUpManager.OnPowerUpAdded += UpdatePowerUpsMeter;
+		//player.hero.powerUpManager.OnPowerUpAdded += UpdatePowerUpsMeter;
 	}
 
 	private void UpdatePowerUpsMeter()
 	{
-		// instantiate an icon for each power up that the player has
+		foreach (PowerUpIcon o in powerUpIcons) {
+			o.gameObject.SetActive(false);
+		}
+		// // instantiate an icon for each power up that the player has
+		// for (int i = 0; i < powerUpHolder.numActivePowerUps; i ++) {
+		// 	if (powerUpIcons[i] == null) {
+
+		// 	}
+		// }
 		while (powerUpIcons.Count < powerUpHolder.numActivePowerUps)
 		{
 			GameObject o = Instantiate (powerUpIconPrefab);
@@ -40,7 +48,8 @@ public class PowerUpsMeter : MonoBehaviour {
 		for (int i = 0; i < powerUpHolder.numActivePowerUps; i ++)
 		{
 			//print("Updating index:" + i);
-			powerUpIcons [i].Init (powerUpHolder.powerUps [i]);
+			powerUpIcons[i].Init (powerUpHolder.powerUps[i]);
+			powerUpIcons[i].gameObject.SetActive(true);
 		}
 	}
 

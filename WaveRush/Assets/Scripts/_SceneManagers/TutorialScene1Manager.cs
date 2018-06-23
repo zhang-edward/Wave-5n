@@ -75,7 +75,8 @@ public class TutorialScene1Manager : MonoBehaviour
 		// Initialize components
 		map.chosenMap = mapType;
 		map.GenerateMap();
-		player.Init(pawn);
+		player.SetParty(pawn);
+		player.SetHero(0);
 		knight = (KnightHero)player.hero;
 		enemyManager.level = 1;
 

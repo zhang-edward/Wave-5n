@@ -54,6 +54,7 @@ public class Knight_SecondaryShield : HeroPowerUp
 
 	public override void Deactivate ()
 	{
+		knight.player.OnPlayerDamaged -= AbsorbDamage;
 		base.Deactivate ();
 	}
 

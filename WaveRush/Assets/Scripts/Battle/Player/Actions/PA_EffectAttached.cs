@@ -7,7 +7,7 @@
 	{
 		/** Set in Inspector */
 		public SimpleAnimationPlayer anim;
-		[SerializeField] private bool 		  offsetMatchesFlipX = false;
+		[SerializeField] private bool offsetMatchesFlipX = false;
 
 		public override void Init(Player player)
 		{
@@ -40,6 +40,10 @@
 				anim.anim.frames[0],
 				info);
 			anim.Play();
+		}
+
+		void OnDisable() {
+			anim.gameObject.SetActive(false);
 		}
 	}
 }

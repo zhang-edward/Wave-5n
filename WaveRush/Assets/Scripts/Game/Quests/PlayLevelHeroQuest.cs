@@ -14,10 +14,11 @@
 
 		protected override bool CheckCompleted()
 		{
-			if (gm.selectedPawn.level == level)
-			{
-				progress = 1;
-				return true;
+			foreach (Pawn p in gm.selectedPawns) {
+				if (p.level == level)	{
+					progress = 1;
+					return true;
+				}
 			}
 			return false;
 		}

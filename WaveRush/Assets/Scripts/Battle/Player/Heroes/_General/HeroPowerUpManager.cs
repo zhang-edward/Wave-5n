@@ -23,12 +23,13 @@ public class HeroPowerUpManager : MonoBehaviour
 	public int numActivePowerUps;		// used only for the powerUpsMeter UI Element
 	public delegate void OnPowerUpsChanged();
 	public OnPowerUpsChanged OnPowerUpAdded;
-
+	private bool initialized;
 
 	public void Init(Pawn pawnData)
 	{
 		hero = GetComponent<PlayerHero>();
 		InitPowerUpList(pawnData.level);
+		initialized = true;
 	}
 
 	private void InitPowerUpList(int level)
@@ -65,6 +66,22 @@ public class HeroPowerUpManager : MonoBehaviour
 		}
 		throw new UnityEngine.Assertions.AssertionException ("HeroPowerUpHolder.cs",
 			"Cannot find HeroPowerUp with name" + "\"" + name + "\"");
+	}
+
+	void OnEnable() {
+		if (!initialized)
+			return;
+		foreach (HeroPowerUp powerUp in powerUps) {
+			print (powerUp + " activated");
+			powerUp.Activate(hero);
+		}
+	}
+
+	void OnDisable() {
+		// foreach (HeroPowerUp powerUp in powerUps) {
+		// 	print (powerUp + " deactivated");
+		// 	powerUp.Deactivate();
+		// }
 	}
 
 	public void AddPowerUp(string name)

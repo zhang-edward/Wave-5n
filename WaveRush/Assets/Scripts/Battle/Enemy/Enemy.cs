@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 public class Enemy : MonoBehaviour, IDamageable {
 
+	public const string POOL_MONEY = "Money";
 	public static int SCALETYPE_DAMAGE = 0;
 	public static int MAX_LEVEL_RAW = 50;
 	public static int MAX_ABILITIES = 4;
@@ -14,7 +15,6 @@ public class Enemy : MonoBehaviour, IDamageable {
 
 	[HideInInspector] public float DEFAULT_SPEED;
 	[HideInInspector] public Transform playerTransform;
-	[HideInInspector] public GameObject moneyPickupPrefab;
 	[HideInInspector] public Map map;						// used only for walk-in spawners
 
 	public enum SpawnMethod {
@@ -285,7 +285,9 @@ public class Enemy : MonoBehaviour, IDamageable {
 		int moneyValue = Random.Range (rangeValue / 2, rangeValue * 2) * moneyValueMultiplier;
 		if (moneyValue <= 0)
 			return;
-		GameObject o = Instantiate (moneyPickupPrefab, transform.position, Quaternion.identity) as GameObject;
+		GameObject o = ObjectPooler.GetObjectPooler(POOL_MONEY).GetPooledObject();
+		o.SetActive(true);
+		o.transform.position = transform.position;
 		MoneyPickup moneyPickup = o.GetComponent<MoneyPickup>();
 		moneyPickup.value = moneyValue;
 		moneyPickup.Init(playerTransform);

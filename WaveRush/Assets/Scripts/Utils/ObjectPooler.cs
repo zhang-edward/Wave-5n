@@ -64,6 +64,16 @@ public class ObjectPooler : MonoBehaviour {
 		return null;
 	}
 
+	public List<GameObject> GetAllActiveObjects() {
+		List<GameObject> ans = new List<GameObject>();
+		foreach (GameObject obj in pooledObjects)
+		{
+			if (obj.activeInHierarchy)
+				ans.Add(obj);
+		}
+		return ans;
+	}
+
 	/// <summary>
 	/// Gets the object pooler with the specified name. You should call this in the 'Start' method.
 	/// </summary>

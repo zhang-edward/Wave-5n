@@ -1,28 +1,22 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 [System.Serializable]
 public class Pawn : System.IComparable<Pawn>
 {
-	//public const int T1_MIN_LEVEL = 1;
-	//public const int T2_MIN_LEVEL = 5;
-	//public const int T3_MIN_LEVEL = 8;
-	//public const int MAX_LEVEL = 9;
 	public const int T1_MAX_LEVEL = 5;
 	public const int T2_MAX_LEVEL = 15;
 	public const int T3_MAX_LEVEL = 20;
 
-	public HeroType type;		// the type of the hero
-	public int level;           // the level of the hero
-	private int maxExperience;	// the experience of the hero
+	public HeroType type;				// the hero type of this pawn
+	public int level;           		// the current level of the pawn
+	public Dictionary<int, int> boosts;	// the boosts that this pawn has
+	private int maxExperience;			// the experience cap for this pawn
 
 	/** Properties */
 	public int Id		  { get; private set; }
 	public int Experience { get; private set; }
-	public int MaxExperience {
-		get {
-			return maxExperience;
-		}
-	}
+	public int MaxExperience { get { return maxExperience; } }
 
 	public int MaxLevel {
 		get {
@@ -48,13 +42,6 @@ public class Pawn : System.IComparable<Pawn>
 	/// </summary>
 	/// <value>The tier.</value>
 	public HeroTier tier { get; private set; }
-
-	//public bool atThresholdLevel {
-	//	get {
-	//		return level == T2_MIN_LEVEL - 1 ||
-	//			level == T3_MIN_LEVEL - 1;
-	//	}
-	//}
 
 	public Pawn(HeroType type, HeroTier tier, int level = 1)
 	{

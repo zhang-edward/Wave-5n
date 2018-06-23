@@ -40,7 +40,7 @@ public class HeroSelectMenu : MonoBehaviour  {
 					// Set gameobject to false then true so animation plays
 					selectedPawnIcon.gameObject.SetActive(false);
 					selectedPawnIcon.gameObject.SetActive(true);
-					GameManager.instance.selectedPawn = pawnIcon.pawnData;
+					GameManager.instance.selectedPawns[0] = pawnIcon.pawnData;
 				}
 				else
 				{
@@ -50,7 +50,7 @@ public class HeroSelectMenu : MonoBehaviour  {
 
 					selectedPawnIcon.pawnData = null;
 					selectedPawnIcon.gameObject.SetActive(false);
-					GameManager.instance.selectedPawn = null;
+					GameManager.instance.selectedPawns[0] = null;
 				}
 			};
 		}

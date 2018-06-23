@@ -22,6 +22,8 @@ public class Player : MonoBehaviour, IDamageable
 
 	[Header("Player Ability")]
 	public PlayerHero hero;
+	private Pawn[] party;
+	private GameObject[] heroList;
 
 	[Header("Player direction")]
 	public Vector2   dir;		// player's facing direction and movement direction
@@ -35,21 +37,13 @@ public class Player : MonoBehaviour, IDamageable
 	public StatusTimers inputDisabled = new StatusTimers();
 	private int softHealthTarget;
 
-	/** Stats Dict */
-	/// <summary>
-	/// Contains buffable modifiers applicable to all hero types, such as 
-	/// crit chance, crit effect, health boost, gold boost, special charge boost
-	/// attack boost, exp boost, 
-	/// </summary>
-	public Dictionary<string, int> stats;
-	/** Stats Dict*/
-
 	[Header("Effects")]
 	public ParticleSystem  healEffect;
 	public SimpleAnimation spawnEffect;
 	public SimpleAnimation deathEffect;
 	public SimpleAnimation sacrificeEffect;
 	public SimpleAnimation parryEffect;
+	public SimpleAnimation heroSwitchEffect;
 
 	private SoundManager sound;
 	[Header("Audio")]
@@ -61,8 +55,8 @@ public class Player : MonoBehaviour, IDamageable
 	public AudioClip parrySound;
 	public AudioClip parrySuccessSound;
 
-	[HideInInspector]
-	public ObjectPooler deathPropPool;
+	[HideInInspector] public ObjectPooler deathPropPool;
+	[HideInInspector] public int activePartyMember;
 
 	/** Delegates and Events */
 	public delegate void EnemyDamaged(float strength);
@@ -71,9 +65,9 @@ public class Player : MonoBehaviour, IDamageable
 	public delegate void EnemySelected(Enemy e);
 	public event EnemySelected OnEnemyLastHit;
 
-	public delegate void PlayerHealthChanged(int amt);
-	public event PlayerHealthChanged OnPlayerDamaged;
-	public event PlayerHealthChanged OnPlayerHealed;
+	public delegate void PlayerHealthUpdate(int amt);
+	public event PlayerHealthUpdate OnPlayerDamaged;
+	public event PlayerHealthUpdate OnPlayerHealed;
 
 	public delegate void PlayerLifecycleEvent();
 	public event PlayerLifecycleEvent OnPlayerInitialized;
@@ -86,8 +80,7 @@ public class Player : MonoBehaviour, IDamageable
 
 	private Coroutine updateSoftHealthRoutine;
 
-
-	/** Initialization */
+#region Initialization
 	void Awake() {
 		input = GetComponent<PlayerInput>();
 	}
@@ -101,42 +94,56 @@ public class Player : MonoBehaviour, IDamageable
 		sound = SoundManager.instance;
 	}
 
-	public void Init(Pawn heroData) {
-		InitPlayerHero(heroData);
-		input.Init();
-		hardHealth = softHealth = softHealthTarget = maxHealth;
+	public void SetParty(params Pawn[] party) {
+		this.party = party;
+		heroList = new GameObject[party.Length];
+		for (int i = 0; i < party.Length; i ++) {
+			InitPlayerHero(party[i], i);
+			heroList[i].gameObject.SetActive(false);
+		}
+	}
 
+	public void SetHero(int index) {
+		EffectPooler.PlayEffect(heroSwitchEffect, transform.position);
+		activePartyMember = index;
+		for (int i = 0; i < party.Length; i ++) {
+			// Enable active hero
+			if (i == index) {
+				heroList[i].gameObject.SetActive(true);
+				hero = heroList[i].GetComponent<PlayerHero>();
+				maxHealth = hero.numHearts * HEALTH_PER_HEART;
+				hardHealth = softHealth = softHealthTarget = hero.hardHealth;
+			}
+			// Disable all inactive heroes
+			else
+				heroList[i].gameObject.SetActive(false);
+		}
+		// Initialize input listeners
+		input.Init();
+		// Send event
 		if (OnPlayerInitialized != null)
 			OnPlayerInitialized();
+		// Play spawn state
 		StartCoroutine(SpawnState());
 	}
 
-	private void InitPlayerHero(Pawn heroData)
+	private void InitPlayerHero(Pawn heroData, int index)
 	{
-		// this.hero = infoHolder.CreateHero (type.ToString());
+		// Find the correct hero prefab and instantiate it
 		foreach (GameObject prefab in heroPrefabs)
 		{
 			PlayerHero prefabHero = prefab.GetComponent<PlayerHero>();
-//			print(prefabHero.heroType == type);
 			if (prefabHero.heroType == heroData.type)
 			{
 				GameObject o = Instantiate(prefab, transform.position, Quaternion.identity) as GameObject;
+				heroList[index] = o;
 				o.transform.SetParent(this.transform);
 				hero = o.GetComponent<PlayerHero>();
 				hero.Init(body, this, heroData);
 				return;
 			}
 		}
-		throw new UnityEngine.Assertions.AssertionException(this.GetType() + ".cs",
-															"Cannot find hero with name " + heroData.type.ToString() + "!");
-	}
-
-
-	/** Update Timers */
-	void Update()
-	{
-		invincibility.DecrementTimer(Time.deltaTime);
-		inputDisabled.DecrementTimer(Time.deltaTime);
+		throw new UnityEngine.Assertions.AssertionException(this.GetType() + ".cs", "Cannot find hero with name " + heroData.type.ToString() + "!");
 	}
 
 	/// <summary>
@@ -148,6 +155,15 @@ public class Player : MonoBehaviour, IDamageable
 		//print("Spawned");
 		yield return null;
 		input.isInputEnabled = true;
+	}
+#endregion
+#region Update and callbacks
+	/** Update Timers */
+	void Update()
+	{
+		hero.hardHealth = hardHealth;
+		invincibility.DecrementTimer(Time.deltaTime);
+		inputDisabled.DecrementTimer(Time.deltaTime);
 	}
 
 	/// <summary>
@@ -167,64 +183,9 @@ public class Player : MonoBehaviour, IDamageable
 			return;
 		OnEnemyLastHit (e);
 	}
-
-	/// <summary>
-	/// The player sprite flashes a color. Used when the player is damaged by an enemy.
-	/// </summary>
-	public void FlashColor(Color color, float time = 0.5f)
-	{
-		StartCoroutine(FlashColorRoutine(color, time));
-	}
-
-	private IEnumerator FlashColorRoutine(Color color, float time)
-	{
-		sr.color = color;
-		float t = 0;
-		while (sr.color != Color.white)
-		{
-			sr.color = Color.Lerp (color, Color.white, t);
-			t += Time.deltaTime / time;
-			yield return null;
-		}
-	}
-
-	public void HitDisable(float time)
-	{
-		inputDisabled.Add(time / 2f);
-		invincibility.Add(time);
-	}
-
-	/// <summary>
-	/// Makes the player sprite flash a color on and off again
-	/// </summary>
-	/// <param name="color">Color.</param>
-	/// <param name="time">Time.</param>
-	public void StrobeColor(Color color, float time)
-	{
-		StartCoroutine(StrobeColorRoutine(color, time));
-	}
-
-	private IEnumerator StrobeColorRoutine(Color color, float time)
-	{
-		float strobeSpeed = 0.03f;
-		float t = 0;
-		bool strobeColorOn = false;
-		while (t < time)
-		{
-			if (!strobeColorOn)
-				sr.color = color;
-			else
-				sr.color = Color.white;
-			strobeColorOn = !strobeColorOn;
-			t += strobeSpeed;
-			yield return new WaitForSecondsRealtime(strobeSpeed);
-		}
-		sr.color = Color.white;
-	}
-
-	/** IDamageable */
-	public void Damage(int amt)
-	{
+#endregion
+#region IDamageable and damage/death handling
+	public void Damage(int amt) {
 		// Pre-damage effects
 		if (OnPlayerTryHit != null)
 			OnPlayerTryHit();
@@ -252,6 +213,11 @@ public class Player : MonoBehaviour, IDamageable
 		}
 		else
 			sound.RandomizeSFX (hurtSound);
+	}
+
+	public void HitDisable(float time) {
+		inputDisabled.Add(time / 2f);
+		invincibility.Add(time);
 	}
 
 	private IEnumerator DieRoutine()
@@ -287,7 +253,8 @@ public class Player : MonoBehaviour, IDamageable
 		if (hardHealth >= maxHealth)
 			hardHealth = maxHealth;
 		softHealth = softHealthTarget = hardHealth;
-		OnPlayerHealed (amt);
+		if (OnPlayerHealed != null)
+			OnPlayerHealed (amt);
 	}
 
 	/// <summary>
@@ -316,24 +283,39 @@ public class Player : MonoBehaviour, IDamageable
 		}
 	}
 
-	private IEnumerator SacrificeRoutine()
-	{
-		sound.RandomizeSFX(gameOverSound);
+	// private IEnumerator SacrificeRoutine()
+	// {
+	// 	sound.RandomizeSFX(gameOverSound);
 
-		CameraControl.instance.SetOverlayColor(Color.black, 0.4f, 1.0f);
-		sr.sortingLayerName = "UI";
-		Time.timeScale = 0f;
-		yield return new WaitForSecondsRealtime(0.2f);
-		PlayDeathEffect(transform.position, sacrificeEffect);
-		sound.PlaySingle(heartBreakBuildUpSound);
-		sr.enabled = false;
-		yield return new WaitForSecondsRealtime(sacrificeEffect.GetSecondsUntilFrame(4));
-		CameraControl.instance.StartFlashColor(Color.white, 0.4f, 0, 0, 1f);
-		sound.RandomizeSFX(heartExtractSound);
-		yield return new WaitForSecondsRealtime(1.0f);
-		transform.parent.gameObject.SetActive(false);
-		Time.timeScale = 1f;
-		CameraControl.instance.DisableOverlay(1.0f);
+	// 	CameraControl.instance.SetOverlayColor(Color.black, 0.4f, 1.0f);
+	// 	sr.sortingLayerName = "UI";
+	// 	Time.timeScale = 0f;
+	// 	yield return new WaitForSecondsRealtime(0.2f);
+	// 	PlayDeathEffect(transform.position, sacrificeEffect);
+	// 	sound.PlaySingle(heartBreakBuildUpSound);
+	// 	sr.enabled = false;
+	// 	yield return new WaitForSecondsRealtime(sacrificeEffect.GetSecondsUntilFrame(4));
+	// 	CameraControl.instance.StartFlashColor(Color.white, 0.4f, 0, 0, 1f);
+	// 	sound.RandomizeSFX(heartExtractSound);
+	// 	yield return new WaitForSecondsRealtime(1.0f);
+	// 	transform.parent.gameObject.SetActive(false);
+	// 	Time.timeScale = 1f;
+	// 	CameraControl.instance.DisableOverlay(1.0f);
+	// }
+
+	private void PlayDeathEffect(Vector3 position, SimpleAnimation effect)
+	{
+		GameObject o = EffectPooler.instance.GetPooledObject();
+		SimpleAnimationPlayer animPlayer = o.GetComponent<SimpleAnimationPlayer>();
+		TempObject tempObj = o.GetComponent<TempObject>();
+		tempObj.GetComponent<SpriteRenderer>().sortingLayerName = "UI";
+		tempObj.info = new TempObjectInfo(true, 0f, effect.TimeLength - 2f, 1f);
+		animPlayer.anim = effect;
+		tempObj.Init(Quaternion.identity,
+					 position,
+					 effect.frames[0]);
+		animPlayer.ignoreTimeScaling = true;
+		animPlayer.Play();
 	}
 
 	/// <summary>
@@ -357,7 +339,8 @@ public class Player : MonoBehaviour, IDamageable
 				ForceMode2D.Impulse);
 		}
 	}
-
+#endregion
+#region Effects and timescaling
 	/// <summary>
 	/// Sets the timescale to 1 or 0
 	/// </summary>
@@ -382,24 +365,52 @@ public class Player : MonoBehaviour, IDamageable
 		Time.timeScale = 1f;
 	}
 
-	public void AddUpgrades(int numUpgrades)
+	/// <summary>
+	/// The player sprite flashes a color. Used when the player is damaged by an enemy.
+	/// </summary>
+	public void FlashColor(Color color, float time = 0.5f)
 	{
-		if (OnPlayerUpgradesUpdated != null)
-			OnPlayerUpgradesUpdated(numUpgrades);
+		StartCoroutine(FlashColorRoutine(color, time));
 	}
 
-	private void PlayDeathEffect(Vector3 position, SimpleAnimation effect)
+	private IEnumerator FlashColorRoutine(Color color, float time)
 	{
-		GameObject o = EffectPooler.instance.GetPooledObject();
-		SimpleAnimationPlayer animPlayer = o.GetComponent<SimpleAnimationPlayer>();
-		TempObject tempObj = o.GetComponent<TempObject>();
-		tempObj.GetComponent<SpriteRenderer>().sortingLayerName = "UI";
-		tempObj.info = new TempObjectInfo(true, 0f, effect.TimeLength - 2f, 1f);
-		animPlayer.anim = effect;
-		tempObj.Init(Quaternion.identity,
-					 position,
-					 effect.frames[0]);
-		animPlayer.ignoreTimeScaling = true;
-		animPlayer.Play();
+		sr.color = color;
+		float t = 0;
+		while (sr.color != Color.white)
+		{
+			sr.color = Color.Lerp (color, Color.white, t);
+			t += Time.deltaTime / time;
+			yield return null;
+		}
 	}
+
+	/// <summary>
+	/// Makes the player sprite flash a color on and off again
+	/// </summary>
+	/// <param name="color">Color.</param>
+	/// <param name="time">Time.</param>
+	public void StrobeColor(Color color, float time)
+	{
+		StartCoroutine(StrobeColorRoutine(color, time));
+	}
+
+	private IEnumerator StrobeColorRoutine(Color color, float time)
+	{
+		float strobeSpeed = 0.03f;
+		float t = 0;
+		bool strobeColorOn = false;
+		while (t < time)
+		{
+			if (!strobeColorOn)
+				sr.color = color;
+			else
+				sr.color = Color.white;
+			strobeColorOn = !strobeColorOn;
+			t += strobeSpeed;
+			yield return new WaitForSecondsRealtime(strobeSpeed);
+		}
+		sr.color = Color.white;
+	}
+#endregion
 }

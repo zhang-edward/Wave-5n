@@ -13,7 +13,8 @@ public class PlayerInput : MonoBehaviour
 	private Vector2 pointerStartPos;
 
 	public void Init()
-	{
+	{	
+		touchInputHandler.ClearListeners();
 		touchInputHandler.enabled = true;
 		touchInputHandler.OnDragBegan += HandleDragBegan;
 		touchInputHandler.OnDragMove += HandleDragHold;

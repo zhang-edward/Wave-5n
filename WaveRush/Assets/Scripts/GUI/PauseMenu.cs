@@ -9,7 +9,7 @@ public class PauseMenu : MonoBehaviour {
 	public PawnInfoPanel infoPanel;
 
 	void Start() {
-		Pawn pawn = GameManager.instance.selectedPawn;
+		Pawn pawn = GameManager.instance.selectedPawns[0];
 		pawnIcon.Init(pawn);
 		pawnIcon.onClick += (foo) => {
 			infoPanel.gameObject.SetActive(true);

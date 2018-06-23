@@ -5,6 +5,7 @@ public class MoneyPickup : MonoBehaviour
 {
 	private Rigidbody2D rb2d;
 	private Transform player;
+	private SimpleAnimationPlayer anim;
 	public int value;
 
 	public AudioClip coinPickupSound;
@@ -13,6 +14,11 @@ public class MoneyPickup : MonoBehaviour
 	void Awake()
 	{
 		rb2d = GetComponent<Rigidbody2D> ();
+		anim = GetComponent<SimpleAnimationPlayer>();
+	}
+
+	void OnEnable() {
+		anim.Play();
 	}
 
 	public void Init(Transform player)
@@ -39,7 +45,7 @@ public class MoneyPickup : MonoBehaviour
 		BattleSceneManager.instance.AddMoney(this.value);
 		SoundManager.instance.PlaySingle (coinPickupSound);
 		EffectPooler.PlayEffect(pickupEffect, transform.position);
-		Destroy(gameObject);
+		gameObject.SetActive(false);
 	}
 }
 

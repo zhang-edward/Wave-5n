@@ -124,4 +124,15 @@ public class TouchInputHandler : MonoBehaviour {
 		EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
 		return results.Count > 0;
 	}
+
+	public void ClearListeners() {
+		OnDragBegan			= null;
+		OnDragMove 			= null;
+		OnDragRelease 		= null;
+		OnTap 				= null;
+		OnTapHold 			= null;
+		OnTapHoldRelease	= null;
+		MultiTouch 			= null;
+		OnDragCancel 		= null;
+	}
 }
