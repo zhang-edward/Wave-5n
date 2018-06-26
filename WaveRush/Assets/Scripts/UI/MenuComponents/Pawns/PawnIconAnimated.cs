@@ -33,7 +33,7 @@ public class PawnIconAnimated : PawnIconStandard
 		while (numLevelUps > 0) {
 			while (Mathf.Abs(experienceSlider.value - experienceSlider.maxValue) > 0.2f) {
 				//experienceSlider.value += experienceSlider.maxValue / 64;
-				experienceSlider.value = Mathf.Lerp(experienceSlider.value, experienceSlider.maxValue, 0.2f);
+				experienceSlider.value = Mathf.Lerp(experienceSlider.value, experienceSlider.maxValue, 0.1f);
 				yield return null;
 			}
 			PlayAnim(STATE_LEVELUP);

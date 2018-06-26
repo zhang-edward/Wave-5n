@@ -74,7 +74,7 @@ public class PawnShopMenu : MonoBehaviour
 		if (selectedIcon != null)
 			DeselectIcon();
 		PawnIconStandard standardIcon = (PawnIconStandard)icon;
-		standardIcon.SetHighlight(true);
+		standardIcon.SetHighlight(true, Color.white);
 		selectedIcon = standardIcon;
 		StartLerpToContent();
 		infoText.UpdateText(DataManager.GetHeroData(icon.pawnData.type).heroDescription);
@@ -84,7 +84,7 @@ public class PawnShopMenu : MonoBehaviour
 	private void DeselectIcon() {
 		if (selectedIcon == null)
 			return;
-		selectedIcon.SetHighlight(false);
+		selectedIcon.SetHighlight(false, Color.white);
 		selectedIcon = null;
 		infoButton.interactable = false;
 		infoText.SetToDefaultText();

@@ -9,6 +9,7 @@ public class StageSelectMenu : MonoBehaviour
 	private GameManager gm;         // store a reference to the GameManager
 	private List<GameObject> stageSeriesIcons = new List<GameObject>();
 	private List<GameObject> stageIcons = new List<GameObject>();
+	private Animator anim;			// Controls animating menu components
 
 	private GameObject selectedStageIcon;
 
@@ -19,27 +20,23 @@ public class StageSelectMenu : MonoBehaviour
 	[Header("Stage Series Select View")]
 	public TMP_Text stageSeriesNameText;
 	public Transform stageSeriesIconFolder;
-	public ScrollViewSnap stageSeriesScrollView;
-	public GameObject leftButton, rightButton;
 
 	[Header("Stage Select View")]
 	public GameObject stageSelectionView;
 	public Transform stageIconFolder;
 	public GameObject highlightMenu;
 
+	public delegate void OnStageIconSelected();
+	public event OnStageIconSelected StageIconSelected;
+
+	void Awake() {
+		anim = GetComponent<Animator>();
+	}
+
 	void OnEnable()
 	{
 		DeselectStageIcon();
 		stageSelectionView.SetActive(false);
-		StartCoroutine(UpdateScrollButtonsVisibility());
-		stageSeriesScrollView.OnSelectedContentChanged += () => {
-			stageSeriesNameText.text = stageSeriesScrollView.SelectedContent.GetComponent<StageSeriesIcon>().GetData().seriesName;
-		};
-	}
-
-	void Awake()
-	{
-		InitStageSeriesSelectionView();
 	}
 
 	public void InitStageSeriesSelectionView()
@@ -57,40 +54,30 @@ public class StageSelectMenu : MonoBehaviour
 			{
 				o = Instantiate(stageSeriesIconPrefab);
 				o.GetComponent<StageSeriesIcon>().onClicked += InitStageSelectionView;
+				print ("Hello");
 				stageSeriesIcons.Add(o);
 			}
 			else
 			{
 				o = stageSeriesIcons[iconIndex];
 			}
-			stageSeriesScrollView.content.Add(o);
 			o.transform.SetParent(stageSeriesIconFolder, false);
 			o.GetComponent<StageSeriesIcon>().Init(gm.regularStages.series[i]);
 			o.SetActive(true);
 			iconIndex++;
 		}
-		stageSeriesNameText.text = stageSeriesScrollView.SelectedContent.GetComponent<StageSeriesIcon>().GetData().seriesName;
-		StartCoroutine(InitScrollViewAfter1Frame());
 	}
 
-	private IEnumerator InitScrollViewAfter1Frame()
+	public void InitStageSelectionView(StageSeriesIcon selectedIcon)
 	{
-		yield return new WaitForEndOfFrame();
-		stageSeriesScrollView.Init();
-	}
-
-	private IEnumerator UpdateScrollButtonsVisibility()
-	{
-		for (;;)
-		{
-			leftButton.SetActive(stageSeriesScrollView.selectedContentIndex > 0);
-			rightButton.SetActive(stageSeriesScrollView.selectedContentIndex < stageSeriesScrollView.content.Count - 1);
-			yield return null;
+		selectedIcon.button.interactable = false;
+		StageSeriesData stageSeriesData = selectedIcon.GetData();
+		foreach (GameObject seriesIcon in stageSeriesIcons) {
+			if (seriesIcon.GetComponent<StageSeriesIcon>() != selectedIcon)
+				seriesIcon.SetActive(false);
 		}
-	}
-
-	public void InitStageSelectionView(StageSeriesData stageSeriesData)
-	{
+		anim.SetFloat("Direction", 1.0f);
+		anim.Play("ShowStageSelect", -1, 0);
 		stageSelectionView.gameObject.SetActive(true);
 		foreach (GameObject o in stageIcons)
 		{
@@ -127,6 +114,15 @@ public class StageSelectMenu : MonoBehaviour
 		}
 	}
 
+	public void ResetStageSeriesMenu() {
+		foreach (GameObject icon in stageSeriesIcons) {
+			icon.SetActive(true);
+			icon.GetComponent<StageSeriesIcon>().button.interactable = true;
+		}
+		anim.SetFloat("Direction", -1.0f);
+		anim.Play("ShowStageSelect", -1, 1);
+	}
+
 	public void SelectStageIcon(GameObject stageIconObj)
 	{    
 		DeselectStageIcon();	// If there is already a selected stage icon, deselect it first
@@ -144,6 +140,9 @@ public class StageSelectMenu : MonoBehaviour
 		stageIcon.ExpandHighlightMenu();
 		int siblingIndex = stageIcon.stageIndex;
 		highlightMenu.transform.SetSiblingIndex(siblingIndex);
+
+		if (StageIconSelected != null)
+			StageIconSelected();
 	}
 
 	public void DeselectStageIcon()

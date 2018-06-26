@@ -4,6 +4,7 @@ using TMPro;
 using System.Collections.Generic;
 
 public class PawnIconStandard : PawnIcon {
+
 #pragma warning disable 0649
 	[Header("Card Decorative Elements")]
 	[SerializeField] private Sprite[] panelTierSprites;
@@ -65,8 +66,9 @@ public class PawnIconStandard : PawnIcon {
 	{
 	}
 
-	public void SetHighlight(bool active) {
+	public void SetHighlight(bool active, Color color) {
 		highlight.SetActive(active);
+		highlight.GetComponent<Image>().color = color;
 	}
 
 	private void OnClick()

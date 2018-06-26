@@ -8,6 +8,11 @@ using System.Collections.Generic;
 /// </summary>
 public class BattleSceneManager : MonoBehaviour
 {
+	public struct PawnMetaData {
+		public Pawn startingState;
+		public int id;
+	}
+
 	public static BattleSceneManager instance;
 	private GameManager gm;
 
@@ -16,7 +21,7 @@ public class BattleSceneManager : MonoBehaviour
 	public Player player;
 	public GUIManager gui;
 	[Header("UI")]
-	public LosePanel losePanel;
+public StageEndMenu losePanel;
 	public DialogueView dialogueView;
 	public GameObject stageCompleteOptions;
 	public ModalSelectionView stageCompleteModal;
@@ -28,8 +33,9 @@ public class BattleSceneManager : MonoBehaviour
 	public int soulsEarned { get; private set; }            // souls earned in this session
 	public bool leaveOrContinueOptionOpen { get; private set; }
 
-	private int[] pawnIds;
-	private Pawn[] startingPawnStates;
+	//private int[] pawnIds;
+	//private Pawn[] startingPawnStates;
+	private PawnMetaData[] pawnMetaData;
 
 	public delegate void BattleSceneEvent();
 	public BattleSceneEvent OnStageCompleted;
@@ -65,11 +71,10 @@ public class BattleSceneManager : MonoBehaviour
 		Pawn[] pawns = gm.selectedPawns;
 		StageData stage = gm.GetStage(gm.selectedSeriesIndex, gm.selectedStageIndex);
 
-		pawnIds = new int[pawns.Length];
-		startingPawnStates = new Pawn[pawns.Length];
+		pawnMetaData = new PawnMetaData[pawns.Length];		
 		for (int i = 0; i < pawns.Length; i ++) {
-			pawnIds[i] = pawns[i].Id;
-			startingPawnStates[i] = new Pawn(pawns[i]);
+			pawnMetaData[i].id = pawns[i].Id;
+			pawnMetaData[i].startingState = new Pawn(pawns[i]);
 		}
 
 		// Initialize components
@@ -143,27 +148,35 @@ public class BattleSceneManager : MonoBehaviour
 		foreach (GameObject o in soulPickups) {
 			AddSouls(1);
 		}
-
-		int startingLevel = gm.save.GetPawn(pawnIds[0]).level;
-		int numLevelUps = 0;
-		if (completedStage)
-			numLevelUps = gm.save.AddExperience(pawnIds[0], (int)(Formulas.ExperienceFormula(enemyManager.level) * 0.3f));
-		else
-			gm.save.LoseExperience(pawnIds[0], (int)(Formulas.ExperienceFormula(enemyManager.level) * 0.2f));
-		
+		// Money report data
 		ScoreReport.ScoreReportData scoreData = new ScoreReport.ScoreReportData(
-			enemiesDefeated: 	enemyManager.enemiesKilled,
-			wavesSurvived: 		Mathf.Max(enemyManager.waveNumber - 1, 0),
-			maxCombo: 			player.hero.maxCombo,
 			money: 				gm.save.money,
 			moneyEarned: 		moneyEarned,
 			souls: 				gm.save.souls,
 			soulsEarned:		soulsEarned
 		);
-		HeroExpMenu.HeroExpMenuData expData = new HeroExpMenu.HeroExpMenuData(
-			startState: startingPawnStates[0],
-			endState: 	gm.save.GetPawn(pawnIds[0])
-		);
+
+		HeroExpMenu.HeroExpMenuData[] expData = new HeroExpMenu.HeroExpMenuData[pawnMetaData.Length];
+		// Add or subtract experience from pawns
+		if (completedStage) {
+			int stagesCompleted = enemyManager.stageData.goalWave / enemyManager.waveNumber;
+			int gainedExperience = (int)(Formulas.ExperienceFormula(enemyManager.level) * 0.3f * stagesCompleted * enemyManager.stageData.maxPartySize / pawnMetaData.Length);
+			for (int i = 0; i < pawnMetaData.Length; i ++) {
+				gm.save.AddExperience(pawnMetaData[i].id, gainedExperience);
+			}
+		}
+		else {
+			for (int i = 0; i < pawnMetaData.Length; i ++) {
+				int lostExperience = (int)(Formulas.ExperienceFormula(gm.save.GetPawn(pawnMetaData[i].id).level) * 0.2f);
+				gm.save.LoseExperience(pawnMetaData[i].id, lostExperience);
+			}
+		}
+		for (int i = 0; i < pawnMetaData.Length; i ++) {
+			expData[i] = new HeroExpMenu.HeroExpMenuData(
+				startState: pawnMetaData[i].startingState,
+				endState: 	gm.save.GetPawn(pawnMetaData[i].id)
+			);
+		}
 
 		gui.gameOverUI.SetActive(true);
 		losePanel.Init(scoreData, expData, gm.GetStage(gm.selectedSeriesIndex, gm.selectedStageIndex).stageName);
@@ -175,12 +188,6 @@ public class BattleSceneManager : MonoBehaviour
 				gm.UnlockNextStage();
 			}
 		}
-
-		//gm.saveGame.pawnWallet.RemovePawn(gm.selectedPawn.id);
-		//foreach(Pawn pawn in acquiredPawns)
-		//{
-		//	gm.saveGame.pawnWallet.AddPawn(pawn);
-		//}
 
 		int enemiesDefeated = enemyManager.enemiesKilled;
 		int wavesSurvived = enemyManager.waveNumber;

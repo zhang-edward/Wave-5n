@@ -4,35 +4,40 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
-public class LosePanel : MonoBehaviour {
+public class StageEndMenu : MonoBehaviour {
 	
+	/** UI */
 	public Button proceedButton;
 	public TMP_Text stageNameText;
-
-	public ScrollViewSnap scrollView;
 	public ScoreReport scoreReport;
 	public HeroExpMenu heroesExpMenu;
-	//public HeroesRescuedMenu heroesRescuedMenu;
 
-	//private List<Pawn> acquiredPawns;
+	/** Data */
 	private ScoreReport.ScoreReportData scoreReportData;
-	private HeroExpMenu.HeroExpMenuData heroExpMenuData;
+	private HeroExpMenu.HeroExpMenuData[] heroExpMenuData;
 
 	public void Init(ScoreReport.ScoreReportData scoreReportData, 
-	                 HeroExpMenu.HeroExpMenuData heroExpMenuData, 
+	                 HeroExpMenu.HeroExpMenuData[] heroExpMenuData, 
 	                 string stageName) {
 		this.scoreReportData = scoreReportData;
 		this.heroExpMenuData = heroExpMenuData;
 
 		stageNameText.text = stageName;
+		StartCoroutine(StageEndMenuRoutine());
+	}
+
+	public IEnumerator StageEndMenuRoutine() {
+		InitHeroExpMenu();
+		while (!heroesExpMenu.doneAnimating)
+			yield return null;
 		InitScoreReportView();
 	}
 
 	void InitHeroExpMenu() {
-		scrollView.ScrollRight();
+		// scrollView.ScrollRight();
 		heroesExpMenu.Init(heroExpMenuData);
 		//heroesRescuedMenu.Init(acquiredPawns);
-		proceedButton.onClick.RemoveAllListeners();
+		//proceedButton.onClick.RemoveAllListeners();
 		proceedButton.onClick.AddListener(GoToMenuScene);
 	}
 
@@ -47,7 +52,7 @@ public class LosePanel : MonoBehaviour {
 		scoreReport.moneyEarned.text.text	= scoreReportData.moneyEarned.ToString();
 		scoreReport.soulsText.text.text 	= scoreReportData.souls.ToString();
 		scoreReport.soulsEarned.text.text 	= scoreReportData.soulsEarned.ToString();		
-		yield return new WaitForSeconds(1.5f);
+		yield return new WaitForSeconds(1f);
 		scoreReport.ReportScore(scoreReportData);
 		// If we don't have any heroes acquired
 		//if (acquiredPawns.Count <= 0) {
@@ -55,7 +60,7 @@ public class LosePanel : MonoBehaviour {
 		//}
 		//// Otherwise, show the heroes rescued menu
 		//else {
-			proceedButton.onClick.AddListener(InitHeroExpMenu);
+			//proceedButton.onClick.AddListener(InitHeroExpMenu);
 		//}
 	}
 
