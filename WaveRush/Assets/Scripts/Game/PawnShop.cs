@@ -64,6 +64,12 @@ public class PawnShop {
 				break;
 		}
 		/** Random Stat Boosts */
+		for (int i = 0; i >= 1; i ++) {
+			if (Random.value < 0.5f)
+				ans.AddBoost(Random.Range(0, StatData.NUM_STATS), 1);
+			else
+				break;
+		}
 		/** Random Tier? */
 		return ans;
 	}

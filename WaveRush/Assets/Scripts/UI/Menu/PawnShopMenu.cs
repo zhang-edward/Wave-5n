@@ -20,13 +20,15 @@ public class PawnShopMenu : MonoBehaviour
 	public ScrollingText infoText;
 	public TMP_Text goldReqText;
 	public TMP_Text soulsReqText;
+	public Animator resourceReqsAnim;
 	public TMP_Text refreshTimerText;
 	public PawnInfoPanel infoPanel;
 
+	private int selectedPawnCostMoney;
+	private int selectedPawnCostSouls;
 	private PawnShop pawnShop;
 	private PawnIconStandard selectedIcon;
 	private Coroutine LerpToContentRoutine;
-
 	private RealtimeTimer refreshTimer;
 
 	public void Init() {
@@ -37,7 +39,7 @@ public class PawnShopMenu : MonoBehaviour
 		pawnSelectionView.Init(pawnShop.AvailablePawns.ToArray(), PawnSelectionView.PawnSelectionViewMode.Shuffled);
 		SetSelectionViewOnClick();
 		// Set recruitButton onClick
-		recruitButton.onClick.AddListener(RecruitHero);
+		recruitButton.onClick.AddListener(TryRecruitHero);
 		refreshTimer = RealtimeTimerCounter.instance.GetTimer(TIMER_KEY);
 	}
 
@@ -46,9 +48,12 @@ public class PawnShopMenu : MonoBehaviour
 								   refreshTimer.GetHours().ToString(),
 								   refreshTimer.GetMinutes().ToString(),
 								   refreshTimer.GetSeconds().ToString());
+
 	}
 
 	void OnEnable() {
+		infoButton.interactable = false;
+		recruitButton.interactable = false;
 		pawnShop.RefreshPawnPool();
 		if (refreshTimer.time <= 0) {
 			pawnShop.RefreshAvailablePawns();
@@ -58,6 +63,7 @@ public class PawnShopMenu : MonoBehaviour
 			float time = refreshTimer.time % resetTime;
 			RealtimeTimerCounter.instance.SetTimer(TIMER_KEY, resetTime + time);
 		}
+		SetSelectionViewOnClick();
 	}
 
 	void OnDisable() {
@@ -79,6 +85,10 @@ public class PawnShopMenu : MonoBehaviour
 		StartLerpToContent();
 		infoText.UpdateText(DataManager.GetHeroData(icon.pawnData.type).heroDescription);
 		infoButton.interactable = true;
+		recruitButton.interactable = true;
+		Formulas.PawnCost(icon.pawnData, out selectedPawnCostMoney, out selectedPawnCostSouls);
+		goldReqText.text = selectedPawnCostMoney.ToString();
+		soulsReqText.text = selectedPawnCostSouls.ToString();
 	}
 
 	private void DeselectIcon() {
@@ -87,17 +97,26 @@ public class PawnShopMenu : MonoBehaviour
 		selectedIcon.SetHighlight(false, Color.white);
 		selectedIcon = null;
 		infoButton.interactable = false;
+		recruitButton.interactable = false;
 		infoText.SetToDefaultText();
 	}
 
-	private void RecruitHero() {
-		if (gm.save.AddPawn(selectedIcon.pawnData)) {
+	private void TryRecruitHero() {
+		// Not enough money
+		if (selectedPawnCostMoney > gm.save.money ||
+			selectedPawnCostSouls > gm.save.souls) {
+			resourceReqsAnim.Play("Warning", -1);
+		}
+		// Not enough room in party
+		else if (!gm.save.AddPawn(selectedIcon.pawnData)) {
+			gm.DisplayAlert("You can't recruit any more pawns!");
+		}
+		else {
+			gm.save.TrySpendMoney(selectedPawnCostMoney);
+			gm.save.TrySpendSouls(selectedPawnCostSouls);
 			selectedIcon.button.interactable = false;
 			pawnShop.RemovePawn(selectedIcon.pawnData);
 			DeselectIcon();
-		}
-		else {
-			gm.DisplayAlert("You can't recruit any more pawns!");
 		}
 	}
 
@@ -125,7 +144,7 @@ public class PawnShopMenu : MonoBehaviour
 		// Set onClick for each pawnIcon
 		foreach (PawnIcon p in pawnSelectionView.pawnIcons) {
 			PawnIconStandard icon = (PawnIconStandard)p;
-			icon.onClick += (pawnIcon) => {
+			icon.onClick = (pawnIcon) => {
 				if (pawnIcon != selectedIcon)
 					SelectIcon(pawnIcon);
 				else

@@ -142,6 +142,14 @@ public class Pawn : System.IComparable<Pawn>
 		return ans;
 	}
 
+	public int GetNumBoosts() {
+		int sum = 0;
+		for (int i = 0; i < boosts.Length; i ++) {
+			sum += boosts[i];
+		}
+		return sum;
+	}
+
 	public override string ToString() {
 		return string.Format("[Pawn: type={0}, tier={1}, level={2}]", type.ToString(), tier.ToString(), level);
 	}

@@ -24,9 +24,16 @@ public class StageEndMenu : MonoBehaviour {
 
 		stageNameText.text = stageName;
 		StartCoroutine(StageEndMenuRoutine());
+
+		scoreReport.moneyText.text.text 	= scoreReportData.money.ToString();
+		scoreReport.moneyEarned.text.text	= scoreReportData.moneyEarned.ToString();
+		scoreReport.soulsText.text.text 	= scoreReportData.souls.ToString();
+		scoreReport.soulsEarned.text.text 	= scoreReportData.soulsEarned.ToString();		
+
 	}
 
 	public IEnumerator StageEndMenuRoutine() {
+		yield return new WaitForSeconds(2.0f);
 		InitHeroExpMenu();
 		while (!heroesExpMenu.doneAnimating)
 			yield return null;
@@ -48,10 +55,6 @@ public class StageEndMenu : MonoBehaviour {
 
 	private IEnumerator InitScoreReportViewRoutine()
 	{
-		scoreReport.moneyText.text.text 	= scoreReportData.money.ToString();
-		scoreReport.moneyEarned.text.text	= scoreReportData.moneyEarned.ToString();
-		scoreReport.soulsText.text.text 	= scoreReportData.souls.ToString();
-		scoreReport.soulsEarned.text.text 	= scoreReportData.soulsEarned.ToString();		
 		yield return new WaitForSeconds(1f);
 		scoreReport.ReportScore(scoreReportData);
 		// If we don't have any heroes acquired

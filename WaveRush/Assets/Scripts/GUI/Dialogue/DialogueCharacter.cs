@@ -10,7 +10,7 @@ public class DialogueCharacter : ScriptableObject
 	public class CharacterExpression
 	{
 		public string name;
-		public SimpleAnimation anim;
+		public Sprite anim;
 	}
 
 	public string characterName;
@@ -19,7 +19,7 @@ public class DialogueCharacter : ScriptableObject
 	public CharacterExpression[] expressions;
 	public AudioClip voice;
 
-	public SimpleAnimation GetExpression(string name)
+	public Sprite GetExpression(string name)
 	{
 		foreach (CharacterExpression exp in expressions)
 		{

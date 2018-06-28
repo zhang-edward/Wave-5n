@@ -21,7 +21,8 @@ public static class Formulas {
 		return 50 + level * level;
 	}
 
-	public static int PawnCost(Pawn pawn) {
-		return 200 + Random.Range(0, 100);
+	public static void PawnCost(Pawn pawn, out int money, out int souls) {
+		money = 200 + Random.Range(0, 100);
+		souls = (2 * pawn.GetNumBoosts());
 	}
 }

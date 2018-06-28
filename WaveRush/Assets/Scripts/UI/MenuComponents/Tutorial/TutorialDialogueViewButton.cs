@@ -8,11 +8,11 @@ public class TutorialDialogueViewButton : MonoBehaviour
 
 	public Button helpButton;
 	public DialogueView dialogueView;
-	public DialogueSet tutorialDialogueSet;
+	public DialogueSet[] tutorialDialogueSets;
 	public NewFeatureIndicator newText;
 
 	public string TUTORIAL_KEY {
-		get { return tutorialDialogueSet.name; }
+		get { return tutorialDialogueSets[0].name; }
 	}
 
 	void Awake()
@@ -27,6 +27,6 @@ public class TutorialDialogueViewButton : MonoBehaviour
 
 	public void Init()
 	{
-		dialogueView.Init(tutorialDialogueSet);
+		dialogueView.Init(tutorialDialogueSets);
 	}
 }

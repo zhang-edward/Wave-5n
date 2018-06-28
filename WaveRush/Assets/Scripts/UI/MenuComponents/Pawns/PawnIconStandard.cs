@@ -14,6 +14,7 @@ public class PawnIconStandard : PawnIcon {
 	[SerializeField] private TMP_Text heroLevelText;
 	[SerializeField] private bool levelInShortFormat;
 	[SerializeField] private Image heroPortrait;
+	[SerializeField] private TMP_Text boostsText;
 	[Header("Optional UI Elements")]
 	[SerializeField] protected Slider experienceSlider;
 	[SerializeField] private GameObject highlight;
@@ -37,21 +38,14 @@ public class PawnIconStandard : PawnIcon {
 	{
 		base.Init(pawnData);
 		// initialize display items
-		heroNameText.text = pawnData.type.ToString();
 		SetLevel(pawnData.level);
-
-		switch (pawnData.tier)
-		{
-			case HeroTier.tier1:
-				heroPortrait.sprite = DataManager.GetHeroData(pawnData.type).icons[0];
-				break;
-			case HeroTier.tier2:
-				heroPortrait.sprite = DataManager.GetHeroData(pawnData.type).icons[1];
-				break;
-			case HeroTier.tier3:
-				heroPortrait.sprite = DataManager.GetHeroData(pawnData.type).icons[2];
-				break;
-		}
+		heroNameText.text = pawnData.type.ToString();
+		heroPortrait.sprite = DataManager.GetHeroData(pawnData.type).icons[(int)pawnData.tier];
+		int numBoosts = pawnData.GetNumBoosts();
+		if (numBoosts > 0)
+			boostsText.text = string.Format("+{0}", numBoosts);
+		else
+			boostsText.gameObject.SetActive(false);
 		InitOptionalElements();
 	}
 
@@ -62,8 +56,7 @@ public class PawnIconStandard : PawnIcon {
 			heroLevelText.text = "lv." + level.ToString();
 	}
 
-	void Update()
-	{
+	void Update() {
 	}
 
 	public void SetHighlight(bool active, Color color) {

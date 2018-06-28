@@ -43,7 +43,9 @@ public class PawnMenu : MonoBehaviour {
 				selectedIcon.gameObject.SetActive(false);
 				bigIconDisplay.Init(clickedIcon.pawnData);
 				bigIconDisplay.gameObject.SetActive(true);
-				retireMoneyText.text = Mathf.RoundToInt(Formulas.PawnCost(selectedIcon.pawnData) * 0.2f).ToString();
+				int costMoney, costSouls;
+				Formulas.PawnCost(selectedIcon.pawnData, out costMoney, out costSouls);
+				retireMoneyText.text = ((int)((costMoney + 2 * costSouls) * 0.2f)).ToString();
 			};
 		}
 	}
@@ -74,7 +76,9 @@ public class PawnMenu : MonoBehaviour {
 	}
 
 	public void RetirePawn() {
-		gm.save.AddMoney(Mathf.RoundToInt(Formulas.PawnCost(selectedIcon.pawnData) * 0.2f));
+		int costMoney, costSouls;
+		Formulas.PawnCost(selectedIcon.pawnData, out costMoney, out costSouls);
+		gm.save.AddMoney((int)((costMoney + 2 * costSouls) * 0.2f));
 		gm.save.RemovePawn(selectedIcon.pawnData.Id);
 		bigIconDisplay.gameObject.SetActive(false);
 		selectedIcon = null;
