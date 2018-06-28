@@ -69,6 +69,8 @@ public class TutorialScene1Manager : MonoBehaviour
 	{
 		// Get data from GameManager
 		Pawn pawn = new Pawn(HeroType.Knight, HeroTier.tier1);
+		GameManager.instance.selectedPawns = new Pawn[1];
+		GameManager.instance.selectedPawns[0] = pawn;
 		SoundManager sound = SoundManager.instance;
 		CameraControl cam = CameraControl.instance;
 
