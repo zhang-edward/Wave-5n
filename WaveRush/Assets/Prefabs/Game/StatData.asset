@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 369046443fa7b43e2b495f278753e5bd, type: 3}
+  m_Name: StatData
+  m_EditorClassIdentifier: 
+  statDescriptions:
+  - 'STRENGTH: How much base damage a hero will inflict.'
+  - 'VITALITY:  The amount of health a hero has.'
+  - 'CHARGE: The proportion of your special ability that is charged upon each hit.'
+  - 'DEXTERITY: The probability of an attack to inflict critical damage.'
+  - 'CRITICAL: The multiplier applied to base damage upon a critical strike.'
+  - 'LUCK: The amount of extra money gained at the end of each battle.'
