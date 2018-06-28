@@ -9,7 +9,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 38916ffeb58ad4c7c9c35af084c915a9, type: 3}
-  m_Name: MageData
+  m_Name: Data_Mage
   m_EditorClassIdentifier: 
   heroType: 1
   abilityIcons:
@@ -17,8 +17,19 @@ MonoBehaviour:
   - {fileID: 21300040, guid: 6e955990ceb1b40f6bab3cfe86b1b145, type: 3}
   specialAbilityIcon: {fileID: 21300042, guid: 6e955990ceb1b40f6bab3cfe86b1b145, type: 3}
   powerUpData: {fileID: 11400000, guid: 9f4725f78569a49d1bce669307e1d26c, type: 2}
-  unlockSeries: 000000000000000000000000
-  unlockStage: 000000000000000000000000
+  boostInfo:
+    strMin: 0
+    strMax: 0
+    vitMin: 0
+    vitMax: 0
+    chgMin: 0
+    chgMax: 0
+    dexMin: 0
+    dexMax: 0
+    critMin: 0
+    critMax: 0
+    luckMin: 0
+    luckMax: 0
   tips: []
   heroDescription: The Mage relies on ranged fireballs and strategic teleports to
     burn his foes to a crisp.

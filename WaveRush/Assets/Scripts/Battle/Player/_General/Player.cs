@@ -6,8 +6,8 @@ public class Player : MonoBehaviour, IDamageable
 {
 	public const float	HIT_DISABLE_TIME = 0.5f;
 	public const float	SOFT_HEALTH_RECOVERY_DELAY = 1.0f;
-	public const int	HEALTH_PER_QUARTER_HEART = 10;
-	public const int	HEALTH_PER_HEART = HEALTH_PER_QUARTER_HEART * 4;
+	public const float	SOFT_HEALTH_DECAY_RATE = 10f;
+	public const int	BASE_HEALTH_PER_HEART = 40;
 
 	[HideInInspector]public float DEFAULT_SPEED;
 
@@ -111,7 +111,7 @@ public class Player : MonoBehaviour, IDamageable
 			if (i == index) {
 				heroList[i].gameObject.SetActive(true);
 				hero = heroList[i].GetComponent<PlayerHero>();
-				maxHealth = hero.numHearts * HEALTH_PER_HEART;
+				maxHealth = hero.numHearts * hero.healthPerHeart;
 				hardHealth = softHealth = softHealthTarget = hero.hardHealth;
 			}
 			// Disable all inactive heroes
@@ -279,7 +279,7 @@ public class Player : MonoBehaviour, IDamageable
 		yield return new WaitForSeconds(SOFT_HEALTH_RECOVERY_DELAY);
 		while (softHealth > softHealthTarget) {
 			softHealth --;
-			yield return new WaitForSeconds(1f / hero.softHealthDecayRate);
+			yield return new WaitForSeconds(1f / SOFT_HEALTH_DECAY_RATE);
 		}
 	}
 

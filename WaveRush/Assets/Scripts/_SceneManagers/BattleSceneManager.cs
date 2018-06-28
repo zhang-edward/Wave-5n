@@ -159,7 +159,7 @@ public StageEndMenu losePanel;
 		HeroExpMenu.HeroExpMenuData[] expData = new HeroExpMenu.HeroExpMenuData[pawnMetaData.Length];
 		// Add or subtract experience from pawns
 		if (completedStage) {
-			int stagesCompleted = enemyManager.stageData.goalWave / enemyManager.waveNumber;
+			int stagesCompleted = enemyManager.waveNumber / enemyManager.stageData.goalWave;
 			int gainedExperience = (int)(Formulas.ExperienceFormula(enemyManager.level) * 0.3f * stagesCompleted * enemyManager.stageData.maxPartySize / pawnMetaData.Length);
 			for (int i = 0; i < pawnMetaData.Length; i ++) {
 				gm.save.AddExperience(pawnMetaData[i].id, gainedExperience);

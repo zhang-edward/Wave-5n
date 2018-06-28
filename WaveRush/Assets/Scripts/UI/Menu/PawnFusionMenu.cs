@@ -49,7 +49,11 @@ public class PawnFusionMenu : MonoBehaviour {
 		if (!initialized)
 			Init();
 		pawnSelectionView.Refresh();
-		// Clicking on a pawn in the pawnSelectionView brings up the highlight menu
+		SetOnClick();
+	}
+
+	private void SetOnClick() {
+				// Clicking on a pawn in the pawnSelectionView brings up the highlight menu
 		foreach (PawnIcon pawnIcon in pawnSelectionView.pawnIcons) {
 			PawnIconStandard icon = (PawnIconStandard)pawnIcon;
 
@@ -88,10 +92,7 @@ public class PawnFusionMenu : MonoBehaviour {
 		numSelected = 0;
 		UpdatePawnSelectionViewInteractability();
 		pawnSelectionView.Refresh();
-		foreach (PawnIcon pawnIcon in pawnSelectionView.pawnIcons) {
-			PawnIconStandard icon = (PawnIconStandard)pawnIcon;
-			icon.button.interactable = true;
-		}
+		SetOnClick();
 	}
 
 	private void UpdatePawnSelectionViewInteractability() {
@@ -120,7 +121,7 @@ public class PawnFusionMenu : MonoBehaviour {
 
 		selectedIcons[index] = highlightedIcon.gameObject;
 		highlightedIcon.gameObject.SetActive(false);
-		highlightedIcon.GetComponent<Button>().interactable = false;
+		//highlightedIcon.GetComponent<Button>().interactable = false;
 		highlightMenu.SetActive(false);
 		fuseMatIcon.Init(highlightedIcon.pawnData);
 		fuseMatIcon.gameObject.SetActive(true);
@@ -231,16 +232,15 @@ public class PawnFusionMenu : MonoBehaviour {
 
 	private Pawn GetFusedPawn(Pawn pawn1, Pawn pawn2) {
 		UnityEngine.Assertions.Assert.IsTrue(CheckCanFusePawns(pawn1, pawn2));
-
-		int level;  // the level of the fused pawn
-					// Get higher level out of the two pawns
-		if (pawn1.level > pawn2.level)
-			level = pawn1.level + 1;
-		else
-			level = pawn2.level + 1;
-		// Make the new pawn
-		Pawn pawn = new Pawn(pawn1.type, pawn1.tier);
-		pawn.level = level;
-		return pawn;
+		Pawn fusedPawn = new Pawn(pawn1);
+		// Fuse the boosts of the two pawns
+		for (int i = 0; i < StatData.NUM_STATS; i ++) {
+			fusedPawn.AddBoost(i, pawn2.boosts[i]);
+		}
+		// Add two random boosts
+		for (int i = 0; i < 2; i ++) {
+			fusedPawn.AddBoost(Random.Range(0, StatData.NUM_STATS), 1);
+		}
+		return fusedPawn;
 	}
 }

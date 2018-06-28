@@ -70,7 +70,7 @@ public class StageSelectMenu : MonoBehaviour
 
 	public void InitStageSelectionView(StageSeriesIcon selectedIcon)
 	{
-		selectedIcon.button.interactable = false;
+		selectedIcon.clickable.interactable = false;
 		StageSeriesData stageSeriesData = selectedIcon.GetData();
 		foreach (GameObject seriesIcon in stageSeriesIcons) {
 			if (seriesIcon.GetComponent<StageSeriesIcon>() != selectedIcon)
@@ -117,7 +117,7 @@ public class StageSelectMenu : MonoBehaviour
 	public void ResetStageSeriesMenu() {
 		foreach (GameObject icon in stageSeriesIcons) {
 			icon.SetActive(true);
-			icon.GetComponent<StageSeriesIcon>().button.interactable = true;
+			icon.GetComponent<StageSeriesIcon>().clickable.interactable = true;
 		}
 		anim.SetFloat("Direction", -1.0f);
 		anim.Play("ShowStageSelect", -1, 1);

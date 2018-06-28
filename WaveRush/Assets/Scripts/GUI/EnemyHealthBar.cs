@@ -74,7 +74,7 @@ public class EnemyHealthBar : MonoBehaviour {
 
 	private void SetFillAreaColor()
 	{
-		if (enemy.health <= player.hero.damage)
+		if (enemy.health <= player.hero.noiselessDamage)
 		{
 			fillArea.color = criticalColor;
 		}

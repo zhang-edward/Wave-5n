@@ -4,24 +4,30 @@ using System.Collections;
 using UnityEngine.EventSystems;
 using TMPro;
 
-public class StageSeriesIcon : ScrollViewSnapContent {
+public class StageSeriesIcon : MonoBehaviour {
+
 	public delegate void Clicked(StageSeriesIcon icon);
 	public event Clicked onClicked;
 
+	[HideInInspector] public Button clickable;
+
 	public Image icon;
 	public TMP_Text seriesNameText;
-	public Button button;
 	private StageSeriesData data;
+
+	void Awake() {
+		clickable = GetComponent<Button>();
+	}
 
 	public void Init(StageSeriesData data)
 	{
 		this.data = data;
 		icon.sprite = data.icon;
 		seriesNameText.text = data.seriesName;
-		button.onClick.AddListener(OnClick);
+		clickable.onClick.AddListener(OnClick);
 	}
 
-	protected override void OnClick()
+	private void OnClick()
 	{
 		if (onClicked != null)
 			onClicked(this);

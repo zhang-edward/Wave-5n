@@ -150,7 +150,7 @@ public class GUIManager : MonoBehaviour {
 		partyView.ActivateCard(player.activePartyMember);
 		partyView.UpdatePartyCard(player.activePartyMember, 
 								  (float)player.hero.hardHealth / player.maxHealth, 
-								  player.hero.specialAbilityCharge / player.hero.specialAbilityChargeCapacity);
+								  player.hero.specialAbilityCharge / PlayerHero.SPECIAL_ABILITY_CHARGE_CAPACITY);
 		player.SetHero(index);
 	}
 } 

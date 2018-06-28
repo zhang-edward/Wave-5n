@@ -61,12 +61,8 @@ public class AbilityIconBar : MonoBehaviour {
 			//print (i + ": " + hero.GetCooldownTime (i));
 			abilityIcons [i].SetCooldown (percentCooldown);
 		}
-		float percent = (hero.specialAbilityCharge / hero.specialAbilityChargeCapacity);
+		float percent = (hero.specialAbilityCharge / PlayerHero.SPECIAL_ABILITY_CHARGE_CAPACITY);
 		specialAbilityIcon.SetCooldown (percent);
-		if (hero.chargeMultiplier <= 1)
-			specialAbilityIcon.SetMultiplierText("");
-		else
-			specialAbilityIcon.SetMultiplierText ("x" + hero.chargeMultiplier);
 	}
 
 	private void FlashRedAbilityIcon(int index)

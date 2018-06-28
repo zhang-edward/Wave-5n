@@ -15,6 +15,8 @@ public class PawnInfoPanel : MonoBehaviour
 	public ToggleGroup infoIconsToggleGroup;
 	public ToggleGroup midPanelTabToggleGroup;
 	public ScrollViewSnap midPanelScrollView;
+	public TMP_Text[] boostInfoTexts;
+	public TMP_Text[] statInfoTexts;
 	//[Header("NewIndicators")]
 	//public NewFeatureIndicator newSpecial;
 	//public NewFeatureIndicator[] newAbility;
@@ -59,6 +61,7 @@ public class PawnInfoPanel : MonoBehaviour
 		print(pawn);
 		pawnIcon.Init(pawn);
 		HeroData heroData = DataManager.GetHeroData(pawn.type);
+		SetStatInfoTexts(pawn);
 		/** Initialize the hero's power up info */
 		HeroPowerUpListData powerUpListData = DataManager.GetPowerUpListData(pawn.type);
 		int numPowerUpsUnlocked = HeroPowerUpListData.GetNumPowerUpsUnlocked(pawn.level);
@@ -133,5 +136,22 @@ public class PawnInfoPanel : MonoBehaviour
 	public string GetViewedPowerKey(int powerIndex)
 	{
 		return pawnIcon.pawnData.type.ToString() + "_Powers_" + powerIndex;
+	}
+
+	private void SetStatInfoTexts(Pawn pawn) {
+		for (int i = 0; i < StatData.NUM_STATS; i ++) {
+			boostInfoTexts[i].text = string.Format("+{0}", pawn.boosts[i]);
+		}
+		float[] stats = pawn.GetStatsArray();
+		statInfoTexts[StatData.STR].text  = string.Format("{0} dmg", 	  Mathf.RoundToInt(Formulas.PlayerDamageFormula(pawn.level, (int)pawn.tier) * stats[StatData.STR]));
+		statInfoTexts[StatData.VIT].text  = string.Format("{0} hp/heart", stats[StatData.VIT]);
+		statInfoTexts[StatData.CHG].text  = string.Format("{0}%", 		  stats[StatData.CHG]);
+		statInfoTexts[StatData.DEX].text  = string.Format("{0}%",		  stats[StatData.DEX] * 100);
+		statInfoTexts[StatData.CRIT].text = string.Format("{0}x",		  stats[StatData.CRIT]);
+		statInfoTexts[StatData.LUCK].text = string.Format("{0}%",		  stats[StatData.LUCK] * 100);
+	}
+
+	public void ShowStatHelp(int statIndex) {
+		infoText.UpdateText(DataManager.instance.statData.statDescriptions[statIndex]);
 	}
 }

@@ -9,7 +9,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 38916ffeb58ad4c7c9c35af084c915a9, type: 3}
-  m_Name: KnightData
+  m_Name: Data_Knight
   m_EditorClassIdentifier: 
   heroType: 0
   abilityIcons:
@@ -17,8 +17,19 @@ MonoBehaviour:
   - {fileID: 21300020, guid: c249c27ff77ed416bbc513d9e1c5388b, type: 3}
   specialAbilityIcon: {fileID: 21300026, guid: c249c27ff77ed416bbc513d9e1c5388b, type: 3}
   powerUpData: {fileID: 11400000, guid: 3b689b17444a44ef880adb1f7bdfc865, type: 2}
-  unlockSeries: 000000000000000000000000
-  unlockStage: 000000000000000000000000
+  boostInfo:
+    strMin: 1
+    strMax: 1.5
+    vitMin: 40
+    vitMax: 80
+    chgMin: 1
+    chgMax: 1.5
+    dexMin: 0.02
+    dexMax: 0.05
+    critMin: 1.5
+    critMax: 2.5
+    luckMin: 0.05
+    luckMax: 0.15
   tips: []
   heroDescription: The Knight is utilizes both aggressive and defensive abilities
     to take down his foes.

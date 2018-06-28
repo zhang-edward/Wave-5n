@@ -114,7 +114,7 @@ public class NinjaHero : PlayerHero {
 
 	public override void SpecialAbility ()
 	{
-		if (specialAbilityCharge < specialAbilityChargeCapacity || activatedSpecialAbility)
+		if (specialAbilityCharge < SPECIAL_ABILITY_CHARGE_CAPACITY || activatedSpecialAbility)
 			return;
 		dashAbility.OnTeleportIn += DetectShadowBackup;
 		Invoke ("ResetSpecialAbility", 5.0f);

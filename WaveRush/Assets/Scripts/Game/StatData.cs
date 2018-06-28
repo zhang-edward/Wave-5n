@@ -10,6 +10,7 @@ public class StatData : ScriptableObject {
 	public const int DEX  = 3;
 	public const int CRIT = 4;
 	public const int LUCK = 5;
+	public const int NUM_STATS = 6;
 
 	[Header("Descriptions")]
 	[TextArea]

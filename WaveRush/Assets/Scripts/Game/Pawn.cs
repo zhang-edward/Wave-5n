@@ -7,11 +7,12 @@ public class Pawn : System.IComparable<Pawn>
 	public const int T1_MAX_LEVEL = 5;
 	public const int T2_MAX_LEVEL = 15;
 	public const int T3_MAX_LEVEL = 20;
+	public const int MAX_BOOST_LEVEL = 10;
 
-	public HeroType type;				// the hero type of this pawn
-	public int level;           		// the current level of the pawn
-	public Dictionary<int, int> boosts;	// the boosts that this pawn has
-	private int maxExperience;			// the experience cap for this pawn
+	public HeroType type;			// the hero type of this pawn
+	public int level;           	// the current level of the pawn
+	public int[] boosts;			// the boosts that this pawn has
+	private int maxExperience;		// the experience cap for this pawn
 
 	/** Properties */
 	public int Id		  { get; private set; }
@@ -43,12 +44,14 @@ public class Pawn : System.IComparable<Pawn>
 	/// <value>The tier.</value>
 	public HeroTier tier { get; private set; }
 
+#region Initialization
 	public Pawn(HeroType type, HeroTier tier, int level = 1)
 	{
 		this.type = type;
 		this.tier = tier;
 		this.level = level;
 		maxExperience = Formulas.ExperienceFormula(level);
+		boosts = new int[StatData.NUM_STATS];
 	}
 
 	public Pawn(Pawn other) {
@@ -57,19 +60,21 @@ public class Pawn : System.IComparable<Pawn>
 		this.level = other.level;
 		this.Experience = other.Experience;
 		maxExperience = Formulas.ExperienceFormula(level);
+		boosts = new int[StatData.NUM_STATS];
+		other.boosts.CopyTo(this.boosts, 0);
 	}
 
 	public void SetID(int id) {
 		this.Id = id;
 	}
-
+#endregion
+#region Experience
 	/// <summary>
 	/// Increases the experience of the pawn
 	/// </summary>
 	/// <returns>How many levels the pawn gained</returns>
 	/// <param name="amt">Amt.</param>
 	public int AddExperience(int amt) {
-		Debug.Log("Added experience to " + this);
 		int numLevelsGained = 0;
 		if (level >= MaxLevel)
 			return 0;
@@ -84,7 +89,6 @@ public class Pawn : System.IComparable<Pawn>
 				Experience = 0;
 				return numLevelsGained;
 			}
-			Debug.Log(this + " gained a level");
 		}
 		return numLevelsGained;
 	}
@@ -95,23 +99,12 @@ public class Pawn : System.IComparable<Pawn>
 			Experience = 0;
 	}
 
-	public override string ToString()
-	{
-		return string.Format("[Pawn: type={0}, tier={1}, level={2}]", type.ToString(), tier.ToString(), level);
+	public static int GetMaxExperience(int level) {
+		return Formulas.ExperienceFormula(level);
 	}
-
-	//public static float DamageEquation(int level)
-	//{
-	//	float answer = (0.08f * Mathf.Pow(level, 2.8f) + 5.3f);
-	//	//if (tier == HeroTier.tier2)
-	//	//	answer += 5f;
-	//	//else if (tier == HeroTier.tier3)
-	//	//	answer += 10f;
-	//	return answer;
-	//}
-
-	public AnimationSet GetAnimationSet()
-	{
+#endregion
+#region Misc
+	public AnimationSet GetAnimationSet() {
 		AnimationSet answer;
 		HeroData data = DataManager.GetHeroData(type);
 		switch(tier)
@@ -131,14 +124,27 @@ public class Pawn : System.IComparable<Pawn>
 		return answer;
 	}
 
-	public static int GetMaxExperience(int level) {
-		return Formulas.ExperienceFormula(level);
+	public bool AddBoost(int statIndex, int amt) {
+		if (boosts[statIndex] < MAX_BOOST_LEVEL) {
+			boosts[statIndex] = Mathf.Min(MAX_BOOST_LEVEL, boosts[statIndex] + amt);
+			return true;
+		}
+		else
+			return false;
 	}
 
-	//public string GetTimerID()
-	//{
-	//	return "Pawn:" + id;
-	//}
+	public float[] GetStatsArray() {
+		float[,] statsMinMax = DataManager.GetHeroData(type).GetStatsMinMax();
+		float[] ans = new float[StatData.NUM_STATS];
+		for (int i = 0; i < StatData.NUM_STATS; i ++) {
+			ans[i] = Mathf.Lerp(statsMinMax[i, 0], statsMinMax[i, 1], (float)boosts[i] / MAX_BOOST_LEVEL);
+		}
+		return ans;
+	}
+
+	public override string ToString() {
+		return string.Format("[Pawn: type={0}, tier={1}, level={2}]", type.ToString(), tier.ToString(), level);
+	}
 
 	public int CompareTo(Pawn other) {
 		if (other == null) 
@@ -152,6 +158,7 @@ public class Pawn : System.IComparable<Pawn>
 			return level.CompareTo(other.level);
 		return 0;
 	}
+#endregion
 }
 
 public enum HeroTier {

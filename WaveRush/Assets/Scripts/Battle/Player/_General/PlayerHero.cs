@@ -8,6 +8,7 @@ public abstract class PlayerHero : MonoBehaviour {
 	public const float PARRY_TIME = 0.7f;			// The parry time
 	public const float PARRY_SLOW_TIME = 0.0f;		// How long the slow-down effect should be on successful parry
 	public const float PARRY_COOLDOWN_TIME = 0.3f;	// How long the player should be inactive upon failed parry
+	public const float SPECIAL_ABILITY_CHARGE_CAPACITY = 100.0f;
 
 	/** Hidden properties */
 	[HideInInspector]public Player player;
@@ -16,6 +17,8 @@ public abstract class PlayerHero : MonoBehaviour {
 	[HideInInspector]public float[] cooldownMultipliers;	// The cooldown time multipliers, modified by powerups or abilities
 	[HideInInspector]public int level;						// This hero's level
 	[HideInInspector]public int hardHealth;					// The health of this hero, so when this hero is enabled the Player class will set the proper health
+	[HideInInspector]public int healthPerHeart;				// The amount of health each heart contains for this hero
+	[HideInInspector]public float[] stats;
 	private int baseDamage;
 	protected SoundManager sound;
 
@@ -23,11 +26,14 @@ public abstract class PlayerHero : MonoBehaviour {
 	[Header("PlayerHero Properties")]
 	public HeroType heroType;
 	public int numHearts;
-	public float softHealthDecayRate = 10f;
-
 	public float damageMultiplier { get; set; }
+	public int noiselessDamage { get { return Mathf.RoundToInt(baseDamage * damageMultiplier); } }
 	public int damage {
-		get { return Mathf.RoundToInt(baseDamage * damageMultiplier); }	// Final damage calculation
+		get {
+			float noiseRange = 0.1f * baseDamage;
+			float noise = Random.Range(-noiseRange, noiseRange);
+			return Mathf.RoundToInt(baseDamage * damageMultiplier + noise);
+		}
 	}
 	// Combo
 	// TODO: Remove scores from the game
@@ -40,9 +46,7 @@ public abstract class PlayerHero : MonoBehaviour {
 	public AnimationSet anim;
 	public Sprite[] deathProps;
 
-	[Header("Special Ability Properties")]
-	public float chargeMultiplier = 1;
-	public float specialAbilityChargeCapacity;
+	// Special Ability
 	public float specialAbilityCharge { get; protected set; }
 
 	[Header("Ability Cooldown Times")]
@@ -91,16 +95,18 @@ public abstract class PlayerHero : MonoBehaviour {
 		anim.Init(player.animPlayer);
 		anim.player.Init();
 
+		stats = heroData.GetStatsArray();
 		level = heroData.level;
 		damageMultiplier = 1f;
-		baseDamage = Mathf.RoundToInt(Formulas.PlayerDamageFormula(heroData.level));
-		
+		baseDamage = Mathf.RoundToInt(Formulas.PlayerDamageFormula(heroData.level, (int)heroData.tier) * stats[StatData.STR]);
+		healthPerHeart = (int)stats[StatData.VIT];
+
 		// Init cooldownMultipliers to x1
 		cooldownMultipliers = new float[cooldownTime.Length];
 		for(int i = 0; i < cooldownTime.Length; i ++)
 			cooldownMultipliers [i] = 1;
 
-		hardHealth = numHearts * Player.HEALTH_PER_HEART;
+		hardHealth = numHearts * healthPerHeart;
 		powerUpManager.Init (heroData);
 		player.OnPlayerDamaged += ResetCombo;
 		player.OnEnemyDamaged += IncrementCombo;
@@ -347,23 +353,23 @@ public abstract class PlayerHero : MonoBehaviour {
 
 	public void IncrementSpecialAbilityCharge(float amt)
 	{
-		specialAbilityCharge += 1 * chargeMultiplier;
-		if (specialAbilityCharge >= specialAbilityChargeCapacity)
+		specialAbilityCharge += stats[StatData.CHG];
+		if (specialAbilityCharge >= SPECIAL_ABILITY_CHARGE_CAPACITY)
 		{
 			if (OnSpecialAbilityCharged != null)
 				OnSpecialAbilityCharged();
-			specialAbilityCharge = specialAbilityChargeCapacity;
+			specialAbilityCharge = SPECIAL_ABILITY_CHARGE_CAPACITY;
 		}
 	}
 
 	public void IncrementSpecialAbilityChargeByAmt(float amt)
 	{
 		specialAbilityCharge += amt;
-		if (specialAbilityCharge >= specialAbilityChargeCapacity)
+		if (specialAbilityCharge >= SPECIAL_ABILITY_CHARGE_CAPACITY)
 		{
 			if (OnSpecialAbilityCharged != null)
 				OnSpecialAbilityCharged();
-			specialAbilityCharge = specialAbilityChargeCapacity;
+			specialAbilityCharge = SPECIAL_ABILITY_CHARGE_CAPACITY;
 		}	
 	}
 
@@ -375,21 +381,12 @@ public abstract class PlayerHero : MonoBehaviour {
 		comboTimer += 1.5f;
 		if (comboTimer > maxComboTimer || combo == 1)		// if just started combo, set to max timer
 			comboTimer = maxComboTimer;
-		SetChargeMultiplier ();
 	}
 
 	private void ResetCombo(int amt)
 	{
 		combo = 0;
 		comboTimer = 0;
-		SetChargeMultiplier ();
-	}
-
-	private void SetChargeMultiplier()
-	{
-		chargeMultiplier = combo * 0.05f + 1;
-		if (chargeMultiplier > 2)
-			chargeMultiplier = 2;
 	}
 
 	public float GetCooldownTime(int index)
@@ -400,5 +397,15 @@ public abstract class PlayerHero : MonoBehaviour {
 	public override string ToString()
 	{
 		return heroType.ToString();
+	}
+
+	public bool TryCriticalDamage(ref int damage) {
+		if (Random.value > stats[StatData.DEX])
+			return false;
+		else {
+			damage = (int)(stats[StatData.CRIT] * damage);
+			print ("Critical hit!");
+			return true;
+		}
 	}
 }

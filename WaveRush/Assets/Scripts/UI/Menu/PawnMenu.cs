@@ -34,6 +34,7 @@ public class PawnMenu : MonoBehaviour {
 		pawnSelectionView.Refresh();
 		foreach (PawnIcon pawnIcon in pawnSelectionView.pawnIcons) {
 			PawnIconStandard icon = (PawnIconStandard)pawnIcon;
+			icon.button.interactable = true;
 			icon.onClick = (clickedIcon) => {
 				if (selectedIcon != null) {
 					DeselectIcon();

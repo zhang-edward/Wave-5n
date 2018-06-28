@@ -143,7 +143,7 @@ public class KnightHero : PlayerHero {
 
 	public override void SpecialAbility ()
 	{
-		if (specialAbilityCharge < specialAbilityChargeCapacity || 
+		if (specialAbilityCharge < SPECIAL_ABILITY_CHARGE_CAPACITY || 
 		    specialRushAbility.inProgress)
 			return;
 		StartCoroutine(SpecialAbilityRoutine());
@@ -184,7 +184,11 @@ public class KnightHero : PlayerHero {
 
 	private void HandleOnDamageEnemy(Enemy e)
 	{
-		DamageEnemy(e, damage, hitEffect, false, hitSounds);
+		int damageDealt = damage;
+		if (TryCriticalDamage(ref damageDealt))
+			DamageEnemy(e, damageDealt, specialHitAnim, false, specialHitSounds);
+		else
+			DamageEnemy(e, damageDealt, hitEffect, false, hitSounds);
 	}
 
 	private void HandleSpecialOnDamageEnemy(Enemy e)

@@ -73,7 +73,7 @@ public class HealthMeter : MonoBehaviour {
 	}
 
 	private void GetHeartInfo(float val, out int numFullHearts, out float frac) {
-		numFullHearts = (int)val / Player.HEALTH_PER_HEART;
-		frac = (val % Player.HEALTH_PER_HEART) / Player.HEALTH_PER_HEART;
+		numFullHearts = (int)val / player.hero.healthPerHeart;
+		frac = (val % player.hero.healthPerHeart) / player.hero.healthPerHeart;
 	}
 }

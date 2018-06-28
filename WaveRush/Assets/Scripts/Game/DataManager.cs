@@ -4,6 +4,7 @@ public class DataManager : MonoBehaviour
 	public static DataManager instance;
 
 	public HeroData[] heroData;   // power up info for every hero
+	public StatData statData;
 
 	void Awake()
 	{

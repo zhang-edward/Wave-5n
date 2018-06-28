@@ -51,15 +51,13 @@ public class DebugCheatMenu : MonoBehaviour
 		GameManager.instance.Save();
 	}
 
-	//public void AddNewPawn(string level)
-	//{
-	//	int numHeroTypes = Enum.GetNames(typeof(HeroType)).Length;
-	//	//HeroType type = (HeroType)Enum.GetValues(typeof(HeroType)).GetValue(UnityEngine.Random.Range(1, numHeroTypes));
-	//	Pawn pawn = new Pawn(HeroType.Knight);
-	//	pawn.level = Convert.ToInt32(level);
-	//	GameManager.instance.saveGame.pawnWallet.AddPawn(pawn);
-	//	SaveLoad.Save();
-	//}
+	public void AddNewPawn(string level)
+	{
+		int numHeroTypes = Enum.GetNames(typeof(HeroType)).Length;
+		//HeroType type = (HeroType)Enum.GetValues(typeof(HeroType)).GetValue(UnityEngine.Random.Range(1, numHeroTypes));
+		Pawn pawn = new Pawn(HeroType.Knight, HeroTier.tier2, Convert.ToInt32(level));
+		GameManager.instance.save.AddPawn(pawn);
+	}
 
 	public void ClearSaveData()
 	{
@@ -81,7 +79,7 @@ public class DebugCheatMenu : MonoBehaviour
 
 	public void FullChargeSpecial()
 	{
-		player.hero.IncrementSpecialAbilityChargeByAmt(player.hero.specialAbilityChargeCapacity);
+		player.hero.IncrementSpecialAbilityChargeByAmt(PlayerHero.SPECIAL_ABILITY_CHARGE_CAPACITY);
 	}
 
 	public void KillAllEnemies()

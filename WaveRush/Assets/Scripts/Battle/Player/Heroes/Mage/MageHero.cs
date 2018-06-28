@@ -220,7 +220,7 @@ public class MageHero : PlayerHero {
 
 	public override void SpecialAbility()
 	{
-		if (specialAbilityCharge < specialAbilityChargeCapacity)
+		if (specialAbilityCharge < SPECIAL_ABILITY_CHARGE_CAPACITY)
 			return;
 		StartCoroutine(SpecialAbilityRoutine());
 	}
