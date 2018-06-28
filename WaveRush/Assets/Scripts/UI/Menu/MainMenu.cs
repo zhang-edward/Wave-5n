@@ -6,8 +6,6 @@ public class MainMenu : MonoBehaviour
 	GameManager gm;
 
 	[Header("Primary Menus")]
-	public PawnSelectionView partyView;
-	public PawnFusionMenu fusionMenu;
 	public PawnShopMenu pawnShopMenu;
 	//public PawnRetireMenu pawnRetireMenu;
 
@@ -21,15 +19,6 @@ public class MainMenu : MonoBehaviour
 	void Start()
 	{
 		gm = GameManager.instance;
-		// initialize views on start to improve performance later
-		partyView.Init(gm.save.pawns, PawnSelectionView.PawnSelectionViewMode.Sorted);
-		foreach (PawnIconStandard icon in partyView.pawnIcons) {
-			icon.onClick += (iconData) => {
-				pawnInfoPanel.gameObject.SetActive(true);
-				pawnInfoPanel.Init(iconData.pawnData);
-			};
-		}
-		fusionMenu.Init();
 		pawnShopMenu.Init();
 	}
 

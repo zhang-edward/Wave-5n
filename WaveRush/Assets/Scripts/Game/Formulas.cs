@@ -20,4 +20,8 @@ public static class Formulas {
 	public static int ExperienceFormula(int level) {
 		return 50 + level * level;
 	}
+
+	public static int PawnCost(Pawn pawn) {
+		return 200 + Random.Range(0, 100);
+	}
 }
