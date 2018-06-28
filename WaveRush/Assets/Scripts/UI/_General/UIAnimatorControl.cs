@@ -4,11 +4,13 @@ using System.Collections;
 public class UIAnimatorControl : MonoBehaviour
 {
 	private Animator anim;
+	public bool animateOnStart = true;
 	public UIAnimatorControl[] childAnimators;
 
-	void Awake()
-	{
+	void Awake() {
 		anim = GetComponent<Animator>();
+		if (!animateOnStart)
+			anim.Play(anim.GetCurrentAnimatorStateInfo(-1).fullPathHash, -1, 1);
 	}
 
 	public void OnEnable() {

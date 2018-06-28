@@ -27,6 +27,7 @@ public class HeroSelectSceneManager : MonoBehaviour {
 
 	private void Init() {
 		stageSelectMenu.InitStageSeriesSelectionView();
+		stageSelectMenu.GetComponentInParent<Animator>().Play("In", -1, 1);
 		heroSelectMenu.Init();
 		gm.OnSceneLoaded -= Init;
 	}
