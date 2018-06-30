@@ -18,7 +18,7 @@
 			Opposite,               // Rotation is reverse player dir
 			MatchFlipX,             // Match the player sprite's flipX
 			ReverseFlipX,           // Match the reverse of the player sprite's flipX
-			Random					// Rotation is random
+			Random,					// Rotation is random
 		}
 		[SerializeField] protected RotationType rotationType = RotationType.None; // Default value doesn't matter, just prevents warning
 		[SerializeField] protected Color color = Color.white;
@@ -42,7 +42,7 @@
 			info.lifeTime = duration;
 			info.fadeOutTime = 0.1f;
 
-			lastPlayedEffect = EffectPooler.PlayEffect(effect, position, info);
+			lastPlayedEffect = EffectPooler.PlayEffect(effect, position, info, rot);
 		}
 
 		protected Quaternion GetRotation()

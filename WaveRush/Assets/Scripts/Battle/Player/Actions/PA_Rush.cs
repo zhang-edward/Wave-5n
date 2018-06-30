@@ -32,7 +32,6 @@
 			OnHitEnemy = onHitEnemyCallback;
 			sound = SoundManager.instance;
 			collision.OnTriggerStay += HandleCollideWithEnemy;
-			Debug.Log("Initialized with hero " + player.hero);
 		}
 
 		protected override void DoAction()

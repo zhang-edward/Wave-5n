@@ -9,19 +9,19 @@ public class Mage_TeleportBurst : HeroPowerUp
 	private const float STUN_DURATION = 1.5f;
 	private const float RADIUS = 1f;
 
-	private MageHero mage;
+	private PyroHero mage;
 
 	public override void Activate(PlayerHero hero)
 	{
 		base.Activate(hero);
-		mage = (MageHero)hero;
-		mage.OnMageTeleportIn += ActivateEffect;
+		mage = (PyroHero)hero;
+		mage.OnPyroTeleportDamagedEnemy += ActivateEffect;
 	}
 
 	public override void Deactivate()
 	{
 		base.Deactivate();
-		mage.OnMageTeleportIn -= ActivateEffect;
+		mage.OnPyroTeleportDamagedEnemy -= ActivateEffect;
 	}
 
 	public override void Stack()

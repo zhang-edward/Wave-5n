@@ -18,7 +18,7 @@ public class PawnGenerator
 
 	public static Pawn GenerateCrystalDrop(int level)
 	{
-		Pawn pawn = Random.value < 0.5f ? new Pawn(HeroType.Knight, 0) : new Pawn(HeroType.Mage, 0);
+		Pawn pawn = Random.value < 0.5f ? new Pawn(HeroType.Knight, 0) : new Pawn(HeroType.Pyro, 0);
 		//HeroType type = (HeroType)Enum.GetValues(typeof(HeroType)).GetValue(UnityEngine.Random.Range(1, numHeroTypes));
 		pawn.level = GetLevelFromCrystalLevel(level);
 		return pawn;

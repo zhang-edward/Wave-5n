@@ -39,6 +39,7 @@ GameObject:
   - component: {fileID: 222234663617168652}
   - component: {fileID: 114101821655069948}
   - component: {fileID: 114038475776539514}
+  - component: {fileID: 114261586840382076}
   m_Layer: 5
   m_Name: Toggle
   m_TagString: Untagged
@@ -1662,6 +1663,7 @@ GameObject:
   - component: {fileID: 222040481551630692}
   - component: {fileID: 114392090429917644}
   - component: {fileID: 114520714515905478}
+  - component: {fileID: 114506303168910700}
   m_Layer: 5
   m_Name: Toggle
   m_TagString: Untagged
@@ -2934,6 +2936,17 @@ MonoBehaviour:
       - m_Target: {fileID: 114255974272245682}
         m_MethodName: SetViewed
         m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 114261586840382076}
+        m_MethodName: UpdateScrollingText
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -4809,6 +4822,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   key: 
   selfInit: 0
+--- !u!114 &114261586840382076
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1018115609617772}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 782fd361dac6d47d6a37137acafe3b21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scrollingText: {fileID: 114272223739166828}
+  text: Tap an icon to view more information about that power.
 --- !u!114 &114272223739166828
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -7138,6 +7164,19 @@ MonoBehaviour:
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0
   m_ChildControlHeight: 0
+--- !u!114 &114506303168910700
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1720904162114754}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 782fd361dac6d47d6a37137acafe3b21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scrollingText: {fileID: 114272223739166828}
+  text: Tap an ability icon to see more information about that ability.
 --- !u!114 &114509441770813556
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -7245,6 +7284,17 @@ MonoBehaviour:
       - m_Target: {fileID: 114535822487908560}
         m_MethodName: SetViewed
         m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 114506303168910700}
+        m_MethodName: UpdateScrollingText
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -13208,7 +13258,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 3.9999998, y: 0}
+  m_AnchoredPosition: {x: 4, y: 0}
   m_SizeDelta: {x: 12, y: 6}
   m_Pivot: {x: 1, y: 1}
 --- !u!224 &224883876834703132

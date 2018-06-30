@@ -9,13 +9,13 @@ public class Mage_FireTrail : HeroPowerUp
 
 	public GameObject fireTrailEmitterPrefab;
 
-	private MageHero mage;
+	private PyroHero mage;
 	private Mage_Conflagration conflagrationPowerUp;
 
 	public override void Activate(PlayerHero hero)
 	{
 		base.Activate (hero);
-		this.mage = (MageHero)hero;
+		this.mage = (PyroHero)hero;
 		conflagrationPowerUp = mage.GetComponentInChildren<Mage_Conflagration>();
 		conflagrationPowerUp.onActivated += ActivateFireTrail;
 	}

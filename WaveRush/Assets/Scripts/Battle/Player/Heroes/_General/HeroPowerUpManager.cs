@@ -34,7 +34,6 @@ public class HeroPowerUpManager : MonoBehaviour
 	private void InitPowerUpList(int level)
 	{
 		HeroPowerUpListData powerUpListData = DataManager.GetPowerUpListData(hero.heroType);
-		print ("The hero type is: " + hero.heroType);
 		int numPowerUpsUnlocked = HeroPowerUpListData.GetNumPowerUpsUnlocked(level);
 		for (int i = 0; i < numPowerUpsUnlocked; i ++)
 		{

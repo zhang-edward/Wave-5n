@@ -4,8 +4,8 @@ using System.Collections;
 
 public class Knight_SuperRush : HeroPowerUpCharged
 {
-	private const float PERCENT_CHARGE_PER_SECOND = 1f;
-	private const float CHARGE_BUFFER_TIME = 0.5f;
+	private const float PERCENT_CHARGE_PER_SECOND = 1.5f;
+	private const float CHARGE_BUFFER_TIME = 0.3f;
 
 	public PA_Rush rushAbility;
 
@@ -63,7 +63,7 @@ public class Knight_SuperRush : HeroPowerUpCharged
 			StunStatus stun = Instantiate(StatusEffectContainer.instance.GetStatus("Stun")).GetComponent<StunStatus>();
 			stun.duration = 2.0f;
 			e.AddStatus(stun.gameObject);
-			knight.DamageEnemy(e, (int)(knight.damage * 1.1f), knight.hitEffect, false, knight.hitSounds);
+			knight.DamageEnemy(e, (int)(knight.damage * 1.5f), knight.hitEffect, false, knight.hitSounds);
 		}
 	}
 }

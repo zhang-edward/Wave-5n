@@ -236,7 +236,6 @@ public class KnightHero : PlayerHero {
 		Enemy e = source as Enemy;
 		if (e != null && Vector2.Distance(transform.position, e.transform.position) < 2f) {
 			PushEnemyBack(e, 4f, 0.5f);
-			StartCoroutine(StunEnemyDelayed(e, 0.5f, 2.0f));
 		}
 	}
 

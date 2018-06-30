@@ -8,7 +8,7 @@ public class Mage_Volcano : HeroPowerUp
 	private const int   ERUPTION_FRAME = 11;
 	private const float RADIUS 		   = 4f;
 
-	private MageHero mage;
+	private PyroHero mage;
 	private Queue<Enemy> enemiesToAttack = new Queue<Enemy>();
 
 	[Header("Animations")]
@@ -21,8 +21,8 @@ public class Mage_Volcano : HeroPowerUp
 	public override void Activate(PlayerHero hero)
 	{
 		base.Activate(hero);
-		mage = (MageHero)hero;
-		mage.OnMageTeleportIn += ActivateEffect;
+		mage = (PyroHero)hero;
+		mage.OnPyroTeleportDamagedEnemy += ActivateEffect;
 		eruption.Init(hero.player, ERUPTION_FRAME);
 		eruption.onFrameReached += HandleEruption;
 	}
@@ -30,7 +30,7 @@ public class Mage_Volcano : HeroPowerUp
 	public override void Deactivate()
 	{
 		base.Deactivate();
-		mage.OnMageTeleportIn -= ActivateEffect;
+		mage.OnPyroTeleportDamagedEnemy -= ActivateEffect;
 	}
 
 	private void ActivateEffect()

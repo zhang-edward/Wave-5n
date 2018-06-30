@@ -8,6 +8,7 @@
 	{
 		/** Properties */
 		#pragma warning disable 0649
+		[SerializeField] private bool disableInput = true;
 		[SerializeField] private float teleportOutTime	 = 0;			// How long the player should take to teleport out
 		[SerializeField] private float teleportInTime	 = 0;			// How long the player should take to teleport in
 		[SerializeField] private string teleportOutState = "Default";
@@ -17,7 +18,7 @@
 		[SerializeField] private SimpleAnimation teleportInEffect;
 		[SerializeField] private TempObjectInfo teleportInEffectProperties;
 		#pragma warning restore 0649
-
+		
 		public AudioClip teleportOutSound;
 		public AudioClip teleportInSound;
 		public bool invincibleDuringTeleport;
@@ -54,7 +55,8 @@
 			if (teleportOutEffect.frames.Length > 0)
 				EffectPooler.PlayEffect(teleportOutEffect, hero.transform.position, teleportOutEffectProperties);
 			hero.anim.Play(teleportOutState);
-			player.inputDisabled.Add(duration);
+			if (disableInput)
+				player.inputDisabled.Add(duration);
 			sound.RandomizeSFX(teleportOutSound);
 			if (OnTeleportOut != null)
 				OnTeleportOut();

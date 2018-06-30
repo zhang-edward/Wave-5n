@@ -8,12 +8,12 @@ public class Mage_Conflagration : HeroPowerUpCharged
 	private const int   NUM_BURN_SPREADS = 2;
 
 	public Projectile lastShotFireball;
-	private MageHero mage;
+	private PyroHero mage;
 
 	public override void Activate(PlayerHero hero)
 	{
 		base.Activate(hero);
-		mage = (MageHero)hero;
+		mage = (PyroHero)hero;
 		hero.player.OnEnemyDamaged += Charge;
 	}
 

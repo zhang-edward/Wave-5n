@@ -3,6 +3,8 @@ using System.Collections;
 
 public class EffectPooler : ObjectPooler
 {
+	private readonly Quaternion DEFAULT_ROT = Quaternion.identity;
+
 	public static EffectPooler instance;
 	public const string EFFECT_POOL_NAME = "Effect";
 
@@ -39,6 +41,20 @@ public class EffectPooler : ObjectPooler
 		tempObj.info = info;
 		anim.anim = toPlay;
 		tempObj.Init(Quaternion.identity,
+					 position,
+					 toPlay.frames[0]);
+		anim.Play();
+		return tempObj;
+	}
+
+	public static TempObject PlayEffect(SimpleAnimation toPlay, Vector3 position, TempObjectInfo info, Quaternion rot)
+	{
+		GameObject o = instance.GetPooledObject();
+		SimpleAnimationPlayer anim = o.GetComponent<SimpleAnimationPlayer>();
+		TempObject tempObj = o.GetComponent<TempObject>();
+		tempObj.info = info;
+		anim.anim = toPlay;
+		tempObj.Init(rot,
 					 position,
 					 toPlay.frames[0]);
 		anim.Play();

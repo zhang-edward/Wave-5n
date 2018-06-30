@@ -16,6 +16,7 @@ public class GUIManager : MonoBehaviour {
 	public PartyView partyView;
 	public UIAnimatorControl partyViewMenu;
 	public UIAnimatorControl nextWaveButton;
+	public Transform customUI;					// Used for heroes to have custom hero-specific ui elements (located under pause button)
 
 	[Header("Game Over Panel")]
 	public GameObject gameOverUI;   	// game over panel
