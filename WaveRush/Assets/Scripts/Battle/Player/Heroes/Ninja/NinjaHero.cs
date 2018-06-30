@@ -73,7 +73,7 @@ public class NinjaHero : PlayerHero {
 		dashAbility.OnTeleportIn += OnDashIn;
 	}
 
-	protected override void ParryEffect()
+	protected override void ParryEffect(IDamageable src)
 	{
 		body.Move(UtilMethods.DegreeToVector2(Random.Range(0, 360f)) * 0.5f);
 		SmokeBomb(PARRY_SMOKEBOMB_RADIUS);
@@ -189,7 +189,7 @@ public class NinjaHero : PlayerHero {
 	public GameObject InitNinjaStar(Vector2 dir)
 	{
 		Projectile ninjaStar = projectilePool.GetPooledObject ().GetComponent<Projectile>();
-		ninjaStar.Init (transform.position, dir, player.gameObject);
+		ninjaStar.Init (transform.position, dir, player);
 		return ninjaStar.gameObject;
 	}
 
@@ -250,7 +250,7 @@ public class NinjaHero : PlayerHero {
 	{
 		if (!e.invincible && e.health > 0)
 		{
-			e.Damage (damage);
+			e.Damage (damage, player);
 			EffectPooler.PlayEffect(hitEffect, e.transform.position, true, 0.2f);
 
 			player.TriggerOnEnemyDamagedEvent(damage);

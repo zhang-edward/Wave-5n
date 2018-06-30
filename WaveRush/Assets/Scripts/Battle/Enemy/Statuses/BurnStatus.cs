@@ -27,7 +27,7 @@ public class BurnStatus : EnemyStatus
 
 		while (timer >= 0)
 		{
-			enemy.Damage(damage, false);
+			enemy.Damage(damage, null, false);
 			yield return new WaitForSeconds(DAMAGE_INTERVAL);
 		}
 

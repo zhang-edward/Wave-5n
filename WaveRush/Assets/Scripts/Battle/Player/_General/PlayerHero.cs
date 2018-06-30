@@ -107,7 +107,8 @@ public abstract class PlayerHero : MonoBehaviour {
 			cooldownMultipliers [i] = 1;
 
 		hardHealth = numHearts * healthPerHeart;
-		powerUpManager.Init (heroData);
+		powerUpManager.Init (heroData, this);
+		print ("Initializing powerUpManager " + powerUpManager.gameObject + "...");
 		player.OnPlayerDamaged += ResetCombo;
 		player.OnEnemyDamaged += IncrementCombo;
 		player.OnEnemyDamaged += IncrementSpecialAbilityCharge;
@@ -262,7 +263,7 @@ public abstract class PlayerHero : MonoBehaviour {
 		canParry = true;
 	}
 
-	public void Parry()
+	public void Parry(IDamageable src)
 	{
 		if (onParrySuccess != null)
 			onParrySuccess();
@@ -277,7 +278,7 @@ public abstract class PlayerHero : MonoBehaviour {
 		// Sound
 		sound.PlaySingle(player.parrySuccessSound);
 		// Effect
-		ParryEffect();
+		ParryEffect(src);
 		Invoke("ParryCooldown", PARRY_COOLDOWN_TIME);
 	}
 
@@ -286,7 +287,7 @@ public abstract class PlayerHero : MonoBehaviour {
 		canParry = true;
 	}
 
-	protected abstract void ParryEffect();
+	protected abstract void ParryEffect(IDamageable src);
 
 	private IEnumerator Spawn()
 	{
@@ -404,7 +405,6 @@ public abstract class PlayerHero : MonoBehaviour {
 			return false;
 		else {
 			damage = (int)(stats[StatData.CRIT] * damage);
-			print ("Critical hit!");
 			return true;
 		}
 	}

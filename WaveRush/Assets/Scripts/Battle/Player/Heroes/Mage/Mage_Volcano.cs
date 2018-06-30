@@ -77,7 +77,7 @@ public class Mage_Volcano : HeroPowerUp
 		if (frame != ERUPTION_FRAME)
 			return;
 		Enemy e = enemiesToAttack.Dequeue();
-		e.Damage(Mathf.RoundToInt(mage.damage * 2f));
+		e.Damage(Mathf.RoundToInt(mage.damage * 2f), playerHero.player);
 		e.GetStatus("Burn").Deactivate();
 		CameraControl.instance.StartShake(0.2f, 0.05f, true, false);
 		SoundManager.instance.RandomizeSFX(eruptionSounds[Random.Range(0, eruptionSounds.Length)]);

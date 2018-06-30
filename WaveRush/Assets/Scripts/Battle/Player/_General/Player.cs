@@ -72,8 +72,11 @@ public class Player : MonoBehaviour, IDamageable
 	public delegate void PlayerLifecycleEvent();
 	public event PlayerLifecycleEvent OnPlayerInitialized;
 	public event PlayerLifecycleEvent OnPlayerDied;
-	public event PlayerLifecycleEvent OnPlayerTryHit;
 	public event PlayerLifecycleEvent OnPlayerWillDie;
+
+	public delegate void PlayerTargetedEnemyEvent(IDamageable enemy);
+	public event PlayerTargetedEnemyEvent OnPlayerTryHit;
+
 
 	public delegate void PlayerUpgradesUpdated(int numUpgrades);
 	public event PlayerUpgradesUpdated OnPlayerUpgradesUpdated;
@@ -139,6 +142,7 @@ public class Player : MonoBehaviour, IDamageable
 				heroList[index] = o;
 				o.transform.SetParent(this.transform);
 				hero = o.GetComponent<PlayerHero>();
+				print ("Initializing player hero...");
 				hero.Init(body, this, heroData);
 				return;
 			}
@@ -185,10 +189,10 @@ public class Player : MonoBehaviour, IDamageable
 	}
 #endregion
 #region IDamageable and damage/death handling
-	public void Damage(int amt) {
+	public void Damage(int amt, IDamageable source) {
 		// Pre-damage effects
 		if (OnPlayerTryHit != null)
-			OnPlayerTryHit();
+			OnPlayerTryHit(source);
 		if (invincibility.IsOn() || amt <= 0)
 			return;
 

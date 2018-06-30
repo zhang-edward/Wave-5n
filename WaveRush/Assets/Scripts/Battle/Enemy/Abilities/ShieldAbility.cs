@@ -33,7 +33,7 @@ public class ShieldAbility : EnemyAbility
 	{
 		if (!shielded)
 			return;
-		enemy.Heal(damage);
+		//enemy.Heal(damage);
 		shielded = false;
 		shieldTimer = cooldown;
 	}

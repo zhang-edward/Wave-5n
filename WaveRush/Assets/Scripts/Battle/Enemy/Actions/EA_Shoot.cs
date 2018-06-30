@@ -84,7 +84,7 @@
 			anim.CrossFade(shootState, 0f);     // triggers are unreliable, crossfade forces state to execute
 			Projectile p = projectilePool.GetPooledObject().GetComponent<Projectile>();
 			UnityEngine.Assertions.Assert.IsNotNull(p);
-			p.Init(shootPoint.position, dir, e.gameObject);
+			p.Init(shootPoint.position, dir, e);
 			SoundManager.instance.RandomizeSFX(shootSound);
 		}
 	}

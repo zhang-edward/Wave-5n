@@ -38,7 +38,7 @@
 				if (cooldown <= 0 && e.health > 0 && !e.hitDisabled && buildUp >= attackBuildUp)
 				{
 					int damage = Formulas.EnemyDamageFormula(baseDamage, player.hero.level - e.level);
-					player.Damage(damage);
+					player.Damage(damage, e);
 					cooldown = attackCooldown;
 				}
 				else

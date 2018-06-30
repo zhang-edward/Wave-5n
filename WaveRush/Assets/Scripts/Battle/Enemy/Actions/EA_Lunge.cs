@@ -62,7 +62,7 @@ namespace EnemyActions
 				{
 					Player player = col.GetComponentInChildren<Player>();
 					int damage = Formulas.EnemyDamageFormula(baseDamage, player.hero.level - e.level);
-					player.Damage(damage);
+					player.Damage(damage, e);
 				}
 			}
 		}

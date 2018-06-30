@@ -1,5 +1,7 @@
-﻿public interface IDamageable {
+﻿using UnityEngine;
 
-	void Damage(int amt);
+public interface IDamageable {
+
+	void Damage(int amt, IDamageable source);
 	void Heal(int amt);
 }

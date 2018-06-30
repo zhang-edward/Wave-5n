@@ -32,7 +32,7 @@ public class PoisonStatus : EnemyStatus
 
 	private void Poison()
 	{
-		enemy.Damage (damage);
+		enemy.Damage (damage, null);
 	}
 
 	void OnDisable()

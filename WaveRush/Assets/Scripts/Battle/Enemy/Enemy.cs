@@ -294,12 +294,12 @@ public class Enemy : MonoBehaviour, IDamageable {
 	}
 
 	// ============================== IDamageable Methods ==============================
-	public virtual void Damage(int amt)
+	public virtual void Damage(int amt, IDamageable source)
 	{
-		Damage(amt, false);
+		Damage(amt, source, false);
 	}
 
-	public virtual void Damage(int amt, bool disable)
+	public virtual void Damage(int amt, IDamageable source, bool disable)
 	{
 		if (invincible)
 			return;

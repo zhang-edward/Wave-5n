@@ -58,7 +58,7 @@ public class Knight_FlyingSwords : HeroPowerUp
 		addSwordChance += 0.05f;
 	}
 
-	private void AddSword()
+	private void AddSword(IDamageable src)
 	{
 		// Set properties
 		numSwords += 1;
@@ -101,7 +101,7 @@ public class Knight_FlyingSwords : HeroPowerUp
 		Enemy e = enemiesToAttack.Dequeue();
 		// If enemy is dead, do not attempt to damage it
 		if (e.gameObject.activeInHierarchy)
-			e.Damage(knight.damage * 2);
+			e.Damage(knight.damage * 2, playerHero.player);
 		CameraControl.instance.StartShake(0.2f, 0.05f, true, false);
 		SoundManager.instance.RandomizeSFX(swordLandSounds[Random.Range(0, swordLandSounds.Length)]);
 

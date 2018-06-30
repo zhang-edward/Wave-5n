@@ -7,7 +7,6 @@ namespace EnemyActions
 	public class CreateHitZoneAction : EnemyAction
 	{
 		public PlayerDetectionCircle hitZone;
-		public Enemy enemy;
 		public int baseDamage;
 
 		public override void Interrupt()
@@ -21,7 +20,7 @@ namespace EnemyActions
 			Player player = hitZone.Activate();
 			if (player != null) {
 					int damage = Formulas.EnemyDamageFormula(baseDamage, player.hero.level - e.level);
-					player.Damage(damage);			
+					player.Damage(damage, e);			
 			}
 		}
 	}

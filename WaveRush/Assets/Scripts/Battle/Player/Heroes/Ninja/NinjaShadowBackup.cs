@@ -103,7 +103,7 @@ public class NinjaShadowBackup : HeroPowerUp
 	{
 		if (!e.invincible && e.health > 0)
 		{
-			e.Damage (damage);
+			e.Damage (damage, playerHero.player);
 			EffectPooler.PlayEffect(ninja.hitEffect, e.transform.position, true, 0.2f);
 
 			SoundManager.instance.PlaySingle (ninja.dashOutSound);

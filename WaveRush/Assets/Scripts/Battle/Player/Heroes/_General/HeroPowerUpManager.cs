@@ -25,9 +25,8 @@ public class HeroPowerUpManager : MonoBehaviour
 	public OnPowerUpsChanged OnPowerUpAdded;
 	private bool initialized;
 
-	public void Init(Pawn pawnData)
-	{
-		hero = GetComponent<PlayerHero>();
+	public void Init(Pawn pawnData, PlayerHero hero) {
+		this.hero = hero;
 		InitPowerUpList(pawnData.level);
 		initialized = true;
 	}
@@ -35,6 +34,7 @@ public class HeroPowerUpManager : MonoBehaviour
 	private void InitPowerUpList(int level)
 	{
 		HeroPowerUpListData powerUpListData = DataManager.GetPowerUpListData(hero.heroType);
+		print ("The hero type is: " + hero.heroType);
 		int numPowerUpsUnlocked = HeroPowerUpListData.GetNumPowerUpsUnlocked(level);
 		for (int i = 0; i < numPowerUpsUnlocked; i ++)
 		{
@@ -71,10 +71,7 @@ public class HeroPowerUpManager : MonoBehaviour
 	void OnEnable() {
 		if (!initialized)
 			return;
-		foreach (HeroPowerUp powerUp in powerUps) {
-			print (powerUp + " activated");
-			powerUp.Activate(hero);
-		}
+
 	}
 
 	void OnDisable() {

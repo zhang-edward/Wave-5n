@@ -22,6 +22,6 @@ public class Ninja_SneakAttack : HeroPowerUp {
 	private void DamageEnemyMore(Enemy e)
 	{
 		if (e.health > 0 && e.GetStatus("Stun"))
-			e.Damage(ninja.damage);
+			e.Damage(ninja.damage, playerHero.player);
 	}
 }

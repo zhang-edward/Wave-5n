@@ -18,8 +18,6 @@
 		[Header("Effects and SFX")]
 		public string     rushState = "Default";
 		public AudioClip  rushSound;
-		public TempObject effectObject;
-
 		private List<Enemy> hitEnemies = new List<Enemy>();	// enemies collided with during one execution of this ability
 		private bool rushHitBoxOn;
 
@@ -34,6 +32,7 @@
 			OnHitEnemy = onHitEnemyCallback;
 			sound = SoundManager.instance;
 			collision.OnTriggerStay += HandleCollideWithEnemy;
+			Debug.Log("Initialized with hero " + player.hero);
 		}
 
 		protected override void DoAction()

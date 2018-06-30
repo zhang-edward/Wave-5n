@@ -186,7 +186,7 @@ public class TutorialScene1Manager : MonoBehaviour
 		sound.PlayUISound(taskCompleteSound);
 		yield return new WaitForSeconds(TASK_DELAY_INTERVAL);
 		attackingDummy.invincible = false;
-		attackingDummy.GetComponentInChildren<Enemy>().Damage(999);
+		attackingDummy.GetComponentInChildren<Enemy>().Damage(999, null);
 		parryCount = 0;
 		knight.onParrySuccess -= IncrementParryCount;
 		yield return new WaitForSeconds(TASK_DELAY_INTERVAL);

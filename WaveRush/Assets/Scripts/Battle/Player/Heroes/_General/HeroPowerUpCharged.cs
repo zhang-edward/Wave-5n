@@ -11,56 +11,64 @@ public abstract class HeroPowerUpCharged : HeroPowerUp
 
 	public delegate void OnActivated();
 	public event OnActivated onActivated;
+	private bool chargeAnimationActive = false;
 
+	public delegate void ChargeEvent();
+	public event ChargeEvent OnStoppedCharging;
 
-	public override void Activate(PlayerHero hero)
-	{
+	public override void Activate(PlayerHero hero) {
 		base.Activate(hero);
-		hero.onTapHoldDown += Animate;
-		hero.onTapHoldRelease += Activate;
 		percentActivated = 0;
 	}
 
-	protected void ChargePowerUp(float percent)
-	{
+	protected void ChargePowerUp(float percent) {
 		// If the ability is already activated, we don't have to charge
 		if (percentActivated >= 1)
 			return;
-		// Charge
+		
+		if (!chargeAnimationActive)
+			StartCoroutine(CheckCharging());
+
 		percentActivated += percent;
 		// On completed charge
-		if (percentActivated >= 1)
-		{
+		if (percentActivated >= 1) {
 			percentActivated = 1f;
-			indicatorEffect.gameObject.SetActive(true);
+			ActivateEffect();
 		}
 	}
 
-	private void Animate()
-	{
-		if (percentActivated < 1)
-			return;
-		if (!playerHero.player.animPlayer.IsPlayingAnimation(chargeState))
-			playerHero.anim.Play(chargeState);
+	private void StartChargeAnimation() {
+		playerHero.anim.Play(chargeState);
 		chargeEffect.gameObject.SetActive(true);
+		chargeAnimationActive = true;
 	}
 
-	private void Activate()
-	{
-		if (percentActivated < 1)
-			return;
-		if (onActivated != null)
-			onActivated();
-		ActivateEffect();
+	public void StopChargeAnimation() {
 		chargeEffect.AnimateOut();
-		indicatorEffect.gameObject.SetActive(true);
+		chargeAnimationActive = false;
 	}
 
-	protected void DeactivateEffect()
-	{
-		indicatorEffect.AnimateOut();
+	public void ResetCharge() {
+		percentActivated = 0;
+	}
+
+	protected void DeactivateEffect() {
+		StopChargeAnimation();
 		percentActivated = 0f;
 	}
 
 	protected abstract void ActivateEffect();
+
+	private IEnumerator CheckCharging() {
+		StartChargeAnimation();
+		float oldPercentActivated = -1;
+		// When the percentActivated stops increasing, stop the charge animation
+		while (oldPercentActivated < percentActivated) {
+			oldPercentActivated = percentActivated;
+			yield return null;
+		}
+		if (OnStoppedCharging != null)
+			OnStoppedCharging();
+		StopChargeAnimation();
+	}
 }

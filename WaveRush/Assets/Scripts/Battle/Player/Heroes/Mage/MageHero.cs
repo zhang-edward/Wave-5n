@@ -98,7 +98,7 @@ public class MageHero : PlayerHero {
 		};
 	}
 
-	protected override void ParryEffect()
+	protected override void ParryEffect(IDamageable src)
 	{
 		body.AddRandomImpulse();
 		parryAbility.SetPosition(transform.position);
@@ -283,7 +283,7 @@ public class MageHero : PlayerHero {
 	{
 		if (!e.invincible && e.health > 0)
 		{
-			e.Damage (damage);
+			e.Damage (damage, player);
 			if (specialActivated)
 				EffectPooler.PlayEffect(specialHitEffect, e.transform.position, true);
 			else

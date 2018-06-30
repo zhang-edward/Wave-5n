@@ -1,4 +1,6 @@
 ﻿using PlayerActions;
+using UnityEngine;
+using System.Collections;
 
 public class Knight_ThornShield : HeroPowerUp {
 
@@ -13,14 +15,21 @@ public class Knight_ThornShield : HeroPowerUp {
 	{
 		base.Activate(hero);
 		this.knight = (KnightHero)hero;
-		stunArea.Init(hero.player, StunEnemy);
+		stunArea.Init(hero.player, AreaAttackEffect);
 		knight.OnKnightShieldHit += ExecuteAreaAttack;
 	}
 
-	private void ExecuteAreaAttack()
+	private void ExecuteAreaAttack(IDamageable src)
 	{
 		stunArea.SetPosition(knight.transform.position);
 		stunArea.Execute();
+	}
+
+	private void AreaAttackEffect(Enemy e) {
+		Vector2 awayFromPlayerDir = (e.transform.position - transform.position).normalized;
+		e.body.AddImpulse(awayFromPlayerDir, 5f);
+		e.Disable(0.5f);
+		StartCoroutine(StunEnemyDelayed(e));
 	}
 
 	private void StunEnemy(Enemy e)
@@ -28,5 +37,11 @@ public class Knight_ThornShield : HeroPowerUp {
 		StunStatus stun = Instantiate(StatusEffectContainer.instance.GetStatus("Stun")).GetComponent<StunStatus>();
 		stun.duration = 2.0f;
 		e.AddStatus(stun.gameObject);
+	}
+
+	private IEnumerator StunEnemyDelayed(Enemy e)
+	{
+		yield return new WaitForSeconds(0.5f);
+		StunEnemy(e);
 	}
 }

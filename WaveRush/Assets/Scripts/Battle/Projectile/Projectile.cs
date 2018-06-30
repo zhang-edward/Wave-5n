@@ -21,7 +21,7 @@ namespace Projectiles
 		public bool destroyOnCollide;
 		public Vector2 size;
 		public SimpleAnimation projectileAnim;
-		public GameObject source;
+		public IDamageable source;
 
 		public delegate void ProjectileLifeCycleEvent();
 		public event ProjectileLifeCycleEvent OnShoot;
@@ -59,7 +59,7 @@ namespace Projectiles
 			// if object pooler doesn't exist
 			if (projectilePool == null)
 			{
-				print("ObjectPooler with name " + OBJECT_POOLER_TAG + projectileName + " doesn't exist. Creating a new one...");
+				// print("ObjectPooler with name " + OBJECT_POOLER_TAG + projectileName + " doesn't exist. Creating a new one...");
 				projectilePool = RuntimeObjectPoolerManager.instance.CreateRuntimeObjectPooler(OBJECT_POOLER_TAG + projectileName, this.gameObject);
 			}
 			return projectilePool;
@@ -87,7 +87,7 @@ namespace Projectiles
 			gameObject.SetActive(false);
 		}
 
-		public void Init(Vector3 pos, Vector2 dir, GameObject src)
+		public void Init(Vector3 pos, Vector2 dir, IDamageable src)
 		{
 			source = src;
 			gameObject.SetActive(true);
@@ -142,7 +142,7 @@ namespace Projectiles
 		public void DamageTarget(IDamageable damageable, int baseDamage)
 		{
 			// Check if the source of this projectile was an enemy and if so, scale damage accordingly
-			Enemy e = source.GetComponent<Enemy>();
+			Enemy e = source as Enemy;
 			int damage;
 			if (e != null) {
 				damage = Formulas.EnemyDamageFormula(baseDamage, e.GetLevelDiff());
@@ -151,7 +151,7 @@ namespace Projectiles
 				damage = baseDamage;
 			}
 
-			damageable.Damage(damage);
+			damageable.Damage(damage, source);
 			// Event
 			if (OnDamagedTarget != null)
 				OnDamagedTarget(damageable, damage);

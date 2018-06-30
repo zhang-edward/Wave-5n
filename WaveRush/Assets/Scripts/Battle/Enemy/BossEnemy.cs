@@ -51,11 +51,11 @@ public class BossEnemy : Enemy
 		yield return base.MoveState();
 	}
 
-	public override void Damage(int amt)
+	public override void Damage(int amt, IDamageable source)
 	{
 		if (dying)
 			return;
-		base.Damage(amt);
+		base.Damage(amt, source);
 	}
 
 	private IEnumerator DeathAnimation()

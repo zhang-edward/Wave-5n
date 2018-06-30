@@ -87,7 +87,7 @@
 			float lifeTime = Vector3.Distance(shootPoint.position, posGenerator.GetGeneratedPosition()) / p.speed;
 			p.lifeTime = lifeTime;
 			UnityEngine.Assertions.Assert.IsNotNull(p);
-			p.Init(shootPoint.position, dir, e.gameObject);
+			p.Init(shootPoint.position, dir, e);
 			SoundManager.instance.RandomizeSFX(shootSound);
 		}
 	}

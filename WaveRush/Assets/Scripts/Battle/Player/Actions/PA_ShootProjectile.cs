@@ -33,7 +33,7 @@
 
 			GameObject projectileObj = projectilePool.GetPooledObject();
 			Projectile projectile = projectileObj.GetComponent<Projectile>();
-			projectile.Init(projectileOrigin, projectileDir, player.gameObject);
+			projectile.Init(projectileOrigin, projectileDir, player);
 
 			lastProjectileShot = projectile;
 		}

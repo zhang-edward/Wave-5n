@@ -23,7 +23,7 @@ namespace EnemyActions
 			Player player = hitZone.Activate();
 			if (player != null) {
 				int damage = Formulas.EnemyDamageFormula(baseDamage, player.hero.level - enemy.level);
-				player.Damage(damage);	
+				player.Damage(damage, e);	
 			}
 		}
 	}

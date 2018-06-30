@@ -67,16 +67,17 @@ public class KnightHero : PlayerHero {
 	public delegate void KnightEvent();
 	public event KnightEvent OnKnightRush;
 	public event KnightEvent OnKnightShield;
-	public event KnightEvent OnKnightShieldHit;
+	public event Player.PlayerTargetedEnemyEvent OnKnightShieldHit;
 	public event Player.EnemySelected OnKnightRushHitEnemy;
 
+#region Initialization
 	public override void Init (EntityPhysics body, Player player, Pawn heroData)
 	{
 		cooldownTimers = new float[2];
 		base.Init (body, player, heroData);
 		InitAbilities();
 		// Handle input
-		onDragRelease = RushAbility;
+		onDragRelease = Rush;
 		onTap = AreaAttack;
 		player.OnPlayerTryHit += CheckKnightShieldHit;
 	}
@@ -84,9 +85,10 @@ public class KnightHero : PlayerHero {
 	private void InitAbilities()
 	{
 		rushAbility.Init	   (player, onHitEnemyCallback: HandleRushHitEnemy);
-		areaAttackAbility.Init (player, onHitEnemyCallback: HandleOnDamageEnemy);
+		areaAttackAbility.Init (player, onHitEnemyCallback: (enemy) => { PushEnemyBack(enemy, 10f, 0.25f); });
 		specialRushAbility.Init(player, onHitEnemyCallback: HandleSpecialOnDamageEnemy);
 	}
+#endregion
 
 	protected override void Update() 
 	{
@@ -112,7 +114,7 @@ public class KnightHero : PlayerHero {
 			base.HandleMultiTouch();
 	}
 
-	public void RushAbility()
+	public void Rush()
 	{
 		// check cooldown
 		if (!CheckIfCooledDownNotify (0, true, HandleDragRelease))
@@ -152,20 +154,24 @@ public class KnightHero : PlayerHero {
 	private IEnumerator SpecialAbilityRoutine()
 	{
 		sound.RandomizeSFX(specialChargeSound);
-		onDragRelease -= RushAbility;
+		onDragRelease -= Rush;
 		specialRushAbility.Execute();
 		specialRushAbility.specialRush.OnExecutedAction += () => { specialAbilityCharge = 0; };
 		while (specialRushAbility.inProgress)
 			yield return null;
-		onDragRelease += RushAbility;
+		onDragRelease += Rush;
 	}
 
-	protected override void ParryEffect()
+	protected override void ParryEffect(IDamageable src)
 	{
 		cooldownTimers[0] = 0f;
 		AddShieldTimer(1f);
-		areaAttackAbility.SetPosition(transform.position);
-		areaAttackAbility.Execute();
+		
+		Enemy e = src as Enemy;
+		if (e != null && Vector2.Distance(transform.position, e.transform.position) < 2f) {
+			PushEnemyBack(e, 8f, 0.1f);
+			StartCoroutine(StunEnemyDelayed(e, 0.1f, 5.0f));
+		}
 	}
 
 	public void ResetInvincibility()
@@ -175,20 +181,20 @@ public class KnightHero : PlayerHero {
 
 	private void HandleRushHitEnemy(Enemy e)
 	{
-		if (OnKnightRushHitEnemy != null)
-			OnKnightRushHitEnemy(e);
+		// Add impulse to enemy (knock enemy away)
 		e.Disable(0.2f);
 		e.body.AddImpulse(e.transform.position - transform.position);
-		HandleOnDamageEnemy(e);
-	}
-
-	private void HandleOnDamageEnemy(Enemy e)
-	{
 		int damageDealt = damage;
+
+		// Damage enemy
 		if (TryCriticalDamage(ref damageDealt))
 			DamageEnemy(e, damageDealt, specialHitAnim, false, specialHitSounds);
 		else
 			DamageEnemy(e, damageDealt, hitEffect, false, hitSounds);
+		
+		// Event call
+		if (OnKnightRushHitEnemy != null)
+			OnKnightRushHitEnemy(e);
 	}
 
 	private void HandleSpecialOnDamageEnemy(Enemy e)
@@ -201,7 +207,7 @@ public class KnightHero : PlayerHero {
 	{
 		if (!e.invincible && e.health > 0)
 		{
-			e.Damage (dmg);
+			e.Damage (dmg, player);
 			EffectPooler.PlayEffect(effect, e.transform.position, true, 0.1f);
 			player.TriggerOnEnemyDamagedEvent(dmg);
 			player.TriggerOnEnemyLastHitEvent (e);
@@ -218,14 +224,36 @@ public class KnightHero : PlayerHero {
 		player.invincibility.Add(shieldTimer);
 	}
 
-	private void CheckKnightShieldHit()
+	private void CheckKnightShieldHit(IDamageable source)
 	{
-		if (shieldTimer <= 0 || timeSinceLastShieldHit < 0.5f)
+		if (shieldTimer <= 0)
 			return;
-		timeSinceLastShieldHit = 0;
 		if (OnKnightShieldHit != null)
-			OnKnightShieldHit();
+			OnKnightShieldHit(source);
 		EffectPooler.PlayEffect(shieldHitAnim, transform.position, false, 0.2f);
 		sound.RandomizeSFX(shieldHitSound);
+
+		Enemy e = source as Enemy;
+		if (e != null && Vector2.Distance(transform.position, e.transform.position) < 2f) {
+			PushEnemyBack(e, 4f, 0.5f);
+			StartCoroutine(StunEnemyDelayed(e, 0.5f, 2.0f));
+		}
+	}
+
+	private void PushEnemyBack(Enemy e, float strength, float time) {
+		Vector2 awayFromPlayerDir = (e.transform.position - transform.position).normalized;
+		e.Disable(0.5f);
+		e.body.AddImpulse(awayFromPlayerDir, strength);
+	}
+
+	private void StunEnemy(Enemy e, float stunTime) {
+		StunStatus stun = Instantiate(StatusEffectContainer.instance.GetStatus("Stun")).GetComponent<StunStatus>();
+		stun.duration = stunTime;
+		e.AddStatus(stun.gameObject);
+	}
+
+	private IEnumerator StunEnemyDelayed(Enemy e, float delay, float stunTime) {
+		yield return new WaitForSeconds(0.5f);
+		StunEnemy(e, stunTime);
 	}
 }

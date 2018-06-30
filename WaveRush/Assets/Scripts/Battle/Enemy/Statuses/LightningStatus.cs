@@ -65,7 +65,7 @@ public class LightningStatus : EnemyStatus
 					GameObject toAdd = Instantiate (this.gameObject);
 					toAdd.GetComponent<LightningStatus> ().numBounces = numBounces - 1;
 					e.AddStatus (toAdd);
-					e.Damage (1);
+					e.Damage (1, null);
 
 					lightning.Init (transform.position, e.transform.position);
 

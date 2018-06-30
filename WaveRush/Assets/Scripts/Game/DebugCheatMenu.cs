@@ -69,7 +69,7 @@ public class DebugCheatMenu : MonoBehaviour
 	// ==========
 	public void KillPlayer()
 	{
-		player.Damage(player.hardHealth);
+		player.Damage(player.hardHealth, null);
 	}
 
 	public void HealPlayer()
@@ -86,7 +86,7 @@ public class DebugCheatMenu : MonoBehaviour
 	{
 		for (int i = enemyManager.Enemies.Count - 1; i >= 0; i--)
 		{
-			enemyManager.Enemies[i].Damage(enemyManager.Enemies[i].maxHealth);
+			enemyManager.Enemies[i].Damage(enemyManager.Enemies[i].maxHealth, null);
 		}
 	}
 
