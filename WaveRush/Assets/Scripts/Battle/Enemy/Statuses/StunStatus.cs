@@ -5,15 +5,13 @@ public class StunStatus : EnemyStatus
 {
 	public SimpleAnimationPlayer anim;
 
-	public override void Init(Enemy enemy)
-	{
+	public override void Init(Enemy enemy) {
 		base.Init(enemy);
-		anim.transform.localScale = enemy.srSize * 0.8f;
-		anim.transform.localPosition = enemy.healthBarOffset * 0.3f;
+		anim.transform.localScale = Vector3.one * enemy.statusIconSize;
+		anim.transform.localPosition = enemy.headPos;
 	}
 
-	protected override IEnumerator Effect()
-	{
+	protected override IEnumerator Effect() {
 		anim.Play();
 		enemy.body.AddRandomImpulse(3f);
 		while (timer > 0)

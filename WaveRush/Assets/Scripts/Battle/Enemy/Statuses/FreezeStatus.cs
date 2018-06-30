@@ -23,7 +23,7 @@ public class FreezeStatus : EnemyStatus
 		}
 		while (timer >= 0)
 		{
-			enemy.sr.color = Color.cyan;
+			enemy.AddColor(Color.cyan);
 			if (frozen)
 				enemy.body.moveSpeed = 0;
 			else
@@ -31,7 +31,7 @@ public class FreezeStatus : EnemyStatus
 			yield return null;
 		}
 		enemy.anim.enabled = true;
-		enemy.sr.color = Color.white;
+		enemy.RemoveColor(Color.cyan);
 		enemy.body.moveSpeed = enemy.DEFAULT_SPEED;
 
 		Deactivate();

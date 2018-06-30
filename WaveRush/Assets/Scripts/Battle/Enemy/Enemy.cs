@@ -25,8 +25,14 @@ public class Enemy : MonoBehaviour, IDamageable {
 
 	[Header("Entity Base Properties")]
 	public SpriteRenderer sr;
-	public Vector2 srSize;
-	public bool overrideSrSize;		// true = use the inspector value srSize for sprite size, false = use the sr bounds for sprite size
+
+	[Header("Enemy Offsets (err towards y = 0)")]
+	public Vector3 healthBarPos;
+	public Vector3 headPos;
+	public Vector3 feetPos;
+	public float statusIconSize;
+	public bool overrideSrSize;		// true = use the inspector value for sprite size, false = use the sr bounds for sprite size
+
 
 	public EntityPhysics body;
 	public Animator anim;
@@ -40,7 +46,6 @@ public class Enemy : MonoBehaviour, IDamageable {
 	public int health { get; protected set; }
 	public int moneyValueMultiplier = 1;
 	public bool healable = true;
-	public Vector3 healthBarOffset;
 	public bool canBeDisabledOnHit = true;
 	public bool invincible = false;
 
@@ -59,6 +64,13 @@ public class Enemy : MonoBehaviour, IDamageable {
 	public SpawnMethod spawnMethod;		// whether this enemy walks onto the arena or not
 
 	private Player player;
+	private List<Color> colors;		// The different colors (from status effects or other sources) that this instance will flash
+	/** States */
+	private Coroutine moveState;
+	private Coroutine hitDisableState;
+	private Coroutine spawnState;
+	/** Color routine */
+	private Coroutine colorRoutine;
 
 	public delegate void EnemyLifecycleEvent();
 	public event EnemyLifecycleEvent OnEnemyInit;
@@ -76,7 +88,7 @@ public class Enemy : MonoBehaviour, IDamageable {
 	{
 		// init sr size values
 		if (!overrideSrSize)
-			srSize = sr.bounds.size;
+			statusIconSize = sr.bounds.size.x;
 		// init abilities
 		InitAbilities ();
 		if (OnEnemyInit != null)
@@ -102,7 +114,9 @@ public class Enemy : MonoBehaviour, IDamageable {
 
 	private void OnDrawGizmosSelected()
 	{
-		Gizmos.DrawWireCube(transform.position + healthBarOffset, new Vector3(1f, 0.3f));
+		Gizmos.DrawWireCube(transform.position + healthBarPos, new Vector3(1f, 0.3f));
+		Gizmos.DrawWireSphere(transform.position + headPos, 0.1f);
+		Gizmos.DrawWireSphere(transform.position + feetPos, 0.1f);
 	}
 
 	// ============================== Abilities and Statuses ==============================
@@ -157,21 +171,20 @@ public class Enemy : MonoBehaviour, IDamageable {
 		return null;
 	}
 
-
-	// ============================== Spawn Methods ==============================
+#region Spawn Methods
 	private void Spawn(Vector3 spawnLocation)
 	{
 		switch (spawnMethod)
 		{
 		case SpawnMethod.WalkIn:
-			StartCoroutine (WalkInSpawn (spawnLocation));
+			spawnState = StartCoroutine (WalkInSpawn (spawnLocation));
 			break;
 		case SpawnMethod.AnimateIn:
-			StartCoroutine (AnimateIn (spawnLocation));
+			spawnState = StartCoroutine (AnimateIn (spawnLocation));
 			break;
 		case SpawnMethod.None:
 			body.transform.position = spawnLocation;
-			StartCoroutine (DEFAULT_STATE);
+			StartCoroutine (MoveState());
 			break;
 		}
 	}
@@ -187,7 +200,7 @@ public class Enemy : MonoBehaviour, IDamageable {
 			yield return null;
 		}
 		body.gameObject.layer = DEFAULT_LAYER;
-		StartCoroutine (DEFAULT_STATE);
+		StartCoroutine (MoveState());
 		//Debug.Log ("Done");
 	}
 
@@ -201,17 +214,26 @@ public class Enemy : MonoBehaviour, IDamageable {
 		yield return new WaitForEndOfFrame ();		// wait for the animation state to update before continuing
 		while (anim.GetCurrentAnimatorStateInfo (0).IsName ("Spawn"))
 			yield return null;
-		StartCoroutine (DEFAULT_STATE);
+		StartCoroutine (MoveState());
 	}
+#endregion
+#region HitState and MoveState
 
-	// ============================== HitState and MoveState ==============================
+	private void ForceStopAllStates() {
+		if (moveState != null)
+			StopCoroutine(moveState);
+		if (hitDisableState != null)
+			StopCoroutine(hitDisableState);
+		if (spawnState != null)
+			StopCoroutine(spawnState);
+	}
 
 	public virtual void Disable(float time)
 	{
-		StopAllCoroutines ();
+		ForceStopAllStates();
 		if (action != null)		// Special enemies have no action (trapped heroes)
 			action.Interrupt();
-		StartCoroutine (HitDisableState (time, 0));
+		hitDisableState = StartCoroutine (HitDisableState (time, 0));
 	}
 
 	private IEnumerator HitDisableState(float time, float randomImpulse)
@@ -255,12 +277,11 @@ public class Enemy : MonoBehaviour, IDamageable {
 	{
 		if (anim.HasState(0, Animator.StringToHash("default")))
 			anim.CrossFade ("default", 0f);
-		StopAllCoroutines ();       // stops any duplicate MoveStates that may have been started concurrently
-		//print("To move state");
-		StartCoroutine ("MoveState");
+		ForceStopAllStates();
+		moveState = StartCoroutine (MoveState());
 	}
-
-	// ============================== Death ==============================
+#endregion
+#region Death 
 	protected virtual void SpawnDeathProps()
 	{
 		foreach (Sprite sprite in deathProps)
@@ -292,8 +313,8 @@ public class Enemy : MonoBehaviour, IDamageable {
 		moneyPickup.value = moneyValue;
 		moneyPickup.Init(playerTransform);
 	}
-
-	// ============================== IDamageable Methods ==============================
+#endregion
+#region IDamageable Methods
 	public virtual void Damage(int amt, IDamageable source)
 	{
 		Damage(amt, source, false);
@@ -343,14 +364,45 @@ public class Enemy : MonoBehaviour, IDamageable {
 		if (health > maxHealth)
 			health = maxHealth;
 	}
+#endregion
+#region Misc Methods
+	private IEnumerator RotateColors() {
+		for (;;) {
+			for (int i = 0; i < colors.Count; i ++) {
+				sr.color = colors[i];
+				yield return new WaitForSeconds(1f);
+			}
+			if (colors.Count == 0)
+				sr.color = Color.white;
+		}
+	}
 
-	// ============================== Misc Methods ==============================
+	private void RestartColorRoutine() {
+		if (colorRoutine != null) {
+			StopCoroutine(colorRoutine);
+		}
+		colorRoutine = StartCoroutine(RotateColors());
+	}
+
+	public void AddColor(Color color) {
+		colors.Add(color);
+		RestartColorRoutine();
+	}
+
+	public void RemoveColor(Color color) {
+		if (colors.Contains(color)) {
+			colors.Remove(color);
+			RestartColorRoutine();
+		}
+		else
+			Debug.LogWarning("Enemy did not have color " + color + " in its color list! Perhaps it was removed more than once?");
+	}
+
 	public int GetLevelDiff() {
 		return player.hero.level - level;
 	}
 
-	protected virtual void OnTriggerEnter2D(Collider2D col)
-	{
+	protected virtual void OnTriggerEnter2D(Collider2D col) {
 		if (col.CompareTag("MapBorder"))
 		{
 			if (OnCollideWithMapBorder != null)
@@ -358,19 +410,17 @@ public class Enemy : MonoBehaviour, IDamageable {
 		}	
 	}
 
-	public void DecreaseHealth(int amt)
-	{
+	public void DecreaseHealth(int amt) {
 		health -= amt;
 	}
 
-	protected void RemoveEnemyFromList()
-	{
+	protected void RemoveEnemyFromList() {
 		if (OnEnemyObjectDisabled != null)
 			OnEnemyObjectDisabled(this);
 	}
 
-	private static int EnemyHealthEquation(int level, int baseHealth)
-	{
+	private static int EnemyHealthEquation(int level, int baseHealth) {
 		return Mathf.RoundToInt(baseHealth * (0.8f * level + 10) * (Mathf.Sqrt(level) / 2));
 	}
+#endregion
 }

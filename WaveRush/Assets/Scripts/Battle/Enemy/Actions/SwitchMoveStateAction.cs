@@ -23,7 +23,7 @@ namespace EnemyActions
 			base.Execute();
 			e.movementMethod = conditionalMoveState;
 			if (switchEffect.frames.Length > 0)
-				EffectPooler.PlayEffect(switchEffect, e.transform.position + e.healthBarOffset * 1.1f, false, 0.2f);
+				EffectPooler.PlayEffect(switchEffect, e.transform.position + (e.healthBarPos * 1.1f), false, 0.2f);
 			if (onActionFinished != null)
 				onActionFinished();
 		}

@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BossEnemy : Enemy
-{
+public class BossEnemy : Enemy {
 	public const string POOL_SOULS = "Souls";
 	
 	protected EnemyManager enemyManager;

@@ -64,7 +64,7 @@ public class Mage_Volcano : HeroPowerUp
 		float actionDelay = eruption.effect.SecondsPerFrame * ERUPTION_FRAME;
 		e.Disable(actionDelay);
 		// Execute eruption
-		eruption.SetPosition(e.transform.position - new Vector3(0, e.srSize.y / 2));
+		eruption.SetPosition(e.transform.position + e.feetPos);
 		eruption.Execute();
 		// Add enemies to list to be attacked later
 		enemiesToAttack.Enqueue(e);

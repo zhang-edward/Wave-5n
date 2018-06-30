@@ -102,7 +102,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 187912}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 3.52, y: 0.04, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 486352}
@@ -191,10 +191,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DEFAULT_SPEED: 0
   playerTransform: {fileID: 0}
-  moneyPickupPrefab: {fileID: 0}
   map: {fileID: 0}
   sr: {fileID: 21214642}
-  srSize: {x: 0, y: 0}
+  healthBarPos: {x: 0, y: 0.7, z: 0}
+  headPos: {x: 0, y: 0.2, z: 0}
+  feetPos: {x: 0, y: -0.5, z: 0}
+  statusIconSize: 0.8
   overrideSrSize: 0
   body: {fileID: 11465284}
   anim: {fileID: 9515630}
@@ -202,7 +204,6 @@ MonoBehaviour:
   baseHealth: 5
   moneyValueMultiplier: 1
   healable: 1
-  healthBarOffset: {x: 0, y: 0.5, z: 0}
   canBeDisabledOnHit: 1
   invincible: 0
   abilities: []
@@ -275,7 +276,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 50
+  m_SortingOrder: 46
   m_Sprite: {fileID: 21300024, guid: c260ccb50a8514345a44f03f55497cff, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

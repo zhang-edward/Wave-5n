@@ -207,7 +207,7 @@ public class EnemyManager : MonoBehaviour {
 		BossEnemy boss = (BossEnemy)e;
 
 		bossHealthBar.Init (e);
-		bossHealthBar.abilityIconBar.GetComponent<UIFollow> ().Init(o.transform, e.healthBarOffset);
+		bossHealthBar.abilityIconBar.GetComponent<UIFollow> ().Init(o.transform, e.healthBarPos);
 		bosses.Add (boss);
 	}
 

@@ -160,7 +160,7 @@ public class TutorialScene1Manager : MonoBehaviour
 		GameObject trainingDummy = enemyManager.SpawnEnemy(trainingDummyPrefab, map.CenterPosition);
 		Enemy trainingDummyEnemy = trainingDummy.GetComponentInChildren<Enemy>();
 		trainingDummyEnemy.OnEnemyDamaged += SetOuchText;
-		ouchText.GetComponent<UIFollow>().Init(trainingDummy.transform, trainingDummyEnemy.healthBarOffset * 1.5f);
+		ouchText.GetComponent<UIFollow>().Init(trainingDummy.transform, trainingDummyEnemy.healthBarPos * 1.5f);
 		while (trainingDummy.gameObject.activeInHierarchy)
 			yield return null;
 		tutorialTaskView.SetCompleted(true);

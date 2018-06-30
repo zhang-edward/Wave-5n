@@ -20,11 +20,11 @@ public class PoisonStatus : EnemyStatus
 		InvokeRepeating("Poison", poisonInterval, poisonInterval);
 		while (timer >= 0)
 		{
-			enemy.sr.color = Color.green;
+			enemy.AddColor(Color.green);
 			yield return null;
 		}
 		enemy.anim.enabled = true;
-		enemy.sr.color = Color.white;
+		enemy.RemoveColor(Color.green);
 		enemy.body.moveSpeed = enemy.DEFAULT_SPEED;
 
 		Deactivate();

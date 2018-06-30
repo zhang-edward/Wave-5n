@@ -46,7 +46,7 @@ public class EnemyHealthBar : MonoBehaviour {
 		slider.maxValue = enemy.maxHealth;
 		if (!fixedPos)
 		{
-			slider.transform.localPosition = enemy.healthBarOffset;
+			slider.transform.localPosition = enemy.healthBarPos;
 		}
 		foreach (GameObject o in icons)
 			o.SetActive (false);

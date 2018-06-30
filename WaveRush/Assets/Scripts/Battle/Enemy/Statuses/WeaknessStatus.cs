@@ -10,8 +10,8 @@ public class WeaknessStatus : EnemyStatus
 	{
 		base.Init(enemy);
 		
-		anim.transform.localScale = enemy.srSize * 0.8f;
-		anim.transform.localPosition = enemy.healthBarOffset * 0.5f;
+		anim.transform.localScale = Vector3.one * enemy.statusIconSize;
+		anim.transform.localPosition = enemy.headPos;
 	}
 
 	protected override IEnumerator Effect()

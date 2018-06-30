@@ -55,7 +55,7 @@ public class TwinsAbility : EnemyAbility
 		enemy.invincible = true;
 		enemy.Disable (1.0f);
 		anim.Play ();
-		anim.transform.localScale = enemy.srSize;
+		anim.transform.localScale = Vector3.one * enemy.statusIconSize;
 		while (anim.isPlaying)
 			yield return null;
 		enemy.invincible = false;

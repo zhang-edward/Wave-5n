@@ -23,7 +23,7 @@ public class LightningStatus : EnemyStatus
 	public override void Init (Enemy enemy)
 	{
 		base.Init (enemy);
-		anim.transform.localScale = enemy.srSize * 0.8f;
+		anim.transform.localScale = Vector3.one * enemy.statusIconSize;
 	}
 
 	protected override IEnumerator Effect ()
