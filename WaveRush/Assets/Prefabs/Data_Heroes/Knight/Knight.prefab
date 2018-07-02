@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 114261427069164494}
   - component: {fileID: 5804662}
   m_Layer: 0
-  m_Name: KnightAbility
+  m_Name: Knight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -135,12 +135,12 @@ MonoBehaviour:
     maxHit: 5
     rushState: Rush
     rushSound: {fileID: 8300000, guid: 9ee280140e1df47e2a5dc4600c92da89, type: 3}
-    effectObject: {fileID: 0}
   areaAttackAbility:
     duration: 0.1
     range: 1
     maxHit: 5
     loseMomentum: 1
+    disableInput: 1
     areaAttackSound: {fileID: 8300000, guid: 577b89f17cf804ac7935a5475e03ab78, type: 3}
     areaAttackState: Shield
   specialRushAbility:
@@ -183,7 +183,6 @@ MonoBehaviour:
       maxHit: 20
       rushState: Rush
       rushSound: {fileID: 8300000, guid: 82456ad0590664622b80d1eed4b6717e, type: 3}
-      effectObject: {fileID: 114790929690713698}
   rushEffect: {fileID: 1984939517591926}
   specialRushEffect: {fileID: 1566888301041644}
   shieldIndicator: {fileID: 168668}

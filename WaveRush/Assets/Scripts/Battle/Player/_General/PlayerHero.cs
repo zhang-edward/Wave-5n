@@ -14,6 +14,7 @@ public abstract class PlayerHero : MonoBehaviour {
 	[HideInInspector]public Player player;
 	[HideInInspector]public EntityPhysics body;
 	[HideInInspector]public HeroPowerUpManager powerUpManager;
+	[HideInInspector]public AnimationSet anim;
 	[HideInInspector]public float[] cooldownMultipliers;	// The cooldown time multipliers, modified by powerups or abilities
 	[HideInInspector]public int level;						// This hero's level
 	[HideInInspector]public int hardHealth;					// The health of this hero, so when this hero is enabled the Player class will set the proper health
@@ -41,10 +42,6 @@ public abstract class PlayerHero : MonoBehaviour {
 	public int   combo      { get; private set; }	// Combo score
 	public float comboTimer { get; private set; }	// Combo timer - if this reaches 0, reset combo to 0
 	public float maxComboTimer = 3.0f;
-
-	[Header("Animations/Skins")]
-	public AnimationSet anim;
-	public Sprite[] deathProps;
 
 	// Special Ability
 	public float specialAbilityCharge { get; protected set; }

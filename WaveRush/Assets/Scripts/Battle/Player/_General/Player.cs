@@ -325,24 +325,24 @@ public class Player : MonoBehaviour, IDamageable
 	/// <summary>
 	/// Spawn death props
 	/// </summary>
-	private void SpawnDeathProps()
-	{
-		foreach (Sprite sprite in hero.deathProps)
-		{
-			//GameObject o = Instantiate (deathPropPrefab, transform.position, Quaternion.identity) as GameObject;
-			//o.transform.SetParent (this.transform);
-			GameObject o = deathPropPool.GetPooledObject();
-			o.GetComponent<TempObject> ().Init (
-				Quaternion.Euler(new Vector3(0, 0, 360f)),
-				this.transform.position,
-				sprite);
-			o.GetComponent<Rigidbody2D> ().AddTorque (Random.Range (-50f, 50f));
-			o.GetComponent<Rigidbody2D> ().AddForce (new Vector2(
-				Random.value - 0.5f,
-				Random.value - 0.5f),
-				ForceMode2D.Impulse);
-		}
-	}
+	// private void SpawnDeathProps()
+	// {
+	// 	foreach (Sprite sprite in hero.deathProps)
+	// 	{
+	// 		//GameObject o = Instantiate (deathPropPrefab, transform.position, Quaternion.identity) as GameObject;
+	// 		//o.transform.SetParent (this.transform);
+	// 		GameObject o = deathPropPool.GetPooledObject();
+	// 		o.GetComponent<TempObject> ().Init (
+	// 			Quaternion.Euler(new Vector3(0, 0, 360f)),
+	// 			this.transform.position,
+	// 			sprite);
+	// 		o.GetComponent<Rigidbody2D> ().AddTorque (Random.Range (-50f, 50f));
+	// 		o.GetComponent<Rigidbody2D> ().AddForce (new Vector2(
+	// 			Random.value - 0.5f,
+	// 			Random.value - 0.5f),
+	// 			ForceMode2D.Impulse);
+	// 	}
+	// }
 #endregion
 #region Effects and timescaling
 	/// <summary>

@@ -45,7 +45,6 @@ public class PyroHero : PlayerHero {
 
 		protected override void GetEnemiesHit() {
 			base.GetEnemiesHit();
-			int numEnemiesHit = 0;
 			RaycastHit2D[] hits = Physics2D.CircleCastAll(player.transform.position, 0.3f, player.dir, RANGE);
 			foreach (RaycastHit2D hit in hits)
 			{

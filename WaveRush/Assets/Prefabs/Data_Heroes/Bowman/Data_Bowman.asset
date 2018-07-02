@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38916ffeb58ad4c7c9c35af084c915a9, type: 3}
+  m_Name: Data_Bowman
+  m_EditorClassIdentifier: 
+  heroType: 3
+  abilityIcons:
+  - {fileID: 21300000, guid: 28b41fef228d6814f90e541deaf9f262, type: 3}
+  - {fileID: 21300002, guid: 28b41fef228d6814f90e541deaf9f262, type: 3}
+  specialAbilityIcon: {fileID: 21300004, guid: 28b41fef228d6814f90e541deaf9f262, type: 3}
+  powerUpData: {fileID: 0}
+  boostInfo:
+    strMin: 1
+    strMax: 1.5
+    vitMin: 40
+    vitMax: 60
+    chgMin: 1
+    chgMax: 2
+    dexMin: 0.02
+    dexMax: 0.1
+    critMin: 1.5
+    critMax: 2.5
+    luckMin: 0.05
+    luckMax: 0.15
+  tips: []
+  heroDescription: 
+  ability1Name: 
+  ability2Name: 
+  specialName: 
+  ability1Description: 
+  ability2Description: 
+  specialDescription: 
+  parryDescription: 
+  t1Skin:
+    animations:
+    - frames:
+      - {fileID: 21300000, guid: a62406d7c62a34e8a813cb08b251de0b, type: 3}
+      fps: 1
+      animationName: Default
+      looping: 1
+      ignoreTimeScale: 0
+    player: {fileID: 0}
+  t2Skin:
+    animations: []
+    player: {fileID: 0}
+  t3Skin:
+    animations: []
+    player: {fileID: 0}
+  icons:
+  - {fileID: 21300000, guid: a62406d7c62a34e8a813cb08b251de0b, type: 3}
+  - {fileID: 21300000, guid: a62406d7c62a34e8a813cb08b251de0b, type: 3}
+  - {fileID: 21300000, guid: a62406d7c62a34e8a813cb08b251de0b, type: 3}

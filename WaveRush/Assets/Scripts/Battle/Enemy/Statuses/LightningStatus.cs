@@ -11,13 +11,13 @@ public class LightningStatus : EnemyStatus
 	public SimpleAnimationPlayer anim;
 	public AudioClip[] applySounds;
 
-	private LightningBolt lightning;
+	private ContinuousAnimatedLine lightning;
 	private Transform effectsFolder;
 
 	void Awake()
 	{
 		effectsFolder = ObjectPooler.GetObjectPooler ("Effect").transform;
-		lightning = Instantiate (lightningBoltPrefab, effectsFolder).GetComponent<LightningBolt> ();
+		lightning = Instantiate (lightningBoltPrefab, effectsFolder).GetComponent<ContinuousAnimatedLine> ();
 	}
 
 	public override void Init (Enemy enemy)

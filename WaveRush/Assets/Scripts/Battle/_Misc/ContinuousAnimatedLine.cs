@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LightningBolt : MonoBehaviour {
+public class ContinuousAnimatedLine : MonoBehaviour {
 
 	public GameObject boltPrefab;
 	public GameObject boltHead;

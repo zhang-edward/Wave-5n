@@ -6,7 +6,7 @@ public class LightningTest : MonoBehaviour {
 
 	public Vector3 start;
 	public Vector3 end;
-	public LightningBolt bolt;
+	public ContinuousAnimatedLine bolt;
 
 	
 	// Update is called once per frame

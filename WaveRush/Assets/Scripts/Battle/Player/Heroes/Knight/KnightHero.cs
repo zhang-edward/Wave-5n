@@ -6,8 +6,7 @@ using System.Collections.Generic;
 public class KnightHero : PlayerHero {
 
 	[System.Serializable]
-	public class PA_SpecialRush : PA_Sequencer
-	{
+	public class PA_SpecialRush : PA_Sequencer {
 		public PA_Animate chargeAnim;
 		public PA_EffectAttached chargeEffect;
 		public PA_SpecialAbilityEffect specialEffect;
