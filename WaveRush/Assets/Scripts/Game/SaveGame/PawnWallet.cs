@@ -5,7 +5,6 @@ public class PawnWallet
 {
 	public const int INITIAL_PAWN_CAPACITY = 10;
 
-	public int numPawns;							// how many pawns the player has
 	public int pawnCapacity { get; private set; }	// the total amount of pawns that the player can possess at one time
 	public Pawn[] pawns { get; private set; }	// the master list of the different pawns the player possesses
 
@@ -13,6 +12,7 @@ public class PawnWallet
 	{
 		pawnCapacity = INITIAL_PAWN_CAPACITY;
 		pawns = new Pawn[pawnCapacity];
+		Debug.Log("New pawnwallet created");
 	}
 
 	public bool AddPawn(Pawn pawn, out int id)
@@ -86,5 +86,11 @@ public class PawnWallet
 		Pawn[] newPawns = new Pawn[newCapacity];
 		pawns.CopyTo(newPawns, 0);
 		pawns = newPawns;
+	}
+
+	public void PrintAllPawns() {
+		foreach (Pawn pawn in pawns) {
+			Debug.Log(pawn);
+		}
 	}
 }

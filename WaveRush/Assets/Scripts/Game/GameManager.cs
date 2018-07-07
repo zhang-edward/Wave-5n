@@ -273,12 +273,10 @@ public class GameManager : MonoBehaviour {
 
 	public void PrepareSaveFile()
 	{
-		sg.highScores = scoreManager.highScores;
 	}
 
 	public void LoadSaveFile()
 	{
-		scoreManager.highScores = sg.highScores;
 	}
 
 	public void DeleteSaveData()
@@ -288,7 +286,6 @@ public class GameManager : MonoBehaviour {
 		PlayerPrefs.SetInt(SaveGame.TUTORIAL_COMPLETE_KEY, 0);
 		CreateNewSave();
 
-		LoadSaveFile ();
 		SaveLoad.Save(sg);
 	}
 
@@ -296,6 +293,7 @@ public class GameManager : MonoBehaviour {
 		sg = new SaveGame();
 		int foo;
 		sg.pawnWallet.AddPawn(new Pawn(HeroType.Knight, HeroTier.tier1), out foo);
+		sg.pawnWallet.PrintAllPawns();
 	}
 
 	public void Save() {

@@ -16,7 +16,21 @@ public class SaveModifier {
 	public int LatestSeriesIndex { get { return sg.saveDict[SaveGame.LATEST_UNLOCKED_SERIES_INDEX_KEY]; } }
 	public int LatestStageIndex  { get { return sg.saveDict[SaveGame.LATEST_UNLOCKED_STAGE_INDEX_KEY] ; } }
 	public bool[] UnlockedHeroes { get { return sg.unlockedHeroes; } }
-	public List<Pawn> AvailableHeroes { get { return sg.availableHeroes; } set { sg.availableHeroes = value; }}
+	public List<Pawn> AvailableHeroes { 
+		get {
+			List<Pawn> pawns = new List<Pawn>();
+			for (int i = 0; i < sg.availableHeroes.Count; i ++) {
+				pawns.Add(Pawn.String2Pawn(sg.availableHeroes[i]));
+			}
+			return pawns;
+		} 
+		set {
+			sg.availableHeroes = new List<string>();
+			for (int i = 0; i < value.Count; i ++) {
+				sg.availableHeroes.Add(Pawn.Pawn2String(value[i]));
+			}
+		}
+	}
 
 	private SaveGame sg;
 	private Wallet wallet;

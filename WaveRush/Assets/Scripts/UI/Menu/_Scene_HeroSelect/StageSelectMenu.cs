@@ -54,7 +54,6 @@ public class StageSelectMenu : MonoBehaviour
 			{
 				o = Instantiate(stageSeriesIconPrefab);
 				o.GetComponent<StageSeriesIcon>().onClicked += InitStageSelectionView;
-				print ("Hello");
 				stageSeriesIcons.Add(o);
 			}
 			else

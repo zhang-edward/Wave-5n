@@ -73,6 +73,9 @@ public class PawnMenu : MonoBehaviour {
 	public void OpenInfoPanel() {
 		infoPanel.gameObject.SetActive(true);
 		infoPanel.Init(selectedIcon.pawnData);
+		// Debug
+		string str = Pawn.Pawn2String(selectedIcon.pawnData);
+		Pawn.String2Pawn(str);
 	}
 
 	public void RetirePawn() {

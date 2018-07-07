@@ -17,9 +17,6 @@ public class PawnShop {
 		AvailablePawns = new List<Pawn>();
 	}
 
-	/// <summary>
-	/// Called when the save game is loaded. Initializes <see cref="Unlocked"/> array
-	/// </summary>
 	public void OnSaveGameLoaded() {
 		RefreshPawnPool();
 		if (save.AvailableHeroes == null)
