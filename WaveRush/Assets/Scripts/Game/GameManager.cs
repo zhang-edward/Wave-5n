@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour {
 	public int selectedStageIndex;
 	[Header("Data")]
 	public StageCollectionData regularStages;
+	public StageCollectionData specialStages;
 	public ScoreManager scoreManager;
 	[Header("Persistent UI")]
 	public Image loadingOverlay;
@@ -54,7 +55,6 @@ public class GameManager : MonoBehaviour {
 
 		SaveLoad.Load (ref sg);
 		save = new SaveModifier(sg);
-		questManager.Init();
 		loadingOverlay.gameObject.SetActive(false);
 	}
 
@@ -271,12 +271,10 @@ public class GameManager : MonoBehaviour {
 	// Save and Load
 	// ==========
 
-	public void PrepareSaveFile()
-	{
+	public void PrepareSaveFile() {
 	}
 
-	public void LoadSaveFile()
-	{
+	public void LoadSaveFile() {
 	}
 
 	public void DeleteSaveData()
@@ -293,7 +291,6 @@ public class GameManager : MonoBehaviour {
 		sg = new SaveGame();
 		int foo;
 		sg.pawnWallet.AddPawn(new Pawn(HeroType.Knight, HeroTier.tier1), out foo);
-		sg.pawnWallet.PrintAllPawns();
 	}
 
 	public void Save() {

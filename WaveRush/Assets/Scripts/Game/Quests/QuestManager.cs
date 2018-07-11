@@ -11,19 +11,33 @@ public class QuestManager : MonoBehaviour
 
 	public const int NUM_QUESTS = 5;
 
-	public List<Quest> quests;
+	public List<Quest> publicQuests;		// These are visible in the game and give the player money rewards
+	public Quest[] heroUnlockQuests;	// These are invisible and unlock certain hero types upon completion
 
-	public void Init()
-	{
+	void Start() {
 		gm = GameManager.instance;
 		gm.OnSceneLoaded += OnSceneLoaded;
-		quests = new List<Quest>();
+		publicQuests = new List<Quest>();
+		heroUnlockQuests = new Quest[System.Enum.GetValues(typeof(HeroType)).Length];
+		
 		QuestModifierJoint quest = new QuestModifierJoint(
 			gm,
 			new PlayHeroQuest(gm, HeroType.Knight),
 			new CompleteStageQuest(gm, 0, 0)
 		);
-		quests.Add(quest);
+		publicQuests.Add(quest);
+		GetHeroUnlockQuests();
+	}
+
+	private void GetHeroUnlockQuests() {
+		for (int i = 0; i < heroUnlockQuests.Length; i ++) {
+			// If this hero was already unlocked, don't bother adding the unlock quest
+			if (gm.save.UnlockedHeroes[i])
+				continue;
+			int type = i / 3;
+			int tier = i % 3;
+			heroUnlockQuests[i] = DataManager.GetPlayerHero((HeroType)type).GetComponent<PlayerHero>().GetUnlockQuest(((HeroTier)tier));
+		}
 	}
 
 	/// <summary>
@@ -32,10 +46,10 @@ public class QuestManager : MonoBehaviour
 	/// <returns><c>true</c>, if quest was added, <c>false</c> otherwise.</returns>
 	public bool AddQuest(Quest quest)
 	{
-		if (quests.Count >= NUM_QUESTS)
+		if (publicQuests.Count >= NUM_QUESTS)
 			return false;
 
-		quests.Add(quest);
+		publicQuests.Add(quest);
 		return true;
 	}
 
@@ -78,17 +92,36 @@ public class QuestManager : MonoBehaviour
 
 	private void UpdateQuest(Quest.QuestUpdateType updateType)
 	{
-		foreach (Quest quest in quests)
-		{
-			if (quest as MultiQuest != null)
-			{
+		// Public quests
+		foreach (Quest quest in publicQuests) {
+			if (quest as MultiQuest != null) {
 				MultiQuest multiQuest = (MultiQuest)quest;
 				multiQuest.UpdateCompletionState(updateType);
 			}
-			else
-			{
+			else {
 				quest.UpdateCompletionState(updateType);
 			}
 		}
+
+		// Unlock hero quests
+		for (int i = 0; i < heroUnlockQuests.Length; i ++) {
+			Quest quest = heroUnlockQuests[i];
+			// Quest == null means this hero was already unlocked
+			if (quest == null)
+				continue;
+			// Check unlock status
+			if (quest as MultiQuest != null) {
+				MultiQuest multiQuest = (MultiQuest)quest;
+				multiQuest.UpdateCompletionState(updateType);
+			}
+			else {
+				quest.UpdateCompletionState(updateType);
+				if (quest.completed) {
+					gm.save.UnlockHero(i);
+					print(string.Format("Unlocked hero {0}, tier {1}.", (HeroType)(i / 3), (HeroTier)(i % 3)));
+				}
+			}
+		}
+
 	}
 }

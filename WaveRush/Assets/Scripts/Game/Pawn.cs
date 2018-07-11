@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 [System.Serializable]
 public class Pawn : System.IComparable<Pawn>
@@ -64,6 +65,16 @@ public class Pawn : System.IComparable<Pawn>
 		MaxExperience = Formulas.ExperienceFormula(level);
 		boosts = new int[StatData.NUM_STATS];
 		other.boosts.CopyTo(this.boosts, 0);
+	}
+
+	[JsonConstructor]
+	public Pawn(HeroType type, HeroTier tier, int level, int experience, int[] boosts) {
+		this.type = type;
+		this.tier = tier;
+		this.level = level;
+		this.Experience = experience;
+		this.boosts = boosts;
+		MaxExperience = Formulas.ExperienceFormula(level);
 	}
 
 	public void SetID(int id) {
@@ -182,6 +193,8 @@ public class Pawn : System.IComparable<Pawn>
 	/// B = boosts
 	/// </summary>
 	public static Pawn String2Pawn(string str) {
+		if (str == "") 
+			return null;
 		Debug.Log("Converting string: " + str);
 		Pawn pawn = new Pawn();
 		pawn.Id = 			System.Convert.ToInt32(str.Substring(0, 2));
@@ -209,6 +222,8 @@ public class Pawn : System.IComparable<Pawn>
 	/// B = boosts
 	/// </summary>
 	public static string Pawn2String(Pawn pawn) {
+		if (pawn == null)
+			return "";
 		Debug.Log("Converting pawn: " + pawn.ToString());
 		string str = "";
 		str += Num2String(pawn.Id, 2);

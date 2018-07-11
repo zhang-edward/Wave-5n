@@ -16,10 +16,6 @@ public class BattleSceneManager : MonoBehaviour
 	public static BattleSceneManager instance;
 	private GameManager gm;
 
-	[Header("Debug")]
-	public bool debugMode;
-	[Space]
-
 	public Map map;
 	public EnemyManager enemyManager;
 	public Player player;
@@ -73,11 +69,11 @@ public StageEndMenu losePanel;
 	{
 		// Get data from GameManager
 		Pawn[] pawns = gm.selectedPawns;
-		if (debugMode) {
-			for (int i = 0; i < pawns.Length; i ++) {
-				pawns[i] = new Pawn(gm.selectedPawns[i].type, gm.selectedPawns[i].tier, gm.selectedPawns[i].level);
-			}
-		}
+		// if (debugMode) {
+		// 	for (int i = 0; i < pawns.Length; i ++) {
+		// 		pawns[i] = new Pawn(gm.selectedPawns[i].type, gm.selectedPawns[i].tier, gm.selectedPawns[i].level);
+		// 	}
+		// }
 		StageData stage = gm.GetStage(gm.selectedSeriesIndex, gm.selectedStageIndex);
 
 		pawnMetaData = new PawnMetaData[pawns.Length];		

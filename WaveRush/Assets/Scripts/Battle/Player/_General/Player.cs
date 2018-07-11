@@ -11,8 +11,6 @@ public class Player : MonoBehaviour, IDamageable
 
 	[HideInInspector]public float DEFAULT_SPEED;
 
-	public GameObject[] heroPrefabs;
-
 	[Header("Entity Base Values")]
 	public SpriteRenderer 	  sr;
 	public AnimationSetPlayer animPlayer;
@@ -132,22 +130,15 @@ public class Player : MonoBehaviour, IDamageable
 
 	private void InitPlayerHero(Pawn heroData, int index)
 	{
-		// Find the correct hero prefab and instantiate it
-		foreach (GameObject prefab in heroPrefabs)
-		{
-			PlayerHero prefabHero = prefab.GetComponent<PlayerHero>();
-			if (prefabHero.heroType == heroData.type)
-			{
-				GameObject o = Instantiate(prefab, transform.position, Quaternion.identity) as GameObject;
-				heroList[index] = o;
-				o.transform.SetParent(this.transform);
-				hero = o.GetComponent<PlayerHero>();
-				print ("Initializing player hero...");
-				hero.Init(body, this, heroData);
-				return;
-			}
-		}
-		throw new UnityEngine.Assertions.AssertionException(this.GetType() + ".cs", "Cannot find hero with name " + heroData.type.ToString() + "!");
+		GameObject prefab = DataManager.GetPlayerHero(heroData.type);
+		PlayerHero prefabHero = prefab.GetComponent<PlayerHero>();
+		GameObject o = Instantiate(prefab, transform.position, Quaternion.identity) as GameObject;
+		heroList[index] = o;
+		o.transform.SetParent(this.transform);
+		hero = o.GetComponent<PlayerHero>();
+		// print ("Initializing player hero...");
+		hero.Init(body, this, heroData);
+		return;
 	}
 
 	/// <summary>

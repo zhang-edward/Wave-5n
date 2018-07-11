@@ -13,24 +13,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   character: {fileID: 11400000, guid: 059a984ee1be244bb931e02bf27a7816, type: 2}
   position: 0
-  exitAtEnd: 0
+  exitAtEnd: 1
   firstAppearance: 1
   dialogues:
   - expression: Default
     text: Here we are, the <color=yellow>Towering Timberland</color>.
   - expression: 
-    text: The monsters here should be only a small challenge for you.
+    text: The monsters here should be only a small challenge for you, haw haw!
   - expression: 
-    text: Hmm... but something tells me that after you have defeated enough monsters,
-      a <color=yellow>powerful enemy will appear</color>.
+    text: But something tells me that after you have defeated enough monsters, a <color=yellow>powerful
+      enemy will appear</color>.
   - expression: 
     text: Should they best you, you will be sent back to the castle and your <color=yellow>experience
       level</color> will drop.
   - expression: 
+    text: Hopefully that won't happen to you with monsters this weak, haw haw!
+  - expression: 
     text: Oh, and one more thing.
   - expression: 
     text: If you see an <color=red>enemy outlined in red</color>, you will take damage
-      when you touch them.
+      when you touch them!
   - expression: 
     text: But this can be <color=yellow>parried</color> if timed correctly.
   - expression: 

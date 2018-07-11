@@ -1,11 +1,23 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Newtonsoft.Json;
 
 [System.Serializable]
 public class Wallet
 {
 	public int money { get; private set; }
 	public int souls { get; private set; }
+
+	[JsonConstructor]
+	public Wallet(int money, int souls) {
+		this.money = money;
+		this.souls = souls;
+	}
+
+	public Wallet() {
+		money = 0;
+		souls = 0;
+	}
 
 	public bool TrySpendMoney(int amt)
 	{
@@ -40,13 +52,11 @@ public class Wallet
 	// ==========
 	// DEBUG
 	// ==========
-	public void SetMoneyDebug(int amt)
-	{
+	public void SetMoney(int amt) {
 		money = amt;
 	}
 
-	public void SetSoulsDebug(int amt)
-	{
+	public void SetSouls(int amt) {
 		souls = amt;
 	}
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Newtonsoft.Json;
 
 [Serializable]
 public class SaveGame
@@ -10,34 +11,40 @@ public class SaveGame
 	public const string LATEST_UNLOCKED_SERIES_INDEX_KEY = "SeriesIndex";
 	public const string LATEST_UNLOCKED_STAGE_INDEX_KEY = "StageIndex";
 
-	/** Wallet fields */	
-	private int money;
-	private int souls;
-	public Wallet wallet;
-
-	/** PawnWallet fields */
-	private int pawnCapacity;
-	private string[] pawns;
-	public PawnWallet pawnWallet;
-
+	public Wallet 	wallet;
+	public PawnWallet 	pawnWallet;
 	/** Miscellaneous saved values */
 	public Dictionary<string, int> saveDict;    // Dictionary containing integers
-	public Dictionary<string, bool> hasPlayerViewedDict { get; private set; }
+	public bool[] unlockedHeroes;				// Types of heroes potentially available for hire
+												// Increments of 3 per type, where #0-2 = knight t1, t2, t3, #3-5 = pyro t1, t2, t3, etc.
+	public List<Pawn> availableHeroes;		// Heroes available for hire
 
-	public bool[] unlockedHeroes;				// Heroes potentially available for hire
-	public List<string> availableHeroes;			// Heroes available for hire
+	[JsonConstructor]
+	public SaveGame(Wallet wallet, 
+					PawnWallet pawnWallet, 
+					Dictionary<string, int> saveDict, 
+					bool[] unlockedHeroes,
+					List<Pawn> availableHeroes) {
+		this.wallet = wallet;
+		this.pawnWallet = pawnWallet;
+		this.saveDict = saveDict;
+		this.unlockedHeroes = unlockedHeroes;
+		this.availableHeroes = availableHeroes;
+	}
 
-	public SaveGame()
-	{
+	public SaveGame() {
 		// Initialize variables
 		saveDict = new Dictionary<string, int>();
 
 		saveDict[LATEST_UNLOCKED_SERIES_INDEX_KEY] = 0;
 		saveDict[LATEST_UNLOCKED_STAGE_INDEX_KEY]  = 0;
 
-		hasPlayerViewedDict = new Dictionary<string, bool>();
+		// hasPlayerViewedDict = new Dictionary<string, bool>();
 		wallet = new Wallet();
 		pawnWallet = new PawnWallet();
+
+		unlockedHeroes = new bool[0];
+		availableHeroes = new List<Pawn>();
 
 		// Get hero types
 		int numHeroTypes = Enum.GetValues(typeof(HeroType)).Length;

@@ -34,7 +34,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1484269624840130}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -70,8 +70,8 @@ MonoBehaviour:
   - 1
   - 0.5
   piercingArrowAbility:
-    duration: 0.5
-    radius: 0.2
+    duration: 0.2
+    radius: 0.4
     maxHit: 5
     loseMomentum: 0
     disableInput: 1
@@ -79,9 +79,11 @@ MonoBehaviour:
     circleCastState: Default
   retreatAbility:
     duration: 0.2
-    speed: 10
+    speed: 5
     time: 0
-    drag: 4
+    drag: 1
+  arrowTrailPrefab: {fileID: 1779908263273456, guid: dbe80fab546fa4b8a96fbb37fe254a1c,
+    type: 2}
 --- !u!114 &114731331671095352
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Quests;
 
 public abstract class PlayerHero : MonoBehaviour {
 
@@ -405,4 +406,14 @@ public abstract class PlayerHero : MonoBehaviour {
 			return true;
 		}
 	}
+
+	public Quest GetUnlockQuest(HeroTier tier) {
+		Quest quest = UnlockQuest(tier);
+		if (quest == null) {
+			Debug.LogError(string.Format("No unlock quest for {0} (tier {1})", heroType, tier));
+		}
+		return quest;
+	}
+
+	protected abstract Quest UnlockQuest(HeroTier tier);
 }

@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using Newtonsoft.Json;
+
 [System.Serializable]
 public class PawnWallet
 {
@@ -8,11 +10,15 @@ public class PawnWallet
 	public int pawnCapacity { get; private set; }	// the total amount of pawns that the player can possess at one time
 	public Pawn[] pawns { get; private set; }	// the master list of the different pawns the player possesses
 
-	public PawnWallet()
-	{
+	public PawnWallet() {
 		pawnCapacity = INITIAL_PAWN_CAPACITY;
 		pawns = new Pawn[pawnCapacity];
-		Debug.Log("New pawnwallet created");
+	}
+
+	[JsonConstructor]
+	public PawnWallet(int pawnCapacity, Pawn[] pawns) {
+		this.pawnCapacity = pawnCapacity;
+		this.pawns = pawns;
 	}
 
 	public bool AddPawn(Pawn pawn, out int id)
@@ -88,6 +94,10 @@ public class PawnWallet
 		pawns = newPawns;
 	}
 
+	public void SetPawnCapacity(int capacity) {
+		pawnCapacity = capacity;
+	}
+	// Debug
 	public void PrintAllPawns() {
 		foreach (Pawn pawn in pawns) {
 			Debug.Log(pawn);

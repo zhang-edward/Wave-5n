@@ -10,27 +10,12 @@ public class SaveModifier {
 
 	public int money { get { return wallet.money; } }
 	public int souls { get { return wallet.souls; } }
-	public Dictionary<string, bool> hasPlayerViewedDict { get { return sg.hasPlayerViewedDict; } }
 	public Pawn[] pawns { get { return pawnWallet.pawns; } }
 
 	public int LatestSeriesIndex { get { return sg.saveDict[SaveGame.LATEST_UNLOCKED_SERIES_INDEX_KEY]; } }
 	public int LatestStageIndex  { get { return sg.saveDict[SaveGame.LATEST_UNLOCKED_STAGE_INDEX_KEY] ; } }
 	public bool[] UnlockedHeroes { get { return sg.unlockedHeroes; } }
-	public List<Pawn> AvailableHeroes { 
-		get {
-			List<Pawn> pawns = new List<Pawn>();
-			for (int i = 0; i < sg.availableHeroes.Count; i ++) {
-				pawns.Add(Pawn.String2Pawn(sg.availableHeroes[i]));
-			}
-			return pawns;
-		} 
-		set {
-			sg.availableHeroes = new List<string>();
-			for (int i = 0; i < value.Count; i ++) {
-				sg.availableHeroes.Add(Pawn.Pawn2String(value[i]));
-			}
-		}
-	}
+	public List<Pawn> AvailableHeroes { get { return sg.availableHeroes; } set { sg.availableHeroes = value; }  }
 
 	private SaveGame sg;
 	private Wallet wallet;
@@ -66,21 +51,21 @@ public class SaveModifier {
 	/// </summary>
 	/// <param name="key">Key.</param>
 	/// <param name="val">value to set</param>
-	public void SetHasPlayerViewedKey(string key, bool val) {
-		//		print("Key: " + key);
-		if (!sg.hasPlayerViewedDict.ContainsKey(key))
-			sg.hasPlayerViewedDict.Add(key, val);
-		else
-			sg.hasPlayerViewedDict[key] = val;
-		// Event for NewFeatureIndicators to refresh their 
-		if (OnHasViewedDictionaryUpdated != null)
-			OnHasViewedDictionaryUpdated();
-	}
+	// public void SetHasPlayerViewedKey(string key, bool val) {
+	// 	//		print("Key: " + key);
+	// 	if (!sg.hasPlayerViewedDict.ContainsKey(key))
+	// 		sg.hasPlayerViewedDict.Add(key, val);
+	// 	else
+	// 		sg.hasPlayerViewedDict[key] = val;
+	// 	// Event for NewFeatureIndicators to refresh their 
+	// 	if (OnHasViewedDictionaryUpdated != null)
+	// 		OnHasViewedDictionaryUpdated();
+	// }
 
-	public void InitHasPlayerViewedKey(string key, bool val) {
-		Assert.IsTrue(!sg.hasPlayerViewedDict.ContainsKey(key));
-		sg.hasPlayerViewedDict.Add(key, val);
-	}
+	// public void InitHasPlayerViewedKey(string key, bool val) {
+	// 	Assert.IsTrue(!sg.hasPlayerViewedDict.ContainsKey(key));
+	// 	sg.hasPlayerViewedDict.Add(key, val);
+	// }
 
 	/** PawnWallet Modifiers */
 	public bool AddPawn(Pawn pawn) {
@@ -137,10 +122,14 @@ public class SaveModifier {
 	}
 
 	public void SetMoneyDebug(int amt) {
-		wallet.SetMoneyDebug(amt);
+		wallet.SetMoney(amt);
 	}
 
 	public void SetSoulsDebug(int amt) {
-		wallet.SetSoulsDebug(amt);
+		wallet.SetSouls(amt);
+	}
+
+	public void UnlockHero(int index) {
+		sg.unlockedHeroes[index] = true;
 	}
 }

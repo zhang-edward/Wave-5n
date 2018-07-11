@@ -23,8 +23,10 @@ public class ResourceView : MonoBehaviour
 
 	}
 
-	void Update()
-	{
+	void Update() {
+		if (save == null)
+			return;
+
 		if (resourceType == ResourceType.Money)
 			text.DisplayNumber(save.money);
 		if (resourceType == ResourceType.Souls)

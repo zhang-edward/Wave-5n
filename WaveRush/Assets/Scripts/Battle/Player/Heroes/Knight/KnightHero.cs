@@ -254,4 +254,17 @@ public class KnightHero : PlayerHero {
 		yield return new WaitForSeconds(0.5f);
 		StunEnemy(e, stunTime);
 	}
+
+	protected override Quests.Quest UnlockQuest(HeroTier tier) {
+		switch (tier) {
+			case HeroTier.tier1:
+				return null;
+			case HeroTier.tier2:
+				return null;
+			case HeroTier.tier3:
+				return null;	// TODO: Do this
+			default:
+				return null;
+		}
+	}
 }

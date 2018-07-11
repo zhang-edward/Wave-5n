@@ -8,11 +8,15 @@ public class BowmanHero : PlayerHero {
 	public PA_CircleCast piercingArrowAbility;
 	public PA_Move		 retreatAbility; 
 
+	public GameObject arrowTrailPrefab;
+	private ContinuousAnimatedLine arrowTrail;
+
 	public override void Init (EntityPhysics body, Player player, Pawn heroData)
 	{
 		cooldownTimers = new float[2];
 		base.Init (body, player, heroData);
 		InitAbilities();
+		arrowTrail = Instantiate(arrowTrailPrefab).GetComponent<ContinuousAnimatedLine>();
 		// Handle input
 		onTapHoldDown = () => { damageMultiplier = Mathf.Min(damageMultiplier + Time.deltaTime * 0.5f, 2.0f); };
 		onTapHoldRelease = PiercingArrow;
@@ -30,8 +34,10 @@ public class BowmanHero : PlayerHero {
 			return;
 		ResetCooldownTimer(0);
 
+		arrowTrail.Init(transform.position + (Vector3)player.dir.normalized, player.transform.position + (Vector3)player.dir.normalized * PIERCING_ARROW_RANGE);
 		piercingArrowAbility.SetCast(player.transform.position, player.dir.normalized, PIERCING_ARROW_RANGE);
 		piercingArrowAbility.Execute();
+		damageMultiplier = 1;
 	}
 
 	public void HandlePiercingArrowDamage(Enemy e) {
@@ -67,6 +73,19 @@ public class BowmanHero : PlayerHero {
 			//sound.RandomizeSFX(sfx[Random.Range(0, sfx.Length)]);
 			if (tempSlowDown)
 				player.StartTempSlowDown(0.3f);
+		}
+	}
+
+	protected override Quests.Quest UnlockQuest(HeroTier tier) {
+		switch (tier) {
+			case HeroTier.tier1:
+				return null;
+			case HeroTier.tier2:
+				return null;
+			case HeroTier.tier3:
+				return null;	// TODO: Do this
+			default:
+				return null;
 		}
 	}
 }

@@ -3,7 +3,8 @@ public class DataManager : MonoBehaviour
 {
 	public static DataManager instance;
 
-	public HeroData[] heroData;   // power up info for every hero
+	public GameObject[] heroPrefabs;		// hero behavior data
+	public HeroData[] heroData;		// power up info for every hero
 	public StatData statData;
 
 	void Awake()
@@ -15,10 +16,19 @@ public class DataManager : MonoBehaviour
 		DontDestroyOnLoad(this);
 	}
 
-	public static HeroData GetHeroData(HeroType heroType)
-	{
-		foreach (HeroData data in instance.heroData)
-		{
+	public static GameObject GetPlayerHero(HeroType heroType) {
+		foreach (GameObject o in instance.heroPrefabs) {
+			if (o.GetComponent<PlayerHero>().heroType == heroType) {
+				return o;
+			}
+		}
+		throw new UnityEngine.Assertions.AssertionException
+							 (instance.GetType() + ".cs",
+							  "Could not find playerHero for hero with name " + heroType.ToString() + "!");
+	}
+
+	public static HeroData GetHeroData(HeroType heroType) {
+		foreach (HeroData data in instance.heroData) {
 			if (data.heroType == heroType)
 				return data;
 		}

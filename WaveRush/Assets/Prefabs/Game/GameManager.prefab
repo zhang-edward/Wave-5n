@@ -491,8 +491,9 @@ MonoBehaviour:
   questManager: {fileID: 114362485652048620}
   selectedPawns: []
   selectedSeriesIndex: 0
-  selectedStageIndex: 2
+  selectedStageIndex: 0
   regularStages: {fileID: 11400000, guid: f1ca0c616e5e747e6a071407d729e290, type: 2}
+  specialStages: {fileID: 0}
   scoreManager: {fileID: 11440748}
   loadingOverlay: {fileID: 11490514}
   debugPanel: {fileID: 1000011252810740}
@@ -3092,6 +3093,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 510d13ce13f674cb3bb5f58a2a3680f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  heroPrefabs:
+  - {fileID: 112650, guid: 9df467324217d44fcbf6fc4ca1a35f93, type: 2}
+  - {fileID: 193392, guid: 4ba636e8525864880aaefdbc3e7f957b, type: 2}
+  - {fileID: 150320, guid: 65c84963bbd9d42628653483edbc1de4, type: 2}
+  - {fileID: 1484269624840130, guid: d9c6663bc4e204146a62214e35c47251, type: 2}
   heroData:
   - {fileID: 11400000, guid: 6ff7b9768953b439a94295a198e00844, type: 2}
   - {fileID: 11400000, guid: 1c8d30885943f4bb5a5ac83f42bda5de, type: 2}

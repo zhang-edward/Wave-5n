@@ -109,16 +109,14 @@ public class PawnInfoPanel : MonoBehaviour
 		parryIcon	.GetComponent<Toggle>().isOn = false;
 	}
 
-	private IEnumerator ForcePosAfter1Frame()
-	{
+	private IEnumerator ForcePosAfter1Frame() {
 		yield return new WaitForEndOfFrame();
 		midPanelScrollView.SetSelectedContentIndex(1);
 		midPanelScrollView.ForcePosition();
 	}
 
 	// If a mid panel toggle was turned off, return to middle tab
-	public void ToggledMidPanelTab(bool toggle)
-	{
+	public void ToggledMidPanelTab(bool toggle) {
 		if (!toggle)
 			midPanelScrollView.SetSelectedContentIndex(1);
 	}
