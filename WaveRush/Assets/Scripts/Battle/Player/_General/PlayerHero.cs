@@ -57,11 +57,14 @@ public abstract class PlayerHero : MonoBehaviour {
 	private Coroutine queuedActionRoutine;
 	private bool canParry = true;
 	private int parryDisableTimerId;
+	protected bool dragIndicatorEnabled = true;
 
 	/** Delegates and events */
 	// Input Actions
 	public delegate void InputAction();
 	protected InputAction inputAction;
+	public	  InputAction onTouchBegan;
+	public	  InputAction onTouchEnded;
 	public    InputAction onDragBegan;
 	public 	  InputAction onDragRelease;
 	public    InputAction onDragHold;
@@ -132,6 +135,16 @@ public abstract class PlayerHero : MonoBehaviour {
 	}
 
 #region Input Handlers
+	public void HandleTouchBegan() {
+		if (onTouchBegan != null) 
+			onTouchBegan();
+	}
+
+	public void HandleTouchEnded() {
+		if (onTouchEnded != null)
+			onTouchEnded();
+	}
+
 	/** Player Inputs */
 	/// <summary>
 	/// Performs an action on tap
@@ -177,11 +190,14 @@ public abstract class PlayerHero : MonoBehaviour {
 	{
 		if (onDragHold != null)
 			onDragHold();
-		player.dirIndicator.gameObject.SetActive(true);
-		float angle = Mathf.Atan2(player.dir.y, player.dir.x) * Mathf.Rad2Deg;
-		player.dirIndicator.rotation = Quaternion.Euler(0, 0, angle);
-		float dirIndicatorLength = Mathf.Min(player.dir.magnitude, 2);			// Max length is 2
-		player.dirIndicator.localScale = new Vector3(dirIndicatorLength, 0.5f, 1);
+		
+		if (dragIndicatorEnabled) {
+			player.dirIndicator.gameObject.SetActive(true);
+			float angle = Mathf.Atan2(player.dir.y, player.dir.x) * Mathf.Rad2Deg;
+			player.dirIndicator.rotation = Quaternion.Euler(0, 0, angle);
+			float dirIndicatorLength = Mathf.Min(player.dir.magnitude, 2);			// Max length is 2
+			player.dirIndicator.localScale = new Vector3(dirIndicatorLength, 0.5f, 1);
+		}
 	}
 
 	/// <summary>

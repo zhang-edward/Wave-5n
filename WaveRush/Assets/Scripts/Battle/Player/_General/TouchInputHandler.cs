@@ -14,6 +14,8 @@ public class TouchInputHandler : MonoBehaviour {
 	private bool 	touchStarted;
 
 	public delegate void DirectionalTouchInput(Vector3 vec);
+	public event DirectionalTouchInput OnTouchBegan;		// General touch begin
+	public event DirectionalTouchInput OnTouchEnded;		// General touch end
 	public event DirectionalTouchInput OnDragBegan;
 	public event DirectionalTouchInput OnDragMove;
 	public event DirectionalTouchInput OnDragRelease;
@@ -60,6 +62,8 @@ public class TouchInputHandler : MonoBehaviour {
 		touchStarted = true;
 		touchStartPos = viewportPos;
 		touchStartTime = Time.time;
+		if (OnTouchBegan != null)
+			OnTouchBegan(Camera.main.ViewportToWorldPoint(viewportPos / PlayerInput.INPUT_POSITION_SCALAR));
 		//Debug.Log("Touch began:" + touchStartPos);
 	}
 
@@ -111,6 +115,8 @@ public class TouchInputHandler : MonoBehaviour {
 			else
 				OnTap(Camera.main.ViewportToWorldPoint(viewportPos / PlayerInput.INPUT_POSITION_SCALAR));
 		}
+		if (OnTouchEnded != null)
+			OnTouchEnded(Camera.main.ViewportToWorldPoint(viewportPos / PlayerInput.INPUT_POSITION_SCALAR));
 
 		touchStarted = false;
 		isDragging = false;

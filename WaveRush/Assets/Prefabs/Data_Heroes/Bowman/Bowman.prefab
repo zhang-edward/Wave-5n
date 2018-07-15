@@ -27,7 +27,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4957890699186260
 Transform:
   m_ObjectHideFlags: 1
@@ -67,23 +67,24 @@ MonoBehaviour:
   numHearts: 12
   maxComboTimer: 3
   cooldownTime:
+  - 1.5
   - 1
-  - 0.5
   piercingArrowAbility:
-    duration: 0.2
+    duration: 0
     radius: 0.4
     maxHit: 5
     loseMomentum: 0
     disableInput: 1
     circleCastSound: {fileID: 0}
-    circleCastState: Default
+    circleCastState: Shoot
   retreatAbility:
-    duration: 0.2
-    speed: 5
-    time: 0
+    duration: 0
+    speed: 3
+    time: 0.5
     drag: 1
   arrowTrailPrefab: {fileID: 1779908263273456, guid: dbe80fab546fa4b8a96fbb37fe254a1c,
     type: 2}
+  charging: 0
 --- !u!114 &114731331671095352
 MonoBehaviour:
   m_ObjectHideFlags: 1

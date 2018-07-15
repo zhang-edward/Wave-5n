@@ -16,14 +16,16 @@ public class PlayerInput : MonoBehaviour
 	{	
 		touchInputHandler.ClearListeners();
 		touchInputHandler.enabled = true;
-		touchInputHandler.OnDragBegan += HandleDragBegan;
-		touchInputHandler.OnDragMove += HandleDragHold;
-		touchInputHandler.OnDragRelease += HandleDragRelease;
-		touchInputHandler.OnTap += HandleTap;
-		touchInputHandler.OnTapHold += HandleTapHold;
-		touchInputHandler.OnTapHoldRelease += HandleTapHoldRelease;
-		touchInputHandler.MultiTouch += player.hero.HandleMultiTouch;
-		touchInputHandler.OnDragCancel += player.hero.HandleDragCancel;
+		touchInputHandler.OnTouchBegan 		+= SetDirTouchBegan;
+		touchInputHandler.OnTouchEnded 		+= SetDirTouchEnded;
+		touchInputHandler.OnDragBegan		+= SetDirDragBegan;
+		touchInputHandler.OnDragMove 		+= SetDirDragHold;
+		touchInputHandler.OnDragRelease 	+= SetDirDragRelease;
+		touchInputHandler.OnTap 			+= SetDirTap;
+		touchInputHandler.OnTapHold 		+= SetDirTapHold;
+		touchInputHandler.OnTapHoldRelease 	+= SetDirTapHoldRelease;
+		touchInputHandler.MultiTouch 		+= player.hero.HandleMultiTouch;
+		touchInputHandler.OnDragCancel 		+= player.hero.HandleDragCancel;
 	}
 
 	void Update()
@@ -85,39 +87,43 @@ public class PlayerInput : MonoBehaviour
 		}
 	}
 
-	private void HandleDragBegan(Vector3 dir)
-	{
+	private void SetDirTouchBegan(Vector3 pos) {
+		player.dir = pos - transform.position;
+		player.hero.HandleTouchBegan();
+	}
+
+	private void SetDirTouchEnded(Vector3 pos) {
+		player.dir = pos - transform.position;
+		player.hero.HandleTouchEnded();
+	}
+
+	private void SetDirDragBegan(Vector3 dir) {
 		player.dir = dir;
 		player.hero.HandleDragBegan();
 	}
 
-	private void HandleDragHold(Vector3 dir)
-	{
+	private void SetDirDragHold(Vector3 dir) {
 		player.dir = dir;
 		player.hero.HandleDragHold();
 	}
 
-	private void HandleDragRelease(Vector3 dir)
-	{
+	private void SetDirDragRelease(Vector3 dir) {
 		player.dir = dir;
 		//Debug.DrawRay(transform.position, dir, Color.white, 0.5f);
 		player.hero.HandleDragRelease();
 	}
 
-	private void HandleTapHold(Vector3 pos)
-	{
+	private void SetDirTapHold(Vector3 pos) {
 		player.dir = pos - transform.position;
 		player.hero.HandleHoldDown();
 	}
 
-	private void HandleTap(Vector3 pos)
-	{
+	private void SetDirTap(Vector3 pos) {
 		player.dir = pos - transform.position;
 		player.hero.HandleTap();
 	}
 
-	private void HandleTapHoldRelease(Vector3 pos)
-	{
+	private void SetDirTapHoldRelease(Vector3 pos) {
 		player.dir = pos - transform.position;
 		player.hero.HandleTapHoldRelease();
 	}

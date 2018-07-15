@@ -36,8 +36,15 @@ public class AnimationSet
 		player.Play();
 	}
 
-	public AnimationSetAnim GetAnimation(string name)
-	{
-		return animDictionary[name];
+	public AnimationSetAnim GetAnimation(string name) {
+		if (animDictionary != null)
+			return animDictionary[name];
+		else {
+			foreach (AnimationSetAnim anim in animations) {
+				if (anim.animationName == name)
+					return anim;
+			}
+			return null;
+		}
 	}
 }

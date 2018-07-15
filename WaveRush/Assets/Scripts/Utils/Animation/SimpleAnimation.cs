@@ -5,6 +5,7 @@ using System;
 [Serializable]
 public class SimpleAnimation {
 
+	public string animationName;
 	public Sprite[] frames;
 	public float fps = 10;
 	public float SecondsPerFrame {

@@ -292,6 +292,7 @@ public class PyroHero : PlayerHero {
 	}
 #endregion
 
+/** Unlock Quest */
 	protected override Quests.Quest UnlockQuest(HeroTier tier) {
 		switch (tier) {
 			case HeroTier.tier1:

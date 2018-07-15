@@ -56,7 +56,6 @@ namespace PlayerActions
 			GetEnemiesHit();
 			Debug.DrawRay(startPos, dir * distance, new Color(1, 1, 1), 5.0f);
 			int numEnemiesHit = 0;
-			Debug.Log("Start: " + hitEnemies.Count);
 			if (OnHitEnemy != null) {
 				foreach(Enemy e in hitEnemies) {
 					Debug.Log (e.transform.parent);
@@ -67,7 +66,6 @@ namespace PlayerActions
 				}
 			}
 			hitEnemies.Clear();
-			Debug.Log("End: " + hitEnemies.Count);
 		}
 
 		protected virtual void GetEnemiesHit() {
@@ -77,7 +75,6 @@ namespace PlayerActions
 				if (hit.collider.CompareTag("Enemy"))
 				{
 					Enemy e = hit.collider.gameObject.GetComponentInChildren<Enemy>();
-					Debug.Log("Found " + e.transform.parent);
 					hitEnemies.Add(e);
 				}
 			}

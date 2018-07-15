@@ -41,6 +41,8 @@ public class GameManager : MonoBehaviour {
 	public GameStateUpdate OnAppClosed;
 	public GameStateUpdate OnDeletedData;
 
+	public bool debugMode;
+
 
 	void Awake()
 	{

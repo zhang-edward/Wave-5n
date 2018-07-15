@@ -41,10 +41,43 @@ MonoBehaviour:
   parryDescription: 
   t1Skin:
     animations:
-    - frames:
+    - animationName: Default
+      frames:
       - {fileID: 21300000, guid: a62406d7c62a34e8a813cb08b251de0b, type: 3}
       fps: 1
-      animationName: Default
+      looping: 1
+      ignoreTimeScale: 0
+    - animationName: Charge1
+      frames:
+      - {fileID: 21300002, guid: a62406d7c62a34e8a813cb08b251de0b, type: 3}
+      fps: 60
+      looping: 1
+      ignoreTimeScale: 0
+    - animationName: Charge2
+      frames:
+      - {fileID: 21300004, guid: a62406d7c62a34e8a813cb08b251de0b, type: 3}
+      fps: 60
+      looping: 1
+      ignoreTimeScale: 0
+    - animationName: Charge3
+      frames:
+      - {fileID: 21300006, guid: a62406d7c62a34e8a813cb08b251de0b, type: 3}
+      fps: 60
+      looping: 1
+      ignoreTimeScale: 0
+    - animationName: Shoot
+      frames:
+      - {fileID: 21300008, guid: a62406d7c62a34e8a813cb08b251de0b, type: 3}
+      - {fileID: 21300010, guid: a62406d7c62a34e8a813cb08b251de0b, type: 3}
+      - {fileID: 21300000, guid: a62406d7c62a34e8a813cb08b251de0b, type: 3}
+      fps: 10
+      looping: 0
+      ignoreTimeScale: 0
+    - animationName: Move
+      frames:
+      - {fileID: 21300012, guid: a62406d7c62a34e8a813cb08b251de0b, type: 3}
+      - {fileID: 21300014, guid: a62406d7c62a34e8a813cb08b251de0b, type: 3}
+      fps: 10
       looping: 1
       ignoreTimeScale: 0
     player: {fileID: 0}
