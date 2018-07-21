@@ -35,5 +35,7 @@ namespace Quests
 			}
 			completed = CheckCompleted();
 		}
+
+		public override string QuestDescription() { return "Multi quest";}
 	}
 }

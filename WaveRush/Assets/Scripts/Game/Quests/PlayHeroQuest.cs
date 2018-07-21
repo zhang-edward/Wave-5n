@@ -23,9 +23,6 @@
 			return false;
 		}
 
-		public override string ToString()
-		{
-			return string.Format("[Quest] Play as {0}", type.ToString());
-		}
+		public override string QuestDescription() { return string.Format("Play as {0}", type.ToString()); }
 	}
 }

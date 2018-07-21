@@ -118,6 +118,7 @@ public class QuestManager : MonoBehaviour
 				quest.UpdateCompletionState(updateType);
 				if (quest.completed) {
 					gm.save.UnlockHero(i);
+					gm.heroJustUnlocked[i] = true;
 					print(string.Format("Unlocked hero {0}, tier {1}.", (HeroType)(i / 3), (HeroTier)(i % 3)));
 				}
 			}

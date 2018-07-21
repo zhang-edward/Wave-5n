@@ -1,9 +1,12 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 public class MainMenu : MonoBehaviour
 {
 	GameManager gm;
+
+	public Toggle bottomNavButton;
 
 	[Header("Primary Menus")]
 	public PawnShopMenu pawnShopMenu;
@@ -12,6 +15,8 @@ public class MainMenu : MonoBehaviour
 	[Header("Secondary Views")]
 	public PawnInfoPanel pawnInfoPanel;
 	public DialogueView dialogueView;
+	public GameObject heroUnlockedNotifyPanel;
+	public HeroTypeIcon heroUnlockedNotifyPanelIcon;
 
 	public delegate void MainMenuEvent();
 	public event MainMenuEvent OnGoToBattle;
@@ -20,22 +25,32 @@ public class MainMenu : MonoBehaviour
 	{
 		gm = GameManager.instance;
 		pawnShopMenu.Init();
+		bottomNavButton.onValueChanged.AddListener(OnNavigatedToMainMenu);
+		OnNavigatedToMainMenu(true);
 	}
 
 	public void GoToBattle()
 	{
-		//if (gm.saveGame.pawnWallet.HasExtraPawns())
-		//{
-		//	gm.DisplayAlert("You have too many heroes! Try fusing or retiring them.");	
-		//}
-		//else if (!gm.saveGame.pawnWallet.HasPawns())
-		//{
-		//	gm.DisplayAlert("You don't have any heroes! Wait for the squire to recruit some or summon some with souls.");
-		//}
-		//else
-		//{
-			if (OnGoToBattle != null)
-				OnGoToBattle();
-		//}
+		if (OnGoToBattle != null)
+			OnGoToBattle();
+	}
+
+	private void OnNavigatedToMainMenu(bool isOn) {
+		if (!isOn)
+			return;
+		StartCoroutine(NotifyHeroUnlockedRoutine());
+	}
+
+	private IEnumerator	NotifyHeroUnlockedRoutine() {
+		bool[] heroJustUnlocked = gm.heroJustUnlocked;
+		for (int i = 0; i < heroJustUnlocked.Length; i ++) {
+			if (heroJustUnlocked[i]) {
+				heroUnlockedNotifyPanelIcon.Init(Pawn.Index2Type(i), Pawn.Index2Tier(i));
+				heroUnlockedNotifyPanel.gameObject.SetActive(true);
+				gm.heroJustUnlocked[i] = false;
+				yield return new WaitWhile(() => heroUnlockedNotifyPanel.gameObject.activeInHierarchy);
+			}
+		}
+		print("Done checking heroes unlocked");
 	}
 }

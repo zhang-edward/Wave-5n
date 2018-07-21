@@ -23,9 +23,6 @@
 			return false;
 		}
 
-		public override string ToString()
-		{
-			return string.Format("[Quest] Play a Level {0} Hero", level);
-		}
+		public override string QuestDescription() { return string.Format("Play a Level {0} Hero", level); }
 	}
 }

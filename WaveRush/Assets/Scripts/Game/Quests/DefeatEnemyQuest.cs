@@ -19,9 +19,6 @@
 			return false;
 		}
 
-		public override string ToString()
-		{
-			return string.Format("[Quest] Defeat {0} Enemies", maxProgress);
-		}
+		public override string QuestDescription() { return string.Format("Defeat {0} Enemies", maxProgress); }
 	}
 }

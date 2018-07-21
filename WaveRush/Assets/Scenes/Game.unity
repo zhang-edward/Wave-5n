@@ -2033,6 +2033,48 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: fd27cd2d085584f82a0e292280a82cba, type: 2}
   m_IsPrefabParent: 0
+--- !u!1001 &232557642
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1454847758}
+    m_Modifications:
+    - target: {fileID: 4957890699186260, guid: d9c6663bc4e204146a62214e35c47251, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4957890699186260, guid: d9c6663bc4e204146a62214e35c47251, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4957890699186260, guid: d9c6663bc4e204146a62214e35c47251, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4957890699186260, guid: d9c6663bc4e204146a62214e35c47251, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4957890699186260, guid: d9c6663bc4e204146a62214e35c47251, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4957890699186260, guid: d9c6663bc4e204146a62214e35c47251, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4957890699186260, guid: d9c6663bc4e204146a62214e35c47251, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4957890699186260, guid: d9c6663bc4e204146a62214e35c47251, type: 2}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: d9c6663bc4e204146a62214e35c47251, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &233780246
 GameObject:
   m_ObjectHideFlags: 0
@@ -5696,6 +5738,7 @@ MonoBehaviour:
   holderDefaultSprite: {fileID: 21300000, guid: a365567fa3d1f47a3a999cdafbe584ad,
     type: 3}
   holderAbilityAvailableEffect:
+    animationName: 
     frames:
     - {fileID: 21300002, guid: a365567fa3d1f47a3a999cdafbe584ad, type: 3}
     - {fileID: 21300004, guid: a365567fa3d1f47a3a999cdafbe584ad, type: 3}
@@ -5703,6 +5746,7 @@ MonoBehaviour:
     - {fileID: 21300004, guid: a365567fa3d1f47a3a999cdafbe584ad, type: 3}
     fps: 10
   holderCooledDownEffect:
+    animationName: 
     frames:
     - {fileID: 21300000, guid: a365567fa3d1f47a3a999cdafbe584ad, type: 3}
     - {fileID: 21300002, guid: a365567fa3d1f47a3a999cdafbe584ad, type: 3}
@@ -5858,7 +5902,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a4beba57f0eb482abc8b5fb21dd1368, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugMode: 1
   map: {fileID: 604426280}
   enemyManager: {fileID: 822}
   player: {fileID: 1039}
@@ -8903,6 +8946,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   image: {fileID: 992841639}
   anim:
+    animationName: 
     frames:
     - {fileID: 21300016, guid: 70bd4ceac822a41c69cf0833c415ef27, type: 3}
     - {fileID: 21300018, guid: 70bd4ceac822a41c69cf0833c415ef27, type: 3}
@@ -10016,6 +10060,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   image: {fileID: 0}
   anim:
+    animationName: 
     frames: []
     fps: 10
   playOnStart: 0
@@ -10838,6 +10883,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   image: {fileID: 0}
   anim:
+    animationName: 
     frames: []
     fps: 10
   playOnStart: 0
@@ -11131,6 +11177,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   image: {fileID: 1341287323}
   anim:
+    animationName: 
     frames:
     - {fileID: 21300002, guid: 4b4c6d66d1eec4d2096b85b984d22f33, type: 3}
     - {fileID: 21300004, guid: 4b4c6d66d1eec4d2096b85b984d22f33, type: 3}
@@ -12187,6 +12234,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animateOnStart: 1
   childAnimators: []
+--- !u!4 &1454847758 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4404684871725946, guid: 275c699968bac493ab0b68cd3db7ef7d,
+    type: 2}
+  m_PrefabInternal: {fileID: 829288792}
 --- !u!1 &1458826499
 GameObject:
   m_ObjectHideFlags: 0
@@ -18945,7 +18997,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11441932, guid: f71241c0d323a46628e5b6056acd62dd, type: 2}
       propertyPath: selectedPawns.Array.data[0].level
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 11441932, guid: f71241c0d323a46628e5b6056acd62dd, type: 2}
       propertyPath: selectedPawns.Array.data[1].level
@@ -18953,7 +19005,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11441932, guid: f71241c0d323a46628e5b6056acd62dd, type: 2}
       propertyPath: selectedPawns.Array.data[0].type
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 11441932, guid: f71241c0d323a46628e5b6056acd62dd, type: 2}
       propertyPath: selectedPawns.Array.data[1].type
@@ -18971,6 +19023,10 @@ Prefab:
       value: 
       objectReference: {fileID: 11400000, guid: 0baf51122b00f4d82949f876a2b67536,
         type: 2}
+    - target: {fileID: 11441932, guid: f71241c0d323a46628e5b6056acd62dd, type: 2}
+      propertyPath: debugMode
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f71241c0d323a46628e5b6056acd62dd, type: 2}
   m_IsPrefabParent: 0
@@ -19414,6 +19470,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sr: {fileID: 0}
   anim:
+    animationName: 
     frames: []
     fps: 10
   playOnStart: 0
@@ -21887,6 +21944,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   image: {fileID: 2135467787}
   anim:
+    animationName: 
     frames:
     - {fileID: 21300000, guid: 70bd4ceac822a41c69cf0833c415ef27, type: 3}
     - {fileID: 21300002, guid: 70bd4ceac822a41c69cf0833c415ef27, type: 3}

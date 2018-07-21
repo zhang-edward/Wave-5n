@@ -24,9 +24,6 @@
 			return false;
 		}
 
-		public override string ToString()
-		{
-			return string.Format("[Quest] Complete Stage {0}-{1}", series + 1, stage + 1);
-		}
+		public override string QuestDescription() { return string.Format("Complete Stage {0}-{1}", series + 1, stage + 1); }
 	}
 }

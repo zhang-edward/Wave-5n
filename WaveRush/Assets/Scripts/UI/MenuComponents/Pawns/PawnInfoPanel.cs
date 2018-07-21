@@ -73,7 +73,7 @@ public class PawnInfoPanel : MonoBehaviour
 		midPanelTabToggleGroup.SetAllTogglesOff();
 		// Initialize ScrollView
 		midPanelScrollView.SetSelectedContentIndex(1);
-		midPanelScrollView.ForcePosition();
+		StartCoroutine(ForcePosAfter1Frame());
 		// Initialize the scrolling text to display info about the hero
 		infoText.defaultText = heroData.heroDescription;
 		infoText.SetToDefaultText();
@@ -106,6 +106,12 @@ public class PawnInfoPanel : MonoBehaviour
 		abilityIcon2.GetComponent<Toggle>().isOn = false;
 		sAbilityIcon.GetComponent<Toggle>().isOn = false;
 		parryIcon	.GetComponent<Toggle>().isOn = false;
+	}
+
+	// Have to do this due to some shitty ass bug
+	private IEnumerator ForcePosAfter1Frame() {
+		yield return new WaitForEndOfFrame();
+		midPanelScrollView.ForcePosition();
 	}
 
 	// If a mid panel toggle was turned off, return to middle tab

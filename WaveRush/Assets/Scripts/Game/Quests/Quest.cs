@@ -31,10 +31,13 @@
 		}
 
 		protected abstract bool CheckCompleted();
+		public abstract string QuestDescription();
+		public override string ToString() { return "[Quest] " + QuestDescription(); }
 
 		public void SetCompleted(bool completed)
 		{
 			this.completed = completed;
 		}
+
 	}
 }

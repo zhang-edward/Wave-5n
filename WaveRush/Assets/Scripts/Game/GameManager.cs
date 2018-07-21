@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour {
 	/** Public Fields */
 	[Header("Quest Manager")]
 	public QuestManager questManager;
+	public bool[] heroJustUnlocked;
 	//[Header("Save Game")]
 	private SaveGame sg;
 	public SaveModifier save;	// Use this to modify the save game. Allows events to be handled properly
@@ -58,6 +59,7 @@ public class GameManager : MonoBehaviour {
 		SaveLoad.Load (ref sg);
 		save = new SaveModifier(sg);
 		loadingOverlay.gameObject.SetActive(false);
+		heroJustUnlocked = new bool[System.Enum.GetValues(typeof(HeroType)).Length * 3];
 	}
 
 	void Start()

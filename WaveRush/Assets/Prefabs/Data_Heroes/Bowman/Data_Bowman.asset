@@ -39,6 +39,10 @@ MonoBehaviour:
   ability2Description: 
   specialDescription: 
   parryDescription: 
+  icons:
+  - {fileID: 21300000, guid: a62406d7c62a34e8a813cb08b251de0b, type: 3}
+  - {fileID: 21300000, guid: a62406d7c62a34e8a813cb08b251de0b, type: 3}
+  - {fileID: 21300000, guid: a62406d7c62a34e8a813cb08b251de0b, type: 3}
   t1Skin:
     animations:
     - animationName: Default
@@ -82,12 +86,20 @@ MonoBehaviour:
       ignoreTimeScale: 0
     player: {fileID: 0}
   t2Skin:
-    animations: []
+    animations:
+    - animationName: Default
+      frames:
+      - {fileID: 0}
+      fps: 0
+      looping: 0
+      ignoreTimeScale: 0
     player: {fileID: 0}
   t3Skin:
-    animations: []
+    animations:
+    - animationName: Default
+      frames:
+      - {fileID: 0}
+      fps: 0
+      looping: 0
+      ignoreTimeScale: 0
     player: {fileID: 0}
-  icons:
-  - {fileID: 21300000, guid: a62406d7c62a34e8a813cb08b251de0b, type: 3}
-  - {fileID: 21300000, guid: a62406d7c62a34e8a813cb08b251de0b, type: 3}
-  - {fileID: 21300000, guid: a62406d7c62a34e8a813cb08b251de0b, type: 3}

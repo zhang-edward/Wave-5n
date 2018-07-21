@@ -44,71 +44,76 @@ MonoBehaviour:
     to do a powerful dash through up to 15 enemies. You are <color=yellow>invulnerable</color>
     during this ability.
   parryDescription: Damages nearby foes and gains a shield for 2 seconds.
+  icons:
+  - {fileID: 21300000, guid: ba48fe4404b02447f97ebc1d9bf4f1f1, type: 3}
+  - {fileID: 0}
+  - {fileID: 21300000, guid: 7d1b8eb68db394076bc24ecb65839bc1, type: 3}
   t1Skin:
     animations:
-    - frames:
+    - animationName: Default
+      frames:
       - {fileID: 21300000, guid: ba48fe4404b02447f97ebc1d9bf4f1f1, type: 3}
       fps: 10
-      animationName: Default
       looping: 0
       ignoreTimeScale: 0
-    - frames:
+    - animationName: Rush
+      frames:
       - {fileID: 21300004, guid: ba48fe4404b02447f97ebc1d9bf4f1f1, type: 3}
       - {fileID: 21300006, guid: ba48fe4404b02447f97ebc1d9bf4f1f1, type: 3}
       fps: 10
-      animationName: Rush
       looping: 1
       ignoreTimeScale: 0
-    - frames:
+    - animationName: Shield
+      frames:
       - {fileID: 21300008, guid: ba48fe4404b02447f97ebc1d9bf4f1f1, type: 3}
       fps: 1
-      animationName: Shield
       looping: 0
       ignoreTimeScale: 0
-    - frames:
+    - animationName: Special
+      frames:
       - {fileID: 21300010, guid: ba48fe4404b02447f97ebc1d9bf4f1f1, type: 3}
       - {fileID: 21300012, guid: ba48fe4404b02447f97ebc1d9bf4f1f1, type: 3}
       - {fileID: 21300014, guid: ba48fe4404b02447f97ebc1d9bf4f1f1, type: 3}
       - {fileID: 21300016, guid: ba48fe4404b02447f97ebc1d9bf4f1f1, type: 3}
       fps: 10
-      animationName: Special
       looping: 0
       ignoreTimeScale: 1
     player: {fileID: 0}
   t2Skin:
     animations:
-    - frames:
+    - animationName: Default
+      frames:
       - {fileID: 21300000, guid: e81998aed81ae4b70a48ba3c9d8a9f9d, type: 3}
       fps: 10
-      animationName: Default
       looping: 0
       ignoreTimeScale: 0
-    - frames:
+    - animationName: Rush
+      frames:
       - {fileID: 21300004, guid: e81998aed81ae4b70a48ba3c9d8a9f9d, type: 3}
       - {fileID: 21300006, guid: e81998aed81ae4b70a48ba3c9d8a9f9d, type: 3}
       fps: 10
-      animationName: Rush
       looping: 1
       ignoreTimeScale: 0
-    - frames:
+    - animationName: Shield
+      frames:
       - {fileID: 21300008, guid: e81998aed81ae4b70a48ba3c9d8a9f9d, type: 3}
       fps: 1
-      animationName: Shield
       looping: 0
       ignoreTimeScale: 0
-    - frames:
+    - animationName: Special
+      frames:
+      - {fileID: 21300036, guid: e81998aed81ae4b70a48ba3c9d8a9f9d, type: 3}
       - {fileID: 21300010, guid: e81998aed81ae4b70a48ba3c9d8a9f9d, type: 3}
       - {fileID: 21300012, guid: e81998aed81ae4b70a48ba3c9d8a9f9d, type: 3}
       - {fileID: 21300014, guid: e81998aed81ae4b70a48ba3c9d8a9f9d, type: 3}
-      - {fileID: 21300016, guid: e81998aed81ae4b70a48ba3c9d8a9f9d, type: 3}
       fps: 10
-      animationName: Special
       looping: 0
       ignoreTimeScale: 1
     player: {fileID: 0}
   t3Skin:
     animations:
-    - frames:
+    - animationName: Default
+      frames:
       - {fileID: 21300000, guid: ed673d88e27de45ef87dd9f173b2a314, type: 3}
       - {fileID: 21300002, guid: ed673d88e27de45ef87dd9f173b2a314, type: 3}
       - {fileID: 21300004, guid: ed673d88e27de45ef87dd9f173b2a314, type: 3}
@@ -116,35 +121,30 @@ MonoBehaviour:
       - {fileID: 21300008, guid: ed673d88e27de45ef87dd9f173b2a314, type: 3}
       - {fileID: 21300010, guid: ed673d88e27de45ef87dd9f173b2a314, type: 3}
       fps: 10
-      animationName: Default
       looping: 1
       ignoreTimeScale: 0
-    - frames:
+    - animationName: Rush
+      frames:
       - {fileID: 21300012, guid: ed673d88e27de45ef87dd9f173b2a314, type: 3}
       - {fileID: 21300014, guid: ed673d88e27de45ef87dd9f173b2a314, type: 3}
       - {fileID: 21300016, guid: ed673d88e27de45ef87dd9f173b2a314, type: 3}
       - {fileID: 21300018, guid: ed673d88e27de45ef87dd9f173b2a314, type: 3}
       fps: 10
-      animationName: Rush
       looping: 1
       ignoreTimeScale: 0
-    - frames:
+    - animationName: Shield
+      frames:
       - {fileID: 21300020, guid: ed673d88e27de45ef87dd9f173b2a314, type: 3}
       fps: 1
-      animationName: Shield
       looping: 0
       ignoreTimeScale: 0
-    - frames:
+    - animationName: Special
+      frames:
       - {fileID: 21300022, guid: ed673d88e27de45ef87dd9f173b2a314, type: 3}
       - {fileID: 21300024, guid: ed673d88e27de45ef87dd9f173b2a314, type: 3}
       - {fileID: 21300026, guid: ed673d88e27de45ef87dd9f173b2a314, type: 3}
       - {fileID: 21300028, guid: ed673d88e27de45ef87dd9f173b2a314, type: 3}
       fps: 10
-      animationName: Special
       looping: 0
       ignoreTimeScale: 1
     player: {fileID: 0}
-  icons:
-  - {fileID: 21300000, guid: ba48fe4404b02447f97ebc1d9bf4f1f1, type: 3}
-  - {fileID: 21300000, guid: e81998aed81ae4b70a48ba3c9d8a9f9d, type: 3}
-  - {fileID: 21300000, guid: 7d1b8eb68db394076bc24ecb65839bc1, type: 3}

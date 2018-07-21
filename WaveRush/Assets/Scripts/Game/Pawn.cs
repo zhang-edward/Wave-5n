@@ -244,6 +244,10 @@ public class Pawn : System.IComparable<Pawn>
 		return str;
 	}
 
+	public static HeroTier	Index2Tier(int i) { return (HeroTier)(i % 3); }
+	public static HeroType	Index2Type(int i) { return (HeroType)(i / 3); }
+	public static int		GetIndex(HeroType type, HeroTier tier) { return (int)type * 3 + (int)tier; }
+
 #endregion
 }
 

@@ -33,5 +33,7 @@ namespace Quests
 			}
 			return false;
 		}
+
+		public override string QuestDescription() { return subQuest.QuestDescription() + numTimes + " times"; }
 	}
 }

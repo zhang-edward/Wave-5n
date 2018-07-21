@@ -43,11 +43,8 @@ public class SaveGame
 		wallet = new Wallet();
 		pawnWallet = new PawnWallet();
 
-		unlockedHeroes = new bool[0];
-		availableHeroes = new List<Pawn>();
-
 		// Get hero types
-		int numHeroTypes = Enum.GetValues(typeof(HeroType)).Length;
+		int numHeroTypes = Enum.GetValues(typeof(HeroType)).Length * 3;
 		unlockedHeroes = new bool[numHeroTypes];
 		unlockedHeroes[0] = true;
 	}
