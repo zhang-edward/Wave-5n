@@ -95,15 +95,15 @@ public class NinjaHero : PlayerHero {
 
 	}
 
-	private void DashAttack()
+	private void DashAttack(Vector3 dir)
 	{
-		if (!CheckIfCooledDownNotify(0, true, HandleDragRelease))
+		if (!CheckIfCooledDownNotify(0, HandleDragRelease, dir))
 			return;
 		ResetCooldownTimer (0);
 
 		// Get values
-		float distance = GetDashDistanceClamped(transform.position, player.dir.normalized);
-		Vector3 dest = (Vector3)player.dir.normalized * distance + player.transform.parent.position;
+		float distance = GetDashDistanceClamped(transform.position, dir.normalized);
+		Vector3 dest = (Vector3)dir.normalized * distance + player.transform.parent.position;
 		// Assign origin and dest
 		lastDashOutPos = transform.position;
 		lastDashInPos = dest;
@@ -158,13 +158,13 @@ public class NinjaHero : PlayerHero {
 		dashAbility.OnTeleportIn -= shadowBackupDetector.Execute;
 	}
 
-	private void NinjaStar()
+	private void NinjaStar(Vector3 dir)
 	{
 		// if cooldown has not finished
 		if (!CheckIfCooledDownNotify(1))
 			return;
 		ResetCooldownTimer(1);
-		ShootStar(player.dir.normalized);
+		ShootStar(dir.normalized);
 	}
 
 	private void ShootStar(Vector2 dir)
@@ -201,7 +201,7 @@ public class NinjaHero : PlayerHero {
 	/// <param name="dest">Destination.</param>
 	private void OnDashIn()
 	{
-		body.Move (player.dir.normalized);		
+		//body.Move (dir.normalized);		
 
 		if (OnNinjaDash != null)
 			OnNinjaDash();

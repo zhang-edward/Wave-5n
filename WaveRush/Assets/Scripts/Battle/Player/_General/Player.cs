@@ -24,7 +24,7 @@ public class Player : MonoBehaviour, IDamageable
 	private GameObject[] heroList;
 
 	[Header("Player direction")]
-	public Vector2   dir;		// player's facing direction and movement direction
+	// public Vector2   dir;		// player's facing direction and movement direction
 	public Transform dirIndicator;
 
 	[Header("Stats")]

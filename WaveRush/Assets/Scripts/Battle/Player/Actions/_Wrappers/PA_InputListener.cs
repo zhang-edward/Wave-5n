@@ -8,19 +8,17 @@
 	{
 		private Coroutine executeRoutine;
 
-		public enum InputType 
-		{
+		public enum InputType {
 			Drag,
 			Tap,
 			TapHold,
 		}
-		public PlayerAction action;
+		public PlayerHero.DirectionalInputAction Callback;
 		public InputType input;			// What type of input to listen for
 
-		public void Init(Player player, PlayerAction action)
-		{
+		public void Init(Player player, PlayerHero.DirectionalInputAction Callback) {
 			base.Init(player);
-			this.action = action;
+			this.Callback = Callback;
 		}
 
 		protected override void DoAction()
@@ -32,37 +30,43 @@
 
 		private IEnumerator ExecuteRoutine()
 		{
-			switch (input)
-			{
-				case InputType.Drag:
-					hero.onDragRelease += TryExecuteSubAction;
-					break;
-				case InputType.Tap:
-					hero.onTap += TryExecuteSubAction;
-					break;
-				case InputType.TapHold:
-					hero.onTapHoldDown += TryExecuteSubAction;
-					break;
-			}
+			EnableListener();
 			yield return new WaitForSecondsRealtime(duration);
-			switch (input)
-			{
+			DisableListener();
+		}
+
+		private void OnInputDetected(Vector3 dir) {
+			Callback(dir);
+			DisableListener();
+			player.StopCoroutine(executeRoutine);
+		}
+
+		private void EnableListener() {
+			switch (input) {
 				case InputType.Drag:
-					hero.onDragRelease -= TryExecuteSubAction;
+					hero.onDragRelease += OnInputDetected;
 					break;
 				case InputType.Tap:
-					hero.onTap -= TryExecuteSubAction;
+					hero.onTap += OnInputDetected;
 					break;
 				case InputType.TapHold:
-					hero.onTapHoldDown -= TryExecuteSubAction;
+					hero.onTapHoldDown += OnInputDetected;
 					break;
 			}
 		}
 
-		private void TryExecuteSubAction()
-		{
-			//Debug.Log("Input Listener executing sub action: " + action);
-			action.Execute();
+		private void DisableListener() {
+			switch (input) {
+				case InputType.Drag:
+					hero.onDragRelease -= OnInputDetected;
+					break;
+				case InputType.Tap:
+					hero.onTap -= OnInputDetected;
+					break;
+				case InputType.TapHold:
+					hero.onTapHoldDown -= OnInputDetected;
+					break;
+			}
 		}
 	}
 }

@@ -36,7 +36,7 @@ public class TutorialScene1Manager : MonoBehaviour
 	public MapType mapType;
 
 	private KnightHero knight;
-	private PlayerHero.InputAction storedOnSwipe, storedOnTap;
+	private PlayerHero.DirectionalInputAction storedOnSwipe, storedOnTap;
 
 	private int knightRushCount;
 	private int knightShieldCount;

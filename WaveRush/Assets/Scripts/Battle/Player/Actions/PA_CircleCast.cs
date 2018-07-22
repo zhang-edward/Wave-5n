@@ -36,7 +36,7 @@ namespace PlayerActions
 		public void SetCast(Vector2 start, Vector2 dir, float distance)
 		{
 			this.startPos = start;
-			this.dir = dir;
+			this.dir = dir.normalized;
 			this.distance = distance;
 		}
 

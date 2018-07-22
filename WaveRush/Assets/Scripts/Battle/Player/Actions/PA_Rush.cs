@@ -13,13 +13,13 @@
 		public PA_EffectAttached effect;
 		public CollisionDetector collision;
 		public bool lockInput;
-		[Space]
 		public int maxHit;				// the maxmimum number of enemies that can be collided with during the rush
 		[Header("Effects and SFX")]
 		public string     rushState = "Default";
 		public AudioClip  rushSound;
 		private List<Enemy> hitEnemies = new List<Enemy>();	// enemies collided with during one execution of this ability
 		private bool rushHitBoxOn;
+		private Vector3 dir;
 
 		public delegate void HitEnemy(Enemy e);
 		private HitEnemy OnHitEnemy;
@@ -34,6 +34,10 @@
 			collision.OnTriggerStay += HandleCollideWithEnemy;
 		}
 
+		public void SetDirection(Vector3 dir) {
+			this.dir = dir;
+		}
+
 		protected override void DoAction()
 		{
 			player.StartCoroutine(RushRoutine());
@@ -43,8 +47,9 @@
 		{
 			sound.RandomizeSFX(rushSound);  // Sound
 			hero.anim.Play(rushState);      // Animation
+			effect.SetRotation(dir);
 			effect.Execute();            	// Effects
-
+			movement.SetDirection(dir);
 			movement.Execute();
 			rushHitBoxOn = true;
 			if (lockInput)

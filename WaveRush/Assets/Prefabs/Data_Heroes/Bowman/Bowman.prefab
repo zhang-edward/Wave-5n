@@ -64,7 +64,7 @@ MonoBehaviour:
   healthPerHeart: 0
   stats: []
   heroType: 3
-  numHearts: 12
+  numHearts: 4
   maxComboTimer: 3
   cooldownTime:
   - 1.5
@@ -78,13 +78,65 @@ MonoBehaviour:
     circleCastSound: {fileID: 0}
     circleCastState: Shoot
   retreatAbility:
-    duration: 0
+    duration: 1
     speed: 3
-    time: 0.5
-    drag: 1
+    time: 1
+    drag: 5
+  arrowRainAbility:
+    duration: -1
+    arrowRainParticlesPrefab: {fileID: 1254860484030048, guid: f72628cda52e9428dbdf6a434f7d5281,
+      type: 2}
+    areaEffect:
+      duration: 2
+      range: 4
+      maxHit: 15
+      loseMomentum: 0
+      disableInput: 0
+      areaAttackSound: {fileID: 0}
+      areaAttackState: Default
+    shootEffect:
+      duration: -1
+      effect:
+        animationName: ShootEffect
+        frames:
+        - {fileID: 21300000, guid: 7efd0cb5b9aa84019ab75b959ed2e179, type: 3}
+        - {fileID: 21300002, guid: 7efd0cb5b9aa84019ab75b959ed2e179, type: 3}
+        - {fileID: 21300004, guid: 7efd0cb5b9aa84019ab75b959ed2e179, type: 3}
+        - {fileID: 21300006, guid: 7efd0cb5b9aa84019ab75b959ed2e179, type: 3}
+        - {fileID: 21300008, guid: 7efd0cb5b9aa84019ab75b959ed2e179, type: 3}
+        - {fileID: 21300010, guid: 7efd0cb5b9aa84019ab75b959ed2e179, type: 3}
+        - {fileID: 21300012, guid: 7efd0cb5b9aa84019ab75b959ed2e179, type: 3}
+        - {fileID: 21300014, guid: 7efd0cb5b9aa84019ab75b959ed2e179, type: 3}
+        fps: 10
+      rotationType: 0
+      color: {r: 1, g: 1, b: 1, a: 0.69803923}
+    bowAppearSound: {fileID: 8300000, guid: 6fccc87d0aad04ebaa74e9f5096064fb, type: 3}
+    shootSound: {fileID: 8300000, guid: 1d753ac6ac4df42d6beb13b71d03efae, type: 3}
+    areaEffectSound: {fileID: 8300000, guid: f254ca76191d047da84beb655f89f8fe, type: 3}
   arrowTrailPrefab: {fileID: 1779908263273456, guid: dbe80fab546fa4b8a96fbb37fe254a1c,
     type: 2}
-  charging: 0
+  hitEffect:
+    animationName: HitEffect
+    frames:
+    - {fileID: 21300000, guid: 45778dbe309ae4b08932278db1b2c7dc, type: 3}
+    - {fileID: 21300002, guid: 45778dbe309ae4b08932278db1b2c7dc, type: 3}
+    - {fileID: 21300004, guid: 45778dbe309ae4b08932278db1b2c7dc, type: 3}
+    fps: 10
+  critEffect:
+    animationName: CritEffect
+    frames:
+    - {fileID: 21300000, guid: 119360f6783c9475daf33e8f041283f2, type: 3}
+    - {fileID: 21300002, guid: 119360f6783c9475daf33e8f041283f2, type: 3}
+    - {fileID: 21300004, guid: 119360f6783c9475daf33e8f041283f2, type: 3}
+    - {fileID: 21300006, guid: 119360f6783c9475daf33e8f041283f2, type: 3}
+    - {fileID: 21300008, guid: 119360f6783c9475daf33e8f041283f2, type: 3}
+    - {fileID: 21300010, guid: 119360f6783c9475daf33e8f041283f2, type: 3}
+    fps: 10
+  shootSounds:
+  - {fileID: 8300000, guid: 36b63129366b74da9ac9688040545878, type: 3}
+  - {fileID: 8300000, guid: 63c2b2247a27d4e1593f710bb761098e, type: 3}
+  specialHitSound: {fileID: 8300000, guid: 1f580ace47b11418094d3fc2310d742d, type: 3}
+  specialChargeSound: {fileID: 8300000, guid: 40fd5dcf54837455c9bc07108b6a6d6e, type: 3}
 --- !u!114 &114731331671095352
 MonoBehaviour:
   m_ObjectHideFlags: 1

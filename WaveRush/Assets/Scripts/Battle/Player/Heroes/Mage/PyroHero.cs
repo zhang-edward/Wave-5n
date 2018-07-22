@@ -45,7 +45,7 @@ public class PyroHero : PlayerHero {
 
 		protected override void GetEnemiesHit() {
 			base.GetEnemiesHit();
-			RaycastHit2D[] hits = Physics2D.CircleCastAll(player.transform.position, 0.3f, player.dir, RANGE);
+			RaycastHit2D[] hits = Physics2D.CircleCastAll(player.transform.position, 0.3f, (Vector3)position - player.transform.position, RANGE);
 			foreach (RaycastHit2D hit in hits)
 			{
 				if (hit.collider.CompareTag("Enemy"))
@@ -123,7 +123,7 @@ public class PyroHero : PlayerHero {
 		base.Init (body, player, heroData);
 
 		onDragHold = ShootFireSpurt;
-		onDragRelease = () => { fireSpurtBuffer = 0; };
+		onDragRelease = (dir) => { fireSpurtBuffer = 0; };
 		onTap = StartTeleport;
 		InitAbilities();
 	}
@@ -140,7 +140,7 @@ public class PyroHero : PlayerHero {
 	}
 #endregion
 #region FireSpurt
-	private void ShootFireSpurt()
+	private void ShootFireSpurt(Vector3 dir)
 	{
 		if (fireSpurtBuffer < 0.2f)	{
 			fireSpurtBuffer += Time.deltaTime;
@@ -150,7 +150,7 @@ public class PyroHero : PlayerHero {
 			return;
 		ResetCooldownTimer (0);
 
-		fireSpurtAbility.SetDirection(player.dir);
+		fireSpurtAbility.SetDirection(dir);
 		fireSpurtAbility.Execute();
 		if (shootStateSwitch)
 			anim.Play("Shoot1");
@@ -158,9 +158,8 @@ public class PyroHero : PlayerHero {
 			anim.Play("Shoot2");
 		shootStateSwitch = !shootStateSwitch;
 		/** Recoil */
-		Vector2 dir = player.dir.normalized;
-		body.Move (dir);	// set the sprites flipX to the correct direction
-		body.rb2d.velocity = dir * -FIRESPURT_RECOIL;
+		body.Move (dir.normalized);	// set the sprites flipX to the correct direction
+		body.rb2d.velocity = dir.normalized * -FIRESPURT_RECOIL;
 
 		/** Event */
 		// if (OnMageShotFireball != null)
@@ -182,15 +181,15 @@ public class PyroHero : PlayerHero {
 		teleportIndicator.gameObject.SetActive(false);
 	}
 
-	public void StartTeleport() {
-		if (!CheckIfCooledDownNotify (1) || !CanTeleport(player.transform.position + (Vector3)player.dir))
+	public void StartTeleport(Vector3 dir) {
+		if (!CheckIfCooledDownNotify (1) || !CanTeleport(player.transform.position + dir))
 			return;
 		player.body.Move(Vector3.zero);		// Kill momentum
-		player.dir = Vector2.ClampMagnitude(player.dir, FIREZONE_RANGE);
+		dir = Vector2.ClampMagnitude(dir, FIREZONE_RANGE);
 		teleportAbility.OnTeleportIn += DisableTeleportIndicator;
 		teleportIndicator.gameObject.SetActive(true);
-		teleportIndicator.transform.position = transform.position + (Vector3)player.dir;
-		teleportAbility.SetDestination(transform.position + (Vector3)player.dir);
+		teleportIndicator.transform.position = transform.position + dir;
+		teleportAbility.SetDestination(transform.position + dir);
 		teleportAbility.Execute();
 		ResetCooldownTimer(1);
 	}

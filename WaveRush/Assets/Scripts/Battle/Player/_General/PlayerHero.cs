@@ -61,16 +61,17 @@ public abstract class PlayerHero : MonoBehaviour {
 
 	/** Delegates and events */
 	// Input Actions
+	public delegate void DirectionalInputAction(Vector3 dir);
+	protected DirectionalInputAction inputAction;
+	public	  DirectionalInputAction onTouchBegan;
+	public	  DirectionalInputAction onTouchEnded;
+	public    DirectionalInputAction onDragBegan;
+	public 	  DirectionalInputAction onDragRelease;
+	public    DirectionalInputAction onDragHold;
+	public    DirectionalInputAction onTap;
+	public    DirectionalInputAction onTapHoldRelease;
+	public    DirectionalInputAction onTapHoldDown;
 	public delegate void InputAction();
-	protected InputAction inputAction;
-	public	  InputAction onTouchBegan;
-	public	  InputAction onTouchEnded;
-	public    InputAction onDragBegan;
-	public 	  InputAction onDragRelease;
-	public    InputAction onDragHold;
-	public    InputAction onTap;
-	public    InputAction onTapHoldRelease;
-	public    InputAction onTapHoldDown;
 	public    InputAction onSpecialAbility;
 	public    InputAction onParrySuccess;
 	// Miscellaneous
@@ -135,67 +136,66 @@ public abstract class PlayerHero : MonoBehaviour {
 	}
 
 #region Input Handlers
-	public void HandleTouchBegan() {
+	public void HandleTouchBegan(Vector3 dir) {
 		if (onTouchBegan != null) 
-			onTouchBegan();
+			onTouchBegan(dir);
 	}
 
-	public void HandleTouchEnded() {
+	public void HandleTouchEnded(Vector3 dir) {
 		if (onTouchEnded != null)
-			onTouchEnded();
+			onTouchEnded(dir);
 	}
 
 	/** Player Inputs */
 	/// <summary>
 	/// Performs an action on tap
 	/// </summary>
-	public void HandleTap ()
-	{
+	public void HandleTap (Vector3 dir) {
 		if (onTap != null)
-			onTap();
+			onTap(dir);
 	}
 
 	/// <summary>
 	/// Performs an action on tap release
 	/// </summary>
-	public void HandleTapHoldRelease()
+	public void HandleTapHoldRelease(Vector3 dir)
 	{
 		if (onTapHoldRelease != null)
-			onTapHoldRelease();
+			onTapHoldRelease(dir);
 	}
 
 	/// <summary>
 	/// Performs an action on screen held down
 	/// </summary>
-	public void HandleHoldDown()
+	public void HandleHoldDown(Vector3 dir)
 	{
 		if (onTapHoldDown != null)
-			onTapHoldDown();
+			onTapHoldDown(dir);
 	}
 
 	/// <summary>
 	/// Performs an action on drag
 	/// </summary>
-	public void HandleDragRelease()
+	public void HandleDragRelease(Vector3 dir)
 	{
 		if (onDragRelease != null)
-			onDragRelease();
+			onDragRelease(dir);
 		player.dirIndicator.gameObject.SetActive(false);
 	}
 
 	/// <summary>
 	/// Performs an action on dragHoldDown
 	/// </summary>
-	public void HandleDragHold()
+	public void HandleDragHold(Vector3 dir)
 	{
 		if (onDragHold != null)
-			onDragHold();
+			onDragHold(dir);
 		
 		if (dragIndicatorEnabled) {
 			player.dirIndicator.gameObject.SetActive(true);
-			float angle = Mathf.Atan2(player.dir.y, player.dir.x) * Mathf.Rad2Deg;
+			float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
 			player.dirIndicator.rotation = Quaternion.Euler(0, 0, angle);
-			float dirIndicatorLength = Mathf.Min(player.dir.magnitude, 2);			// Max length is 2
+			float dirIndicatorLength = Mathf.Min(dir.magnitude, 2);			// Max length is 2
 			player.dirIndicator.localScale = new Vector3(dirIndicatorLength, 0.5f, 1);
 		}
 	}
@@ -203,14 +203,12 @@ public abstract class PlayerHero : MonoBehaviour {
 	/// <summary>
 	/// Performs an action on started drag
 	/// </summary>
-	public void HandleDragBegan()
-	{
+	public void HandleDragBegan(Vector3 dir) {
 		if (onDragBegan != null)
-			onDragBegan();
+			onDragBegan(dir);
 	}
 
-	public void HandleDragCancel()
-	{
+	public void HandleDragCancel() {
 		player.dirIndicator.gameObject.SetActive(false);
 	}
 
@@ -219,21 +217,21 @@ public abstract class PlayerHero : MonoBehaviour {
 	/// </summary>
 	public abstract void SpecialAbility();
 
-	protected void QueueAction(float t)
+	protected void QueueAction(float t, Vector3 dir)
 	{
 		if (queuedActionRoutine != null)
 			StopCoroutine(queuedActionRoutine);
-		queuedActionRoutine = StartCoroutine(QueueActionRoutine(t));
+		queuedActionRoutine = StartCoroutine(QueueActionRoutine(t, dir));
 	}
 
 	/// <summary>
 	/// Queues the action
 	/// </summary>
 	/// <param name="t">Time</param>
-	private IEnumerator QueueActionRoutine(float t)
+	private IEnumerator QueueActionRoutine(float t, Vector3 dir)
 	{
 		yield return new WaitForSeconds(t);
-		inputAction();
+		inputAction(dir);
 	}
 
 	public virtual void HandleMultiTouch()
@@ -336,24 +334,34 @@ public abstract class PlayerHero : MonoBehaviour {
 	/// </summary>
 	/// <returns><c>true</c>if the ability with index <paramref name="index"/> is cooled down,<c>false</c> otherwise.</returns>
 	/// <param name="index">Index of the ability.</param>
-	/// <param name="bufferAction">If set to <c>true</c> buffer the ability if it is not cooled down.</param>
-	/// <param name="input">The input.</param>
-	public bool CheckIfCooledDownNotify(int index, bool bufferAction = false, InputAction input = null)
+	public bool CheckIfCooledDownNotify(int index)
 	{
 		// If the ability is not cooled down
 		if (cooldownTimers[index] > 0)
 		{
+			if (OnAbilityFailed != null)
+				OnAbilityFailed(index);
+			return false;
+		}
+		else
+			return true;
+	}
+
+	/// <summary>
+	/// Checks if an ability is cooled down and, if not, notifies event listeners (for the HUD icons to flash red)
+	/// </summary>
+	/// <returns><c>true</c>if the ability with index <paramref name="index"/> is cooled down,<c>false</c> otherwise.</returns>
+	/// <param name="index">Index of the ability.</param>
+	/// <param name="input">The input.</param>
+	/// <param name="dir">The direction to pass to the input.</param>
+	public bool CheckIfCooledDownNotify(int index, DirectionalInputAction input, Vector3 dir)
+	{
+		// If the ability is not cooled down
+		if (cooldownTimers[index] > 0) {
 			// If we can buffer the action, buffer it
-			if (bufferAction && cooldownTimers [index]< 0.3f)
-			{
+			if (cooldownTimers [index]< 0.3f) {
 				inputAction = input;
-				QueueAction (cooldownTimers [index]);
-			}
-			// Otherwise, notify that the ability failed
-			else
-			{
-				if (OnAbilityFailed != null)
-					OnAbilityFailed(index);
+				QueueAction (cooldownTimers [index], dir);
 			}
 			return false;
 		}

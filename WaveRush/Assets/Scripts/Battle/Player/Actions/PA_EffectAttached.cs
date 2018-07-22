@@ -23,7 +23,8 @@
 				anim.transform.localPosition = new Vector2(anim.transform.localPosition.x * sign, anim.transform.localPosition.y);
 			}
 			// Set the rotation for the effect
-			Quaternion rot = GetRotation();
+			if (rotationType != RotationType.Set)
+				rotation = GetRotation();
 
 			// Initialize the effect properties
 			TempObjectInfo info = new TempObjectInfo();
@@ -35,7 +36,7 @@
 
 			// Initialize the effect and play it
 			anim.GetComponent<TempObject>().Init(
-				rot,
+				rotation,
 				anim.transform.position,
 				anim.anim.frames[0],
 				info);

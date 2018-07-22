@@ -10,7 +10,7 @@ public class Knight_SuperRush : HeroPowerUpCharged
 	public PA_Rush rushAbility;
 
 	private KnightHero knight;
-	private PlayerHero.InputAction storedOnDragRelease;
+	private PlayerHero.DirectionalInputAction storedOnDragRelease;
 	public float chargeBuffer;
 
 	public override void Activate(PlayerHero hero)
@@ -23,7 +23,7 @@ public class Knight_SuperRush : HeroPowerUpCharged
 		OnStoppedCharging += ResetOnStopCharging;
 	}
 
-	private void Charge() {
+	private void Charge(Vector3 dir) {
 		if (chargeBuffer < CHARGE_BUFFER_TIME)
 			chargeBuffer += Time.deltaTime;
 		else if (knight.cooldownTimers[0] > 0)
@@ -43,12 +43,13 @@ public class Knight_SuperRush : HeroPowerUpCharged
 		knight.onDragRelease = SuperRush;
 	}
 
-	public void SuperRush()
+	public void SuperRush(Vector3 dir)
 	{
 		// check cooldown
-		if (!knight.CheckIfCooledDownNotify (0, true, knight.HandleDragRelease))
+		if (!knight.CheckIfCooledDownNotify (0, knight.HandleDragRelease, dir))
 			return;
 		knight.ResetCooldownTimer (0);
+		rushAbility.SetDirection(dir);
 		rushAbility.Execute();
 
 		// Reset

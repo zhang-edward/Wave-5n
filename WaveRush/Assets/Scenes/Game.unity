@@ -2033,48 +2033,6 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: fd27cd2d085584f82a0e292280a82cba, type: 2}
   m_IsPrefabParent: 0
---- !u!1001 &232557642
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 1454847758}
-    m_Modifications:
-    - target: {fileID: 4957890699186260, guid: d9c6663bc4e204146a62214e35c47251, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4957890699186260, guid: d9c6663bc4e204146a62214e35c47251, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4957890699186260, guid: d9c6663bc4e204146a62214e35c47251, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4957890699186260, guid: d9c6663bc4e204146a62214e35c47251, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4957890699186260, guid: d9c6663bc4e204146a62214e35c47251, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4957890699186260, guid: d9c6663bc4e204146a62214e35c47251, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4957890699186260, guid: d9c6663bc4e204146a62214e35c47251, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4957890699186260, guid: d9c6663bc4e204146a62214e35c47251, type: 2}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: d9c6663bc4e204146a62214e35c47251, type: 2}
-  m_IsPrefabParent: 0
 --- !u!1 &233780246
 GameObject:
   m_ObjectHideFlags: 0
@@ -3184,9 +3142,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pawnIcon: {fileID: 482265847}
-  damageText: {fileID: 0}
-  healthText: {fileID: 0}
-  livesText: {fileID: 0}
   infoText: {fileID: 0}
   powersPanel: {fileID: 0}
   abilityIcon1: {fileID: 0}
@@ -3198,6 +3153,11 @@ MonoBehaviour:
   midPanelScrollView: {fileID: 0}
   boostInfoTexts: []
   statInfoTexts: []
+  newSpecial: {fileID: 0}
+  newParry: {fileID: 0}
+  newAbility: []
+  newAbilitiesTab: {fileID: 0}
+  newPowersTab: {fileID: 0}
   heroPowerUpInfoPrefab: {fileID: 0}
 --- !u!114 &362511763
 MonoBehaviour:
@@ -12234,11 +12194,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animateOnStart: 1
   childAnimators: []
---- !u!4 &1454847758 stripped
-Transform:
-  m_PrefabParentObject: {fileID: 4404684871725946, guid: 275c699968bac493ab0b68cd3db7ef7d,
-    type: 2}
-  m_PrefabInternal: {fileID: 829288792}
 --- !u!1 &1458826499
 GameObject:
   m_ObjectHideFlags: 0

@@ -97,6 +97,9 @@ MonoBehaviour:
   player: {fileID: 0}
   body: {fileID: 0}
   powerUpManager: {fileID: 0}
+  anim:
+    animations: []
+    player: {fileID: 0}
   cooldownMultipliers: []
   level: 0
   hardHealth: 0
@@ -105,12 +108,6 @@ MonoBehaviour:
   heroType: 0
   numHearts: 4
   maxComboTimer: 10
-  anim:
-    animations: []
-    player: {fileID: 0}
-  deathProps:
-  - {fileID: 21300022, guid: c249c27ff77ed416bbc513d9e1c5388b, type: 3}
-  - {fileID: 21300024, guid: c249c27ff77ed416bbc513d9e1c5388b, type: 3}
   cooldownTime:
   - 1.25
   - 5.5
@@ -124,6 +121,7 @@ MonoBehaviour:
     effect:
       duration: 0.5
       effect:
+        animationName: 
         frames: []
         fps: 10
       rotationType: 1
@@ -151,6 +149,7 @@ MonoBehaviour:
     chargeEffect:
       duration: -1
       effect:
+        animationName: 
         frames: []
         fps: 10
       rotationType: 0
@@ -158,7 +157,7 @@ MonoBehaviour:
       anim: {fileID: 114053776494803900}
       offsetMatchesFlipX: 0
     specialEffect:
-      duration: 1
+      duration: 2
     inputListener:
       duration: 2
       input: 0
@@ -172,6 +171,7 @@ MonoBehaviour:
       effect:
         duration: -1
         effect:
+          animationName: 
           frames: []
           fps: 10
         rotationType: 1
@@ -187,12 +187,14 @@ MonoBehaviour:
   specialRushEffect: {fileID: 1566888301041644}
   shieldIndicator: {fileID: 168668}
   hitEffect:
+    animationName: 
     frames:
     - {fileID: 21300000, guid: 45778dbe309ae4b08932278db1b2c7dc, type: 3}
     - {fileID: 21300002, guid: 45778dbe309ae4b08932278db1b2c7dc, type: 3}
     - {fileID: 21300004, guid: 45778dbe309ae4b08932278db1b2c7dc, type: 3}
     fps: 15
   specialHitAnim:
+    animationName: 
     frames:
     - {fileID: 21300000, guid: 0fbc2becaa124485ab805ef631f3fbfd, type: 3}
     - {fileID: 21300002, guid: 0fbc2becaa124485ab805ef631f3fbfd, type: 3}
@@ -200,6 +202,7 @@ MonoBehaviour:
     - {fileID: 21300006, guid: 0fbc2becaa124485ab805ef631f3fbfd, type: 3}
     fps: 10
   shieldHitAnim:
+    animationName: 
     frames:
     - {fileID: 21300000, guid: a28197484831f46c59e6cb0ff26dffcc, type: 3}
     fps: 10
@@ -224,6 +227,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sr: {fileID: 21249124}
   anim:
+    animationName: 
     frames: []
     fps: 10
   playOnStart: 0
@@ -482,6 +486,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sr: {fileID: 212626687854673926}
   anim:
+    animationName: 
     frames:
     - {fileID: 21300000, guid: 952bdcec6e7c34affb29bcf1856562f8, type: 3}
     - {fileID: 21300002, guid: 952bdcec6e7c34affb29bcf1856562f8, type: 3}
@@ -505,6 +510,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sr: {fileID: 212992088129103504}
   anim:
+    animationName: 
     frames:
     - {fileID: 21300000, guid: 0fbc2becaa124485ab805ef631f3fbfd, type: 3}
     - {fileID: 21300002, guid: 0fbc2becaa124485ab805ef631f3fbfd, type: 3}
@@ -542,6 +548,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sr: {fileID: 212514433410509926}
   anim:
+    animationName: 
     frames:
     - {fileID: 21300000, guid: 79bd3e170b5964a93aa756518512e65d, type: 3}
     - {fileID: 21300002, guid: 79bd3e170b5964a93aa756518512e65d, type: 3}
@@ -583,6 +590,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initAnimation:
+    animationName: 
     frames:
     - {fileID: 21300000, guid: a28197484831f46c59e6cb0ff26dffcc, type: 3}
     - {fileID: 21300002, guid: a28197484831f46c59e6cb0ff26dffcc, type: 3}
@@ -592,10 +600,12 @@ MonoBehaviour:
     - {fileID: 21300010, guid: a28197484831f46c59e6cb0ff26dffcc, type: 3}
     fps: 15
   loopAnimation:
+    animationName: 
     frames:
     - {fileID: 21300012, guid: a28197484831f46c59e6cb0ff26dffcc, type: 3}
     fps: 10
   onDisableAnimation:
+    animationName: 
     frames:
     - {fileID: 21300014, guid: a28197484831f46c59e6cb0ff26dffcc, type: 3}
     - {fileID: 21300016, guid: a28197484831f46c59e6cb0ff26dffcc, type: 3}

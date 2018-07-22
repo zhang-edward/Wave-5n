@@ -1,21 +1,97 @@
 using UnityEngine;
+using System.Collections;
 using PlayerActions;
 
 public class BowmanHero : PlayerHero {
 	
+	[System.Serializable]
+	public class PA_ArrowRain : PA_Joint {
+
+		private const int BOW_EFFECT_SHOOT_FRAME = 5;
+
+		// Edit in inspector
+		public GameObject arrowRainParticlesPrefab;
+		public PA_AreaEffect areaEffect;
+		public PA_EffectCallback shootEffect;
+		public AudioClip bowAppearSound;
+		public AudioClip shootSound;
+		public AudioClip areaEffectSound;
+
+		private SoundManager sound;
+		private PA_InputListener inputListener = new PA_InputListener(); 
+		private PA_SpecialAbilityEffect specialAbilityEffect = new PA_SpecialAbilityEffect();
+		private PA_Sequencer arrowRainAbility = new PA_Sequencer();
+		private GameObject arrowrainParticles;
+		private Vector3 position;
+		
+		public void Init(Player player, PA_AreaEffect.HitEnemy onHitEnemyCallback) {
+			sound = SoundManager.instance;
+			actions = new PlayerAction[1];			
+
+			// Input listener part of the action
+			specialAbilityEffect.duration = 2.0f;
+			specialAbilityEffect.Init(player, shootEffect);
+			inputListener.duration = 2.0f;
+			inputListener.input = PA_InputListener.InputType.Tap;
+			inputListener.Init(player, ArrowRain);
+
+			// Arrow rain part of the action (part that does damage)
+			shootEffect.Init(player, BOW_EFFECT_SHOOT_FRAME);
+			shootEffect.onFrameReached += ShootSound;
+			areaEffect.Init(player, onHitEnemyCallback);
+			arrowRainAbility.Init(player, shootEffect, areaEffect);
+
+			// Initialize joint effect
+			base.Init(player, specialAbilityEffect, inputListener);
+
+			arrowrainParticles = Instantiate(arrowRainParticlesPrefab);
+			arrowrainParticles.SetActive(false);
+		}
+
+		private void ArrowRain(Vector3 pos) {
+			position = player.transform.position + pos;
+			areaEffect.OnExecutedAction += AreaEffect;
+			shootEffect.SetPosition(player.transform.position);
+			areaEffect.SetPosition(position);
+			arrowRainAbility.Execute();
+			sound.RandomizeSFX(bowAppearSound);
+			FinishAction();
+		}
+
+		private void AreaEffect() {
+			arrowrainParticles.transform.position = position;
+			arrowrainParticles.SetActive(true);
+			areaEffect.OnExecutedAction -= AreaEffect;
+			sound.RandomizeSFX(areaEffectSound);
+		}
+
+		private void ShootSound(int frame) {
+			if (frame != BOW_EFFECT_SHOOT_FRAME)
+				return;	
+			sound.RandomizeSFX(shootSound);
+		}
+	}
 	public const float PIERCING_ARROW_CHARGETIME_PER_LEVEL = 0.3f;
 	public const float PIERCING_ARROW_RANGE = 10f;
 	public const float CHARGE_DRAG = 3f;
 
+	[Header("Actions")]
 	public PA_CircleCast piercingArrowAbility;
-	public PA_Move		 retreatAbility; 
-
+	public PA_Move		 retreatAbility;
+	public PA_ArrowRain	 arrowRainAbility;
+	[Header("Prefabs")]
 	public GameObject arrowTrailPrefab;
 	private ContinuousAnimatedLine arrowTrail;
-
+	[Header("Graphics")]
+	public SimpleAnimation hitEffect;
+	public SimpleAnimation critEffect;
+	[Header("Audio")]
+	public AudioClip[] shootSounds;
+	public AudioClip specialHitSound;
+	public AudioClip specialChargeSound;
+	
 	private float piercingArrowCharge;
 	private int piercingArrowChargeLevel;
-	public bool charging;
 
 #region Initialization
 	public override void Init (EntityPhysics body, Player player, Pawn heroData)
@@ -33,10 +109,13 @@ public class BowmanHero : PlayerHero {
 	private void InitAbilities() {
 		piercingArrowAbility.Init(player, HandlePiercingArrowDamage);
 		retreatAbility.Init(player);
+		retreatAbility.OnActionFinished += anim.player.ResetToDefault;
+		arrowRainAbility.Init(player, SpecialAbilityHitEnemy);
+		arrowRainAbility.shootEffect.OnActionFinished += ResetSpecialAbility;
 	}
 #endregion
-#region Abilities
-	private void ChargePiercingArrow() {
+#region Piercing Arrow
+	private void ChargePiercingArrow(Vector3 dir) {
 		if (!CheckIfCooledDownNotify(0))
 			return;
 
@@ -65,21 +144,22 @@ public class BowmanHero : PlayerHero {
 		dragIndicatorEnabled = false;
 	}
 
-	private void PiercingArrow() {
+	private void PiercingArrow(Vector3 dir) {
 		if (!CheckIfCooledDownNotify(0))
 			return;
 		ResetCooldownTimer(0);
-		charging = false;
 		// Set the body's direction
-		body.Move(player.dir);
+		body.Move(dir);
 		body.Move(Vector2.zero);
 
 		// Set damage multiplier
 		damageMultiplier = Mathf.Lerp(1.0f, 2.0f, piercingArrowChargeLevel);
 		// Effect
-		arrowTrail.Init(transform.position + (Vector3)player.dir.normalized, player.transform.position + (Vector3)player.dir.normalized * PIERCING_ARROW_RANGE);
+		arrowTrail.Init(transform.position + dir.normalized, player.transform.position + dir.normalized * PIERCING_ARROW_RANGE);
+		// Sound
+		sound.RandomizeSFX(shootSounds[Random.Range(0, shootSounds.Length)]);
 		// PA
-		piercingArrowAbility.SetCast(player.transform.position, player.dir.normalized, PIERCING_ARROW_RANGE);
+		piercingArrowAbility.SetCast(player.transform.position, dir, PIERCING_ARROW_RANGE);
 		piercingArrowAbility.Execute();
 		// Reset properties
 		damageMultiplier = 1;
@@ -91,51 +171,92 @@ public class BowmanHero : PlayerHero {
 		onTouchEnded = null;
 		// Set drag indicator
 		dragIndicatorEnabled = true;
-		
 	}
 
 	public void HandlePiercingArrowDamage(Enemy e) {
-		DamageEnemy(e, damage, null, false, null);
+		int dmg = damage;
+		if (TryCriticalDamage(ref dmg)) {
+			DamageEnemy(e, dmg, critEffect, false, null);
+		}
+		else {
+			DamageEnemy(e, dmg, hitEffect, false, null);
+		}
 	}
-
-	public void Retreat() {
-		if (!CheckIfCooledDownNotify(1, true, HandleDragRelease))
+#endregion
+#region Retreat
+	public void Retreat(Vector3 dir) {
+		if (!CheckIfCooledDownNotify(1, HandleDragRelease, dir))
 			return;
 		ResetCooldownTimer(1);
 
 		anim.Play("Move");
+		retreatAbility.SetDirection(dir);
 		retreatAbility.Execute();
 	}
-
+#endregion
+#region SpecialAbility
 	public override void SpecialAbility() {
-		print("Special ablity!");
+		sound.RandomizeSFX(specialChargeSound);
+		onTap -= PiercingArrow;
+		onTapHoldDown -= ChargePiercingArrow;
+		arrowRainAbility.Execute();
+		arrowRainAbility.areaEffect.OnExecutedAction += () => { specialAbilityCharge = 0; };
 	}
 
+	private void ResetSpecialAbility()
+	{
+		onTap += PiercingArrow;
+		onTapHoldDown += ChargePiercingArrow;
+	}
+	
+	public void SpecialAbilityHitEnemy(Enemy e) {
+		if (!e.invincible && e.health > 0)
+		{
+			int dmg = (int)(damage * 1.5f);
+			StartCoroutine(DamageEnemyDelayed(e, dmg));
+			// sound.RandomizeSFX(sfx[Random.Range(0, sfx.Length)]);
+		}
+	}
+
+	private IEnumerator DamageEnemyDelayed(Enemy e, int dmg) {
+		yield return new WaitForSeconds(Random.Range(0, 1.0f));
+		DamageEnemy(e, dmg, critEffect, true, specialHitSound);
+	}
+
+#endregion
+#region Parry
 	protected override void ParryEffect(IDamageable src) {
-		print("parried!");
+		cooldownTimers[0] = 0;
+		piercingArrowChargeLevel = 2;
 	}
 #endregion
-	public void DamageEnemy(Enemy e, int dmg, SimpleAnimation effect, bool tempSlowDown, AudioClip[] sfx)
+#region Misc
+	public void DamageEnemy(Enemy e, int dmg, SimpleAnimation effect, bool tempSlowDown, params AudioClip[] sfx)
 	{
 		if (!e.invincible && e.health > 0)
 		{
-			print ("dealt " + dmg + " dmg");
+			// print ("dealt " + dmg + " dmg");
 			e.Damage (dmg, player);
-			// EffectPooler.PlayEffect(effect, e.transform.position, true, 0.1f);
 			player.TriggerOnEnemyDamagedEvent(dmg);
 			player.TriggerOnEnemyLastHitEvent (e);
 
-			//sound.RandomizeSFX(sfx[Random.Range(0, sfx.Length)]);
+			// Effect
+			EffectPooler.PlayEffect(effect, e.transform.position, true, 0.1f);
+			// Sound
+			if (sfx != null)
+				sound.RandomizeSFX(sfx[Random.Range(0, sfx.Length)]);
+			// TempSlowDown
 			if (tempSlowDown)
-				player.StartTempSlowDown(0.3f);
+				player.StartTempSlowDown(0.15f);
 		}
 	}
+#endregion
 
 /** Unlock Quests */
 	protected override Quests.Quest UnlockQuest(HeroTier tier) {
 		switch (tier) {
 			case HeroTier.tier1:
-				return null;
+				return new Quests.CompleteStageQuest(GameManager.instance, 0, 2);
 			case HeroTier.tier2:
 				return null;
 			case HeroTier.tier3:

@@ -7,17 +7,17 @@ public class KnightHero : PlayerHero {
 
 	[System.Serializable]
 	public class PA_SpecialRush : PA_Sequencer {
+
 		public PA_Animate chargeAnim;
 		public PA_EffectAttached chargeEffect;
 		public PA_SpecialAbilityEffect specialEffect;
-		private PA_Joint chargeAction = new PA_Joint();
-		[Space]
-		public PA_InputListener inputListener;
 		public PA_Rush specialRush;
+
+		private PA_Joint chargeAction = new PA_Joint();
+		private PA_InputListener inputListener = new PA_InputListener();
 
 		public void Init(Player player, PA_Rush.HitEnemy onHitEnemyCallback)
 		{
-			base.Init(player);
 			actions = new PlayerAction[2];
 
 			chargeAnim.Init(player);
@@ -27,12 +27,20 @@ public class KnightHero : PlayerHero {
 			                  chargeAnim, 
 			                  chargeEffect,
 			                  specialEffect);
-
-			inputListener.Init(player, specialRush);
+			inputListener.input = PA_InputListener.InputType.Drag;
+			inputListener.duration = 2.0f;
+			inputListener.Init(player, ExecuteSpecialRush);
 			specialRush.Init(player, onHitEnemyCallback);
 
 			actions[0] = chargeAction;
 			actions[1] = inputListener;
+			base.Init(player);
+		}
+
+		private void ExecuteSpecialRush(Vector3 dir) {
+			specialRush.SetDirection(dir);
+			specialRush.Execute();
+			FinishAction();
 		}
 	}
 
@@ -62,7 +70,7 @@ public class KnightHero : PlayerHero {
 
 	public Coroutine specialAbilityChargeRoutine;
 
-	public InputAction storedOnSwipe;
+	public DirectionalInputAction storedOnSwipe;
 	public delegate void KnightEvent();
 	public event KnightEvent OnKnightRush;
 	public event KnightEvent OnKnightShield;
@@ -113,18 +121,19 @@ public class KnightHero : PlayerHero {
 			base.HandleMultiTouch();
 	}
 
-	public void Rush()
+	public void Rush(Vector3 dir)
 	{
 		// check cooldown
-		if (!CheckIfCooledDownNotify (0, true, HandleDragRelease))
+		if (!CheckIfCooledDownNotify (0, HandleDragRelease, dir))
 			return;
 		ResetCooldownTimer (0);
+		rushAbility.SetDirection(dir);
 		rushAbility.Execute();
 		if (OnKnightRush != null)
 			OnKnightRush();
 	}
 
-	public void AreaAttack()
+	public void AreaAttack(Vector3 dir)
 	{
 		// check cooldown
 		if (!CheckIfCooledDownNotify (1))

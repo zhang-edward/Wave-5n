@@ -39,7 +39,7 @@ public class NinjaTripleStar : HeroPowerUp
 		}
 	}
 
-	public void TripleStar()
+	public void TripleStar(Vector3 dir)
 	{
 		// if cooldown has not finished
 		if (!ninja.CheckIfCooledDownNotify (1))
@@ -57,10 +57,10 @@ public class NinjaTripleStar : HeroPowerUp
 			ninja.player.OnEnemyDamaged += ChargeTripleStar;
 		}
 
-		StartCoroutine (TripleStarRoutine ());
+		StartCoroutine (TripleStarRoutine (dir));
 	}
 
-	private IEnumerator TripleStarRoutine()
+	private IEnumerator TripleStarRoutine(Vector3 dir)
 	{
 		// Sound
 		SoundManager.instance.RandomizeSFX (ninja.shootSound);
@@ -70,12 +70,11 @@ public class NinjaTripleStar : HeroPowerUp
 		for (int i = 0; i < 3; i ++)
 		{
 			// Player properties
-			Vector2 dir = ninja.player.dir.normalized;
-			GameObject o = ninja.InitNinjaStar (dir);
+			GameObject o = ninja.InitNinjaStar (dir.normalized);
 			if (ninja.activatedSpecialAbility)
 			//	ninja.ShootNinjaStarFanPattern ();
 			// set direction
-			ninja.body.Move (dir);
+			ninja.body.Move (dir.normalized);
 			ninja.body.rb2d.velocity = Vector2.zero;
 
 			yield return new WaitForSeconds (0.1f);

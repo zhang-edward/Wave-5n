@@ -63,7 +63,7 @@ public class TouchInputHandler : MonoBehaviour {
 		touchStartPos = viewportPos;
 		touchStartTime = Time.time;
 		if (OnTouchBegan != null)
-			OnTouchBegan(Camera.main.ViewportToWorldPoint(viewportPos / PlayerInput.INPUT_POSITION_SCALAR));
+			OnTouchBegan((Vector2)Camera.main.ViewportToWorldPoint(viewportPos / PlayerInput.INPUT_POSITION_SCALAR));
 		//Debug.Log("Touch began:" + touchStartPos);
 	}
 
@@ -96,7 +96,7 @@ public class TouchInputHandler : MonoBehaviour {
 			return;
 		float touchTime = Time.time - touchStartTime;
 		if (touchTime > maxTapTime)
-			OnTapHold(Camera.main.ViewportToWorldPoint(viewportPos / PlayerInput.INPUT_POSITION_SCALAR));
+			OnTapHold((Vector2)Camera.main.ViewportToWorldPoint(viewportPos / PlayerInput.INPUT_POSITION_SCALAR));
 	}
 
 	public void HandleTouchEnded(Vector2 viewportPos)
@@ -111,12 +111,12 @@ public class TouchInputHandler : MonoBehaviour {
 		else if (!isDragging)
 		{
 			if (touchTime > maxTapTime)
-				OnTapHoldRelease(Camera.main.ViewportToWorldPoint(viewportPos / PlayerInput.INPUT_POSITION_SCALAR));
+				OnTapHoldRelease((Vector2)Camera.main.ViewportToWorldPoint(viewportPos / PlayerInput.INPUT_POSITION_SCALAR));
 			else
-				OnTap(Camera.main.ViewportToWorldPoint(viewportPos / PlayerInput.INPUT_POSITION_SCALAR));
+				OnTap((Vector2)Camera.main.ViewportToWorldPoint(viewportPos / PlayerInput.INPUT_POSITION_SCALAR));
 		}
 		if (OnTouchEnded != null)
-			OnTouchEnded(Camera.main.ViewportToWorldPoint(viewportPos / PlayerInput.INPUT_POSITION_SCALAR));
+			OnTouchEnded((Vector2)Camera.main.ViewportToWorldPoint(viewportPos / PlayerInput.INPUT_POSITION_SCALAR));
 
 		touchStarted = false;
 		isDragging = false;
