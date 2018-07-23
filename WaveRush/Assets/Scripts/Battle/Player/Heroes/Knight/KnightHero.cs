@@ -6,14 +6,14 @@ using System.Collections.Generic;
 public class KnightHero : PlayerHero {
 
 	[System.Serializable]
-	public class PA_SpecialRush : PA_Sequencer {
+	public class PA_SpecialRush : PA_Joint {
 
 		public PA_Animate chargeAnim;
 		public PA_EffectAttached chargeEffect;
 		public PA_SpecialAbilityEffect specialEffect;
 		public PA_Rush specialRush;
 
-		private PA_Joint chargeAction = new PA_Joint();
+		// private PA_Joint chargeAction = new PA_Joint();
 		private PA_InputListener inputListener = new PA_InputListener();
 
 		public void Init(Player player, PA_Rush.HitEnemy onHitEnemyCallback)
@@ -23,18 +23,15 @@ public class KnightHero : PlayerHero {
 			chargeAnim.Init(player);
 			chargeEffect.Init(player);
 			specialEffect.Init(player, specialRush);
-			chargeAction.Init(player, 
-			                  chargeAnim, 
-			                  chargeEffect,
-			                  specialEffect);
 			inputListener.input = PA_InputListener.InputType.Drag;
 			inputListener.duration = 2.0f;
 			inputListener.Init(player, ExecuteSpecialRush);
 			specialRush.Init(player, onHitEnemyCallback);
 
-			actions[0] = chargeAction;
-			actions[1] = inputListener;
-			base.Init(player);
+			base.Init(player, chargeAnim, 
+			                  chargeEffect,
+			                  specialEffect,
+							  inputListener);
 		}
 
 		private void ExecuteSpecialRush(Vector3 dir) {
@@ -94,6 +91,7 @@ public class KnightHero : PlayerHero {
 		rushAbility.Init	   (player, onHitEnemyCallback: HandleRushHitEnemy);
 		areaAttackAbility.Init (player, onHitEnemyCallback: (enemy) => { PushEnemyBack(enemy, 10f, 0.25f); });
 		specialRushAbility.Init(player, onHitEnemyCallback: HandleSpecialOnDamageEnemy);
+		specialRushAbility.specialRush.OnActionFinished += ResetSpecialAbility;
 	}
 #endregion
 
@@ -153,20 +151,15 @@ public class KnightHero : PlayerHero {
 
 	public override void SpecialAbility ()
 	{
-		if (specialAbilityCharge < SPECIAL_ABILITY_CHARGE_CAPACITY || 
-		    specialRushAbility.inProgress)
+		if (specialAbilityCharge < SPECIAL_ABILITY_CHARGE_CAPACITY)
 			return;
-		StartCoroutine(SpecialAbilityRoutine());
-	}
-
-	private IEnumerator SpecialAbilityRoutine()
-	{
 		sound.RandomizeSFX(specialChargeSound);
 		onDragRelease -= Rush;
 		specialRushAbility.Execute();
 		specialRushAbility.specialRush.OnExecutedAction += () => { specialAbilityCharge = 0; };
-		while (specialRushAbility.inProgress)
-			yield return null;
+	}
+
+	private void ResetSpecialAbility() {
 		onDragRelease += Rush;
 	}
 

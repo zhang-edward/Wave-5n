@@ -64,12 +64,14 @@ public class Enemy : MonoBehaviour, IDamageable {
 	public SpawnMethod spawnMethod;		// whether this enemy walks onto the arena or not
 
 	private Player player;
-	private List<Color> colors;		// The different colors (from status effects or other sources) that this instance will flash
+	private List<Color> colors = new List<Color>();		// The different colors (from status effects or other sources) that this instance will flash
+	private Color baseColor = Color.white;	// The base color that this sprite is currently. Will reset to this when flashing any other color
 	/** States */
 	private Coroutine moveState;
 	private Coroutine hitDisableState;
 	private Coroutine spawnState;
 	/** Color routine */
+	private bool flashingColor;
 	private Coroutine colorRoutine;
 
 	public delegate void EnemyLifecycleEvent();
@@ -252,11 +254,6 @@ public class Enemy : MonoBehaviour, IDamageable {
 		yield return null;
 	}
 
-	private void ResetColor()
-	{
-		sr.color = Color.white;
-	}
-
 	protected virtual IEnumerator MoveState()
 	{
 		yield return new WaitForEndOfFrame ();
@@ -329,24 +326,29 @@ public class Enemy : MonoBehaviour, IDamageable {
 			OnEnemyDamaged(amt);
 		if (health > 0)
 		{
-			if (canBeDisabledOnHit && !hitDisabled && disable)
-			{
+			if (canBeDisabledOnHit && !hitDisabled && disable)	{
 				action.TryInterrupt();
 				// Stop all states
 				StopAllCoroutines();
 				StartCoroutine(HitDisableState(0.05f, 3f));
 			}
-			sr.color = Color.red;
-			Invoke("ResetColor", 0.2f);
+			StartCoroutine(FlashColor(Color.red));
 		}
-		else
-		{
+		else {
 			Die();
 		}
 	}
 
-	public virtual void Die()
-	{
+	private IEnumerator FlashColor(Color color) {
+		sr.color = color;
+		flashingColor = true;
+		print ("Flashing color");
+		yield return new WaitForSeconds(0.2f);
+		sr.color = baseColor;
+		flashingColor = false;
+	}
+
+	public virtual void Die() {
 		if (OnEnemyDied != null)
 			OnEnemyDied ();
 		//ResetVars ();
@@ -368,12 +370,18 @@ public class Enemy : MonoBehaviour, IDamageable {
 #region Misc Methods
 	private IEnumerator RotateColors() {
 		for (;;) {
+			if (colors.Count == 0) {
+				if (!flashingColor)
+					sr.color = Color.white;
+				baseColor = Color.white;
+				yield break;
+			}
 			for (int i = 0; i < colors.Count; i ++) {
-				sr.color = colors[i];
+				if (!flashingColor)
+					sr.color = colors[i];
+				baseColor = colors[i];
 				yield return new WaitForSeconds(1f);
 			}
-			if (colors.Count == 0)
-				sr.color = Color.white;
 		}
 	}
 
@@ -385,8 +393,10 @@ public class Enemy : MonoBehaviour, IDamageable {
 	}
 
 	public void AddColor(Color color) {
-		colors.Add(color);
-		RestartColorRoutine();
+		if (!colors.Contains(color)) {
+			colors.Add(color);
+			RestartColorRoutine();
+		}
 	}
 
 	public void RemoveColor(Color color) {

@@ -89,9 +89,12 @@ public class BowmanHero : PlayerHero {
 	public AudioClip[] shootSounds;
 	public AudioClip specialHitSound;
 	public AudioClip specialChargeSound;
-	
+
+	public delegate void BowmanHitEnemyEvent(Enemy e);
+	public BowmanHitEnemyEvent OnPiercingArrow;
+
 	private float piercingArrowCharge;
-	private int piercingArrowChargeLevel;
+	public int piercingArrowChargeLevel { get; private set; }
 
 #region Initialization
 	public override void Init (EntityPhysics body, Player player, Pawn heroData)
@@ -181,6 +184,8 @@ public class BowmanHero : PlayerHero {
 		else {
 			DamageEnemy(e, dmg, hitEffect, false, null);
 		}
+		if (OnPiercingArrow != null)
+			OnPiercingArrow(e);
 	}
 #endregion
 #region Retreat

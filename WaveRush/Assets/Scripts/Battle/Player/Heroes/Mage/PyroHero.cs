@@ -34,6 +34,7 @@ public class PyroHero : PlayerHero {
 		public void SetDirection(Vector3 dir) {
 			Vector3 position = player.transform.position + (dir.normalized * RANGE);
 			SetPosition(position);
+			effect.SetRotation(dir);
 		}
 
 		protected override void DoAction() {

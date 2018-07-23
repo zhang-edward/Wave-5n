@@ -17,10 +17,9 @@ public class PoisonStatus : EnemyStatus
 		//shapeModule.scale = enemy.srSize * 0.5f;
 
 		// damage every 1 second
+		enemy.AddColor(Color.green);
 		InvokeRepeating("Poison", poisonInterval, poisonInterval);
-		while (timer >= 0)
-		{
-			enemy.AddColor(Color.green);
+		while (timer >= 0) {
 			yield return null;
 		}
 		enemy.anim.enabled = true;
