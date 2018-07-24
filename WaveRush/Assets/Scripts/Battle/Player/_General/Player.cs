@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 public class Player : MonoBehaviour, IDamageable
 {
-	public const float	HIT_DISABLE_TIME = 0.2f;
 	public const float	SOFT_HEALTH_RECOVERY_DELAY = 1.0f;
 	public const float	SOFT_HEALTH_DECAY_RATE = 10f;
 	public const int	BASE_HEALTH_PER_HEART = 40;
@@ -193,7 +192,7 @@ public class Player : MonoBehaviour, IDamageable
 		softHealthTarget = hardHealth;
 		UpdateSoftHealth();
 		body.AddRandomImpulse (3f);
-		HitDisable(HIT_DISABLE_TIME);
+		HitDisable(hero.hitDisableTime);
 		FlashColor(Color.red);
 
 		// Post-damage effects

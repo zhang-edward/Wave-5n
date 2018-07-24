@@ -22,7 +22,7 @@ public class Bowman_PoisonArrow : HeroPowerUp {
 		if (bowman.piercingArrowChargeLevel == 2) {
 			PoisonStatus poison = Instantiate(StatusEffectContainer.instance.GetStatus("Poison")).GetComponent<PoisonStatus>();
 			poison.duration = 3.0f;
-			poison.damage = (int)(bowman.noiselessDamage * 0.1f);
+			poison.damage = (int)(bowman.noiselessDamage * 0.2f);
 			e.AddStatus(poison.gameObject);
 		}
 	}

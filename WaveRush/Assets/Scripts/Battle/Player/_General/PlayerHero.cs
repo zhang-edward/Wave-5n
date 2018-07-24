@@ -24,10 +24,12 @@ public abstract class PlayerHero : MonoBehaviour {
 	private int baseDamage;
 	protected SoundManager sound;
 
+
 	/** Hero properties */
 	[Header("PlayerHero Properties")]
 	public HeroType heroType;
 	public int numHearts;
+	public float hitDisableTime = 0.2f;
 	public float damageMultiplier { get; set; }
 	public int noiselessDamage { get { return Mathf.RoundToInt(baseDamage * damageMultiplier); } }
 	public int damage {
@@ -252,7 +254,9 @@ public abstract class PlayerHero : MonoBehaviour {
 		EffectPooler.PlayEffect(player.parryEffect, transform.position, true, 0.1f);
 		player.StrobeColor(Color.yellow, PARRY_TIME - 0.1f);
 		// Lose Momentum
-		body.Move(Vector2.zero);
+		float bodySpeed = body.rb2d.velocity.magnitude;
+		if (bodySpeed > 0)
+			body.Move(Vector2.zero, 0);
 		// Player Properties
 		parryDisableTimerId = player.inputDisabled.Add(PARRY_TIME);
 		canParry = false;
@@ -283,7 +287,6 @@ public abstract class PlayerHero : MonoBehaviour {
 		CameraControl.instance.StartFlashColor(Color.white, 0.5f, 0, 0f, 0.5f);
 		// Player properties
 		player.invincibility.Add(1.0f);
-		player.inputDisabled.RemoveTimer(parryDisableTimerId);
 		player.sr.color = Color.white;
 		player.OnPlayerTryHit -= Parry;
 		StopCoroutine(listenForParryRoutine);
@@ -291,11 +294,13 @@ public abstract class PlayerHero : MonoBehaviour {
 		sound.PlaySingle(player.parrySuccessSound);
 		// Effect
 		ParryEffect(src);
-		Invoke("ParryCooldown", PARRY_COOLDOWN_TIME);
+		StartCoroutine(ParryCooldown());
 	}
 
-	private void ParryCooldown()
-	{
+	private IEnumerator ParryCooldown() {
+		yield return new WaitForSeconds(0.1f);
+		player.inputDisabled.RemoveTimer(parryDisableTimerId);
+		yield return new WaitForSeconds(PARRY_COOLDOWN_TIME);
 		canParry = true;
 	}
 

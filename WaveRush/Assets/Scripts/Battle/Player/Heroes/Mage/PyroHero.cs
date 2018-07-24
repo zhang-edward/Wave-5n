@@ -296,7 +296,7 @@ public class PyroHero : PlayerHero {
 	protected override Quests.Quest UnlockQuest(HeroTier tier) {
 		switch (tier) {
 			case HeroTier.tier1:
-				return new Quests.CompleteStageQuest(GameManager.instance, 0, 1);
+				return null;
 			case HeroTier.tier2:
 				return null;
 			case HeroTier.tier3:

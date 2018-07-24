@@ -42,11 +42,11 @@ public class CameraControl : MonoBehaviour
 		if (secondaryFocus != null)
 		{
 			Vector3 target = Vector3.Lerp(focus.position, secondaryFocus.position, 0.2f);
-			transform.position = Vector3.Lerp(transform.position, target, Time.deltaTime * 10f);
+			transform.position = Vector3.Lerp(transform.position, target, Time.deltaTime * 5f);
 		}
 		else
 		{
-			transform.position = Vector3.Lerp(transform.position, focus.position, Time.deltaTime * 10f);
+			transform.position = Vector3.Lerp(transform.position, focus.position, Time.deltaTime * 20f);
 		}
 	}
 

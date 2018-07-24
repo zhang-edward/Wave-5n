@@ -9,7 +9,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 37d5d23629e1248d888af00e3959de60, type: 3}
-  m_Name: Tutorial_ToBattle
+  m_Name: Tutorial_Oracle_1
   m_EditorClassIdentifier: 
   character: {fileID: 11400000, guid: 059a984ee1be244bb931e02bf27a7816, type: 2}
   position: 0
@@ -17,6 +17,13 @@ MonoBehaviour:
   firstAppearance: 1
   dialogues:
   - expression: Default
-    text: I see that you're ready to move out.
+    text: You know, hidden in this castle is an entity of insurmountable wisdom and
+      knowledge.
   - expression: 
-    text: Alright then. Let's take on our first target.
+    text: He is the reason we know the <color=purple>Grim Jester</color> has returned.
+  - expression: 
+    text: He is the reason we have the knowledge to create portals to different realms.
+  - expression: 
+    text: He is <color=yellow>The Almighty Oracle</color>.
+  - expression: 
+    text: I think it is time we introduced you to <color=yellow>him</color>.

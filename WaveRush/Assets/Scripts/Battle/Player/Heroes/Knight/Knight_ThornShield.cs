@@ -19,12 +19,13 @@ public class Knight_ThornShield : HeroPowerUp {
 
 	private void ExecuteAreaAttack(IDamageable src)
 	{
+		print ("Knight shield hit");
 		areaAttack.SetPosition(knight.transform.position);
 		areaAttack.Execute();
 		anim.Play();
 	}
 
 	private void AreaAttackEffect(Enemy e) {
-		knight.DamageEnemy(e, (int)(knight.damage * 0.5f), knight.hitEffect, false, knight.hitSounds);
+		knight.DamageEnemy(e, (int)(knight.damage * 0.5f), knight.hitEffect, false, null);
 	}
 }

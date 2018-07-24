@@ -342,7 +342,6 @@ public class Enemy : MonoBehaviour, IDamageable {
 	private IEnumerator FlashColor(Color color) {
 		sr.color = color;
 		flashingColor = true;
-		print ("Flashing color");
 		yield return new WaitForSeconds(0.2f);
 		sr.color = baseColor;
 		flashingColor = false;

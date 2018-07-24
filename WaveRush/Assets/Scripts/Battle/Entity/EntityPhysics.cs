@@ -9,6 +9,8 @@ public class EntityPhysics : MonoBehaviour {
 	public float moveSpeed;
 	public bool ragdolled;		// If the entity is ragdolled, then movement by the Move() functions are disabled
 
+	private Coroutine moveRoutine;
+
 	void Awake()
 	{
 		rb2d = this.GetComponent<Rigidbody2D> ();
@@ -27,17 +29,17 @@ public class EntityPhysics : MonoBehaviour {
 			sr.flipX = false;
 	}
 
-	public void Move(Vector2 dir, float time)
-	{
-		StartCoroutine(MoveRoutine(dir, time));
+	public void Move(Vector2 dir, float time) {
+		if (moveRoutine != null)
+			StopCoroutine(moveRoutine);
+		moveRoutine = StartCoroutine(MoveRoutine(dir, time));
 	}
 
 	private IEnumerator MoveRoutine(Vector2 dir, float time)
 	{
 		float t = 0;
 		// Do-while loop so this executes at least once, even if time = 0
-		do
-		{
+		do {
 			Move(dir);
 			t += Time.deltaTime;
 			yield return null;

@@ -93,8 +93,9 @@ public class BowmanHero : PlayerHero {
 	public delegate void BowmanHitEnemyEvent(Enemy e);
 	public BowmanHitEnemyEvent OnPiercingArrow;
 
-	private float piercingArrowCharge;
 	public int piercingArrowChargeLevel { get; private set; }
+	private float piercingArrowCharge;
+	private bool specialActivated;
 
 #region Initialization
 	public override void Init (EntityPhysics body, Player player, Pawn heroData)
@@ -115,6 +116,7 @@ public class BowmanHero : PlayerHero {
 		retreatAbility.OnActionFinished += anim.player.ResetToDefault;
 		arrowRainAbility.Init(player, SpecialAbilityHitEnemy);
 		arrowRainAbility.shootEffect.OnActionFinished += ResetSpecialAbility;
+		arrowRainAbility.OnActionFinished += ResetSpecialAbility;
 	}
 #endregion
 #region Piercing Arrow
@@ -201,17 +203,22 @@ public class BowmanHero : PlayerHero {
 #endregion
 #region SpecialAbility
 	public override void SpecialAbility() {
+		if (specialAbilityCharge < SPECIAL_ABILITY_CHARGE_CAPACITY || specialActivated)
+			return;
 		sound.RandomizeSFX(specialChargeSound);
 		onTap -= PiercingArrow;
 		onTapHoldDown -= ChargePiercingArrow;
 		arrowRainAbility.Execute();
 		arrowRainAbility.areaEffect.OnExecutedAction += () => { specialAbilityCharge = 0; };
+		specialActivated = true;
 	}
 
-	private void ResetSpecialAbility()
-	{
+	private void ResetSpecialAbility() {
+		if (!specialActivated)
+			return;
 		onTap += PiercingArrow;
 		onTapHoldDown += ChargePiercingArrow;
+		specialActivated = false;
 	}
 	
 	public void SpecialAbilityHitEnemy(Enemy e) {
@@ -233,6 +240,8 @@ public class BowmanHero : PlayerHero {
 	protected override void ParryEffect(IDamageable src) {
 		cooldownTimers[0] = 0;
 		piercingArrowChargeLevel = 2;
+		Vector3 dir = (transform.position - ((MonoBehaviour)src).transform.position).normalized * 2.0f;
+		body.Move(dir, 0);
 	}
 #endregion
 #region Misc

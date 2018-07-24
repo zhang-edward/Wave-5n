@@ -70,7 +70,11 @@ public class HeroTypesMenu : MonoBehaviour {
 		if (!GameManager.instance.save.UnlockedHeroes[((int)selectedType * 3) + (int)selectedTier]) {
 			lockedPanel.SetActive(false);
 			lockedPanel.SetActive(true);
-			questText.text = DataManager.GetPlayerHero(selectedType).GetComponent<PlayerHero>().GetUnlockQuest(selectedTier).QuestDescription();
+			Quests.Quest quest = DataManager.GetPlayerHero(selectedType).GetComponent<PlayerHero>().GetUnlockQuest(selectedTier);
+			if (quest != null)
+				questText.text = quest.QuestDescription();
+			else
+				questText.text = "Currently Unobtainable";
 		}
 		else {
 			lockedPanel.SetActive(false);

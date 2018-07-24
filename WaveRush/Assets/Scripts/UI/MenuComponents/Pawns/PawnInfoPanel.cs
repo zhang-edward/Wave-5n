@@ -72,7 +72,6 @@ public class PawnInfoPanel : MonoBehaviour
 		// Reset MidPanel Menu
 		midPanelTabToggleGroup.SetAllTogglesOff();
 		// Initialize ScrollView
-		midPanelScrollView.SetSelectedContentIndex(1);
 		StartCoroutine(ForcePosAfter1Frame());
 		// Initialize the scrolling text to display info about the hero
 		infoText.defaultText = heroData.heroDescription;
@@ -111,6 +110,8 @@ public class PawnInfoPanel : MonoBehaviour
 	// Have to do this due to some shitty ass bug
 	private IEnumerator ForcePosAfter1Frame() {
 		yield return new WaitForEndOfFrame();
+		midPanelScrollView.Init();
+		midPanelScrollView.SetSelectedContentIndex(1);
 		midPanelScrollView.ForcePosition();
 	}
 

@@ -110,14 +110,14 @@ MonoBehaviour:
   maxComboTimer: 10
   cooldownTime:
   - 1.25
-  - 5.5
+  - 10
   rushAbility:
     duration: 0.5
     movement:
       duration: 0
-      speed: 13
-      time: 0
-      drag: 3
+      speed: 7
+      time: 0.5
+      drag: 5
     effect:
       duration: 0.5
       effect:
@@ -158,9 +158,6 @@ MonoBehaviour:
       offsetMatchesFlipX: 0
     specialEffect:
       duration: 2
-    inputListener:
-      duration: 2
-      input: 0
     specialRush:
       duration: 0.8
       movement:
@@ -192,7 +189,8 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 45778dbe309ae4b08932278db1b2c7dc, type: 3}
     - {fileID: 21300002, guid: 45778dbe309ae4b08932278db1b2c7dc, type: 3}
     - {fileID: 21300004, guid: 45778dbe309ae4b08932278db1b2c7dc, type: 3}
-    fps: 15
+    - {fileID: 21300006, guid: 45778dbe309ae4b08932278db1b2c7dc, type: 3}
+    fps: 10
   specialHitAnim:
     animationName: 
     frames:
@@ -212,8 +210,11 @@ MonoBehaviour:
   specialHitSounds:
   - {fileID: 8300000, guid: c1599a3c6bc644ddf89d7c795d64ecce, type: 3}
   - {fileID: 8300000, guid: 87d21ce0dfadf4fda8dd95c7cead15fb, type: 3}
-  specialChargeSound: {fileID: 0}
+  specialChargeSound: {fileID: 8300000, guid: 40fd5dcf54837455c9bc07108b6a6d6e, type: 3}
   shieldHitSound: {fileID: 8300000, guid: 0a940af3c7ccb47049e26477e39a7159, type: 3}
+  shieldSound: {fileID: 8300000, guid: 1cdd39b783022415cb2aab5062a788e1, type: 3}
+  shieldMeterPrefab: {fileID: 1421000872371306, guid: 1000ecfeac58040bd8847d4e0e86f5cc,
+    type: 2}
 --- !u!114 &11457932
 MonoBehaviour:
   m_ObjectHideFlags: 1
