@@ -46,8 +46,9 @@ public class StageSelectMenu : MonoBehaviour
 
 		foreach (GameObject o in stageSeriesIcons)
 			o.SetActive(false);
-		int iconIndex = 0;			// Used to track the number of icons in the scene, and add more if needed 
-		for (int i = 0; i <= gm.save.LatestSeriesIndex; i ++)
+		int iconIndex = 0;			// Used to track the number of icons in the scene, and add more if needed
+		int latestSeries = Mathf.Min(gm.save.LatestSeriesIndex, gm.regularStages.series.Length - 1);
+		for (int i = 0; i <= latestSeries; i ++)
 		{
 			GameObject o;
 			if (iconIndex >= stageSeriesIcons.Count)

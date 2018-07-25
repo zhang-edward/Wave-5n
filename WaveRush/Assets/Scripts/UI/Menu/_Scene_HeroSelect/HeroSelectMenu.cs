@@ -69,7 +69,7 @@ public class HeroSelectMenu : MonoBehaviour  {
 		PawnIconStandard icon = o.GetComponent<PawnIconStandard>();
 		o.SetActive(true);
 		o.transform.SetSiblingIndex(numPawnsInParty);
-		icon.onClick += RemoveFromParty;
+		icon.onClick = RemoveFromParty;
 		icon.Init(highlightedIcon.pawnData);
 		partyPlaceholders[numPawnsInParty].SetActive(false);
 		// Increment count
@@ -119,11 +119,13 @@ public class HeroSelectMenu : MonoBehaviour  {
 				partyPlaceholders[i].SetActive(true);
 			}
 		}
+		numPawnsInParty = 0;
+		selectedIcons.Clear();
 	}
 
 	void OnDisable() {
 		foreach (GameObject o in partyPawnIconPool.GetAllActiveObjects())
-			o.SetActive(true);
+			o.SetActive(false);
 		foreach (GameObject o in partyPlaceholders)
 			o.SetActive(false);
 		foreach (PawnIconStandard icon in selectedIcons) 

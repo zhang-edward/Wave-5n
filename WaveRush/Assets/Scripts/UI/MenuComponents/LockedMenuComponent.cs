@@ -15,7 +15,7 @@ public class LockedMenuComponent : MonoBehaviour {
 		gm = GameManager.instance;
 		if (makeUninteractable) {
 			group = GetComponent<CanvasGroup>();
-			group.interactable = false;
+			group.interactable = CheckStage();
 		}
 		else
 			gameObject.SetActive(CheckStage());

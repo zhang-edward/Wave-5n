@@ -50,7 +50,7 @@ public class ObjectPooler : MonoBehaviour {
 	{
 		foreach (GameObject obj in pooledObjects)
 		{
-			if (!obj.activeInHierarchy)
+			if (!obj.activeSelf)
 				return obj;
 		}
 
@@ -68,7 +68,7 @@ public class ObjectPooler : MonoBehaviour {
 		List<GameObject> ans = new List<GameObject>();
 		foreach (GameObject obj in pooledObjects)
 		{
-			if (obj.activeInHierarchy)
+			if (obj.activeSelf)
 				ans.Add(obj);
 		}
 		return ans;

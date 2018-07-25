@@ -177,6 +177,8 @@ public class GameManager : MonoBehaviour {
 
 	public void UnlockNextStage()
 	{
+		if (save.LatestSeriesIndex >= regularStages.series.Length)
+			return;
 		if (save.LatestStageIndex < regularStages.series[save.LatestSeriesIndex].stages.Length - 1)
 			sg.saveDict[SaveGame.LATEST_UNLOCKED_STAGE_INDEX_KEY]++;
 		else
@@ -188,7 +190,8 @@ public class GameManager : MonoBehaviour {
 
 	public StageSeriesData GetLatestSeries()
 	{
-		return regularStages.series[save.LatestSeriesIndex];
+		int latestSeries = Mathf.Min(save.LatestSeriesIndex, regularStages.series.Length - 1);
+		return regularStages.series[latestSeries];
 	}
 
 	public bool IsSeriesUnlocked(string seriesName)
@@ -210,8 +213,8 @@ public class GameManager : MonoBehaviour {
 	private List<StageSeriesData> GetAllUnlockedSeries()
 	{
 		List<StageSeriesData> answer = new List<StageSeriesData>();
-		for (int i = 0; i <= save.LatestSeriesIndex; i ++)
-		{
+		int latestSeries = Mathf.Min(save.LatestSeriesIndex, regularStages.series.Length - 1);
+		for (int i = 0; i <= latestSeries; i ++) {
 			answer.Add(regularStages.series[i]);
 		}
 		return answer;
