@@ -79,6 +79,10 @@ public class PawnMenu : MonoBehaviour {
 	}
 
 	public void RetirePawn() {
+		if (gm.save.NumPawns() == 1) {
+			gm.DisplayAlert("You cannot retire your last hero!");
+			return;
+		}
 		int costMoney, costSouls;
 		Formulas.PawnCost(selectedIcon.pawnData, out costMoney, out costSouls);
 		gm.save.AddMoney((int)((costMoney + 2 * costSouls) * 0.2f));

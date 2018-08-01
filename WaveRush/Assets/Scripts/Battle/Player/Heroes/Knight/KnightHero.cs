@@ -112,6 +112,10 @@ public class KnightHero : PlayerHero {
 		rushAbility.Init	   (player, onHitEnemyCallback: HandleRushHitEnemy);
 		areaAttackAbility.Init (player, onHitEnemyCallback: (enemy) => { PushEnemyBack(enemy, 10f, 0.25f); });
 		specialRushAbility.Init(player, onHitEnemyCallback: HandleSpecialOnDamageEnemy);
+			specialRushAbility.specialRush.OnExecutedAction += () => { 
+			specialAbilityCharge = 0; 
+			player.invincibility.Add(specialRushAbility.specialRush.duration);
+		};
 		specialRushAbility.specialRush.OnActionFinished += ResetSpecialAbility;		// Special resets if special rush is executed
 		specialRushAbility.OnActionFinished += ResetSpecialAbility;					// Special also resets if special rush fails to execute (player waited too long)
 	}
@@ -169,14 +173,12 @@ public class KnightHero : PlayerHero {
 			OnKnightShield();
 	}
 
-	public override void SpecialAbility ()
-	{
+	public override void SpecialAbility () {
 		if (specialAbilityCharge < SPECIAL_ABILITY_CHARGE_CAPACITY || specialActivated)
 			return;
 		sound.RandomizeSFX(specialChargeSound);
 		onDragRelease -= Rush;
 		specialRushAbility.Execute();
-		specialRushAbility.specialRush.OnExecutedAction += () => { specialAbilityCharge = 0; };
 		specialActivated = true;
 	}
 

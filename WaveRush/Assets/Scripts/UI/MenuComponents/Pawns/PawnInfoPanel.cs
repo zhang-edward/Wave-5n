@@ -9,6 +9,7 @@ public class PawnInfoPanel : MonoBehaviour
 	[Header("Set from prefab")]
 	public PawnIconStandard pawnIcon;
 	public ScrollingText infoText;
+	public Sprite heroParrySprite;
 	[Header("Mid Panel Menus")]
 	public Transform powersPanel;
 	public GameObject abilityIcon1, abilityIcon2, sAbilityIcon, parryIcon;
@@ -93,6 +94,7 @@ public class PawnInfoPanel : MonoBehaviour
 		abilityIcon1.GetComponent<Image>().sprite = heroData.abilityIcons[0];
 		abilityIcon2.GetComponent<Image>().sprite = heroData.abilityIcons[1];
 		sAbilityIcon.GetComponent<Image>().sprite = heroData.specialAbilityIcon;
+		parryIcon	.GetComponent<Image>().sprite = heroParrySprite;
 
 		// Set text option
 		abilityIcon1.GetComponent<ScrollingTextOption>().text = heroData.ability1Name.ToUpper() + ": " + heroData.ability1Description;

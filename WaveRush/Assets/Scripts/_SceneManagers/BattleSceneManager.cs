@@ -186,7 +186,7 @@ public StageEndMenu losePanel;
 		gui.gameOverUI.SetActive(true);
 		losePanel.Init(scoreData, expData, gm.GetStage(gm.selectedSeriesIndex, gm.selectedStageIndex).stageName);
 	
-		if (enemyManager.isStageComplete) {
+		if (completedStage) {
 			if (OnStageCompleted != null)
 				OnStageCompleted();
 			if (IsPlayerOnLatestStage()) {

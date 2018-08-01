@@ -37,10 +37,15 @@ public class MainMenuSceneManager : MonoBehaviour
 	}
 
 	private void Init() {
+		// If a tutorialDialogue is playing, wait for it to finish before processing any menu notifications
+		if (tutorialDialogueManager.Init()) {
+			tutorialDialogueManager.dialogueView.onDialogueFinished += mainMenu.Init;
+		}
+		else {
+			mainMenu.Init();
+		}
 		gm.OnSceneLoaded -= Init; // Since this only runs once per scene
 	}
-
-
 
 	void GoToBattle() {
 		GameManager.instance.GoToScene("HeroSelect");

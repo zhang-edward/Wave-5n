@@ -169,7 +169,7 @@ public class GameManager : MonoBehaviour {
 			return 0;
 
 		// if the series is not the latest, then that means it has been completed
-		if (!GetLatestSeries().seriesName.Equals(seriesName))
+		if (save.LatestSeriesIndex > GetSeries(seriesName).index)
 			return GetSeries(seriesName).stages.Length;
 		else
 			return save.LatestStageIndex + 1;

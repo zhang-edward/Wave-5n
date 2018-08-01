@@ -18,7 +18,7 @@ public class QuestManager : MonoBehaviour
 		gm = GameManager.instance;
 		gm.OnSceneLoaded += OnSceneLoaded;
 		publicQuests = new List<Quest>();
-		heroUnlockQuests = new Quest[System.Enum.GetValues(typeof(HeroType)).Length];
+		heroUnlockQuests = new Quest[System.Enum.GetValues(typeof(HeroType)).Length * 3];
 		
 		QuestModifierJoint quest = new QuestModifierJoint(
 			gm,

@@ -489,6 +489,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   questManager: {fileID: 114362485652048620}
+  heroJustUnlocked: 
   selectedPawns: []
   selectedSeriesIndex: 0
   selectedStageIndex: 0
@@ -498,7 +499,7 @@ MonoBehaviour:
   loadingOverlay: {fileID: 11490514}
   debugPanel: {fileID: 1000011252810740}
   debugText: {fileID: 0}
-  alertText: {fileID: 114873602957678546}
+  alertText: {fileID: 114264422820709546}
   fpsDisplay: {fileID: 114397414768192682}
   debugMode: 0
 --- !u!114 &11462636
@@ -944,14 +945,14 @@ GameObject:
   - component: {fileID: 224324820343195196}
   - component: {fileID: 222290175912991478}
   - component: {fileID: 114178360061047062}
-  - component: {fileID: 114873602957678546}
+  - component: {fileID: 114264422820709546}
   m_Layer: 5
   m_Name: AlertText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1049981996614852
 GameObject:
   m_ObjectHideFlags: 1
@@ -2388,16 +2389,17 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: AlertMessage
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 715b80e429c437e40867928a4e1fc975, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 715b80e429c437e40867928a4e1fc975, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 240c02f01318847828d6d3948dc00aec, type: 2}
+  m_sharedMaterial: {fileID: 21030784730377610, guid: 240c02f01318847828d6d3948dc00aec,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 16777215
-  m_fontColor: {r: 1, g: 1, b: 1, a: 0}
-  m_enableVertexGradient: 0
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_enableVertexGradient: 1
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -2618,6 +2620,18 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114264422820709546
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1027577764534740}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa13537fb6c9a4ef3bb2ddc301fcc1ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  displaying: 0
 --- !u!114 &114267136676785524
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3448,18 +3462,6 @@ MonoBehaviour:
   m_Spacing: {x: 2, y: 2}
   m_Constraint: 0
   m_ConstraintCount: 2
---- !u!114 &114873602957678546
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1027577764534740}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa13537fb6c9a4ef3bb2ddc301fcc1ce, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  displaying: 0
 --- !u!114 &114927247246296096
 MonoBehaviour:
   m_ObjectHideFlags: 1

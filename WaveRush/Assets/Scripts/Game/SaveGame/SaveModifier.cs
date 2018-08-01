@@ -96,8 +96,8 @@ public class SaveModifier {
 	}
 
 	/** PawnWallet Getters */
-	public bool HasPawns() {
-		return pawnWallet.HasPawns();
+	public int NumPawns() {
+		return pawnWallet.NumPawns();
 	}
 
 	public Pawn GetPawn(int id) {

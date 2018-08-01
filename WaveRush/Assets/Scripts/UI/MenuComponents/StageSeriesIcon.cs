@@ -23,7 +23,7 @@ public class StageSeriesIcon : MonoBehaviour {
 	{
 		this.data = data;
 		icon.sprite = data.icon;
-		seriesNameText.text = data.seriesName;
+		seriesNameText.text = (data.index + 1) + " - " + data.seriesName; // +1 adjusts for zero-indexing
 		clickable.onClick.AddListener(OnClick);
 	}
 

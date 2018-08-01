@@ -31,24 +31,72 @@ MonoBehaviour:
     luckMin: 0.05
     luckMax: 0.15
   tips: []
-  heroDescription: 
-  ability1Name: 
-  ability2Name: 
-  specialName: 
-  ability1Description: 
-  ability2Description: 
-  specialDescription: 
-  parryDescription: 
+  heroDescription: The Bowman is a patient and opportunistic ranged fighter who excels
+    at positioning himself and taking out foes from a distance.
+  ability1Name: Piercing Arrow
+  ability2Name: Retreat
+  specialName: Arrow Rain
+  ability1Description: <color=yellow>Tap</color> to shoot an arrow which pierces up
+    to 5 enemies. <color=yellow>Tap and hold</color> to charge the shot, dealing up
+    to 2x damage.
+  ability2Description: <color=yellow>Swipe</color> to move in a direction. Performing
+    any other action while moving will slow you to a halt.
+  specialDescription: <color=yellow>Tap this icon, then tap</color> to cause a rain
+    of arrows down upon a region, dealing 1.5x damage to up to 15 enemies.
+  parryDescription: Resets your <color=yellow>Piercing Arrow</color> ability, and
+    your next shot is at maximum charge.
   icons:
-  - {fileID: 21300000, guid: a62406d7c62a34e8a813cb08b251de0b, type: 3}
+  - {fileID: 21300000, guid: 08c6e894d03cb4bbe8f21b341f76e4eb, type: 3}
   - {fileID: 21300000, guid: a62406d7c62a34e8a813cb08b251de0b, type: 3}
   - {fileID: 21300000, guid: a62406d7c62a34e8a813cb08b251de0b, type: 3}
   t1Skin:
     animations:
     - animationName: Default
       frames:
-      - {fileID: 21300000, guid: a62406d7c62a34e8a813cb08b251de0b, type: 3}
+      - {fileID: 21300000, guid: 08c6e894d03cb4bbe8f21b341f76e4eb, type: 3}
       fps: 1
+      looping: 1
+      ignoreTimeScale: 0
+    - animationName: Charge1
+      frames:
+      - {fileID: 21300002, guid: 08c6e894d03cb4bbe8f21b341f76e4eb, type: 3}
+      fps: 60
+      looping: 1
+      ignoreTimeScale: 0
+    - animationName: Charge2
+      frames:
+      - {fileID: 21300004, guid: 08c6e894d03cb4bbe8f21b341f76e4eb, type: 3}
+      fps: 60
+      looping: 1
+      ignoreTimeScale: 0
+    - animationName: Charge3
+      frames:
+      - {fileID: 21300006, guid: 08c6e894d03cb4bbe8f21b341f76e4eb, type: 3}
+      fps: 60
+      looping: 1
+      ignoreTimeScale: 0
+    - animationName: Shoot
+      frames:
+      - {fileID: 21300008, guid: 08c6e894d03cb4bbe8f21b341f76e4eb, type: 3}
+      - {fileID: 21300010, guid: 08c6e894d03cb4bbe8f21b341f76e4eb, type: 3}
+      - {fileID: 21300000, guid: 08c6e894d03cb4bbe8f21b341f76e4eb, type: 3}
+      fps: 10
+      looping: 0
+      ignoreTimeScale: 0
+    - animationName: Move
+      frames:
+      - {fileID: 21300012, guid: 08c6e894d03cb4bbe8f21b341f76e4eb, type: 3}
+      - {fileID: 21300014, guid: 08c6e894d03cb4bbe8f21b341f76e4eb, type: 3}
+      fps: 10
+      looping: 1
+      ignoreTimeScale: 0
+    player: {fileID: 0}
+  t2Skin:
+    animations:
+    - animationName: Default
+      frames:
+      - {fileID: 21300000, guid: a62406d7c62a34e8a813cb08b251de0b, type: 3}
+      fps: 60
       looping: 1
       ignoreTimeScale: 0
     - animationName: Charge1
@@ -83,15 +131,6 @@ MonoBehaviour:
       - {fileID: 21300014, guid: a62406d7c62a34e8a813cb08b251de0b, type: 3}
       fps: 10
       looping: 1
-      ignoreTimeScale: 0
-    player: {fileID: 0}
-  t2Skin:
-    animations:
-    - animationName: Default
-      frames:
-      - {fileID: 0}
-      fps: 0
-      looping: 0
       ignoreTimeScale: 0
     player: {fileID: 0}
   t3Skin:

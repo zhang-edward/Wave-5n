@@ -23,7 +23,7 @@ public class StageIcon : MonoBehaviour
 
 	public void Init(StageData stage)
 	{
-		stageNameText.text = stage.stageName;
+		stageNameText.text = (stageIndex + 1) + " - " + stage.stageName;
 		stageLevelText.text = "lv" + stage.difficultyLevel.ToString();
 	}
 

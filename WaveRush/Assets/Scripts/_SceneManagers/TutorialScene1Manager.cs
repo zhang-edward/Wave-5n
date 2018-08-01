@@ -120,7 +120,7 @@ public class TutorialScene1Manager : MonoBehaviour
 		yield return new WaitUntil(() => !dialogueView.dialoguePlaying);
 		cam.ResetFocus();
 
-		tutorialTaskView.Init("Use your Shield Ability 2 times (0/2)", false);
+		tutorialTaskView.Init("Use your Shield Ability", false);
 		//controlPointer.gameObject.SetActive(true);
 		//controlPointer.CrossFade("Tap", 0f);
 		//abilitiesBar.abilityIcons[1].FlashHighlight(Color.white);
@@ -138,12 +138,7 @@ public class TutorialScene1Manager : MonoBehaviour
 		while (highlighter.gameObject.activeInHierarchy)
 			yield return null;
 
-		while (knightShieldCount < 2)
-		{
-			tutorialTaskView.SetText(string.Format("Use your Shield Ability 2 times ({0}/2)", knightShieldCount));
-			yield return null;
-		}
-		tutorialTaskView.Init("Use your Shield Ability 2 times (2/2)", true);
+		tutorialTaskView.Init("Use your Shield Ability", true);
 		sound.PlayUISound(taskCompleteSound);
 		yield return new WaitForSeconds(TASK_DELAY_INTERVAL);
 		abilitiesBar.abilityIcons[1].StopFlashHighlight();

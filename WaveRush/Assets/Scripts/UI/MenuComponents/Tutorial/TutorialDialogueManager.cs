@@ -26,15 +26,16 @@ public class TutorialDialogueManager : MonoBehaviour
 		gm.OnDeletedData -= ResetTutorials;
 	}
 
-	public void Start() {
+	public bool Init() {
 		for (int i = 0; i < tutorialDialogueSets.Length; i ++) {
 			TutorialDialogueSetInfo info = tutorialDialogueSets[i];
 			if (CheckStage(info.series, info.stage)) {
 				print ("Trying to play " + i);
-				PlayDialogue(i);
-				break;
+				if (PlayDialogue(i))
+					return true;
 			}
 		}
+		return false;
 	}
 
 	public bool PlayDialogue(int tutorialIndex) {

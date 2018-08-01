@@ -10,7 +10,7 @@ public class MainMenu : MonoBehaviour
 
 	[Header("Primary Menus")]
 	public PawnShopMenu pawnShopMenu;
-	//public PawnRetireMenu pawnRetireMenu;
+	// public PawnRetireMenu pawnRetireMenu;
 
 	[Header("Secondary Views")]
 	public PawnInfoPanel pawnInfoPanel;
@@ -26,19 +26,21 @@ public class MainMenu : MonoBehaviour
 		gm = GameManager.instance;
 		pawnShopMenu.Init();
 		bottomNavButton.onValueChanged.AddListener(OnNavigatedToMainMenu);
-		OnNavigatedToMainMenu(true);
 	}
 
-	public void GoToBattle()
-	{
-		if (OnGoToBattle != null)
-			OnGoToBattle();
+	public void Init() {
+		OnNavigatedToMainMenu(true);
 	}
 
 	private void OnNavigatedToMainMenu(bool isOn) {
 		if (!isOn)
 			return;
 		StartCoroutine(NotifyHeroUnlockedRoutine());
+	}
+
+	public void GoToBattle() {
+		if (OnGoToBattle != null)
+			OnGoToBattle();
 	}
 
 	private IEnumerator	NotifyHeroUnlockedRoutine() {

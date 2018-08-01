@@ -77,13 +77,13 @@ public class PawnWallet
 		}
 	}
 
-	public bool HasPawns() {
-		for (int i = 0; i < pawns.Length; i ++)
-		{
+	public int NumPawns() {
+		int ans = 0;
+		for (int i = 0; i < pawns.Length; i ++) {
 			if (pawns[i] != null)
-				return true;
+				ans ++;
 		}
-		return false;
+		return ans;
 	}
 
 	public void ChangePawnCapacity(int newCapacity) {
