@@ -19,7 +19,7 @@ public class PlayerInput : MonoBehaviour
 		touchInputHandler.OnTouchBegan 		+= SetDirTouchBegan;
 		touchInputHandler.OnTouchEnded 		+= SetDirTouchEnded;
 		touchInputHandler.OnDragBegan		+= SetDirDragBegan;
-		touchInputHandler.OnDragMove 		+= SetDirDragHold;
+		touchInputHandler.OnDragHold 		+= SetDirDragHold;
 		touchInputHandler.OnDragRelease 	+= SetDirDragRelease;
 		touchInputHandler.OnTap 			+= SetDirTap;
 		touchInputHandler.OnTapHold 		+= SetDirTapHold;
@@ -34,7 +34,7 @@ public class PlayerInput : MonoBehaviour
 		if (isInputEnabled)
 		{
 			// Get mouse or touch input
-#if UNITY_ANDROID || UNITY_IOS
+#if UNITY_ANDROID || UNITY_IOS && !UNITY_EDITOR
 			touchInputHandler.ListenForTouchInput();
 #else
 			HandleMouseKeyboardInput();
@@ -45,15 +45,23 @@ public class PlayerInput : MonoBehaviour
 	public void HandleMouseKeyboardInput()
 	{
 		Vector2 mousePosition = Camera.main.ScreenToViewportPoint(Input.mousePosition) * INPUT_POSITION_SCALAR;
-		if (Input.GetMouseButtonDown(0))
-		{
+	
+		// Multi Touch
+		if (Input.GetMouseButton(0) && Input.GetMouseButton(1)) {
+			player.hero.HandleMultiTouch();
+			return;
+		}
+
+		// Began Touch
+		if (Input.GetMouseButtonDown(0)) {
 			if (EventSystem.current.IsPointerOverGameObject())
 				return;
 			pointerStartPos = mousePosition;
 			touchInputHandler.HandleTouchBegan(pointerStartPos);
 		}
-		if (Input.GetMouseButton(0))
-		{
+
+		// Touch moved
+		if (Input.GetMouseButton(0)) {
 			/*timeInputHeldDown += Time.deltaTime;
 			Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 			player.dir = ((Vector2)(mousePos - transform.position));
@@ -81,10 +89,6 @@ public class PlayerInput : MonoBehaviour
 		{
 			player.hero.HandleDrag();
 		}*/
-		if (Input.GetMouseButton(0) && Input.GetMouseButton(1))
-		{
-			player.hero.HandleMultiTouch();
-		}
 	}
 
 	private void SetDirTouchBegan(Vector3 pos) {

@@ -17,7 +17,7 @@ public class TouchInputHandler : MonoBehaviour {
 	public event DirectionalTouchInput OnTouchBegan;		// General touch begin
 	public event DirectionalTouchInput OnTouchEnded;		// General touch end
 	public event DirectionalTouchInput OnDragBegan;
-	public event DirectionalTouchInput OnDragMove;
+	public event DirectionalTouchInput OnDragHold;
 	public event DirectionalTouchInput OnDragRelease;
 	public event DirectionalTouchInput OnTapHold;
 	public event DirectionalTouchInput OnTapHoldRelease;
@@ -33,8 +33,10 @@ public class TouchInputHandler : MonoBehaviour {
 		if (Input.touchCount > 0)	// user touched the screen
 		{
 			Touch touch = Input.touches[0];
-			if (Input.touchCount >= 2)
+			if (Input.touchCount >= 2) {
 				MultiTouch();
+				return;
+			}
 
 			// if touch began
 			switch (touch.phase)
@@ -81,7 +83,7 @@ public class TouchInputHandler : MonoBehaviour {
 				OnDragBegan(touchDir);
 			}
 			else
-				OnDragMove(touchDir);
+				OnDragHold(touchDir);
 		}
 		else if (isDragging)
 		{
@@ -95,7 +97,9 @@ public class TouchInputHandler : MonoBehaviour {
 		if (!touchStarted)
 			return;
 		float touchTime = Time.time - touchStartTime;
-		if (touchTime > maxTapTime)
+		if (isDragging)
+			OnDragHold(viewportPos - touchStartPos);
+		else if (touchTime > maxTapTime)
 			OnTapHold((Vector2)Camera.main.ViewportToWorldPoint(viewportPos / PlayerInput.INPUT_POSITION_SCALAR));
 	}
 
@@ -133,7 +137,7 @@ public class TouchInputHandler : MonoBehaviour {
 
 	public void ClearListeners() {
 		OnDragBegan			= null;
-		OnDragMove 			= null;
+		OnDragHold 			= null;
 		OnDragRelease 		= null;
 		OnTap 				= null;
 		OnTapHold 			= null;

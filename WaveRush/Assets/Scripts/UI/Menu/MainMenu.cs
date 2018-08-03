@@ -23,12 +23,12 @@ public class MainMenu : MonoBehaviour
 
 	void Start()
 	{
-		gm = GameManager.instance;
 		pawnShopMenu.Init();
 		bottomNavButton.onValueChanged.AddListener(OnNavigatedToMainMenu);
 	}
 
 	public void Init() {
+		gm = GameManager.instance;
 		OnNavigatedToMainMenu(true);
 	}
 

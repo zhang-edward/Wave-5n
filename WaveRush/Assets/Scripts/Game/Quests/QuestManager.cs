@@ -31,9 +31,6 @@ public class QuestManager : MonoBehaviour
 
 	private void GetHeroUnlockQuests() {
 		for (int i = 0; i < heroUnlockQuests.Length; i ++) {
-			// If this hero was already unlocked, don't bother adding the unlock quest
-			if (gm.save.UnlockedHeroes[i])
-				continue;
 			int type = i / 3;
 			int tier = i % 3;
 			heroUnlockQuests[i] = DataManager.GetPlayerHero((HeroType)type).GetComponent<PlayerHero>().GetUnlockQuest(((HeroTier)tier));
@@ -106,8 +103,8 @@ public class QuestManager : MonoBehaviour
 		// Unlock hero quests
 		for (int i = 0; i < heroUnlockQuests.Length; i ++) {
 			Quest quest = heroUnlockQuests[i];
-			// Quest == null means this hero was already unlocked
-			if (quest == null)
+			// Don't check quest if hero was already unlocked
+			if (quest == null || gm.save.UnlockedHeroes[i])
 				continue;
 			// Check unlock status
 			if (quest as MultiQuest != null) {
