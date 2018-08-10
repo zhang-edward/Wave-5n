@@ -96,9 +96,14 @@ public class SoundManager : MonoBehaviour {
 		ui.Play ();
 	}
 
-	public void PlayMusicLoop(AudioClip clip, AudioClip intro = null)
+	public void PlayMusicLoop(AudioClip clip, bool fadeIn = false, AudioClip intro = null)
 	{
 //		Debug.Log ("Playing new music loop: " + clip);
+		if (fadeIn) {
+			StopAllCoroutines();
+			music.volume = 0;
+			StartCoroutine(FadeMusicRoutine(1));
+		}
 		playingMusic = true;
 		StartCoroutine (MusicLoop (clip, intro));
 	}
@@ -131,30 +136,31 @@ public class SoundManager : MonoBehaviour {
 		music.UnPause();
 	}
 
+	public void FadeMusic(float targetVolume) {
+		StopAllCoroutines();
+		StartCoroutine(FadeMusicRoutine(targetVolume));
+	}
+
 	private IEnumerator ImportantSound()
 	{
-		StartCoroutine(MusicFadeOut (0.5f));
+		StartCoroutine(FadeMusicRoutine (0.5f));
 		sfx.Play ();
 		yield return new WaitForSeconds (sfx.clip.length + 1);
-		StartCoroutine (MusicFadeIn (musicVolume));
+		StartCoroutine (FadeMusicRoutine (1));
 	}
 
-	private IEnumerator MusicFadeIn(float targetVolume)
+	private IEnumerator FadeMusicRoutine(float targetVolume)
 	{
-		while (music.volume < targetVolume)
+		float initialVolume = music.volume;
+		float finalVolume = targetVolume * musicVolume;
+		float t = 0;
+		while (Mathf.Abs(music.volume - targetVolume) > 0.05f)
 		{
-			music.volume += 0.05f;
+			music.volume = Mathf.Lerp(initialVolume, finalVolume, t);
+			t += Time.deltaTime;
 			yield return null;
 		}
-	}
-
-	private IEnumerator MusicFadeOut(float targetVolume)
-	{
-		while (music.volume > targetVolume)
-		{
-			music.volume -= 0.05f;
-			yield return null;
-		}
+		music.volume = targetVolume;
 	}
 
 	void Update()

@@ -28,6 +28,9 @@ public StageEndMenu losePanel;
 	public Button exitButton;
 	public Button continueButton;
 	public GameObject pauseButton;
+	[Header("Audio")]
+	//public AudioClip stageCompleteSound;
+	public AudioClip stageCompleteMusic;
 
 	public int moneyEarned { get; private set; } 			// money earned in this session
 	public int soulsEarned { get; private set; }            // souls earned in this session
@@ -52,6 +55,7 @@ public StageEndMenu losePanel;
 		//acquiredPawns = new List<Pawn>();
 		gm = GameManager.instance;
 		enemyManager.OnStageCompleted += () => { StartCoroutine(StageCompleteRoutine()); };
+		gui.OnStageCompletedTextDone += () => { UpdateData(true); };
 		player.OnPlayerDied += () => { UpdateData(false); };
 		//gm.OnSceneLoaded += Init;
 	}
@@ -97,7 +101,7 @@ public StageEndMenu losePanel;
 		while (dialogueView.dialoguePlaying)
 			yield return null;
 
-		SoundManager.instance.PlayMusicLoop(map.data.musicLoop, map.data.musicIntro);
+		SoundManager.instance.PlayMusicLoop(map.data.musicLoop, false, map.data.musicIntro);
 		player.GetComponent<PlayerInput>().enabled = true;
 		gui.enemyWaveText.gameObject.SetActive(true);
 		enemyManager.Init(stage);
@@ -106,44 +110,61 @@ public StageEndMenu losePanel;
 		//gm.OnSceneLoaded -= Init;   // Remove the listener because it is only run once per scene
 	}
 
-	private IEnumerator StageCompleteRoutine()
-	{
+	private IEnumerator StageCompleteRoutine() {
+		SoundManager.instance.FadeMusic(0f);
 		enemyManager.paused = true;
-		// Delay before showing end dialogue
-		yield return new WaitForSecondsRealtime(1.0f);
-		stageCompleteOptions.SetActive(true);
-		leaveOrContinueOptionOpen = true;
-		// Modal View Selection
-		int selection = -1;
-		stageCompleteModal.OnOptionSelected += (s) => {
-			selection = s;
-		};
-		while (leaveOrContinueOptionOpen)
-		{
-			pauseButton.gameObject.SetActive(false);
-			// "Leave" option selected
-			if (selection == 1)
-			{
-				player.transform.parent.gameObject.SetActive(false);
-				stageCompleteOptions.GetComponent<UIAnimatorControl>().AnimateOut();
-				UpdateData(true);
-				yield break;
-			}
-			// "Continue" option selected
-			if (selection == 0)
-			{
-				leaveOrContinueOptionOpen = false;
-			}
-			yield return null;
-		}
-		pauseButton.gameObject.SetActive(true);
-		enemyManager.paused = false;
-		stageCompleteOptions.GetComponent<UIAnimatorControl>().AnimateOut();
-		//print("No sacrifice detected; continue");
+
+		Time.timeScale = 0.2f;
+		yield return new WaitForSecondsRealtime (1.0f);
+		Time.timeScale = 1f;
 	}
 
-	private void UpdateData(bool completedStage)
-	{
+	// private IEnumerator StageCompleteRoutine()
+	// {
+	// 	SoundManager.instance.FadeMusic(0.5f);
+	// 	enemyManager.paused = true;
+	// 	// Delay before showing end dialogue
+	// 	yield return new WaitForSecondsRealtime(1.0f);
+	// 	stageCompleteOptions.SetActive(true);
+	// 	leaveOrContinueOptionOpen = true;
+	// 	// Modal View Selection
+	// 	int selection = -1;
+	// 	stageCompleteModal.OnOptionSelected += (s) => {
+	// 		selection = s;
+	// 	};
+	// 	while (leaveOrContinueOptionOpen)
+	// 	{
+	// 		pauseButton.gameObject.SetActive(false);
+	// 		// "Leave" option selected
+	// 		if (selection == 1)
+	// 		{
+	// 			player.transform.parent.gameObject.SetActive(false);
+	// 			stageCompleteOptions.GetComponent<UIAnimatorControl>().AnimateOut();
+	// 			UpdateData(true);
+	// 			yield break;
+	// 		}
+	// 		// "Continue" option selected
+	// 		if (selection == 0)
+	// 		{
+	// 			leaveOrContinueOptionOpen = false;
+	// 		}
+	// 		yield return null;
+	// 	}
+	// 	SoundManager.instance.FadeMusic(1);
+	// 	pauseButton.gameObject.SetActive(true);
+	// 	enemyManager.paused = false;
+	// 	stageCompleteOptions.GetComponent<UIAnimatorControl>().AnimateOut();
+	// 	//print("No sacrifice detected; continue");
+	// }
+
+	private void UpdateData(bool completedStage) {
+		// Do music
+		if (completedStage) {
+			StartCoroutine(PlayVictorySounds());
+		}
+		else {
+			SoundManager.instance.FadeMusic(0);
+		}
 		// Collect all money and souls
 		List<GameObject> moneyPickups = ObjectPooler.GetObjectPooler(Enemy.POOL_MONEY).GetAllActiveObjects();
 		List<GameObject> soulPickups = ObjectPooler.GetObjectPooler(BossEnemy.POOL_SOULS).GetAllActiveObjects();
@@ -203,6 +224,14 @@ public StageEndMenu losePanel;
 		gm.UpdateScores(enemiesDefeated, wavesSurvived, maxCombo);
 	}
 
+	private IEnumerator PlayVictorySounds() {
+		SoundManager sound = SoundManager.instance;
+		// sound.PlaySingle(stageCompleteSound);
+		// yield return new WaitForSecondsRealtime(1.0f);
+		sound.PlayMusicLoop(stageCompleteMusic, true);
+		yield return null;
+	}
+
 	private bool IsPlayerOnLatestStage()
 	{
 		return (gm.selectedStageIndex  == gm.save.LatestStageIndex &&
@@ -229,5 +258,6 @@ public StageEndMenu losePanel;
 	// DEBUG
 	public void DebugCompleteStage() {
 		StartCoroutine(StageCompleteRoutine());
+		gui.OnStageCompletedText();
 	}
 }

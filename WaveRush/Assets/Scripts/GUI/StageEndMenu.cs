@@ -33,7 +33,6 @@ public class StageEndMenu : MonoBehaviour {
 	}
 
 	public IEnumerator StageEndMenuRoutine() {
-		yield return new WaitForSeconds(2.0f);
 		InitHeroExpMenu();
 		while (!heroesExpMenu.doneAnimating)
 			yield return null;

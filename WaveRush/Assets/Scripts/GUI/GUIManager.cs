@@ -28,6 +28,9 @@ public class GUIManager : MonoBehaviour {
 	public EnemyManager enemyManager;
 	public Player player;
 
+	public delegate void GUIEvent();
+	public event GUIEvent OnStageCompletedTextDone; 
+
 	void OnEnable()
 	{
 		enemyManager.OnEnemyWaveSpawned += ShowEnemyWaveText;
@@ -126,9 +129,22 @@ public class GUIManager : MonoBehaviour {
 		enemyWaveText.DisplayWaveComplete ();
 	}
 
-	private void OnStageCompletedText()
+	public void OnStageCompletedText()
 	{
+		StartCoroutine(OnStageCompletedTextRoutine());
+	}
+
+	private IEnumerator OnStageCompletedTextRoutine() {
+		enemyWaveText.DisplayWaveComplete();
+		while (enemyWaveText.messageText.displaying) {
+			yield return null;
+		}
 		enemyWaveText.DisplayStageComplete();
+		while (enemyWaveText.messageText.displaying) {
+			yield return null;
+		}
+		if (OnStageCompletedTextDone != null)
+			OnStageCompletedTextDone();
 	}
 
 	private void ShowBossIncomingText()

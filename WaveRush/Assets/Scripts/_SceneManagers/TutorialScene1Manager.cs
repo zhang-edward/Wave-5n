@@ -82,7 +82,7 @@ public class TutorialScene1Manager : MonoBehaviour
 		knight = (KnightHero)player.hero;
 		enemyManager.level = 1;
 
-		SoundManager.instance.PlayMusicLoop(map.data.musicLoop, map.data.musicIntro);
+		SoundManager.instance.PlayMusicLoop(map.data.musicLoop, false, map.data.musicIntro);
 
 		gm.OnSceneLoaded -= Init;   // Remove the listener because it is only run once per scene
 

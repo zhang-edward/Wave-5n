@@ -47,11 +47,11 @@ public class HeroExpMenu : MonoBehaviour
 	}
 
 	private IEnumerator StartAnimation() {
+		yield return new WaitForSeconds(0.5f);
 		foreach (PawnIconAnimated pawnIcon in pawnIcons) {
-			pawnIcon.AnimateGetExperience();
 			yield return new WaitForSeconds(0.5f);
+			pawnIcon.AnimateGetExperience();
 		}
-		yield return new WaitForSeconds(1.0f);
 		doneAnimating = true;
 	}
 }

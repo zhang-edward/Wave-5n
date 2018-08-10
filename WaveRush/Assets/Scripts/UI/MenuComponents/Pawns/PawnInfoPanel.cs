@@ -55,6 +55,7 @@ public class PawnInfoPanel : MonoBehaviour
 		print(pawn);
 		pawnIcon.Init(pawn);
 		HeroData heroData = DataManager.GetHeroData(pawn.type);
+		PlayerHero playerHero = DataManager.GetPlayerHero(pawn.type).GetComponent<PlayerHero>();
 		SetStatInfoTexts(pawn);
 		/** Initialize the hero's power up info */
 		HeroPowerUpListData powerUpListData = DataManager.GetPowerUpListData(pawn.type);
@@ -97,8 +98,8 @@ public class PawnInfoPanel : MonoBehaviour
 		parryIcon	.GetComponent<Image>().sprite = heroParrySprite;
 
 		// Set text option
-		abilityIcon1.GetComponent<ScrollingTextOption>().text = heroData.ability1Name.ToUpper() + ": " + heroData.ability1Description;
-		abilityIcon2.GetComponent<ScrollingTextOption>().text = heroData.ability2Name.ToUpper() + ": " + heroData.ability2Description;
+		abilityIcon1.GetComponent<ScrollingTextOption>().text = heroData.ability1Name.ToUpper() + ": " + heroData.ability1Description + " (" + playerHero.cooldownTime[0] + " sec cooldown)";
+		abilityIcon2.GetComponent<ScrollingTextOption>().text = heroData.ability2Name.ToUpper() + ": " + heroData.ability2Description + " (" + playerHero.cooldownTime[1] + " sec cooldown)";
 		sAbilityIcon.GetComponent<ScrollingTextOption>().text = heroData.specialName.ToUpper()  + ": " + heroData.specialDescription;
 		parryIcon	.GetComponent<ScrollingTextOption>().text = "PARRY: " + heroData.parryDescription;
 

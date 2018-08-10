@@ -8,7 +8,7 @@ public class ScreenMusic : MonoBehaviour {
 
 	void Start()
 	{
-		SoundManager.instance.PlayMusicLoop (musicLoop, intro);
+		SoundManager.instance.PlayMusicLoop (musicLoop, false, intro);
 	}
 
 	private void OnDisable()

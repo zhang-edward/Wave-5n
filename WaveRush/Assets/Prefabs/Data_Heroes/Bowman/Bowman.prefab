@@ -8,15 +8,15 @@ Prefab:
     m_TransformParent: {fileID: 0}
     m_Modifications: []
     m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 0}
+  m_SourcePrefab: {fileID: 0}
   m_RootGameObject: {fileID: 1484269624840130}
-  m_IsPrefabParent: 1
+  m_IsPrefabAsset: 1
 --- !u!1 &1484269624840130
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 4957890699186260}
   - component: {fileID: 114228614489618940}
@@ -31,7 +31,7 @@ GameObject:
 --- !u!4 &4957890699186260
 Transform:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1484269624840130}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
@@ -44,7 +44,7 @@ Transform:
 --- !u!114 &114228614489618940
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1484269624840130}
   m_Enabled: 1
@@ -65,6 +65,7 @@ MonoBehaviour:
   stats: []
   heroType: 3
   numHearts: 4
+  hitDisableTime: 0.2
   maxComboTimer: 3
   cooldownTime:
   - 1.5
@@ -122,7 +123,9 @@ MonoBehaviour:
     - {fileID: 21300002, guid: 45778dbe309ae4b08932278db1b2c7dc, type: 3}
     - {fileID: 21300004, guid: 45778dbe309ae4b08932278db1b2c7dc, type: 3}
     - {fileID: 21300006, guid: 45778dbe309ae4b08932278db1b2c7dc, type: 3}
-    fps: 10
+    - {fileID: 21300008, guid: 45778dbe309ae4b08932278db1b2c7dc, type: 3}
+    - {fileID: 21300010, guid: 45778dbe309ae4b08932278db1b2c7dc, type: 3}
+    fps: 15
   critEffect:
     animationName: CritEffect
     frames:
@@ -141,7 +144,7 @@ MonoBehaviour:
 --- !u!114 &114731331671095352
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1484269624840130}
   m_Enabled: 1

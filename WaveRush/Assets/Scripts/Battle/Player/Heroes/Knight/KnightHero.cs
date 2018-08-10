@@ -41,7 +41,7 @@ public class KnightHero : PlayerHero {
 		}
 	}
 
-	public const float SHIELD_TIME = 6f;
+	public const float SHIELD_TIME = 15f;
 	public const int   SHIELD_MAXHEALTH = 4;
 
 	[Header("Abilities")]

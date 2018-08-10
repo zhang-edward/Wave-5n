@@ -491,9 +491,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   questManager: {fileID: 114362485652048620}
   heroJustUnlocked: 
-  selectedPawns: []
+  selectedPawns:
+  - type: 3
+    level: 5
+    boosts: 
   selectedSeriesIndex: 0
-  selectedStageIndex: 0
+  selectedStageIndex: 1
   regularStages: {fileID: 11400000, guid: f1ca0c616e5e747e6a071407d729e290, type: 2}
   specialStages: {fileID: 0}
   scoreManager: {fileID: 11440748}
@@ -502,7 +505,7 @@ MonoBehaviour:
   debugText: {fileID: 0}
   alertText: {fileID: 114714547347278842}
   fpsDisplay: {fileID: 114397414768192682}
-  debugMode: 0
+  debugMode: 1
 --- !u!114 &11462636
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -514,7 +517,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1be36db14242d41beb22c054221e71dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  musicVolume: 0.5
+  musicVolume: 1
   sfxVolume: 1
 --- !u!114 &11490514
 MonoBehaviour:
