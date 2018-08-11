@@ -298,6 +298,8 @@ GameObject:
   - component: {fileID: 224342283489472140}
   - component: {fileID: 222273874673946828}
   - component: {fileID: 114112786763753160}
+  - component: {fileID: 95973607894131086}
+  - component: {fileID: 114668025113924316}
   m_Layer: 5
   m_Name: NFI
   m_TagString: Untagged
@@ -315,6 +317,8 @@ GameObject:
   - component: {fileID: 224073070920005004}
   - component: {fileID: 222200858329115174}
   - component: {fileID: 114377995367802924}
+  - component: {fileID: 95909155007328076}
+  - component: {fileID: 114860407065736318}
   m_Layer: 5
   m_Name: NFI
   m_TagString: Untagged
@@ -761,6 +765,8 @@ GameObject:
   - component: {fileID: 224822822781024920}
   - component: {fileID: 222437210287371670}
   - component: {fileID: 114875935043118872}
+  - component: {fileID: 95736161631824418}
+  - component: {fileID: 114694893392820640}
   m_Layer: 5
   m_Name: NFI
   m_TagString: Untagged
@@ -875,6 +881,42 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!95 &95736161631824418
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1984273921828916}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 435a182860dd64f73a1fd6ded3a421b9, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!95 &95909155007328076
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1278375712241728}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 435a182860dd64f73a1fd6ded3a421b9, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!95 &95917542820916818
 Animator:
   serializedVersion: 3
@@ -903,6 +945,24 @@ Animator:
   m_Enabled: 1
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 23721af9ef7e2400f99a43350caad846, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!95 &95973607894131086
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1248122167073232}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 435a182860dd64f73a1fd6ded3a421b9, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1702,11 +1762,11 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 0
+  m_havePropertiesChanged: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 0
+  m_isInputParsingRequired: 1
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_subTextObjects:
@@ -2749,6 +2809,18 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114668025113924316
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1248122167073232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6af0290938d78450b8fe83048aed8fb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selfInit: 0
 --- !u!114 &114668476751962598
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2776,6 +2848,18 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114694893392820640
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1984273921828916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6af0290938d78450b8fe83048aed8fb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selfInit: 0
 --- !u!114 &114696056425377732
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2951,12 +3035,12 @@ MonoBehaviour:
   scrollLeftButton: {fileID: 1955574745652718}
   scrollRightButton: {fileID: 1029868596096678}
   tierButtonIndicators:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  heroTypeText: {fileID: 0}
+  - {fileID: 114860407065736318}
+  - {fileID: 114694893392820640}
+  - {fileID: 114668025113924316}
+  heroTypeText: {fileID: 114967648159666384}
   lockedPanel: {fileID: 1053378028053040}
-  questText: {fileID: 0}
+  questText: {fileID: 114554080133597828}
 --- !u!114 &114809601902443152
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3197,6 +3281,18 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114860407065736318
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1278375712241728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6af0290938d78450b8fe83048aed8fb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selfInit: 0
 --- !u!114 &114863223986829932
 MonoBehaviour:
   m_ObjectHideFlags: 1

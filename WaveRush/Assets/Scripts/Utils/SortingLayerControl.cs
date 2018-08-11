@@ -9,13 +9,9 @@ public class SortingLayerControl : MonoBehaviour {
 	public float customPivot;
 	SpriteRenderer sr;
 
-	// Use this for initialization
-	void Awake () {
-		sr = GetComponent<SpriteRenderer> ();
-	}
-
-	void OnEnable() 
+	void Start() 
 	{
+		sr = GetComponent<SpriteRenderer> ();
 		if (updating)
 			StartCoroutine (SetSortingOrderRepeating());
 		else

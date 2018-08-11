@@ -1,7 +1,5 @@
 fileFormatVersion: 2
 guid: 5ca105e74e801403191a77022f59c9c8
-timeCreated: 1470175614
-licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
     21300000: terrain_grass_bg_props_0
@@ -9,14 +7,17 @@ TextureImporter:
     21300004: terrain_grass_bg_props_2
     21300006: terrain_grass_bg_props_3
     21300008: terrain_grass_bg_props_4
-  serializedVersion: 2
+  externalObjects: {}
+  serializedVersion: 7
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
+    sRGBTexture: 1
     linearTexture: 0
-    correctGamma: 0
     fadeOut: 0
     borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
     mipMapFadeDistanceStart: 1
     mipMapFadeDistanceEnd: 3
   bumpmap:
@@ -25,132 +26,168 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
   isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
   grayScaleToAlpha: 0
-  generateCubemap: 0
+  generateCubemap: 6
   cubemapConvolution: 0
-  cubemapConvolutionSteps: 7
-  cubemapConvolutionExponent: 1.5
   seamlessCubemap: 0
   textureFormat: -3
   maxTextureSize: 2048
   textureSettings:
+    serializedVersion: 2
     filterMode: 0
     aniso: 16
-    mipBias: -1
-    wrapMode: 1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
   nPOTScale: 0
   lightmap: 0
-  rGBM: 0
   compressionQuality: 50
-  allowsAlphaSplitting: 0
   spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 16
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
   alphaIsTransparency: 1
+  spriteTessellationDetail: -1
   textureType: 8
-  buildTargetSettings: []
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - serializedVersion: 2
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
   spriteSheet:
+    serializedVersion: 2
     sprites:
-    - name: terrain_grass_bg_props_0
+    - serializedVersion: 2
+      name: terrain_grass_bg_props_0
       rect:
         serializedVersion: 2
         x: 3
-        y: 200
+        y: 195
         width: 35
-        height: 50
+        height: 55
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -17.5, y: 25}
-        - {x: -17.5, y: -7}
-        - {x: -11.5, y: -24}
-        - {x: -8.5, y: -25}
-        - {x: 6.5, y: -25}
-        - {x: 17.5, y: -12}
-        - {x: 17.5, y: 25}
-    - name: terrain_grass_bg_props_1
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6f9783166ae314e69bde947fdf93be3b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: terrain_grass_bg_props_1
       rect:
         serializedVersion: 2
         x: 43
-        y: 187
+        y: 181
         width: 51
-        height: 69
+        height: 75
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -13.5, y: 34.5}
-        - {x: -25.5, y: 24.5}
-        - {x: -25.5, y: -2.5}
-        - {x: -8.5, y: -34.5}
-        - {x: 10.5, y: -34.5}
-        - {x: 25.5, y: -17.5}
-        - {x: 25.5, y: 34.5}
-    - name: terrain_grass_bg_props_2
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6eb5568cfd2c94a76aad9afa5e77727e
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: terrain_grass_bg_props_2
       rect:
         serializedVersion: 2
         x: 98
-        y: 183
+        y: 180
         width: 50
-        height: 71
+        height: 74
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 18, y: 35.5}
-        - {x: -17, y: 35.5}
-        - {x: -25, y: 28.5}
-        - {x: -25, y: -18.5}
-        - {x: -19, y: -35.5}
-        - {x: 8, y: -35.5}
-        - {x: 25, y: 2.5}
-        - {x: 25, y: 17.5}
-        - {x: 24, y: 20.5}
-    - name: terrain_grass_bg_props_3
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d866642e9f4d24eb5ac07a794a9a0330
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: terrain_grass_bg_props_3
       rect:
         serializedVersion: 2
         x: 8
-        y: 62
+        y: 56
         width: 67
-        height: 101
+        height: 107
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -32.5, y: 50.5}
-        - {x: -33.5, y: 43.5}
-        - {x: -33.5, y: -1.5}
-        - {x: -14.5, y: -41.5}
-        - {x: -8.5, y: -50.5}
-        - {x: 5.5, y: -50.5}
-        - {x: 9.5, y: -48.5}
-        - {x: 33.5, y: 6.5}
-        - {x: 33.5, y: 50.5}
-    - name: terrain_grass_bg_props_4
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 351be44f4bb0e40159f67d1f5910694e
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: terrain_grass_bg_props_4
       rect:
         serializedVersion: 2
         x: 88
-        y: 64
+        y: 56
         width: 66
-        height: 98
+        height: 106
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -33, y: 49}
-        - {x: -33, y: -31}
-        - {x: -28, y: -49}
-        - {x: 7, y: -49}
-        - {x: 9, y: -46}
-        - {x: 33, y: -7}
-        - {x: 33, y: 49}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 94fe1497d61854592a69bd67682ea09b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 4d147b9892cd84b878f300519b6d2ad7
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
   spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 

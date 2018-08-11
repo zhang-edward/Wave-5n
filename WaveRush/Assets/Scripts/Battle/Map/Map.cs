@@ -28,7 +28,7 @@ public class Map : MonoBehaviour {
 	public SpriteRenderer[] cornerBorderSprites;
 	public const int size = 20;
 	public float bgPropsBufferMin = 2;
-	public float bgPropsBufferMax = 8;
+	public float bgPropsBufferMax = 5;
 	public int bgPropsDensity = 25;
 
 	// ids
@@ -55,7 +55,7 @@ public class Map : MonoBehaviour {
 	public void GenerateMap()
 	{
 		data = GetMapInfo ();
-
+		Camera.main.backgroundColor = data.bgColor;
 		SetBorderSprite();
 		GetIntegerMaps ();
 		InitSpriteMap ();
@@ -204,30 +204,34 @@ public class Map : MonoBehaviour {
 
 	private void SpawnBGProps()
 	{
-		for (int i = 0; i < bgPropsDensity; i ++)
+		// Left
+		for (int i = 0; i < bgPropsDensity * 2; i ++)
 		{
-			float randOffset = Random.Range (bgPropsBufferMin, bgPropsBufferMax);
+			float randOffset = Random.Range (bgPropsBufferMin, bgPropsBufferMax * 2);
 			GameObject o = Instantiate(data.edgeProps[Random.Range(0, data.edgeProps.Length)]);
 			o.transform.position = new Vector3 (-randOffset,
 				Random.Range (0, Map.size + bgPropsBufferMax));
 			o.transform.SetParent (bgFolder);
 		}
-		for (int i = 0; i < bgPropsDensity; i ++)
+		// Right
+		for (int i = 0; i < bgPropsDensity * 2; i ++)
 		{
-			float randOffset = Random.Range (bgPropsBufferMin, bgPropsBufferMax);
+			float randOffset = Random.Range (bgPropsBufferMin, bgPropsBufferMax * 2);
 			GameObject o = Instantiate(data.edgeProps[Random.Range(0, data.edgeProps.Length)]);
 			o.transform.position = new Vector3 (Map.size + randOffset,
-				Random.Range (0, Map.size + bgPropsBufferMax));
+				Random.Range (-bgPropsBufferMax, Map.size + bgPropsBufferMax));
 			o.transform.SetParent (bgFolder);
 		}
+		// Lower
 		for (int i = 0; i < bgPropsDensity; i ++)
 		{
 			float randOffset = Random.Range (bgPropsBufferMin, bgPropsBufferMax);
 			GameObject o = Instantiate(data.edgeProps[Random.Range(0, data.edgeProps.Length)]);
-			o.transform.position = new Vector3 (Random.Range (0, Map.size + bgPropsBufferMax),
+			o.transform.position = new Vector3 (Random.Range (-bgPropsBufferMax, Map.size + bgPropsBufferMax),
 				-randOffset);
 			o.transform.SetParent (bgFolder);
 		}
+		// Upper
 		for (int i = 0; i < bgPropsDensity; i ++)
 		{
 			float randOffset = Random.Range (bgPropsBufferMin, bgPropsBufferMax);

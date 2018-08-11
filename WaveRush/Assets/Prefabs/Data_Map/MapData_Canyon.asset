@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21a08a96d65f34a6383a48d66bfb3275, type: 3}
+  m_Name: MapData_Canyon
+  m_EditorClassIdentifier: 
+  mapType: 2
+  terrainSprites:
+  - {fileID: 21300000, guid: 6a3ba4876585d40978e8f3d3b3b5eb36, type: 3}
+  - {fileID: 21300002, guid: 6a3ba4876585d40978e8f3d3b3b5eb36, type: 3}
+  - {fileID: 21300004, guid: 6a3ba4876585d40978e8f3d3b3b5eb36, type: 3}
+  - {fileID: 21300006, guid: 6a3ba4876585d40978e8f3d3b3b5eb36, type: 3}
+  terrainObjects:
+  - sprite: {fileID: 21300008, guid: 6a3ba4876585d40978e8f3d3b3b5eb36, type: 3}
+    flattened: 0
+  - sprite: {fileID: 21300010, guid: 6a3ba4876585d40978e8f3d3b3b5eb36, type: 3}
+    flattened: 0
+  - sprite: {fileID: 21300012, guid: 6a3ba4876585d40978e8f3d3b3b5eb36, type: 3}
+    flattened: 0
+  - sprite: {fileID: 21300014, guid: 6a3ba4876585d40978e8f3d3b3b5eb36, type: 3}
+    flattened: 0
+  - sprite: {fileID: 21300016, guid: 6a3ba4876585d40978e8f3d3b3b5eb36, type: 3}
+    flattened: 1
+  - sprite: {fileID: 21300018, guid: 6a3ba4876585d40978e8f3d3b3b5eb36, type: 3}
+    flattened: 1
+  bossSpawnPrefab: {fileID: 149346, guid: 6f51787b2b9ca41fab012d2601de59ce, type: 2}
+  edgeProps:
+  - {fileID: 1295305678510234, guid: a3e6221b0f38f4f528e21460586ac900, type: 2}
+  - {fileID: 1853525845646856, guid: 0daa9f98b11b7423ebbec356e883060e, type: 2}
+  - {fileID: 1873980358166514, guid: 2bf360835664d49d89c448dd9f3c15d5, type: 2}
+  - {fileID: 1810507332669848, guid: d7aad7fc169fc45fba610bcfd8336974, type: 2}
+  - {fileID: 1342846236217676, guid: 529c22e556e79432e9a5c13d9ca69f7e, type: 2}
+  - {fileID: 1051769705449130, guid: b9cf5d23bd8564622b89f3cb459ff961, type: 2}
+  - {fileID: 1319083865923348, guid: d7518b891dec84706bb3cbcc0d826a1b, type: 2}
+  borderSprite: {fileID: 21300008, guid: ff9dbf56aca1b4d70918e7fc0aed797d, type: 3}
+  cornerBorderSprite: {fileID: 21300016, guid: ff9dbf56aca1b4d70918e7fc0aed797d, type: 3}
+  bgColor: {r: 0.6784314, g: 0.39607847, b: 0.2509804, a: 1}
+  musicLoop: {fileID: 8300000, guid: f30b23ef07c3c442683b56529ce1769e, type: 3}
+  musicIntro: {fileID: 0}
