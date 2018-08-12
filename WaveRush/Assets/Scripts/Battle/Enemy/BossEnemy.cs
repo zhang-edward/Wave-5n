@@ -24,7 +24,8 @@ public class BossEnemy : Enemy {
 
 	public override void Die ()
 	{
-		print ("Boss dying");
+		player.StartTempSlowDown(1.0f);
+		// print ("Boss dying");
 		action.Interrupt();
 		foreach (EnemyStatus status in statuses)
 		{
@@ -33,17 +34,17 @@ public class BossEnemy : Enemy {
 		foreach (Enemy e in enemyManager.Enemies)
 		{
 			if (e.isActiveAndEnabled && e as BossEnemy == null)
-				e.Disable (4f);
+				e.Disable (2f);
 		}
 		StopAllCoroutines ();
-		StartCoroutine ("DeathAnimation");
+		StartCoroutine (DeathAnimation());
 	}
 
 	protected override IEnumerator MoveState()
 	{
 		if (dying || health <= 0)
 		{
-			print("Boss dying from moveState");
+			// print("Boss dying from moveState");
 			Die();
 			yield break;
 		}
@@ -59,9 +60,9 @@ public class BossEnemy : Enemy {
 
 	private IEnumerator DeathAnimation()
 	{
-		print("Start dying");
+		// print("Start dying");
 		CameraControl cam = CameraControl.instance;
-		anim.CrossFade ("Dead", 0f);
+		anim.Play ("Dead");
 		while (OtherBossesDying())
 			yield return null;
 		dying = true;
@@ -95,10 +96,8 @@ public class BossEnemy : Enemy {
 
 	private bool OtherBossesDying()
 	{
-		foreach (BossEnemy boss in enemyManager.bosses)
-		{
-			if (boss.dying && boss != this)
-			{
+		foreach (BossEnemy boss in enemyManager.bosses) {
+			if (boss.dying && boss != this) {
 				return true;
 			}
 		}

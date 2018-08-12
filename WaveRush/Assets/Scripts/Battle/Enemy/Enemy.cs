@@ -63,7 +63,7 @@ public class Enemy : MonoBehaviour, IDamageable {
 	public EnemyAction action;
 	public SpawnMethod spawnMethod;		// whether this enemy walks onto the arena or not
 
-	private Player player;
+	protected Player player;
 	private List<Color> colors = new List<Color>();		// The different colors (from status effects or other sources) that this instance will flash
 	private Color baseColor = Color.white;	// The base color that this sprite is currently. Will reset to this when flashing any other color
 	/** States */

@@ -25,6 +25,7 @@ public class StageSelectMenu : MonoBehaviour
 	public GameObject stageSelectionView;
 	public Transform stageIconFolder;
 	public GameObject highlightMenu;
+	public TMP_Text descriptionText;
 
 	public delegate void OnStageIconSelected();
 	public event OnStageIconSelected StageIconSelected;
@@ -145,8 +146,7 @@ public class StageSelectMenu : MonoBehaviour
 			StageIconSelected();
 	}
 
-	public void DeselectStageIcon()
-	{
+	public void DeselectStageIcon()	{
 		// if there is nothing to deselect, return
 		if (selectedStageIcon == null)
 			return;

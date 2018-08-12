@@ -15,7 +15,7 @@ public class EffectPooler : ObjectPooler
 		instance = this;
 	}
 
-	public static void PlayEffect(SimpleAnimation toPlay, Vector3 position, bool randRotation = false, float fadeOutTime = 0f)
+	public static TempObject PlayEffect(SimpleAnimation toPlay, Vector3 position, bool randRotation = false, float fadeOutTime = 0f)
 	{
 		GameObject o = instance.GetPooledObject();
 		SimpleAnimationPlayer anim = o.GetComponent<SimpleAnimationPlayer>();
@@ -31,6 +31,7 @@ public class EffectPooler : ObjectPooler
 					 position,
 					 toPlay.frames[0]);
 		anim.Play();
+		return tempObj;
 	}
 
 	public static TempObject PlayEffect(SimpleAnimation toPlay, Vector3 position, TempObjectInfo info)
