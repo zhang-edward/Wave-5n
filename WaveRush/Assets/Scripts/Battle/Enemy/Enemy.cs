@@ -305,8 +305,9 @@ public class Enemy : MonoBehaviour, IDamageable {
 
 	protected void SpawnMoneyPickup()
 	{
-		int rangeValue = (int)Mathf.Sqrt(maxHealth);
-		int moneyValue = Random.Range (rangeValue / 2, rangeValue * 2) * moneyValueMultiplier;
+		float rangeValue = Mathf.Sqrt(maxHealth);
+		float rangeNoise = rangeValue * 0.2f;
+		int moneyValue = (int)(Random.Range (rangeValue - rangeNoise, rangeValue + rangeNoise) * moneyValueMultiplier);
 		if (moneyValue <= 0)
 			return;
 		GameObject o = ObjectPooler.GetObjectPooler(POOL_MONEY).GetPooledObject();

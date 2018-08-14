@@ -52,7 +52,7 @@
 
 		private float HealAmt()
 		{
-			return baseHealAmt * Formulas.PlayerDamageFormula(e.level);
+			return baseHealAmt * Formulas.PlayerDamage(e.level);
 		}
 	}
 }

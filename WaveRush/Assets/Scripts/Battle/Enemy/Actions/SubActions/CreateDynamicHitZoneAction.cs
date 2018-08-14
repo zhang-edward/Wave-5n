@@ -22,7 +22,7 @@ namespace EnemyActions
 			hitZone.transform.position = posGenerator.GetGeneratedPosition();
 			Player player = hitZone.Activate();
 			if (player != null) {
-				int damage = Formulas.EnemyDamageFormula(baseDamage, player.hero.level - enemy.level);
+				int damage = Formulas.EnemyDamage(baseDamage, player.hero.level - enemy.level);
 				player.Damage(damage, e);	
 			}
 		}

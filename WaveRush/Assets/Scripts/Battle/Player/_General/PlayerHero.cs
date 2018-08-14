@@ -102,7 +102,7 @@ public abstract class PlayerHero : MonoBehaviour {
 		stats = heroData.GetStatsArray();
 		level = heroData.level;
 		damageMultiplier = 1f;
-		baseDamage = Mathf.RoundToInt(Formulas.PlayerDamageFormula(heroData.level, (int)heroData.tier) * stats[StatData.STR]);
+		baseDamage = Mathf.RoundToInt(Formulas.PlayerDamage(heroData.level, (int)heroData.tier) * stats[StatData.STR]);
 		healthPerHeart = (int)stats[StatData.VIT];
 
 		// Init cooldownMultipliers to x1

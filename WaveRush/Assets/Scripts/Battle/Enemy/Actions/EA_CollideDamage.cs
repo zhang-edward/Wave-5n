@@ -41,7 +41,7 @@
 				Player player = col.GetComponentInChildren<Player>();
 				if (cooldown <= 0 && e.health > 0 && !e.hitDisabled && buildUp >= attackBuildUp)
 				{
-					int damage = Formulas.EnemyDamageFormula(baseDamage, player.hero.level - e.level);
+					int damage = Formulas.EnemyDamage(baseDamage, player.hero.level - e.level);
 					player.Damage(damage, e);
 					cooldown = attackCooldown;
 				}

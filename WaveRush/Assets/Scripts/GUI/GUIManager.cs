@@ -14,6 +14,7 @@ public class GUIManager : MonoBehaviour {
 	public IncrementingText moneyEarnedText;
 	public IncrementingText soulsEarnedText;
 	public PartyView partyView;
+	public GameObject partyViewContainer;
 	public UIAnimatorControl partyViewMenu;
 	public UIAnimatorControl nextWaveButton;
 	public Transform customUI;					// Used for heroes to have custom hero-specific ui elements (located under pause button)
@@ -62,7 +63,7 @@ public class GUIManager : MonoBehaviour {
 	private void DisableWaveCompletedMenus(int foo) {
 		nextWaveButton.AnimateOut();
 		partyViewMenu.AnimateOut();
-		partyView.gameObject.SetActive(false);
+		partyViewContainer.gameObject.SetActive(false);
 	}
 
 	public void GameOverUI(ScoreReport.ScoreReportData data)

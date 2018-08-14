@@ -1,4 +1,4 @@
-﻿﻿﻿﻿using UnityEngine;
+﻿﻿using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using System.Collections;
@@ -18,7 +18,6 @@ public class StageSelectMenu : MonoBehaviour
 	public GameObject stageIconPrefab;
 
 	[Header("Stage Series Select View")]
-	public TMP_Text stageSeriesNameText;
 	public Transform stageSeriesIconFolder;
 
 	[Header("Stage Select View")]
@@ -141,6 +140,8 @@ public class StageSelectMenu : MonoBehaviour
 		stageIcon.ExpandHighlightMenu();
 		int siblingIndex = stageIcon.stageIndex;
 		highlightMenu.transform.SetSiblingIndex(siblingIndex);
+		StageData stage = stageIcon.stage;
+		descriptionText.text = "Waves: " + stage.goalWave + "\nParty Size: " + stage.maxPartySize;
 
 		if (StageIconSelected != null)
 			StageIconSelected();

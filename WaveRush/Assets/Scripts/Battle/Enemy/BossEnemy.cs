@@ -15,7 +15,7 @@ public class BossEnemy : Enemy {
 	public override void Init (Vector3 spawnLocation, Map map, int level)
 	{
 		canBeDisabledOnHit = false;
-		numSouls = SoulsFormula(level);
+		numSouls = Formulas.BossSoulsDrop(level);
 		base.Init (spawnLocation, map, level);
 		enemyManager = GetComponentInParent<EnemyManager> ();
 		deathEffect = enemyManager.bossDeathEffect;
@@ -102,12 +102,6 @@ public class BossEnemy : Enemy {
 			}
 		}
 		return false;
-	}
-
-	private static int SoulsFormula(int level)
-	{
-		int ans = Mathf.CeilToInt(level * 1.5f);
-		return Random.Range(ans - 1, ans + 1);
 	}
 }
 

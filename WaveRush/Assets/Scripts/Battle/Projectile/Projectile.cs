@@ -144,7 +144,7 @@ namespace Projectiles
 			Enemy e = source as Enemy;
 			int damage;
 			if (e != null) {
-				damage = Formulas.EnemyDamageFormula(baseDamage, e.GetLevelDiff());
+				damage = Formulas.EnemyDamage(baseDamage, e.GetLevelDiff());
 			}
 			else {
 				damage = baseDamage;

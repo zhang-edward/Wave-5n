@@ -45,9 +45,9 @@ public class PawnShopMenu : MonoBehaviour
 
 	void Update() {
 		refreshTimerText.text = string.Format("Refreshes in {0}h {1}m {2}s",
-								   refreshTimer.GetHours().ToString(),
-								   refreshTimer.GetMinutes().ToString(),
-								   refreshTimer.GetSeconds().ToString());
+								   Mathf.Max(refreshTimer.GetHours(), 0).ToString(),
+								   Mathf.Max(refreshTimer.GetMinutes(), 0).ToString(),
+								   Mathf.Max(refreshTimer.GetSeconds(), 0).ToString());
 
 	}
 

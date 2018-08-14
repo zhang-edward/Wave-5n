@@ -13,6 +13,7 @@ public class StageIcon : MonoBehaviour
 	public GameObject highlight;		// the shiny border around the window
 	public GameObject highlightMenu;    // a menu with description and play button
 
+	public StageData stage;
 	public int seriesIndex;
 	public int stageIndex;
 
@@ -23,6 +24,7 @@ public class StageIcon : MonoBehaviour
 
 	public void Init(StageData stage)
 	{
+		this.stage = stage;
 		stageNameText.text = (stageIndex + 1) + " - " + stage.stageName;
 		stageLevelText.text = "lv" + stage.difficultyLevel.ToString();
 	}

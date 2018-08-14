@@ -44,7 +44,7 @@ public class Pawn : System.IComparable<Pawn>
 		type = HeroType.Knight;
 		tier = HeroTier.tier1;
 		level = 1;
-		MaxExperience = Formulas.ExperienceFormula(level);
+		MaxExperience = Formulas.ExperienceFormula(level, (int)tier);
 		boosts = new int[StatData.NUM_STATS];
 	}
 
@@ -53,7 +53,7 @@ public class Pawn : System.IComparable<Pawn>
 		this.type = type;
 		this.tier = tier;
 		this.level = level;
-		MaxExperience = Formulas.ExperienceFormula(level);
+		MaxExperience = Formulas.ExperienceFormula(level, (int)tier);
 		boosts = new int[StatData.NUM_STATS];
 	}
 
@@ -62,7 +62,7 @@ public class Pawn : System.IComparable<Pawn>
 		this.tier = other.tier;
 		this.level = other.level;
 		this.Experience = other.Experience;
-		MaxExperience = Formulas.ExperienceFormula(level);
+		MaxExperience = Formulas.ExperienceFormula(level, (int)tier);
 		boosts = new int[StatData.NUM_STATS];
 		other.boosts.CopyTo(this.boosts, 0);
 	}
@@ -74,7 +74,7 @@ public class Pawn : System.IComparable<Pawn>
 		this.level = level;
 		this.Experience = experience;
 		this.boosts = boosts;
-		MaxExperience = Formulas.ExperienceFormula(level);
+		MaxExperience = Formulas.ExperienceFormula(level, (int)tier);
 	}
 
 	public void SetID(int id) {
@@ -96,7 +96,7 @@ public class Pawn : System.IComparable<Pawn>
 			Experience -= MaxExperience;
 			level++;
 			numLevelsGained++;
-			MaxExperience = Formulas.ExperienceFormula(level);
+			MaxExperience = Formulas.ExperienceFormula(level, (int)tier);
 			if (level >= MaxLevel)
 			{
 				Experience = 0;
@@ -112,8 +112,8 @@ public class Pawn : System.IComparable<Pawn>
 			Experience = 0;
 	}
 
-	public static int GetMaxExperience(int level) {
-		return Formulas.ExperienceFormula(level);
+	public static int GetMaxExperience(int level, int tier) {
+		return Formulas.ExperienceFormula(level, tier);
 	}
 #endregion
 #region Boosts

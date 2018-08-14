@@ -168,12 +168,16 @@ public StageEndMenu losePanel;
 		// Collect all money and souls
 		List<GameObject> moneyPickups = ObjectPooler.GetObjectPooler(Enemy.POOL_MONEY).GetAllActiveObjects();
 		List<GameObject> soulPickups = ObjectPooler.GetObjectPooler(BossEnemy.POOL_SOULS).GetAllActiveObjects();
+		int leftoverMoney = 0;
+		int leftoverSouls = 0;
 		foreach (GameObject o in moneyPickups) {
-			AddMoney(o.GetComponent<MoneyPickup>().value);
+			leftoverMoney += o.GetComponent<MoneyPickup>().value;
 		}
 		foreach (GameObject o in soulPickups) {
-			AddSouls(1);
+			leftoverSouls ++;
 		}
+		AddMoney(leftoverMoney);
+		AddSouls(leftoverSouls);
 		// Money report data
 		ScoreReport.ScoreReportData scoreData = new ScoreReport.ScoreReportData(
 			money: 				gm.save.money,
@@ -186,14 +190,16 @@ public StageEndMenu losePanel;
 		// Add or subtract experience from pawns
 		if (completedStage) {
 			int stagesCompleted = enemyManager.waveNumber / enemyManager.stageData.goalWave;
-			int gainedExperience = (int)(Formulas.ExperienceFormula(enemyManager.level) * 0.3f * stagesCompleted * enemyManager.stageData.maxPartySize / pawnMetaData.Length);
+			//int gainedExperience = (int)(Mathf(Formulas.ExperienceFormula(enemyManager.level)) * 0.4f * stagesCompleted * enemyManager.stageData.maxPartySize / pawnMetaData.Length);
+			int gainedExperience = Formulas.StageExperience(enemyManager.level, enemyManager.waveNumber, enemyManager.stageData.maxPartySize, pawnMetaData.Length);
 			for (int i = 0; i < pawnMetaData.Length; i ++) {
 				gm.save.AddExperience(pawnMetaData[i].id, gainedExperience);
 			}
 		}
 		else {
 			for (int i = 0; i < pawnMetaData.Length; i ++) {
-				int lostExperience = (int)(Formulas.ExperienceFormula(gm.save.GetPawn(pawnMetaData[i].id).level) * 0.2f);
+				Pawn pawn = gm.save.GetPawn(pawnMetaData[i].id);
+				int lostExperience = (int)(Formulas.ExperienceFormula(pawn.level, (int)pawn.tier) * 0.2f);
 				gm.save.LoseExperience(pawnMetaData[i].id, lostExperience);
 			}
 		}

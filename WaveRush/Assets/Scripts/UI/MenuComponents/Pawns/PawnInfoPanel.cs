@@ -142,7 +142,7 @@ public class PawnInfoPanel : MonoBehaviour
 			boostInfoTexts[i].text = string.Format("+{0}", pawn.boosts[i]);
 		}
 		float[] stats = pawn.GetStatsArray();
-		statInfoTexts[StatData.STR].text  = string.Format("{0} dmg", 	  Mathf.RoundToInt(Formulas.PlayerDamageFormula(pawn.level, (int)pawn.tier) * stats[StatData.STR]));
+		statInfoTexts[StatData.STR].text  = string.Format("{0} dmg", 	  Mathf.RoundToInt(Formulas.PlayerDamage(pawn.level, (int)pawn.tier) * stats[StatData.STR]));
 		statInfoTexts[StatData.VIT].text  = string.Format("{0} hp/heart", (int)stats[StatData.VIT]);
 		statInfoTexts[StatData.CHG].text  = string.Format("{0}%", 		  stats[StatData.CHG]);
 		statInfoTexts[StatData.DEX].text  = string.Format("{0}%",		  stats[StatData.DEX] * 100);
