@@ -19,21 +19,22 @@ public class AnimationSet
 		player.defaultAnim = animDictionary["Default"];
 	}
 
-	public void Play(string name)
-	{
+	public bool Play(string name) {
+		if (!animDictionary.ContainsKey(name))
+			return false;
 		AnimationSetAnim animation = animDictionary[name];
-		player.anim = animation;
-		player.ignoreTimeScaling = animation.ignoreTimeScale;
 		player.looping = animation.looping;
-		player.Play();
+		player.willResetToDefault = animation.resetToDefault;
+		player.ignoreTimeScaling = animation.ignoreTimeScale;
+		player.Play(animation);
+		return true;
 	}
 
-	public void Play(AnimationSetAnim animation)
-	{
-		player.anim = animation;
-		player.ignoreTimeScaling = animation.ignoreTimeScale;
+	public void Play(AnimationSetAnim animation) {
 		player.looping = animation.looping;
-		player.Play();
+		player.willResetToDefault = animation.resetToDefault;
+		player.ignoreTimeScaling = animation.ignoreTimeScale;
+		player.Play(animation);
 	}
 
 	public AnimationSetAnim GetAnimation(string name) {

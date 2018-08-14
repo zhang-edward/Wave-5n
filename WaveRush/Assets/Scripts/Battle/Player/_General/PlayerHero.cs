@@ -251,7 +251,7 @@ public abstract class PlayerHero : MonoBehaviour {
 	private IEnumerator ListenForParry()
 	{
 		// Effect
-		EffectPooler.PlayEffect(player.parryEffect, transform.position, true, 0.1f);
+		EffectPooler.PlayEffect(player.parryEffect, transform.position, true, 0.3f);
 		player.StrobeColor(Color.yellow, PARRY_TIME - 0.1f);
 		// Lose Momentum
 		float bodySpeed = body.rb2d.velocity.magnitude;

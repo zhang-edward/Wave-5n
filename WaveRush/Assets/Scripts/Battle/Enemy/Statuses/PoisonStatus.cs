@@ -22,7 +22,6 @@ public class PoisonStatus : EnemyStatus
 		while (timer >= 0) {
 			yield return null;
 		}
-		enemy.anim.enabled = true;
 		enemy.RemoveColor(Color.green);
 		enemy.body.moveSpeed = enemy.DEFAULT_SPEED;
 

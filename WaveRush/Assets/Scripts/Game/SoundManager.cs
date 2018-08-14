@@ -15,7 +15,7 @@ public class SoundManager : MonoBehaviour {
 	private float highPitchRange = 1.05f;
 
 	[Range(0, 1)]
-	public float musicVolume = 1;
+	public float musicVolume = 0.7f;
 	[Range(0, 1)]
 	public float sfxVolume = 1;
 
@@ -32,6 +32,8 @@ public class SoundManager : MonoBehaviour {
 		ui = GetComponent<AudioSource> ();
 		music = GameObject.Find ("Music").GetComponent<AudioSource> ();
 		sfx = GameObject.Find ("SFX").GetComponent<AudioSource> ();
+		RegisterMusicSrc(music);
+		RegisterSfxSrc(sfx);
 
 		music.volume = musicVolume;
 	}
@@ -163,19 +165,28 @@ public class SoundManager : MonoBehaviour {
 		music.volume = targetVolume;
 	}
 
-	void Update()
-	{
+	void Update() {
 		music.volume = musicVolume;
 		sfx.volume = sfxVolume;
 	}
 
-	public void SetMusicVolume(float volume)
-	{
+	public void SetMusicVolume(float volume) {
 		musicVolume = volume;
 	}
 
-	public void SetSfxVolume(float volume)
-	{
+	public void SetSfxVolume(float volume) {
 		sfxVolume = volume;
+	}
+
+	public void MuteMusic(bool mute) {
+		foreach (AudioSource src in musicSources) {
+			src.mute = mute;
+		}
+	}
+
+	public void MuteSFX(bool mute) {
+		foreach (AudioSource src in sfxSources) {
+			src.mute = mute;
+		}
 	}
 }

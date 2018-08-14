@@ -101,9 +101,8 @@ namespace Projectiles
 				transform.eulerAngles = new Vector3(0, 0, angle);
 			}
 
-			animator.anim = projectileAnim;
 			animator.looping = true;
-			animator.Play();
+			animator.Play(projectileAnim);
 
 			// Event
 			if (OnShoot != null)

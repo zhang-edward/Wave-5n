@@ -5,10 +5,11 @@ namespace EnemyActions
 {
 	public abstract class PrepareActionWrapper : EnemyAction
 	{
-		private Animator anim;
+		protected AnimationSet anim;
 		[Header("Times")]
 		public float chargeTime = 0.5f;
 		public float actionTime = 0.2f;
+		public float endLagTime = 0.5f;
 		[Header("AnimationStates")]
 		public string chargeState;
 		public string actionState;
@@ -45,6 +46,8 @@ namespace EnemyActions
 
 			// Reset vars
 			Reset();
+			yield return new WaitForSeconds(endLagTime);
+
 			if (onActionFinished != null)
 				onActionFinished();
 		}
@@ -52,12 +55,12 @@ namespace EnemyActions
 		protected virtual void Charge()
 		{
 			//anim.ResetTrigger ("Charge");
-			anim.CrossFade(chargeState, 0f);        // triggers are unreliable, crossfade forces state to execute
+			anim.Play(chargeState);        // triggers are unreliable, crossfade forces state to execute
 		}
 
 		protected virtual void Action()
 		{
-			anim.CrossFade(actionState, 0f);     // triggers are unreliable, crossfade forces state to execute
+			anim.Play(actionState);     // triggers are unreliable, crossfade forces state to execute
 			SoundManager.instance.RandomizeSFX(actionSound);
 		}
 

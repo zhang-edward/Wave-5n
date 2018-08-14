@@ -16,6 +16,8 @@ public class BounceState : MoveState
 
 	public override void UpdateState()
 	{
+		if (!anim.player.IsPlayingAnimation(moveState))
+			anim.Play (moveState);
 		body.Move (dir);
 	}
 

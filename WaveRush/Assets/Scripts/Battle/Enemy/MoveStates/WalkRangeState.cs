@@ -3,13 +3,11 @@ using System.Collections;
 
 public class WalkRangeState : MoveState
 {
-	private enum State
-	{
+	private enum State {
 		Walk,
 		Wait
 	}
 	private State state = State.Walk;
-	private Animator anim;
 	private Vector3 target;
 	private float waitTimer;    // how long this entity should wait, once it has reached its destination
 	private Map map;
@@ -21,7 +19,6 @@ public class WalkRangeState : MoveState
 	public override void Init(Enemy e, Transform player)
 	{
 		base.Init(e, player);
-		anim = e.anim;
 		map = e.map;
 		state = State.Wait;
 	}
@@ -71,7 +68,8 @@ public class WalkRangeState : MoveState
 		if (Vector3.Distance(enemy.transform.position, target) > 0.1f)
 		{
 			// move
-			anim.SetBool("Moving", true);
+			if (!anim.player.IsPlayingAnimation(moveState))
+				anim.Play(moveState);
 			body.Move((target - enemy.transform.position).normalized);
 		}
 		else
@@ -85,7 +83,7 @@ public class WalkRangeState : MoveState
 		// Debug.Log ("WaitState");
 
 		body.Move(Vector2.zero);
-		anim.SetBool("Moving", false);
+		anim.player.ResetToDefault();
 
 		state = State.Wait;
 	}

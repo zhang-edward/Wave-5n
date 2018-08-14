@@ -17,13 +17,11 @@ public class SimpleAnimationPlayer : MonoBehaviour {
 
 	private Coroutine playAnimRoutine;
 
-	void Awake()
-	{
+	void Awake() {
 		sr = GetComponent<SpriteRenderer>();
 	}
 
-	void Start()
-	{
+	void Start() {
 		//secondsPerFrame = 1.0f / anim.fps;
 		frameIndex = 0;
 		if (playOnStart)
@@ -31,15 +29,23 @@ public class SimpleAnimationPlayer : MonoBehaviour {
 		//sr.sprite = anim.frames [0];
 	}
 
-	public virtual void Play()
-	{
+	public virtual void Play(SimpleAnimation anim) {
 		UnityEngine.Assertions.Assert.IsNotNull (anim);
-		Reset ();
+		this.anim = anim;
+		Reset();
 		playAnimRoutine = StartCoroutine(PlayAnim());
 	}
 
-	public void Reset()
-	{
+	public void Play() {
+		UnityEngine.Assertions.Assert.IsNotNull (anim);
+		playAnimRoutine = StartCoroutine(PlayAnim());
+	}
+
+	public void Pause() {
+		StopCoroutine(playAnimRoutine);
+	}
+
+	public void Reset() {
 		frameIndex = 0;
 		sr.sprite = anim.frames[0];
 		if (playAnimRoutine != null)

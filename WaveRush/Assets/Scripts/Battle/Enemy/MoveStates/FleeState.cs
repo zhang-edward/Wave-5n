@@ -4,7 +4,6 @@ using System.Collections;
 public class FleeState : MoveState
 {
 	private Vector3 dir;
-	private Animator anim;
 	private Map map;
 	private bool updatingDir;
 	private float randAngle = 30f;
@@ -19,10 +18,10 @@ public class FleeState : MoveState
 	public override void UpdateState()
 	{
 		dir = (transform.position - player.transform.position).normalized;
-		if (!map.WithinOpenCells(transform.position + dir))
-		{
-			dir = Vector2.zero;
+		if (map.WithinOpenCells(transform.position + dir)) {
+			body.Move(dir);
+			if (!anim.player.IsPlayingAnimation(moveState))
+				anim.Play(moveState);
 		}
-		body.Move(dir);
 	}
 }

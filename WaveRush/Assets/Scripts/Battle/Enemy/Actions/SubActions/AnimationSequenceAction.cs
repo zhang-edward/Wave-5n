@@ -5,7 +5,7 @@ namespace EnemyActions
 {
 	public class AnimationSequenceAction : EnemyAction
 	{
-		private Animator anim;
+		private AnimationSet anim;
 		private int curState;
 
 		[System.Serializable]
@@ -15,6 +15,7 @@ namespace EnemyActions
 			public float duration;
 			public AudioClip clip;
 		}
+
 		public AnimationState[] states;
 
 		public override void Init(Enemy e, OnActionStateChanged onActionFinished)
@@ -34,7 +35,7 @@ namespace EnemyActions
 			while (curState < states.Length)
 			{
 				AnimationState state = states[curState];            // get the current state
-				anim.CrossFade(state.name, 0f);                     // transition to the animation state
+				anim.Play(state.name);                    			// transition to the animation state
 				SoundManager.instance.RandomizeSFX(state.clip);
 				yield return new WaitForSeconds(state.duration);    // hold the state for a specific duration
 				curState++;                                         // move to the next state

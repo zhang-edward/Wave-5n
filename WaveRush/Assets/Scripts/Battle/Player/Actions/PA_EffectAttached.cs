@@ -40,7 +40,7 @@
 				anim.transform.position,
 				anim.anim.frames[0],
 				info);
-			anim.Play();
+			anim.Play(anim.anim);
 		}
 
 		void OnDisable() {

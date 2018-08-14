@@ -6,8 +6,7 @@ public class AnimationSetPlayer : SimpleAnimationPlayer
 	public AnimationSetAnim defaultAnim;
 	public bool willResetToDefault = true;
 
-	public void Init()
-	{
+	public void Init() {
 		StartCoroutine(ResetToDefaultAnimation());	
 	}
 
@@ -17,9 +16,8 @@ public class AnimationSetPlayer : SimpleAnimationPlayer
 		{
 			if (!isPlaying && willResetToDefault)
 			{
-				anim = defaultAnim;
 				looping = true;
-				Play();
+				Play(defaultAnim);
 			}
 			yield return null;
 		}
@@ -28,17 +26,15 @@ public class AnimationSetPlayer : SimpleAnimationPlayer
 	public void ResetToDefault()
 	{
 		willResetToDefault = true;
-		anim = defaultAnim;
 		looping = true;
-		Play();
+		Play(defaultAnim);
 	}
 
 	/// <summary>
 	/// Checks if an animation is currently being played
 	/// </summary>
 	/// <param name="animationName">Animation to check for.</param>
-	public bool IsPlayingAnimation(string animationName)
-	{
-		return ((AnimationSetAnim)anim).animationName == animationName;
+	public bool IsPlayingAnimation(string animationName) {
+		return anim.animationName.Equals(animationName);
 	}
 }

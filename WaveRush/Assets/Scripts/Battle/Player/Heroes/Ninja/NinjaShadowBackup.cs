@@ -89,11 +89,10 @@ public class NinjaShadowBackup : HeroPowerUp
 
 		TempObject tempObj = companions[i].GetComponent<TempObject> ();
 		SimpleAnimationPlayer anim = companions[i].GetComponent<SimpleAnimationPlayer> ();
-		anim.anim = companionAnimations [Random.Range (0, companionAnimations.Length)];
+		anim.Play (companionAnimations [Random.Range (0, companionAnimations.Length)]);
 		tempObj.Init (Quaternion.identity,
 			position,
 			anim.anim.frames [0]);
-		anim.Play ();
 
 		yield return new WaitForSeconds (0.2f);
 		DamageEnemy (e, 1);

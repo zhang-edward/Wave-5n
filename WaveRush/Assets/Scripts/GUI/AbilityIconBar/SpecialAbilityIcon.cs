@@ -62,15 +62,13 @@ public class SpecialAbilityIcon : MonoBehaviour
 
 	private IEnumerator PlayFinishCooldownEffect()
 	{
-		holder.anim = holderCooledDownEffect;
 		holder.looping = false;
-		holder.Play();
+		holder.Play(holderCooledDownEffect);
 		while (holder.isPlaying)
 			yield return null;
 		// play new anim
-		holder.anim = holderAbilityAvailableEffect;
 		holder.looping = true;
-		holder.Play ();
+		holder.Play (holderAbilityAvailableEffect);
 	}
 }
 

@@ -22,23 +22,20 @@ public class IndicatorEffect : MonoBehaviour
 
 	private IEnumerator DoAnimation()
 	{
-		anim.anim = initAnimation;
 		anim.looping = false;
-		anim.Play ();
+		anim.Play (initAnimation);
 
 		while (anim.isPlaying)
 			yield return null;
 
-		anim.anim = loopAnimation;
 		anim.looping = true;
-		anim.Play ();
+		anim.Play (loopAnimation);
 
 		while (!animatingOut)
 			yield return null;
 
-		anim.anim = onDisableAnimation;
 		anim.looping = false;
-		anim.Play ();
+		anim.Play (onDisableAnimation);
 
 		while (anim.isPlaying)
 			yield return null;

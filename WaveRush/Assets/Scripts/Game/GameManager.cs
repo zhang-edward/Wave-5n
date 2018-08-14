@@ -7,6 +7,7 @@ using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour {
 
+	public const string SCENE_STARTSCREEN = "StartScreen";
 	public const string SCENE_TUTORIAL = "Tutorial1";
 	public const string SCENE_MAINMENU = "MainMenu";
 	public const string SCENE_BATTLE = "Game";
@@ -60,6 +61,13 @@ public class GameManager : MonoBehaviour {
 		save = new SaveModifier(sg);
 		loadingOverlay.gameObject.SetActive(false);
 		heroJustUnlocked = new bool[System.Enum.GetValues(typeof(HeroType)).Length * 3];
+
+#if UNITY_IOS
+		if (UnityEngine.iOS.Device.generation == UnityEngine.iOS.DeviceGeneration.iPhoneX) {
+			StatusBarManager.Show(true);
+		}
+#endif
+
 	}
 
 	void Start()

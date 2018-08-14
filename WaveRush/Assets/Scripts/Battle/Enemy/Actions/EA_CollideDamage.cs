@@ -19,6 +19,10 @@
 			onActionFinished();
 		}
 
+		public override bool CanExecute() {
+			return !activated;
+		}
+
 		public override void Interrupt()
 		{
 		}

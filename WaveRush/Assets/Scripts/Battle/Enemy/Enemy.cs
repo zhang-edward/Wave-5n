@@ -35,7 +35,8 @@ public class Enemy : MonoBehaviour, IDamageable {
 
 
 	public EntityPhysics body;
-	public Animator anim;
+	// public Animator anim;
+	public AnimationSetPlayer animationSetPlayer;
 
 	public bool hitDisabled{ get; private set; }
 
@@ -48,6 +49,11 @@ public class Enemy : MonoBehaviour, IDamageable {
 	public bool healable = true;
 	public bool canBeDisabledOnHit = true;
 	public bool invincible = false;
+
+	[Header("Animation")]
+	public string movingAnimState = "Moving";
+	public string spawnAnimState = "Spawn";
+	public AnimationSet anim;
 
 	[Header("Abilities and Status Effects")]
 	public List<EnemyAbility> abilities;
@@ -88,14 +94,14 @@ public class Enemy : MonoBehaviour, IDamageable {
 
 	public virtual void Init(Vector3 spawnLocation, Map map, int level)
 	{
-		// init sr size values
+		// Sr size values
 		if (!overrideSrSize)
 			statusIconSize = sr.bounds.size.x;
-		// init abilities
+		// Abilities
 		InitAbilities ();
 		if (OnEnemyInit != null)
 			OnEnemyInit ();
-		// init default values
+		// Default values
 		DEFAULT_LAYER = body.gameObject.layer;
 		DEFAULT_SPEED = body.moveSpeed;
 
@@ -105,7 +111,11 @@ public class Enemy : MonoBehaviour, IDamageable {
 		health = maxHealth;
 		deathPropPool = ObjectPooler.GetObjectPooler ("DeathProp");			// instantiate set object pooler
 
-		// init movement and action
+		// Animation
+		anim.Init(animationSetPlayer);
+		animationSetPlayer.Init();
+
+		// Movement and action
 		movementMethod.Init(this, playerTransform);		
 		action.Init (this, ToMoveState);
 
@@ -194,8 +204,7 @@ public class Enemy : MonoBehaviour, IDamageable {
 	protected virtual IEnumerator WalkInSpawn(Vector3 target)
 	{
 		body.gameObject.layer = LayerMask.NameToLayer ("EnemySpawnLayer");
-		if (anim.ContainsParam("Moving"))
-			anim.SetBool ("Moving", true);
+		anim.Play(movingAnimState);
 		while (Vector3.Distance(transform.position, target) > 0.1f)
 		{
 			body.Move ((target - transform.position).normalized);
@@ -210,11 +219,9 @@ public class Enemy : MonoBehaviour, IDamageable {
 	{
 		body.transform.position = target;
 		//UnityEngine.Assertions.Assert.IsTrue(anim.HasState(0, Animator.StringToHash("Spawn")));
-		if (anim.HasState(0, Animator.StringToHash("Spawn")))
-			anim.CrossFade ("Spawn", 0f);
-
+		anim.Play(spawnAnimState);
 		yield return new WaitForEndOfFrame ();		// wait for the animation state to update before continuing
-		while (anim.GetCurrentAnimatorStateInfo (0).IsName ("Spawn"))
+		while (anim.player.isPlaying)
 			yield return null;
 		StartCoroutine (MoveState());
 	}
@@ -247,7 +254,7 @@ public class Enemy : MonoBehaviour, IDamageable {
 
 		yield return new WaitForSeconds (time);
 
-		anim.CrossFade ("default", 0f);
+		anim.player.ResetToDefault();
 		hitDisabled = false;
 		body.ragdolled = false;
 		ToMoveState ();
@@ -272,8 +279,7 @@ public class Enemy : MonoBehaviour, IDamageable {
 	
 	private void ToMoveState()
 	{
-		if (anim.HasState(0, Animator.StringToHash("default")))
-			anim.CrossFade ("default", 0f);
+		anim.player.ResetToDefault();
 		ForceStopAllStates();
 		moveState = StartCoroutine (MoveState());
 	}

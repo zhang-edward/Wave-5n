@@ -8,7 +8,6 @@ public class WalkVicinityState : MoveState
 		Wait
 	}
 	private State state = State.Walk;
-	private Animator anim;
 	private Vector3 target;
 	private float waitTimer;    // how long this entity should wait, once it has reached its destination
 	private Map map;
@@ -62,7 +61,8 @@ public class WalkVicinityState : MoveState
 		if (Vector3.Distance (enemy.transform.position, target) > 0.1f)
 		{
 			// move
-			anim.SetBool ("Moving", true);
+			if (!anim.player.IsPlayingAnimation(moveState))
+				anim.Play(moveState);
 			body.Move ((target - enemy.transform.position).normalized);
 		}
 		else
@@ -76,7 +76,7 @@ public class WalkVicinityState : MoveState
 //		Debug.Log ("WaitState");
 
 		body.Move (Vector2.zero);
-		anim.SetBool ("Moving", false);
+		anim.player.ResetToDefault();
 
 		state = State.Wait;
 	}

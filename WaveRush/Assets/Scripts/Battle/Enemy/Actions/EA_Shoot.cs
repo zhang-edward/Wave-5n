@@ -4,9 +4,8 @@
 	using Projectiles;
 	using System.Collections;
 
-	public class EA_Shoot : EnemyAction
+	public class EA_Shoot : PrepareActionWrapper
 	{
-		protected Animator anim;
 		protected EntityPhysics body;
 		protected ObjectPooler projectilePool;
 		protected Vector3 shootPointPos;
@@ -14,78 +13,48 @@
 		public GameObject projectilePrefab;
 		public Transform shootPoint;
 		[Header("Properties")]
-		public float chargeTime = 0.5f;
-		public float attackTime = 0.2f;
 		public bool reflectX = true;
-		[Header("AnimationStates")]
-		public string chargeState;
-		public string shootState;
-		[Header("Audio")]
-		public AudioClip shootSound;
+		
+		protected Vector2 dir;
 
 		public event OnActionStateChanged onShoot;
 
 		public override void Init(Enemy e, OnActionStateChanged onActionFinished)
 		{
 			base.Init(e, onActionFinished);
-			anim = e.anim;
 			body = e.body;
 			projectilePool = projectilePrefab.GetComponent<Projectile>().GetObjectPooler();
 			shootPointPos = shootPoint.localPosition;
 		}
 
-		public override void Execute()
-		{
-			base.Execute();
-			StartCoroutine(UpdateState());
-		}
-
-		public override void Interrupt()
-		{
+		public override void Interrupt() {
 			StopAllCoroutines();
+			body.Move(Vector3.zero);
 		}
 
-		private IEnumerator UpdateState()
-		{
-			//UnityEngine.Assertions.Assert.IsTrue (state == State.Attacking);
-			//Debug.Log ("attacking: enter");
-			// Charge up before attack
-			Charge();
+		protected override void Charge() {
+			base.Charge();
+			body.Move(Vector2.zero);
 
-			// adjust for player hitbox
-			Vector2 dir = e.playerTransform.transform.position - shootPoint.position;
-			yield return new WaitForSeconds(chargeTime);
-
+			dir = e.playerTransform.transform.position - shootPoint.position;
 			if (e.sr.flipX)
 				shootPoint.localPosition = new Vector3(shootPointPos.x * -1, shootPointPos.y);
 			else
 				shootPoint.localPosition = new Vector3(shootPointPos.x, shootPointPos.y);
 
-			// Shoot
-			Shoot(dir.normalized);
-
-			if (onShoot != null)
-				onShoot();
-			yield return new WaitForSeconds(attackTime);
-
-			if (onActionFinished != null)
-				onActionFinished();
 		}
 
-		private void Charge()
-		{
-			anim.CrossFade(chargeState, 0f);        // triggers are unreliable, crossfade forces state to execute
-			body.Move(Vector2.zero);
-			//+ new Vector2(Random.value, Random.value);		// add a random offset
-		}
-
-		protected virtual void Shoot(Vector2 dir)
-		{
-			anim.CrossFade(shootState, 0f);     // triggers are unreliable, crossfade forces state to execute
+		protected override void Action() {
+			base.Action();
 			Projectile p = projectilePool.GetPooledObject().GetComponent<Projectile>();
 			UnityEngine.Assertions.Assert.IsNotNull(p);
 			p.Init(shootPoint.position, dir, e);
-			SoundManager.instance.RandomizeSFX(shootSound);
+			if (onShoot != null)
+				onShoot();
+		}
+
+		protected override void Reset() {
+			dir = Vector2.zero;
 		}
 	}
 }

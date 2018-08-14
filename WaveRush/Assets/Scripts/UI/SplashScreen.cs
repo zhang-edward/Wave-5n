@@ -17,7 +17,7 @@ public class SplashScreen : MonoBehaviour {
 	{
 		if (Input.anyKeyDown) 
 		{
-			SceneManager.LoadScene ("StartScreen");
+			SceneManager.LoadScene (GameManager.SCENE_STARTSCREEN);
 		}
 	}
 
@@ -40,6 +40,6 @@ public class SplashScreen : MonoBehaviour {
 			t -= Time.deltaTime;
 			yield return null;
 		}
-		SceneManager.LoadScene ("StartScreen");
+		SceneManager.LoadScene (GameManager.SCENE_STARTSCREEN);
 	}
 }

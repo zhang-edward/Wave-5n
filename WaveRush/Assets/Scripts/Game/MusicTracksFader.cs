@@ -5,6 +5,12 @@ public class MusicTracksFader : MonoBehaviour
 {
 	public AudioSource[] musicSrc;
 
+	void Start() {
+		foreach (AudioSource src in musicSrc) {
+			SoundManager.instance.RegisterMusicSrc(src);
+		}
+	}
+
 	public void StartFadeMusic(int index)
 	{
 //		print("switching tracks to " + index);

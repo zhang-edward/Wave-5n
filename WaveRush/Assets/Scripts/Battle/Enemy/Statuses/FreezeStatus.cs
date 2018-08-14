@@ -19,7 +19,7 @@ public class FreezeStatus : EnemyStatus
 		if (frozen)
 		{
 			enemy.Disable (timer);
-			enemy.anim.enabled = false;
+			enemy.anim.player.Pause();
 		}
 		while (timer >= 0)
 		{
@@ -30,7 +30,7 @@ public class FreezeStatus : EnemyStatus
 				enemy.body.moveSpeed = enemy.DEFAULT_SPEED / 2f;
 			yield return null;
 		}
-		enemy.anim.enabled = true;
+		enemy.anim.player.Play();
 		enemy.RemoveColor(Color.cyan);
 		enemy.body.moveSpeed = enemy.DEFAULT_SPEED;
 

@@ -304,12 +304,11 @@ public class Player : MonoBehaviour, IDamageable
 		TempObject tempObj = o.GetComponent<TempObject>();
 		tempObj.GetComponent<SpriteRenderer>().sortingLayerName = "UI";
 		tempObj.info = new TempObjectInfo(true, 0f, effect.TimeLength - 2f, 1f);
-		animPlayer.anim = effect;
+		animPlayer.ignoreTimeScaling = true;
+		animPlayer.Play(effect);
 		tempObj.Init(Quaternion.identity,
 					 position,
 					 effect.frames[0]);
-		animPlayer.ignoreTimeScaling = true;
-		animPlayer.Play();
 	}
 
 	/// <summary>

@@ -6,7 +6,7 @@
 
 	public class EA_SpawnEnemies : EnemyAction
 	{
-		private Animator anim;
+		protected AnimationSet anim;
 		private EnemyManager enemyManager;
 		private List<GameObject> minions = new List<GameObject>();
 
@@ -54,10 +54,10 @@
 
 		private IEnumerator UpdateState()
 		{
-			anim.CrossFade(chargeState, 0);
+			anim.Play(chargeState);
 			yield return new WaitForSeconds(chargeTime);
 
-			anim.CrossFade(actionState, 0);
+			anim.Play(actionState);
 			Spawn();
 
 			if (onSpawn != null)

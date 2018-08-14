@@ -20,8 +20,7 @@ public class EffectPooler : ObjectPooler
 		GameObject o = instance.GetPooledObject();
 		SimpleAnimationPlayer anim = o.GetComponent<SimpleAnimationPlayer>();
 		TempObject tempObj = o.GetComponent<TempObject>();
-		tempObj.info = new TempObjectInfo(true, 0f, toPlay.TimeLength - fadeOutTime, fadeOutTime, new Color(1, 1, 1, 0.8f));
-		anim.anim = toPlay;
+		tempObj.info = new TempObjectInfo(true, 0f, toPlay.TimeLength - fadeOutTime, fadeOutTime, new Color(1, 1, 1, 1));
 		Quaternion rot;
 		if (randRotation)
 			rot = Quaternion.Euler(0, 0, Random.Range(0, 360));
@@ -30,7 +29,7 @@ public class EffectPooler : ObjectPooler
 		tempObj.Init(rot,
 					 position,
 					 toPlay.frames[0]);
-		anim.Play();
+		anim.Play(toPlay);
 		return tempObj;
 	}
 
@@ -40,11 +39,10 @@ public class EffectPooler : ObjectPooler
 		SimpleAnimationPlayer anim = o.GetComponent<SimpleAnimationPlayer>();
 		TempObject tempObj = o.GetComponent<TempObject>();
 		tempObj.info = info;
-		anim.anim = toPlay;
 		tempObj.Init(Quaternion.identity,
 					 position,
 					 toPlay.frames[0]);
-		anim.Play();
+		anim.Play(toPlay);
 		return tempObj;
 	}
 
@@ -54,11 +52,10 @@ public class EffectPooler : ObjectPooler
 		SimpleAnimationPlayer anim = o.GetComponent<SimpleAnimationPlayer>();
 		TempObject tempObj = o.GetComponent<TempObject>();
 		tempObj.info = info;
-		anim.anim = toPlay;
 		tempObj.Init(rot,
 					 position,
 					 toPlay.frames[0]);
-		anim.Play();
+		anim.Play(toPlay);
 		return tempObj;
 	}
 }

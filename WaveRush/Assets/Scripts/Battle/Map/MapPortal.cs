@@ -16,15 +16,13 @@ public class MapPortal : MonoBehaviour {
 
 	private IEnumerator UpdatePortal()
 	{
-		anim.anim = appearAnim;
 		anim.looping = false;
-		anim.Play ();
+		anim.Play (appearAnim);
 		while (anim.isPlaying)
 			yield return null;
 
 		anim.looping = true;
-		anim.anim = loop;
-		anim.Play ();
+		anim.Play (loop);
 		activated = true;
 	}
 

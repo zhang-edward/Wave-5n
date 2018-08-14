@@ -6,7 +6,7 @@
 
 	public class EA_ShootAtTarget : EnemyAction
 	{
-		protected Animator anim;
+		protected AnimationSet anim;
 		protected EntityPhysics body;
 		protected ObjectPooler projectilePool;
 		protected Vector3 shootPointPos;
@@ -75,14 +75,14 @@
 
 		private void Charge()
 		{
-			anim.CrossFade(chargeState, 0f);        // triggers are unreliable, crossfade forces state to execute
+			anim.Play(chargeState);        // triggers are unreliable, crossfade forces state to execute
 			body.Move(Vector2.zero);
 			//+ new Vector2(Random.value, Random.value);		// add a random offset
 		}
 
 		protected virtual void Shoot(Vector2 dir)
 		{
-			anim.CrossFade(shootState, 0f);     // triggers are unreliable, crossfade forces state to execute
+			anim.Play(shootState);     // triggers are unreliable, crossfade forces state to execute
 			Projectile p = projectilePool.GetPooledObject().GetComponent<Projectile>();
 			float lifeTime = Vector3.Distance(shootPoint.position, posGenerator.GetGeneratedPosition()) / p.speed;
 			p.lifeTime = lifeTime;
