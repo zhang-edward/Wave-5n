@@ -224,7 +224,7 @@ public class BowmanHero : PlayerHero {
 	public void SpecialAbilityHitEnemy(Enemy e) {
 		if (!e.invincible && e.health > 0)
 		{
-			int dmg = (int)(damage * 5);//1.5f);
+			int dmg = (int)(damage * 1.5f);
 			StartCoroutine(DamageEnemyDelayed(e, dmg));
 			// sound.RandomizeSFX(sfx[Random.Range(0, sfx.Length)]);
 		}
@@ -261,7 +261,7 @@ public class BowmanHero : PlayerHero {
 				sound.RandomizeSFX(sfx[Random.Range(0, sfx.Length)]);
 			// TempSlowDown
 			if (tempSlowDown)
-				player.StartTempSlowDown(0.15f);
+				player.StartTempSlowDown(0.2f);
 		}
 	}
 #endregion

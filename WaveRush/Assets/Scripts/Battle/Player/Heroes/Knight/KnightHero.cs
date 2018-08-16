@@ -214,7 +214,7 @@ public class KnightHero : PlayerHero {
 
 		// Damage enemy
 		if (TryCriticalDamage(ref damageDealt))
-			DamageEnemy(e, damageDealt, specialHitAnim, false, specialHitSounds);
+			DamageEnemy(e, damageDealt, specialHitAnim, true, specialHitSounds);
 		else
 			DamageEnemy(e, damageDealt, hitEffect, false, hitSounds);
 		
@@ -241,8 +241,10 @@ public class KnightHero : PlayerHero {
 				EffectPooler.PlayEffect(effect, e.transform.position, true, 0.1f);
 			if (sfx != null)
 				sound.RandomizeSFX(sfx[Random.Range(0, sfx.Length)]);
-			if (tempSlowDown)
+			if (tempSlowDown) {
 				player.StartTempSlowDown(0.3f);
+				CameraControl.instance.StartFlashColor(Color.white, 0.5f, 0, 0, 1.0f);
+			}
 		}
 	}
 
