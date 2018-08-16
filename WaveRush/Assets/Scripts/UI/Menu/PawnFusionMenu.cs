@@ -49,6 +49,8 @@ public class PawnFusionMenu : MonoBehaviour {
 		if (!initialized)
 			Init();
 		pawnSelectionView.Refresh();
+		moneyCostText.text = "0";
+		soulsCostText.text = "0";
 		SetOnClick();
 	}
 

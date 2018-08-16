@@ -31,6 +31,7 @@ public class PawnMenu : MonoBehaviour {
 	void OnEnable() {
 		if (!initialized)
 			return;
+		retireMoneyText.text = "0";
 		pawnSelectionView.Refresh();
 		foreach (PawnIcon pawnIcon in pawnSelectionView.pawnIcons) {
 			PawnIconStandard icon = (PawnIconStandard)pawnIcon;

@@ -52,8 +52,12 @@ public class PawnShopMenu : MonoBehaviour
 	}
 
 	void OnEnable() {
+		// Reset resourceReqs and buttons
+		goldReqText.text = selectedPawnCostMoney.ToString();
+		soulsReqText.text = selectedPawnCostSouls.ToString();
 		infoButton.interactable = false;
 		recruitButton.interactable = false;
+		// Reset pawn pool if refresh timer reached 0
 		pawnShop.RefreshPawnPool();
 		if (refreshTimer.time <= 0) {
 			pawnShop.RefreshAvailablePawns();
