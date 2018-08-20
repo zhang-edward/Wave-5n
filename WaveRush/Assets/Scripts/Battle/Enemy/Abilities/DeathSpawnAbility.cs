@@ -11,7 +11,7 @@ public class DeathSpawnAbility : EnemyAbility {
 	public override void Init (Enemy enemy)
 	{
 		base.Init (enemy);
-		enemyManager = transform.GetComponentInParent<EnemyManager> ();
+		enemyManager = EnemyManager.instance;
 		enemy.OnEnemyDied += SpawnChildren;
 	}
 
@@ -19,8 +19,7 @@ public class DeathSpawnAbility : EnemyAbility {
 	{
 		CreateChild();
 		//Debug.Log ("doing this");
-		for (int i = 0; i < numToSpawn - 1; i ++)
-		{
+		for (int i = 0; i < numToSpawn - 1; i ++) {
 			Invoke ("CreateChild", Random.Range (0, 0.5f));
 		}
 	}

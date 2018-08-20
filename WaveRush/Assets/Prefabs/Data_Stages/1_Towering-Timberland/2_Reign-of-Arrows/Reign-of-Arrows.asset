@@ -3,7 +3,7 @@
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
@@ -18,20 +18,37 @@ MonoBehaviour:
   difficultyLevel: 1
   maxPartySize: 1
   levelRaw: 1
-  upperAsymptote: 10
-  lowerAsymptote: 2
-  maxDifficultyVelocity: 5
+  upperLimit: 15
+  lowerLimit: 8
   goalWave: 4
   bossWave: 4
   enemyPrefabs:
   - prefab: {fileID: 147880, guid: 15e9f10dbfa7c46efa83cfa7afe1f851, type: 2}
     spawnFrequency: 1
-    waveLimit: 1
+    waveLimit: 2
   - prefab: {fileID: 177460, guid: 54fe2fdc3252847f08f15a8590667d5b, type: 2}
     spawnFrequency: 0.5
     waveLimit: 1
   - prefab: {fileID: 187912, guid: 284e652b2eabe43a9a8e564bf3fd4337, type: 2}
     spawnFrequency: 0.5
-    waveLimit: 3
+    waveLimit: 2
   bossPrefabs:
   - {fileID: 1749041344119536, guid: 6311e2f073abc4c8c8d14bc3002cc09e, type: 2}
+  waveProperties:
+  - waveNumber: 0
+    numEnemies: 0
+    maxNumActiveEnemies: 6
+    enemies:
+    - prefab: {fileID: 147880, guid: 15e9f10dbfa7c46efa83cfa7afe1f851, type: 2}
+      numEnemies: 2
+      spawnMode: 0
+  - waveNumber: 1
+    numEnemies: 15
+    maxNumActiveEnemies: 4
+    enemies:
+    - prefab: {fileID: 147880, guid: 15e9f10dbfa7c46efa83cfa7afe1f851, type: 2}
+      numEnemies: 6
+      spawnMode: 2
+    - prefab: {fileID: 187912, guid: 284e652b2eabe43a9a8e564bf3fd4337, type: 2}
+      numEnemies: 3
+      spawnMode: 2

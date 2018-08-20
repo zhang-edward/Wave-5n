@@ -1,8 +1,8 @@
-﻿using UnityEditor;
+using UnityEditor;
 using UnityEngine;
 
-[CustomPropertyDrawer(typeof(StageData.EnemySpawnProperties))]
-public class EnemySpawnPropertiesDrawer : PropertyDrawer
+[CustomPropertyDrawer(typeof(StageData.WaveProperties.WaveSpecificEnemyProperties))]
+public class WaveSpecificEnemyPropertiesDrawer : PropertyDrawer
 {
 	public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 	{
@@ -27,15 +27,15 @@ public class EnemySpawnPropertiesDrawer : PropertyDrawer
 			// Calculate Rects
 			float nextLine = EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
 			Rect rect = new Rect(position.x, position.y + nextLine, position.width, EditorGUIUtility.singleLineHeight);
-			rect.xMin *= 0.5f;
+			rect.xMin *= 0.75f;
 			
 			// Draw fields
 			EditorGUI.PropertyField(rect, enemyPrefabProperty, GUIContent.none);
-			EditorGUIUtility.labelWidth = EditorGUIUtility.fieldWidth;
+			EditorGUIUtility.labelWidth = EditorGUIUtility.fieldWidth * 1.5f;
 			rect.y += nextLine;
-			EditorGUI.Slider(rect, property.FindPropertyRelative("spawnFrequency"), 0, 1f, new GUIContent("Freq"));
+			EditorGUI.PropertyField(rect, property.FindPropertyRelative("numEnemies"), new GUIContent("Number"));
 			rect.y += nextLine;
-			EditorGUI.PropertyField(rect, property.FindPropertyRelative("waveLimit"), new GUIContent("Wave"));
+			EditorGUI.PropertyField(rect, property.FindPropertyRelative("spawnMode"), new GUIContent("Spawn Mode"));
 		}
 		EditorGUI.EndProperty();
 	}

@@ -5,7 +5,7 @@
 	public class EA_CollideDamage : EnemyAction
 	{
 		private float cooldown;
-		private float attackBuildUp = 0.4f; // time for the player to be in contact with the enemy before the player is damaged
+		private float attackBuildUp = 0.2f; // time for the player to be in contact with the enemy before the player is damaged
 		private float buildUp;              // timer for attackBuildUp
 
 		public int baseDamage = 1;
@@ -44,6 +44,7 @@
 					int damage = Formulas.EnemyDamage(baseDamage, player.hero.level - e.level);
 					player.Damage(damage, e);
 					cooldown = attackCooldown;
+					buildUp = 0;
 				}
 				else
 				{

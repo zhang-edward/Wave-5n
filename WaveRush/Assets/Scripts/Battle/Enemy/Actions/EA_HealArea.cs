@@ -12,19 +12,16 @@
 		[Header("Animation")]
 		public SimpleAnimation healEffect;
 
-		private void OnDrawGizmosSelected()
-		{
+		private void OnDrawGizmosSelected() {
 			Gizmos.DrawWireSphere(transform.position, radius);
 		}
 
-		public override void Init(Enemy e, OnActionStateChanged onActionFinished)
-		{
+		public override void Init(Enemy e, OnActionStateChanged onActionFinished) {
 			base.Init(e, onActionFinished);
 			e.healable = false;					// healers cannot heal other healers
 		}
 
-		protected override void Action()
-		{
+		protected override void Action() {
 			base.Action();
 			int numHealed = 0;
 			Collider2D[] cols = Physics2D.OverlapCircleAll(transform.position, radius);
@@ -46,12 +43,10 @@
 			}
 		}
 
-		protected override void Reset()
-		{
+		protected override void Reset() {
 		}
 
-		private float HealAmt()
-		{
+		private float HealAmt() {
 			return baseHealAmt * Formulas.PlayerDamage(e.level);
 		}
 	}

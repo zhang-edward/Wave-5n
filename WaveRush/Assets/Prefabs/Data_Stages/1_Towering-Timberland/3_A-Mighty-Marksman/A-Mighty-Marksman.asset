@@ -3,7 +3,7 @@
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
@@ -18,9 +18,8 @@ MonoBehaviour:
   difficultyLevel: 2
   maxPartySize: 1
   levelRaw: 1
-  upperAsymptote: 12
-  lowerAsymptote: 3
-  maxDifficultyVelocity: 5
+  upperLimit: 20
+  lowerLimit: 8
   goalWave: 4
   bossWave: 4
   enemyPrefabs:
@@ -35,3 +34,8 @@ MonoBehaviour:
     waveLimit: 2
   bossPrefabs:
   - {fileID: 1100782129152658, guid: 43fe31a6282784925be868202d2bf5e1, type: 2}
+  waveProperties:
+  - waveNumber: 0
+    numEnemies: 0
+    maxNumActiveEnemies: 8
+    enemies: []

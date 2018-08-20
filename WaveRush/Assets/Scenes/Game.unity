@@ -5436,11 +5436,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4703244540006648, guid: 275c699968bac493ab0b68cd3db7ef7d, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 10.12
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4703244540006648, guid: 275c699968bac493ab0b68cd3db7ef7d, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 6.55
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 4703244540006648, guid: 275c699968bac493ab0b68cd3db7ef7d, type: 2}
       propertyPath: m_LocalPosition.z
@@ -5483,7 +5483,7 @@ Prefab:
     - target: {fileID: 212573519972317828, guid: 275c699968bac493ab0b68cd3db7ef7d,
         type: 2}
       propertyPath: m_SortingOrder
-      value: -605
+      value: -650
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 275c699968bac493ab0b68cd3db7ef7d, type: 2}
@@ -9724,6 +9724,48 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animateOnStart: 1
   childAnimators: []
+--- !u!1001 &1450061657
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4094768693958856, guid: a4747371cbde742df9aefb724264be92, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4094768693958856, guid: a4747371cbde742df9aefb724264be92, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4094768693958856, guid: a4747371cbde742df9aefb724264be92, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4094768693958856, guid: a4747371cbde742df9aefb724264be92, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4094768693958856, guid: a4747371cbde742df9aefb724264be92, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4094768693958856, guid: a4747371cbde742df9aefb724264be92, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4094768693958856, guid: a4747371cbde742df9aefb724264be92, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4094768693958856, guid: a4747371cbde742df9aefb724264be92, type: 2}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a4747371cbde742df9aefb724264be92, type: 2}
+  m_IsPrefabAsset: 0
 --- !u!1 &1458826499
 GameObject:
   m_ObjectHideFlags: 0
@@ -16299,21 +16341,9 @@ Prefab:
       propertyPath: m_isInputParsingRequired
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 11462636, guid: f71241c0d323a46628e5b6056acd62dd, type: 2}
-      propertyPath: musicVolume
-      value: 0.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 11441932, guid: f71241c0d323a46628e5b6056acd62dd, type: 2}
-      propertyPath: selectedPawns.Array.data[0].type
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 11441932, guid: f71241c0d323a46628e5b6056acd62dd, type: 2}
-      propertyPath: selectedPawns.Array.data[0].level
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 11441932, guid: f71241c0d323a46628e5b6056acd62dd, type: 2}
       propertyPath: selectedStageIndex
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f71241c0d323a46628e5b6056acd62dd, type: 2}
@@ -16439,8 +16469,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 120.04883, y: -32}
-  m_SizeDelta: {x: 240.09769, y: 12}
+  m_AnchoredPosition: {x: 119.950806, y: -32}
+  m_SizeDelta: {x: 239.90161, y: 12}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!225 &1719054526
 CanvasGroup:

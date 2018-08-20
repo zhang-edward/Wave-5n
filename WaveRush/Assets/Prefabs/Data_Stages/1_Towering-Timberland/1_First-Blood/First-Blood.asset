@@ -18,9 +18,8 @@ MonoBehaviour:
   difficultyLevel: 1
   maxPartySize: 1
   levelRaw: 1
-  upperAsymptote: 10
-  lowerAsymptote: 5
-  maxDifficultyVelocity: 2
+  upperLimit: 15
+  lowerLimit: 5
   goalWave: 4
   bossWave: 4
   enemyPrefabs:
@@ -32,3 +31,8 @@ MonoBehaviour:
     waveLimit: 2
   bossPrefabs:
   - {fileID: 1749041344119536, guid: 6311e2f073abc4c8c8d14bc3002cc09e, type: 2}
+  waveProperties:
+  - waveNumber: 0
+    numEnemies: 0
+    maxNumActiveEnemies: 5
+    enemies: []

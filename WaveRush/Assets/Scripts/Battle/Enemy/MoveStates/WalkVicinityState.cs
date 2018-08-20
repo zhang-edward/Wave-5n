@@ -53,7 +53,6 @@ public class WalkVicinityState : MoveState
 			targetWithinMap = map.WithinOpenCells(target);
 		}
 		state = State.Walk;
-//		print("moving");
 	}
 
 	private void WalkState()
@@ -64,6 +63,7 @@ public class WalkVicinityState : MoveState
 			if (!anim.player.IsPlayingAnimation(moveState))
 				anim.Play(moveState);
 			body.Move ((target - enemy.transform.position).normalized);
+			// print("moving");
 		}
 		else
 		{
@@ -73,8 +73,6 @@ public class WalkVicinityState : MoveState
 
 	private void ToWaitState()
 	{
-//		Debug.Log ("WaitState");
-
 		body.Move (Vector2.zero);
 		anim.player.ResetToDefault();
 
@@ -83,6 +81,7 @@ public class WalkVicinityState : MoveState
 
 	private void WaitState()
 	{
+		// Debug.Log ("WaitState");
 		waitTimer-= Time.deltaTime;
 		if (waitTimer <= 0)
 		{

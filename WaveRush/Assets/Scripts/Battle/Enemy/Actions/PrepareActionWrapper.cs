@@ -31,6 +31,7 @@ namespace EnemyActions
 
 		public override void Interrupt()
 		{
+			print (this.gameObject + " interrupt");
 			StopAllCoroutines();
 		}
 
@@ -48,6 +49,7 @@ namespace EnemyActions
 			Reset();
 			yield return new WaitForSeconds(endLagTime);
 
+			// print (this.gameObject + "Finished");
 			if (onActionFinished != null)
 				onActionFinished();
 		}

@@ -28,9 +28,7 @@ public class PawnMenu : MonoBehaviour {
 		initialized = true;
 	}
 
-	void OnEnable() {
-		if (!initialized)
-			return;
+	public void Refresh() {
 		retireMoneyText.text = "0";
 		pawnSelectionView.Refresh();
 		foreach (PawnIcon pawnIcon in pawnSelectionView.pawnIcons) {
@@ -49,6 +47,12 @@ public class PawnMenu : MonoBehaviour {
 				retireMoneyText.text = ((int)((costMoney + 2 * costSouls) * 0.2f)).ToString();
 			};
 		}
+	}
+
+	void OnEnable() {
+		if (!initialized)
+			return;
+		Refresh();
 	}
 
 	void OnDisable() {

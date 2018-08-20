@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class EnemyManager : MonoBehaviour {
 
+	public static EnemyManager instance;
 	public const float WAVE_SPAWN_DELAY = 10.0f;
 
 	[Header("Set from Scene Hierarchy")]
@@ -13,8 +14,8 @@ public class EnemyManager : MonoBehaviour {
 
 	public ObjectPooler enemyHealthBarPool;
 
-	private List<Enemy> enemies = new List<Enemy>();
-	public List<Enemy> Enemies { get {return enemies;} }
+	private List<Enemy> activeEnemies = new List<Enemy>();
+	public List<Enemy> Enemies { get {return activeEnemies;} }
 
 	public int level;
 	public StageData stageData { get; private set; }
@@ -32,12 +33,12 @@ public class EnemyManager : MonoBehaviour {
 	[Header("EnemyManager Properties")]
 	public bool paused;
 	public int waveNumber { get; private set; }
-	public bool isStageComplete { get; private set; }
 	private int difficultyCurve = 0;	// number to determine the number of enemies to spawn
 	[Header("Effects")]
 	public SimpleAnimation bossDeathEffect;
 
 	// Hidden properties
+	[HideInInspector] public Queue<GameObject> enemyQueue = new Queue<GameObject>();
 	[HideInInspector] public List<BossEnemy> bosses;
 	[HideInInspector] public float timeLeftBeforeNextWave; 
 
@@ -50,12 +51,20 @@ public class EnemyManager : MonoBehaviour {
 	public event EnemyManagerEvent OnQueueBossMessage;
 	public event EnemyManagerEvent OnEnemyDefeated;
 
+	void Awake() {
+		if (instance == null)
+			instance = this;
+		else
+			Destroy(this.gameObject);
+	}
+
 	public void Init(StageData data)
 	{
 		this.stageData = data;
 		this.level = data.levelRaw;
 		UnityEngine.Assertions.Assert.IsTrue(level > 0);
 		bossSpawn = map.bossSpawn.GetComponent<BossSpawn> ();
+		GenerateNewEnemyQueue(1);
 		StartCoroutine (StartSpawningEnemies ());
 	}
 
@@ -67,27 +76,27 @@ public class EnemyManager : MonoBehaviour {
 		{
 			while (paused)
 				yield return null;
-			// all enemies dead
-			if (NumAliveEnemies() <= 0 && hasBossSpawned)
-			{
-				if (waveNumber >= 1)
-				{
+			// All enemies dead (including boss)
+			if (NumAliveEnemies() <= 0 && hasBossSpawned) {
+				// Only check if wave is completed if it's not the first wave
+				if (waveNumber >= 1) {
 					// If the stage is completed
-					if (waveNumber % stageData.goalWave == 0)
-					{
+					if (waveNumber % stageData.goalWave == 0) {
+						// Event call
 						if (OnStageCompleted != null)
 							OnStageCompleted();
-						isStageComplete = true;
+						// Pause before continuing (though the game should never get to this point)
+						paused = true;
 						while (paused)
 							yield return null;
-
-						isStageComplete = false;
 					}
 					// If the stage is not completed
 					else {
+						// Event call
+						GenerateNewEnemyQueue(waveNumber + 1);
 						if (OnEnemyWaveCompleted != null)
 							OnEnemyWaveCompleted();
-						
+						// Delay before next wave
 						timeLeftBeforeNextWave = WAVE_SPAWN_DELAY;
 						while (timeLeftBeforeNextWave > 0) {
 							timeLeftBeforeNextWave -= Time.deltaTime;
@@ -102,7 +111,7 @@ public class EnemyManager : MonoBehaviour {
 				if (waveNumber % stageData.bossWave == 1 && waveNumber != 1) {
 					Instantiate(heartPickup, map.CenterPosition, Quaternion.identity);
 				}
-				StartNextWave();
+				StartCoroutine(SpawnNextWave());
 				// Boss wave
 				if (waveNumber % stageData.bossWave == 0)
 				{
@@ -114,41 +123,81 @@ public class EnemyManager : MonoBehaviour {
 		}
 	}
 
-	public void StartNextWave()
-	{
-		// event call
-		if (OnEnemyWaveSpawned != null)
-			OnEnemyWaveSpawned (waveNumber);
-		// Number of enemies spawning curve (used desmos.com for the graph)
-		int numEnemies = DifficultyCurveEquation();
-		List<StageData.EnemySpawnProperties> prefabPool = stageData.GetSpawnList(waveNumber);
-		int i = 0;
-		int debugCounter = 0;
-		while (i < numEnemies && debugCounter < 1000)
-		{
-			int randIndex = Random.Range(0, prefabPool.Count);
-			StageData.EnemySpawnProperties enemyProp = prefabPool[randIndex];
-			if (Random.value < enemyProp.spawnFrequency)
-			{
-				Vector3 randOpenCell = map.OpenCells[Random.Range(0, map.OpenCells.Count)];
-				SpawnEnemy(enemyProp.prefab, randOpenCell);
-				i++;
-			}
-			debugCounter++;
-			if (debugCounter > 1000)
-			{
-				Debug.LogError("Took 1000+ tries to spawn an enemy!!");
+	private void GenerateNewEnemyQueue(int wave) {
+		enemyQueue.Clear();
+
+		// Get number of enemies total to spawn
+		int numEnemies;
+		StageData.WaveProperties waveProperties = stageData.GetWaveProperties(wave);
+		if (waveProperties.waveNumber == 0)
+			numEnemies = Mathf.CeilToInt(Mathf.Lerp(stageData.lowerLimit, stageData.upperLimit, (float)((wave - 1) % stageData.goalWave) / stageData.goalWave));
+		else
+			numEnemies = waveProperties.numEnemies;
+		
+		// Get enemy pools for spawning
+		List<StageData.EnemySpawnProperties> randomEnemyPool = stageData.GetRandomEnemyPool(wave);
+		List<StageData.WaveProperties.WaveSpecificEnemyProperties> specificEnemyPool = stageData.GetSpecificEnemyPool(wave);
+
+		// Enemy pools used to build the queue
+		List<GameObject> spawnFirst = new List<GameObject>();
+		List<GameObject> spawnLast = new List<GameObject>();
+		List<GameObject> randomPool = new List<GameObject>();
+
+		foreach (StageData.WaveProperties.WaveSpecificEnemyProperties props in specificEnemyPool) {
+			switch (props.spawnMode) {
+				case StageData.WaveProperties.EnemySpawnMode.Beginning:
+					for (int i = 0; i < props.numEnemies; i ++) 
+						spawnFirst.Add(props.prefab);
+					break;
+				case StageData.WaveProperties.EnemySpawnMode.End:
+					for (int i = 0; i < props.numEnemies; i ++) 
+						spawnLast.Add(props.prefab);
+					break;
+				case StageData.WaveProperties.EnemySpawnMode.Random:
+					for (int i = 0; i < props.numEnemies; i ++) 
+						randomPool.Add(props.prefab);
+					break;	
 			}
 		}
-		Debug.Log ("Number of enemies in this wave: " + numEnemies);
+		
+		int numEnemiesRemaining = numEnemies - (spawnFirst.Count + spawnLast.Count + randomPool.Count);
+		while (numEnemiesRemaining > 0) {
+			int randIndex = Random.Range(0, randomEnemyPool.Count);
+			StageData.EnemySpawnProperties enemyProp = randomEnemyPool[randIndex];
+			if (Random.value < enemyProp.spawnFrequency) {
+				randomPool.Add(enemyProp.prefab);
+				numEnemiesRemaining --;
+			}
+		}
+
+		spawnFirst.Shuffle();
+		randomPool.Shuffle();
+		spawnLast.Shuffle();
+		foreach (GameObject o in spawnFirst) 
+			enemyQueue.Enqueue(o);
+		foreach (GameObject o in randomPool)
+			enemyQueue.Enqueue(o);
+		foreach (GameObject o in spawnLast)
+			enemyQueue.Enqueue(o);
+
+		print ("Number of enemies in this wave: " + numEnemies);
 	}
 
-    private int DifficultyCurveEquation()
-    {
-		float t = -difficultyCurve + stageData.maxDifficultyVelocity;	// Max slope part of curve (difficulty increases most on this wave)
-		float answer = stageData.upperAsymptote / (1 + Mathf.Pow(1.2f, t)) + stageData.lowerAsymptote;
-		return Mathf.RoundToInt(answer);
-    }
+	public IEnumerator SpawnNextWave() {
+		// Event call
+		if (OnEnemyWaveSpawned != null)
+			OnEnemyWaveSpawned (waveNumber);
+
+		StageData.WaveProperties waveProperties = stageData.GetWaveProperties(waveNumber);
+
+		while (enemyQueue.Count > 0) {
+			while (activeEnemies.Count < waveProperties.maxNumActiveEnemies) {
+				SpawnEnemy(enemyQueue.Dequeue(), map.OpenCells[Random.Range(0, map.OpenCells.Count)]);
+				yield return null;
+			}
+			yield return null;
+		}
+	}
 
 	private void StartBossIncoming()
 	{
@@ -160,10 +209,7 @@ public class EnemyManager : MonoBehaviour {
 	{
 		GameObject o = Instantiate (prefab);
 		o.transform.SetParent (transform);
-		if (Random.value < 0.5f)
-			o.transform.position = new Vector3 (Random.Range (0, 10), Map.size + 4);
-		else
-			o.transform.position = new Vector3 (Random.Range (0, 10), -4);
+		o.transform.position = GenerateEnemyOutOfBoundsSpawnPos();
 
 		Enemy e = o.GetComponentInChildren<Enemy> ();
 		InitEnemy(e, pos);
@@ -211,53 +257,40 @@ public class EnemyManager : MonoBehaviour {
 		bosses.Add (boss);
 	}
 
-	// public void SpawnTrappedHeroes()
-	// {
-	// 	List<Vector3> positions = new List<Vector3>();
-	// 	float offset = 3f;
-	// 	positions.Add(Vector3.right * offset);
-	// 	positions.Add(Vector3.left * offset);
-	// 	positions.Add(Vector3.up * offset);
-	// 	positions.Add(Vector3.down * offset);
+#region Helper Methods
+	private Vector3 GenerateEnemyOutOfBoundsSpawnPos() {
+		Vector3 answer;
+		if (Random.value < 0.5f) {
+			// Top/Bottom spawn
+			if (Random.value < 0.5f)
+				answer = new Vector3 (Random.Range (0, 10), Map.size + 4);
+			else
+				answer = new Vector3 (Random.Range (0, 10), -4);
+		}
+		else {
+			// Left/Right spawn
+			if (Random.value < 0.5f)
+				answer = new Vector3(-4, Random.Range(0, 10));
+			else
+				answer = new Vector3(Map.size + 4, Random.Range(0, 10));
+		}
+		return answer;
+	}
 
-	// 	float spawnChance = 0.6f;
-	// 	for (int i = 0; i < 4; i ++)
-	// 	{
-	// 		if (Random.value < spawnChance)
-	// 		{
-	// 			int randIndex = Random.Range(0, positions.Count);
-	// 			SpawnEnemy(trappedHeroPrefab, bossSpawn.transform.position + positions[randIndex]);
-	// 			positions.RemoveAt(randIndex);
-	// 			spawnChance *= 0.4f;
-	// 		}
-	// 		else
-	// 		{
-	// 			break;
-	// 		}
-	// 	}
-	// }
-
-	/* ==========
-	 * Helper methods
-	 * ==========
-	 */
 	// Helper method for spawning enemies
-	private void InitEnemy(Enemy e, Vector3 spawnPos)
-	{
+	private void InitEnemy(Enemy e, Vector3 spawnPos) {
 		e.playerTransform = player.transform;
 		e.Init(spawnPos, map, level);
 		e.OnEnemyDied += IncrementEnemiesKilled;
 		e.OnEnemyObjectDisabled += RemoveEnemyFromEnemiesList;
-		enemies.Add(e);
+		activeEnemies.Add(e);
 	}
 
 	// Counts the current number of alive nemies
-	private int NumAliveEnemies()
-	{
+	private int NumAliveEnemies() {
 		int count = 0;
-		for (int i = enemies.Count - 1; i >= 0; i --)
-		{
-			Enemy e = enemies [i];
+		for (int i = activeEnemies.Count - 1; i >= 0; i --) {
+			Enemy e = activeEnemies [i];
 			if (e.health > 0)
 				count++;
 		}
@@ -265,31 +298,28 @@ public class EnemyManager : MonoBehaviour {
 	}
 
 	// Used as an event listener
-	private void RemoveEnemyFromEnemiesList(Enemy e)
-	{
-		enemies.Remove (e);
+	private void RemoveEnemyFromEnemiesList(Enemy e) {
+		activeEnemies.Remove (e);
 	}
 
 	// Used as an event listener
-	private void RemoveEnemyFromBossesList(Enemy e)
-	{
+	private void RemoveEnemyFromBossesList(Enemy e) {
 		bosses.Remove((BossEnemy)e);
 	}
 
 	// Used as an event listener
-	private void IncrementEnemiesKilled()
-	{
+	private void IncrementEnemiesKilled() {
 		enemiesKilled++;
 		if (OnEnemyDefeated != null)
 			OnEnemyDefeated();
 	}
 
-	public void SetWave(int waveNumber)
-	{
+	public void SetWave(int waveNumber) {
 		this.waveNumber = waveNumber;
 	}
 
 	public void SkipWaveDelay() {
 		timeLeftBeforeNextWave = 0;
 	}
+#endregion
 }

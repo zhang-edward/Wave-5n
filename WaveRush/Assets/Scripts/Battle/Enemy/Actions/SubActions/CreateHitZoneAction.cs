@@ -17,10 +17,10 @@ namespace EnemyActions
 		public override void Execute()
 		{
 			base.Execute();
-			Player player = hitZone.Activate();
+			IDamageable player = hitZone.Activate();
 			if (player != null) {
-					int damage = Formulas.EnemyDamage(baseDamage, player.hero.level - e.level);
-					player.Damage(damage, e);			
+				int damage = Formulas.EnemyDamage(baseDamage, ((Player)player).hero.level - e.level);
+				player.Damage(damage, e);	
 			}
 		}
 	}

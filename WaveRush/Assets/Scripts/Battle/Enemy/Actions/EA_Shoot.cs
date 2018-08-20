@@ -27,11 +27,6 @@
 			shootPointPos = shootPoint.localPosition;
 		}
 
-		public override void Interrupt() {
-			StopAllCoroutines();
-			body.Move(Vector3.zero);
-		}
-
 		protected override void Charge() {
 			base.Charge();
 			body.Move(Vector2.zero);

@@ -1,42 +1,46 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 public class PlayerDetectionCircle : MonoBehaviour
 {
-	public Enemy e;
-	public float radius;
+	public SpriteRenderer sr;
+	public CollisionDetector collision;
 	public bool dynamic;
+	//public float radius;
 	private Vector3 pos;
+	private IDamageable playerDamageable;
+	
 
 	void Awake()
 	{
 		pos = transform.localPosition;
+		collision.OnTriggerEnter += OnTriggerEnter;
+		collision.OnTriggerExit += OnTriggerExit;
 	}
 
 	void Update()
 	{
 		if (dynamic)
 			return;
-		if (e.sr.flipX)
+		if (sr.flipX)
 			transform.localPosition = new Vector3(pos.x * -1, pos.y);
 		else
 			transform.localPosition = new Vector3(pos.x, pos.y);
 	}
 
-	public Player Activate()
-	{
-		Collider2D[] cols = Physics2D.OverlapCircleAll(transform.position, radius);
-		foreach (Collider2D col in cols)
-		{
-			if (col.CompareTag("Player"))
-			{
-				return col.GetComponentInChildren<Player>();
-			}
-		}
-		return null;
+	public IDamageable Activate() {
+		return playerDamageable;
 	}
 
-	void OnDrawGizmosSelected()
-	{
-		Gizmos.DrawWireSphere(transform.position, radius);
+	private void OnTriggerEnter(Collider2D col) {
+		if (col.CompareTag("Player")) {
+			playerDamageable = col.GetComponentInChildren<IDamageable>();
+		}
+	}
+
+	private void OnTriggerExit(Collider2D col) {
+		if (col.CompareTag("Player")) {
+			playerDamageable = null;
+		}
 	}
 }

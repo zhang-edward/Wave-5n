@@ -36,10 +36,11 @@ namespace EnemyActions
 		/// <summary>
 		/// Used for when enemies are hit by an attack; if the enemy's action is interruptable, interrupt it
 		/// </summary>
-		public void TryInterrupt()
+		public bool TryInterrupt()
 		{
 			if (interruptable)
 				Interrupt();
+			return interruptable;
 		}
 
 		/// <summary>

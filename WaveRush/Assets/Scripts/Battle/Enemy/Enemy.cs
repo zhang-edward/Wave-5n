@@ -47,7 +47,7 @@ public class Enemy : MonoBehaviour, IDamageable {
 	public int health { get; protected set; }
 	public int moneyValueMultiplier = 1;
 	public bool healable = true;
-	public bool canBeDisabledOnHit = true;
+	public bool canBeDisabled = true;
 	public bool invincible = false;
 
 	[Header("Animation")]
@@ -229,6 +229,7 @@ public class Enemy : MonoBehaviour, IDamageable {
 #region HitState and MoveState
 
 	private void ForceStopAllStates() {
+		// print ("All states stopped");
 		if (moveState != null)
 			StopCoroutine(moveState);
 		if (hitDisableState != null)
@@ -237,11 +238,21 @@ public class Enemy : MonoBehaviour, IDamageable {
 			StopCoroutine(spawnState);
 	}
 
-	public virtual void Disable(float time)
+	// This is what is generally used for attacks
+	public virtual bool Disable(float time) {
+		if (!canBeDisabled || !action.TryInterrupt())
+			return false;
+		hitDisableState = StartCoroutine (HitDisableState (time, 0));
+		return true;
+	}
+
+	// Used to force this enemy to be disabled
+	public virtual void ForceDisable(float time)
 	{
 		ForceStopAllStates();
 		if (action != null)		// Special enemies have no action (trapped heroes)
 			action.Interrupt();
+		// print ("disabled");
 		hitDisableState = StartCoroutine (HitDisableState (time, 0));
 	}
 
@@ -267,6 +278,7 @@ public class Enemy : MonoBehaviour, IDamageable {
 		//print("Updating whatever moveState is: " + movementMethod);
 		for (;;)
 		{
+			// print ("Doing movestate");
 			movementMethod.UpdateState ();
 			if (action.CanExecute ())
 			{
@@ -279,8 +291,10 @@ public class Enemy : MonoBehaviour, IDamageable {
 	
 	private void ToMoveState()
 	{
+		// print ("To move state");
 		anim.player.ResetToDefault();
 		ForceStopAllStates();
+		body.ragdolled = false;
 		moveState = StartCoroutine (MoveState());
 	}
 #endregion
@@ -333,7 +347,7 @@ public class Enemy : MonoBehaviour, IDamageable {
 			OnEnemyDamaged(amt);
 		if (health > 0)
 		{
-			if (canBeDisabledOnHit && !hitDisabled && disable)	{
+			if (canBeDisabled && !hitDisabled && disable)	{
 				action.TryInterrupt();
 				// Stop all states
 				StopAllCoroutines();

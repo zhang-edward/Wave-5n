@@ -18,7 +18,7 @@ public class FreezeStatus : EnemyStatus
 
 		if (frozen)
 		{
-			enemy.Disable (timer);
+			enemy.ForceDisable (timer);
 			enemy.anim.player.Pause();
 		}
 		while (timer >= 0)

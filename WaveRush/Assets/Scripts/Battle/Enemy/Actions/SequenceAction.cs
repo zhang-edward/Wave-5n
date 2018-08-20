@@ -16,8 +16,9 @@ namespace EnemyActions
 		public override void Init(Enemy e, OnActionStateChanged onActionFinished)
 		{
 			base.Init(e, onActionFinished);
-			foreach (EnemyAction action in actions)
-				action.Init(e, onActionFinished);
+			for (int i = 0; i < actions.Length - 1; i ++)
+				actions[i].Init(e, TryExecuteNextAction);
+			actions[actions.Length - 1].Init(e, onActionFinished);
 		}
 
 		public override bool CanExecute()
@@ -27,8 +28,14 @@ namespace EnemyActions
 			return currentAction.CanExecute();
 		}
 
-		public override void Execute()
-		{
+		private void TryExecuteNextAction() {
+			print (currentAction);
+			if (CanExecute()) {
+				Execute();
+			}
+		}
+
+		public override void Execute() {
 			base.Execute();
 			print(currentAction);
 			currentAction.Execute();
@@ -39,7 +46,10 @@ namespace EnemyActions
 
 		public override void Interrupt()
 		{
-			currentAction.Interrupt();
+			print ("Interrupted");
+			// Interrupt ALL actions
+			foreach (EnemyAction action in actions)
+				action.Interrupt();
 			index = 0;
 		}
 	}

@@ -16,7 +16,7 @@ public class StunStatus : EnemyStatus
 		enemy.body.AddRandomImpulse(3f);
 		while (timer > 0)
 		{
-			enemy.Disable(0);
+			enemy.ForceDisable(0);
 			enemy.action.Interrupt();
 			yield return null;
 		}

@@ -14,7 +14,7 @@ public class BossEnemy : Enemy {
 
 	public override void Init (Vector3 spawnLocation, Map map, int level)
 	{
-		canBeDisabledOnHit = false;
+		canBeDisabled = false;
 		numSouls = Formulas.BossSoulsDrop(level);
 		base.Init (spawnLocation, map, level);
 		enemyManager = GetComponentInParent<EnemyManager> ();
@@ -34,7 +34,7 @@ public class BossEnemy : Enemy {
 		foreach (Enemy e in enemyManager.Enemies)
 		{
 			if (e.isActiveAndEnabled && e as BossEnemy == null)
-				e.Disable (2f);
+				e.ForceDisable (2f);
 		}
 		StopAllCoroutines ();
 		StartCoroutine (DeathAnimation());

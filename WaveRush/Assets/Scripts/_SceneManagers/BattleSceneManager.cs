@@ -112,8 +112,6 @@ public StageEndMenu losePanel;
 
 	private IEnumerator StageCompleteRoutine() {
 		SoundManager.instance.FadeMusic(0f);
-		enemyManager.paused = true;
-
 		Time.timeScale = 0.2f;
 		yield return new WaitForSecondsRealtime (1.0f);
 		Time.timeScale = 1f;

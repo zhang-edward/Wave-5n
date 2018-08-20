@@ -102,7 +102,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4839833753743002}
-  - component: {fileID: 114604096963103614}
+  - component: {fileID: 114016132030854528}
   m_Layer: 8
   m_Name: Movement
   m_TagString: Untagged
@@ -320,6 +320,18 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.25
+--- !u!114 &114016132030854528
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1663112101711968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cde8f79601a44f4581cc43fa409c683, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveState: Moving
 --- !u!114 &114260008198515316
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -346,20 +358,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sr: {fileID: 212120701659829424}
-  moveSpeed: 1
+  moveSpeed: 1.5
   ragdolled: 0
---- !u!114 &114604096963103614
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1663112101711968}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1cde8f79601a44f4581cc43fa409c683, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveState: Moving
 --- !u!114 &114763156348689422
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -383,7 +383,7 @@ MonoBehaviour:
   body: {fileID: 114375713882390566}
   animationSetPlayer: {fileID: 114833201658503494}
   level: 0
-  baseHealth: 20
+  baseHealth: 25
   moneyValueMultiplier: 1
   healable: 1
   canBeDisabledOnHit: 1
@@ -397,6 +397,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 6ce502e5e28eb470cb7c989a28c65d14, type: 3}
       fps: 60
       looping: 0
+      resetToDefault: 1
       ignoreTimeScale: 0
     - animationName: Moving
       frames:
@@ -404,6 +405,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 6ce502e5e28eb470cb7c989a28c65d14, type: 3}
       fps: 10
       looping: 1
+      resetToDefault: 1
       ignoreTimeScale: 0
     player: {fileID: 0}
   abilities:
@@ -411,7 +413,7 @@ MonoBehaviour:
   statuses: []
   deathProps:
   - {fileID: 21300004, guid: 6ce502e5e28eb470cb7c989a28c65d14, type: 3}
-  movementMethod: {fileID: 114604096963103614}
+  movementMethod: {fileID: 114016132030854528}
   action: {fileID: 114881301132582700}
   spawnMethod: 2
   deathSound: {fileID: 8300000, guid: 51c0c6df9a6b34f509db2c84f298e203, type: 3}
@@ -440,6 +442,7 @@ MonoBehaviour:
     frames: []
     fps: 10
     looping: 0
+    resetToDefault: 1
     ignoreTimeScale: 0
   willResetToDefault: 1
 --- !u!114 &114881301132582700
@@ -492,7 +495,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -301
   m_Sprite: {fileID: 21300002, guid: 6ce502e5e28eb470cb7c989a28c65d14, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

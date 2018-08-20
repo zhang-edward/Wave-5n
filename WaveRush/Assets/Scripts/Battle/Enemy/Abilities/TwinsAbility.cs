@@ -53,7 +53,7 @@ public class TwinsAbility : EnemyAbility
 	private IEnumerator SplitEffect()
 	{
 		enemy.invincible = true;
-		enemy.Disable (1.0f);
+		enemy.ForceDisable (1.0f);
 		anim.Play ();
 		anim.transform.localScale = Vector3.one * enemy.statusIconSize;
 		while (anim.isPlaying)

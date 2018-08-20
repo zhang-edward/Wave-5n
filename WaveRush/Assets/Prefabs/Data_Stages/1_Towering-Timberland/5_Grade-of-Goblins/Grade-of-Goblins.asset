@@ -3,7 +3,7 @@
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
@@ -18,9 +18,8 @@ MonoBehaviour:
   difficultyLevel: 2
   maxPartySize: 1
   levelRaw: 2
-  upperAsymptote: 15
-  lowerAsymptote: 5
-  maxDifficultyVelocity: 3
+  upperLimit: 20
+  lowerLimit: 10
   goalWave: 5
   bossWave: 5
   enemyPrefabs:
@@ -34,6 +33,14 @@ MonoBehaviour:
     spawnFrequency: 1
     waveLimit: 1
   bossPrefabs:
-  - {fileID: 1749041344119536, guid: 6311e2f073abc4c8c8d14bc3002cc09e, type: 2}
   - {fileID: 1759745790581580, guid: eaf68b7ae9fba476da7a0712648fb6fd, type: 2}
   - {fileID: 1100782129152658, guid: 43fe31a6282784925be868202d2bf5e1, type: 2}
+  waveProperties:
+  - waveNumber: 0
+    numEnemies: 0
+    maxNumActiveEnemies: 8
+    enemies: []
+  - waveNumber: 5
+    numEnemies: 20
+    maxNumActiveEnemies: 10
+    enemies: []

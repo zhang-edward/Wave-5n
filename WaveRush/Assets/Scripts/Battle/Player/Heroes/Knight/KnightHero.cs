@@ -208,8 +208,7 @@ public class KnightHero : PlayerHero {
 	private void HandleRushHitEnemy(Enemy e)
 	{
 		// Add impulse to enemy (knock enemy away)
-		e.Disable(0.2f);
-		e.body.AddImpulse(e.transform.position - transform.position);
+		PushEnemyBack(e, 2f, 0.1f);
 		int damageDealt = damage;
 
 		// Damage enemy
@@ -283,8 +282,8 @@ public class KnightHero : PlayerHero {
 
 	private void PushEnemyBack(Enemy e, float strength, float time) {
 		Vector2 awayFromPlayerDir = (e.transform.position - transform.position).normalized;
-		e.Disable(0.5f);
-		e.body.AddImpulse(awayFromPlayerDir, strength);
+		if (e.Disable(0.5f))
+			e.body.AddImpulse(awayFromPlayerDir, strength);
 	}
 
 	private void StunEnemy(Enemy e, float stunTime) {

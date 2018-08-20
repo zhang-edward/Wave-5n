@@ -15,8 +15,7 @@ namespace EnemyActions
 		public int baseDamage;
 
 
-		public override void Init(Enemy e, OnActionStateChanged onActionFinished)
-		{
+		public override void Init(Enemy e, OnActionStateChanged onActionFinished) {
 			base.Init(e, onActionFinished);
 			body = e.body;
 			defaultSpeed = e.DEFAULT_SPEED;
@@ -24,7 +23,7 @@ namespace EnemyActions
 
 		public override void Interrupt()
 		{
-			StopAllCoroutines();
+			base.Interrupt();
 			body.moveSpeed = defaultSpeed;
 			body.Move(Vector3.zero);
 			attacking = false;

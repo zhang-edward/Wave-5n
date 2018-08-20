@@ -37,9 +37,12 @@ namespace EnemyActions
 				AnimationState state = states[curState];            // get the current state
 				anim.Play(state.name);                    			// transition to the animation state
 				SoundManager.instance.RandomizeSFX(state.clip);
+				print ("playing");
 				yield return new WaitForSeconds(state.duration);    // hold the state for a specific duration
+				print("done playing");
 				curState++;                                         // move to the next state
 			}
+			print ("Animation sequence done");
 			if (onActionFinished != null)
 				onActionFinished();
 			curState = 0;
