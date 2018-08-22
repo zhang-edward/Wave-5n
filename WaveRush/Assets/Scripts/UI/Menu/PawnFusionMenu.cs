@@ -11,6 +11,7 @@ public class PawnFusionMenu : MonoBehaviour {
 	public PawnSelectionView pawnSelectionView;
 	public PawnInfoPanel infoPanel;
 	[Header("Fusion Menu")]
+	public Animator animator;
 	public PawnIconStandard resultIcon;
 	public PawnIconStandard fuseMatIcon1, fuseMatIcon2;
 	public TMP_Text moneyCostText;
@@ -25,7 +26,6 @@ public class PawnFusionMenu : MonoBehaviour {
 	public void Init() {
 		// pawnSelectionView.Init(GameManager.instance.save.pawns, PawnSelectionView.PawnSelectionViewMode.Sorted);
 		// Clicking on the fuseMatIcons deselects that pawn for fusion
-		print (fuseMatIcon1);
 		fuseMatIcon1.onClick = (iconData) => {
 			selectedIcons[0].SetActive(true);
 			fuseMatIcon1.pawnData = null;
@@ -62,11 +62,11 @@ public class PawnFusionMenu : MonoBehaviour {
 			//print("Icon: " + icon.pawnData + ":");
 			if (!icon.pawnData.AtMaxLevel) {
 				//print("Not interactable");
-				icon.button.interactable = false;
+				icon.gameObject.SetActive(false);
 			}
 			else {
 				//print("Interactable");
-				icon.button.interactable = true;
+				//icon.gameObject.SetActive(true);
 			}
 
 			icon.onClick = (iconData) => {
@@ -84,9 +84,9 @@ public class PawnFusionMenu : MonoBehaviour {
 
 
 	public void Reset() {
-		foreach (GameObject icon in selectedIcons)
-			if (icon != null)
-				icon.SetActive(true);
+		// foreach (GameObject icon in selectedIcons)
+		// 	if (icon != null)
+		// 		icon.SetActive(true);
 		fuseMatIcon1.gameObject.SetActive(false);
 		fuseMatIcon2.gameObject.SetActive(false);
 		resultIcon.gameObject.SetActive(false);
@@ -159,8 +159,7 @@ public class PawnFusionMenu : MonoBehaviour {
 		}
 		Pawn pawn1 = selectedIcons[0].GetComponent<PawnIcon>().pawnData;
 		Pawn pawn2 = selectedIcons[1].GetComponent<PawnIcon>().pawnData;
-		Debug.Log("Pawn1:" + pawn1 +
-		  "\nPawn2:" + pawn2);
+		Debug.Log("Pawn1:" + pawn1 + "\nPawn2:" + pawn2);
 
 		if (CheckCanFusePawns(pawn1, pawn2)) {
 			// Add the pawns to the save file
@@ -175,14 +174,22 @@ public class PawnFusionMenu : MonoBehaviour {
 			// Save Game
 			gm.Save();
 			// Update UI
-			fuseMatIcon1.gameObject.SetActive(false);
 			fuseMatIcon1.pawnData = null;
-			fuseMatIcon2.gameObject.SetActive(false);
 			fuseMatIcon2.pawnData = null;
-			resultIcon.gameObject.SetActive(true);
 			resultIcon.Init(pawn);
+			StartCoroutine(AnimateFuseRoutine());
 		}
 		UpdateCostText();
+	}
+
+	private IEnumerator AnimateFuseRoutine() {
+		resultIcon.gameObject.SetActive(true);
+		animator.Play("Fuse");
+		yield return new WaitForEndOfFrame();
+		while (animator.GetCurrentAnimatorStateInfo (0).IsName ("Fuse"))
+			yield return null;
+		fuseMatIcon2.gameObject.SetActive(false);
+		fuseMatIcon1.gameObject.SetActive(false);
 	}
 
 	// NOTE: Order of the condition checks here matters!
@@ -238,6 +245,7 @@ public class PawnFusionMenu : MonoBehaviour {
 		// Fuse the boosts of the two pawns
 		for (int i = 0; i < StatData.NUM_STATS; i ++) {
 			fusedPawn.AddBoost(i, pawn2.boosts[i]);
+			// fusedPawn.AddBoost(i, )
 		}
 		// Add two random boosts
 		for (int i = 0; i < 2; i ++) {

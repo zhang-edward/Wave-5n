@@ -55,13 +55,17 @@ public class DebugCheatMenu : MonoBehaviour
 	{
 		int numHeroTypes = Enum.GetNames(typeof(HeroType)).Length;
 		//HeroType type = (HeroType)Enum.GetValues(typeof(HeroType)).GetValue(UnityEngine.Random.Range(1, numHeroTypes));
-		Pawn pawn = new Pawn(HeroType.Knight, HeroTier.tier2, Convert.ToInt32(level));
+		Pawn pawn = new Pawn(HeroType.Knight, HeroTier.tier1, Convert.ToInt32(level));
 		GameManager.instance.save.AddPawn(pawn);
 	}
 
 	public void ClearSaveData()
 	{
 		GameManager.instance.DeleteSaveData();
+	}
+
+	public void UnlockAllStages() {
+		while (GameManager.instance.UnlockNextStage());
 	}
 
 	// ==========

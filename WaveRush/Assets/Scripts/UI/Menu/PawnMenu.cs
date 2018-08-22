@@ -24,7 +24,7 @@ public class PawnMenu : MonoBehaviour {
 
 	void Init() {
 		gm = GameManager.instance;
-		pawnSelectionView.Init(gm.save.pawns, PawnSelectionView.PawnSelectionViewMode.Sorted);
+		pawnSelectionView.Init(gm.save.pawns, PawnSelectionView.PawnSortMode.Sorted);
 		initialized = true;
 	}
 
@@ -39,7 +39,7 @@ public class PawnMenu : MonoBehaviour {
 					DeselectIcon();
 				}
 				selectedIcon = clickedIcon;
-				selectedIcon.gameObject.SetActive(false);
+				selectedIcon.button.interactable = false;
 				bigIconDisplay.Init(clickedIcon.pawnData);
 				bigIconDisplay.gameObject.SetActive(true);
 				int costMoney, costSouls;
@@ -70,7 +70,7 @@ public class PawnMenu : MonoBehaviour {
 	}
 
 	public void DeselectIcon() {
-		selectedIcon.gameObject.SetActive(true);
+		selectedIcon.button.interactable = true;
 		bigIconDisplay.gameObject.SetActive(false);
 		selectedIcon = null;
 	}
@@ -94,5 +94,6 @@ public class PawnMenu : MonoBehaviour {
 		gm.save.RemovePawn(selectedIcon.pawnData.Id);
 		bigIconDisplay.gameObject.SetActive(false);
 		selectedIcon = null;
+		pawnSelectionView.UpdatePawnList(gm.save.pawns);
 	}
 }

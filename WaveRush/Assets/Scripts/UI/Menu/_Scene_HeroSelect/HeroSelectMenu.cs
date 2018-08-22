@@ -26,7 +26,7 @@ public class HeroSelectMenu : MonoBehaviour  {
 	public void Init()
 	{
 		/** Initialize pawn selection view */
-		pawnSelectionView.Init(GameManager.instance.save.pawns, PawnSelectionView.PawnSelectionViewMode.Sorted);
+		pawnSelectionView.Init(GameManager.instance.save.pawns, PawnSelectionView.PawnSortMode.Sorted);
 		foreach (PawnIcon pawnIcon in pawnSelectionView.pawnIcons)
 		{
 			// Set the onClick

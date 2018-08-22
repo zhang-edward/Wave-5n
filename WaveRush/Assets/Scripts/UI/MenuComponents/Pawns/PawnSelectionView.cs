@@ -8,23 +8,25 @@ public class PawnSelectionView : MonoBehaviour {
 	public Transform contentFolder;
 	public Transform selectedContentFolder;
 	public List<PawnIcon> pawnIcons { get; private set; }
+	// public List<PawnIcon> filteredIcons { get; private set; }
 
 	private Pawn[] pawns;	// Reference to a pawn list for this view to display
 	private bool initialized;   // Variable to deal with the event assignment for pawnStateUpdateEvent
-	public enum PawnSelectionViewMode { Sorted, Shuffled }
-	[SerializeField]private PawnSelectionViewMode defaultMode;
+	public enum PawnSortMode { Sorted, Shuffled }
+	// public enum PawnFilterMode { None, MaxLevelOnly }
+	[SerializeField]private PawnSortMode sortMode;
 
 	void Awake() {
 	}
 
-	public void Init(Pawn[] pawns, PawnSelectionViewMode defaultMode) {
+	public void Init(Pawn[] pawns, PawnSortMode sortMode) {
 		this.pawns = pawns;
 		//Debug.Log("Pawns: " + pawns.Length);
-		this.defaultMode = defaultMode;
-		initialized = true;
 		pawnIcons = new List<PawnIcon>();
+		this.sortMode = sortMode;
+		initialized = true;
 		Refresh();
-		if (defaultMode == PawnSelectionViewMode.Shuffled)
+		if (sortMode == PawnSortMode.Shuffled)
 			Shuffle();
 	}
 
@@ -86,8 +88,7 @@ public class PawnSelectionView : MonoBehaviour {
 		}
 	}
 
-	public void Refresh()
-	{
+	public void Refresh() {
 		foreach (PawnIcon icon in pawnIcons) {
 			icon.gameObject.SetActive(false);
 		}
@@ -104,27 +105,7 @@ public class PawnSelectionView : MonoBehaviour {
 				}
 			}
 		}
-		//foreach (PawnIcon icon in pawnIcons)
-		//	icon.gameObject.SetActive(false);
-		//int j = 0;									// Track the pawnIcons list position
-		//for (int i = 0; i < pawns.Count; i ++)		// Iterate through the master list of pawns (may contain holes)
-		//{
-		//	Pawn pawn = pawns[i];
-		//	if (pawn != null)
-		//	{
-		//		if (j >= pawnIcons.Count)			// If we need more pawn icons, add new ones to the list
-		//		{
-		//			AddNewPawnIcon(pawn);
-		//		}
-		//		else
-		//		{
-		//			pawnIcons[j].Init(pawn);        // If not, re-initialize the pawn icon
-		//			pawnIcons[j].gameObject.SetActive(true);
-		//		}
-		//		j++;
-		//	}
-		//}
-		if (defaultMode == PawnSelectionViewMode.Sorted)
+		if (sortMode == PawnSortMode.Sorted)
 			Sort();
 	}
 

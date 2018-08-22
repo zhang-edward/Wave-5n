@@ -183,10 +183,10 @@ public class GameManager : MonoBehaviour {
 			return save.LatestStageIndex + 1;
 	}
 
-	public void UnlockNextStage()
+	public bool UnlockNextStage()
 	{
 		if (save.LatestSeriesIndex >= regularStages.series.Length)
-			return;
+			return false;
 		if (save.LatestStageIndex < regularStages.series[save.LatestSeriesIndex].stages.Length - 1)
 			sg.saveDict[SaveGame.LATEST_UNLOCKED_STAGE_INDEX_KEY]++;
 		else
@@ -194,6 +194,7 @@ public class GameManager : MonoBehaviour {
 			sg.saveDict[SaveGame.LATEST_UNLOCKED_SERIES_INDEX_KEY]++;
 			sg.saveDict[SaveGame.LATEST_UNLOCKED_STAGE_INDEX_KEY] = 0;
 		}
+		return true;
 	}
 
 	public StageSeriesData GetLatestSeries()

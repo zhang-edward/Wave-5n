@@ -36,7 +36,7 @@ public class PawnShopMenu : MonoBehaviour
 		pawnShop = new PawnShop(gm.save);
 		// Initialize pawn selection view
 		pawnShop.OnSaveGameLoaded();
-		pawnSelectionView.Init(pawnShop.AvailablePawns.ToArray(), PawnSelectionView.PawnSelectionViewMode.Shuffled);
+		pawnSelectionView.Init(pawnShop.AvailablePawns.ToArray(), PawnSelectionView.PawnSortMode.Shuffled);
 		SetSelectionViewOnClick();
 		// Set recruitButton onClick
 		recruitButton.onClick.AddListener(TryRecruitHero);

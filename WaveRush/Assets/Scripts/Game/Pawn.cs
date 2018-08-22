@@ -14,7 +14,7 @@ public class Pawn : System.IComparable<Pawn>
 	public int level;           	// the current level of the pawn
 	public int[] boosts;			// the boosts that this pawn has
 	public HeroTier tier  { get; private set; }
-	public int Id		  { get; private set; }
+	public int Id		  { get; set; }
 	public int Experience { get; private set; }
 
 	/** Properties */
@@ -68,7 +68,8 @@ public class Pawn : System.IComparable<Pawn>
 	}
 
 	[JsonConstructor]
-	public Pawn(HeroType type, HeroTier tier, int level, int experience, int[] boosts) {
+	public Pawn(int id, HeroType type, HeroTier tier, int level, int experience, int[] boosts) {
+		this.Id = id;
 		this.type = type;
 		this.tier = tier;
 		this.level = level;

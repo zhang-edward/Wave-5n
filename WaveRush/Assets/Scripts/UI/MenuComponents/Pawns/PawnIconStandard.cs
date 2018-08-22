@@ -42,10 +42,13 @@ public class PawnIconStandard : PawnIcon {
 		heroNameText.text = pawnData.type.ToString();
 		heroPortrait.sprite = DataManager.GetHeroData(pawnData.type).icons[(int)pawnData.tier];
 		int numBoosts = pawnData.GetNumBoosts();
-		if (numBoosts > 0)
+		if (numBoosts > 0) {
+			boostsText.gameObject.SetActive(true);
 			boostsText.text = string.Format("+{0}", numBoosts);
-		else
+		}
+		else {
 			boostsText.gameObject.SetActive(false);
+		}
 		InitOptionalElements();
 	}
 

@@ -14,8 +14,8 @@ public class PlayerDetectionCircle : MonoBehaviour
 	void Awake()
 	{
 		pos = transform.localPosition;
-		collision.OnTriggerEnter += OnTriggerEnter;
-		collision.OnTriggerExit += OnTriggerExit;
+		collision.OnTriggerEnter += TriggerEnter;
+		collision.OnTriggerExit += TriggerExit;
 	}
 
 	void Update()
@@ -32,13 +32,13 @@ public class PlayerDetectionCircle : MonoBehaviour
 		return playerDamageable;
 	}
 
-	private void OnTriggerEnter(Collider2D col) {
+	private void TriggerEnter(Collider2D col) {
 		if (col.CompareTag("Player")) {
 			playerDamageable = col.GetComponentInChildren<IDamageable>();
 		}
 	}
 
-	private void OnTriggerExit(Collider2D col) {
+	private void TriggerExit(Collider2D col) {
 		if (col.CompareTag("Player")) {
 			playerDamageable = null;
 		}
