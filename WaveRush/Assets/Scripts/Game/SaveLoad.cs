@@ -8,47 +8,37 @@ public class SaveLoad {
 	private const string PAWN_WALLET_NAME = "/pw.gd";
 
 	public static void Save(SaveGame sg) {
+		Debug.Log("========== Saving ==========");
 		GameManager.instance.PrepareSaveFile();
-
-		// BinaryFormatter bf = new BinaryFormatter();
-		// FileStream file = File.Create (Application.persistentDataPath + "/" + SAVE_FILE_NAME);
 		string filePath = Application.persistentDataPath + SAVE_FILE_NAME;
 
-		JsonSerializer serializer = new JsonSerializer();
-		using (StreamWriter sw = new StreamWriter(filePath))
-		using (JsonWriter writer = new JsonTextWriter(sw)) {
-			serializer.Serialize(writer, sg);
-		}
+		string saveJson = JsonConvert.SerializeObject(sg);
+		Debug.Log("Serialized JSON: " + saveJson);
+		
+		SimpleAes aes = new SimpleAes();
+		string encryptedSaveJson = aes.Encrypt(saveJson);
+		Debug.Log("Encrypted JSON: " + encryptedSaveJson);
 
-		// Debug.Log(JsonConvert.SerializeObject(sg));
-
-		// using (StreamReader file = File.OpenText(filePath)) {
-		// 	sg = (SaveGame)serializer.Deserialize(file, typeof(SaveGame));
-		// }
-		// using (var fs = File.Open(filePath, FileMode.Create, FileAccess.Write)) {
-		// 	using (var writer = new BsonWriter(fs))	{
-		// 		var serializer = new JsonSerializer();
-		// 		serializer.Serialize(writer, sg);
-		// 	}
-		// }
-		// bf.Serialize(file, sg);
-		// file.Close();
-		Debug.Log ("Saved Data");
-		//GameManager.instance.DisplayMessage ("Saved Data");
+		File.WriteAllText(filePath, encryptedSaveJson);
+		Debug.Log("========= Saving complete =========");
 	}
 
 	public static void Load(ref SaveGame sg) {
+		Debug.Log("========== Loading ==========");
 		if (File.Exists(Application.persistentDataPath + SAVE_FILE_NAME)) {
 
 			string filePath = Application.persistentDataPath + SAVE_FILE_NAME;
-			// sg = new SaveGame();
+			
+			string encryptedSaveJson = File.ReadAllText(filePath);
+			Debug.Log("Encrypted JSON: " + encryptedSaveJson);
 
-			JsonSerializer serializer = new JsonSerializer();
-			using (StreamReader sr = new StreamReader(filePath))
-			using (JsonTextReader reader = new JsonTextReader(sr)) {
-				sg = serializer.Deserialize<SaveGame>(reader);
-			}
-			Debug.Log(JsonConvert.SerializeObject(sg));
+			SimpleAes aes = new SimpleAes();
+			string saveJson = aes.Decrypt(encryptedSaveJson);
+			Debug.Log("Decrypted JSON: " + saveJson);
+
+			sg = JsonConvert.DeserializeObject<SaveGame>(saveJson);
+			Debug.Log(sg);
+			// Debug.Log(JsonConvert.SerializeObject(sg));
 			GameManager.instance.LoadSaveFile();
 		}
 		else {
@@ -56,6 +46,7 @@ public class SaveLoad {
 							 "Check your " + Application.persistentDataPath + "/" + SAVE_FILE_NAME);
 			GameManager.instance.CreateNewSave();
 		}
+		Debug.Log("========= Loading complete =========");
 	}
 }
 

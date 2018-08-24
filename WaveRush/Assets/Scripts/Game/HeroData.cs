@@ -39,8 +39,9 @@ public class HeroData : ScriptableObject
 		parryDescription;
 
 	[Header("Graphics")]
-	public Sprite[] icons;
-	public AnimationSet t1Skin, t2Skin, t3Skin;
+	public AnimationSet[] t1Skins;
+	public AnimationSet[] t2Skins;
+	public AnimationSet[] t3Skins;
 
 	public float[,] GetStatsMinMax() {
 		float[,] arr = new float[,] {

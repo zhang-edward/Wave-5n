@@ -47,115 +47,47 @@ MonoBehaviour:
   - {fileID: 21300000, guid: ba48fe4404b02447f97ebc1d9bf4f1f1, type: 3}
   - {fileID: 21300000, guid: e81998aed81ae4b70a48ba3c9d8a9f9d, type: 3}
   - {fileID: 21300000, guid: 7d1b8eb68db394076bc24ecb65839bc1, type: 3}
-  t1Skin:
+  t1Skins:
+  - animationSetName: Default
     animations:
+    - animationName: Icon
+      frames:
+      - {fileID: 21300000, guid: ba48fe4404b02447f97ebc1d9bf4f1f1, type: 3}
+      fps: 60
+      looping: 0
+      resetToDefault: 0
+      ignoreTimeScale: 0
     - animationName: Default
       frames:
       - {fileID: 21300000, guid: ba48fe4404b02447f97ebc1d9bf4f1f1, type: 3}
-      fps: 10
+      fps: 60
       looping: 0
-      resetToDefault: 1
+      resetToDefault: 0
       ignoreTimeScale: 0
     - animationName: Rush
       frames:
-      - {fileID: 21300004, guid: ba48fe4404b02447f97ebc1d9bf4f1f1, type: 3}
       - {fileID: 21300006, guid: ba48fe4404b02447f97ebc1d9bf4f1f1, type: 3}
-      fps: 10
+      - {fileID: 21300004, guid: ba48fe4404b02447f97ebc1d9bf4f1f1, type: 3}
+      fps: 15
       looping: 1
-      resetToDefault: 1
+      resetToDefault: 0
       ignoreTimeScale: 0
     - animationName: Shield
       frames:
       - {fileID: 21300008, guid: ba48fe4404b02447f97ebc1d9bf4f1f1, type: 3}
-      fps: 1
+      fps: 15
       looping: 0
-      resetToDefault: 1
+      resetToDefault: 0
       ignoreTimeScale: 0
     - animationName: Special
       frames:
-      - {fileID: 21300010, guid: ba48fe4404b02447f97ebc1d9bf4f1f1, type: 3}
       - {fileID: 21300012, guid: ba48fe4404b02447f97ebc1d9bf4f1f1, type: 3}
       - {fileID: 21300014, guid: ba48fe4404b02447f97ebc1d9bf4f1f1, type: 3}
       - {fileID: 21300016, guid: ba48fe4404b02447f97ebc1d9bf4f1f1, type: 3}
-      fps: 10
+      fps: 15
       looping: 0
-      resetToDefault: 1
-      ignoreTimeScale: 1
+      resetToDefault: 0
+      ignoreTimeScale: 0
     player: {fileID: 0}
-  t2Skin:
-    animations:
-    - animationName: Default
-      frames:
-      - {fileID: 21300000, guid: e81998aed81ae4b70a48ba3c9d8a9f9d, type: 3}
-      fps: 10
-      looping: 0
-      resetToDefault: 1
-      ignoreTimeScale: 0
-    - animationName: Rush
-      frames:
-      - {fileID: 21300004, guid: e81998aed81ae4b70a48ba3c9d8a9f9d, type: 3}
-      - {fileID: 21300006, guid: e81998aed81ae4b70a48ba3c9d8a9f9d, type: 3}
-      fps: 10
-      looping: 1
-      resetToDefault: 1
-      ignoreTimeScale: 0
-    - animationName: Shield
-      frames:
-      - {fileID: 21300008, guid: e81998aed81ae4b70a48ba3c9d8a9f9d, type: 3}
-      fps: 1
-      looping: 0
-      resetToDefault: 1
-      ignoreTimeScale: 0
-    - animationName: Special
-      frames:
-      - {fileID: 21300036, guid: e81998aed81ae4b70a48ba3c9d8a9f9d, type: 3}
-      - {fileID: 21300010, guid: e81998aed81ae4b70a48ba3c9d8a9f9d, type: 3}
-      - {fileID: 21300012, guid: e81998aed81ae4b70a48ba3c9d8a9f9d, type: 3}
-      - {fileID: 21300014, guid: e81998aed81ae4b70a48ba3c9d8a9f9d, type: 3}
-      fps: 10
-      looping: 0
-      resetToDefault: 1
-      ignoreTimeScale: 1
-    player: {fileID: 0}
-  t3Skin:
-    animations:
-    - animationName: Default
-      frames:
-      - {fileID: 21300000, guid: ed673d88e27de45ef87dd9f173b2a314, type: 3}
-      - {fileID: 21300002, guid: ed673d88e27de45ef87dd9f173b2a314, type: 3}
-      - {fileID: 21300004, guid: ed673d88e27de45ef87dd9f173b2a314, type: 3}
-      - {fileID: 21300006, guid: ed673d88e27de45ef87dd9f173b2a314, type: 3}
-      - {fileID: 21300008, guid: ed673d88e27de45ef87dd9f173b2a314, type: 3}
-      - {fileID: 21300010, guid: ed673d88e27de45ef87dd9f173b2a314, type: 3}
-      fps: 10
-      looping: 1
-      resetToDefault: 1
-      ignoreTimeScale: 0
-    - animationName: Rush
-      frames:
-      - {fileID: 21300012, guid: ed673d88e27de45ef87dd9f173b2a314, type: 3}
-      - {fileID: 21300014, guid: ed673d88e27de45ef87dd9f173b2a314, type: 3}
-      - {fileID: 21300016, guid: ed673d88e27de45ef87dd9f173b2a314, type: 3}
-      - {fileID: 21300018, guid: ed673d88e27de45ef87dd9f173b2a314, type: 3}
-      fps: 10
-      looping: 1
-      resetToDefault: 1
-      ignoreTimeScale: 0
-    - animationName: Shield
-      frames:
-      - {fileID: 21300020, guid: ed673d88e27de45ef87dd9f173b2a314, type: 3}
-      fps: 1
-      looping: 0
-      resetToDefault: 1
-      ignoreTimeScale: 0
-    - animationName: Special
-      frames:
-      - {fileID: 21300022, guid: ed673d88e27de45ef87dd9f173b2a314, type: 3}
-      - {fileID: 21300024, guid: ed673d88e27de45ef87dd9f173b2a314, type: 3}
-      - {fileID: 21300026, guid: ed673d88e27de45ef87dd9f173b2a314, type: 3}
-      - {fileID: 21300028, guid: ed673d88e27de45ef87dd9f173b2a314, type: 3}
-      fps: 10
-      looping: 0
-      resetToDefault: 1
-      ignoreTimeScale: 1
-    player: {fileID: 0}
+  t2Skins: []
+  t3Skins: []

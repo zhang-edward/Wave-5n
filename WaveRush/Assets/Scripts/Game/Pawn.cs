@@ -13,6 +13,7 @@ public class Pawn : System.IComparable<Pawn>
 	public HeroType type;			// the hero type of this pawn
 	public int level;           	// the current level of the pawn
 	public int[] boosts;			// the boosts that this pawn has
+	public int skin;				// the skin that this pawn currently is wearing, -1 for default
 	public HeroTier tier  { get; private set; }
 	public int Id		  { get; set; }
 	public int Experience { get; private set; }
@@ -68,13 +69,14 @@ public class Pawn : System.IComparable<Pawn>
 	}
 
 	[JsonConstructor]
-	public Pawn(int id, HeroType type, HeroTier tier, int level, int experience, int[] boosts) {
+	public Pawn(int id, HeroType type, HeroTier tier, int level, int experience, int[] boosts, int skin) {
 		this.Id = id;
 		this.type = type;
 		this.tier = tier;
 		this.level = level;
 		this.Experience = experience;
 		this.boosts = boosts;
+		this.skin = skin;
 		MaxExperience = Formulas.ExperienceFormula(level, (int)tier);
 	}
 
@@ -151,13 +153,13 @@ public class Pawn : System.IComparable<Pawn>
 		switch(tier)
 		{
 			case HeroTier.tier1:
-				answer = data.t1Skin;
+				answer = data.t1Skins[skin];
 				break;
 			case HeroTier.tier2:
-				answer = data.t2Skin;
+				answer = data.t2Skins[skin];
 				break;
 			case HeroTier.tier3:
-				answer = data.t3Skin;
+				answer = data.t3Skins[skin];
 				break;
 			default:
 				throw new UnityEngine.Assertions.AssertionException("Pawn.cs", "Pawn is out of the level range?");

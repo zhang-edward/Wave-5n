@@ -5,6 +5,7 @@ using System.Collections.Generic;
 [System.Serializable]
 public class AnimationSet
 {
+	public string animationSetName;
 	public List<AnimationSetAnim> animations;
 	private Dictionary<string, AnimationSetAnim> animDictionary;
 	[HideInInspector]

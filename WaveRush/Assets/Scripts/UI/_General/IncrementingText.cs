@@ -11,6 +11,8 @@ public class IncrementingText : MonoBehaviour {
 	public AudioClip blipSound;
 	public AudioSource audioSrc;
 	public int initialValue;
+	public string prefix;
+	public string postfix;
 
 	public bool doneUpdating { get; private set; }
 
@@ -21,7 +23,7 @@ public class IncrementingText : MonoBehaviour {
 	{
 		text = GetComponent<TMP_Text>();
 		//audioSrc = GetComponent<AudioSource> ();
-		text.text = initialValue.ToString();
+		text.text = prefix + initialValue.ToString() + postfix;
 		doneUpdating = true;
 	}
 
@@ -37,8 +39,12 @@ public class IncrementingText : MonoBehaviour {
 			SoundManager.instance.UnregisterSfxSrc(audioSrc);
 	}
 
-	public void DisplayNumber(int number)
-	{
+	public void DisplayNumber(int number, string prefix = "", string postfix = "") {
+		if (prefix != "")
+			this.prefix = prefix;
+		if (postfix != "")
+			this.postfix = postfix;
+
 		numberToReport = number;
 		StartCoroutine (DisplayNumber ());
 	}
@@ -62,7 +68,7 @@ public class IncrementingText : MonoBehaviour {
 			audioCounter++;
 			if (audioSrc != null && audioCounter % 3 == 0)
 				PlayAudio(incrementer);
-			text.text = incrementer.ToString ();
+			text.text = prefix + incrementer.ToString () + postfix;
 
 			yield return new WaitForSeconds (0.03f);
 		}
@@ -87,7 +93,7 @@ public class IncrementingText : MonoBehaviour {
 		{
 			StopAllCoroutines ();
 			doneUpdating = true;
-			text.text = numberToReport.ToString ();
+			text.text = prefix + numberToReport.ToString () + postfix; 
 		}
 	}
 }

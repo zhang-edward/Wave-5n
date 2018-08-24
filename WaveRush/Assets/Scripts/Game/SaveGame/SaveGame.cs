@@ -17,12 +17,12 @@ public class SaveGame
 	public Dictionary<string, int> saveDict;    // Dictionary containing integers
 	public bool[] unlockedHeroes;				// Types of heroes potentially available for hire
 												// Increments of 3 per type, where #0-2 = knight t1, t2, t3, #3-5 = pyro t1, t2, t3, etc.
-	public List<Pawn> availableHeroes;		// Heroes available for hire
+	public List<Pawn> availableHeroes;			// Heroes available for hire
 
 	[JsonConstructor]
-	public SaveGame(Wallet wallet, 
-					PawnWallet pawnWallet, 
-					Dictionary<string, int> saveDict, 
+	public SaveGame(Wallet wallet,
+					PawnWallet pawnWallet,
+					Dictionary<string, int> saveDict,
 					bool[] unlockedHeroes,
 					List<Pawn> availableHeroes) {
 		this.wallet = wallet;

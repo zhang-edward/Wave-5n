@@ -3,7 +3,7 @@
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
@@ -45,43 +45,22 @@ MonoBehaviour:
     of arrows down upon a region, dealing 1.5x damage to up to 15 enemies.
   parryDescription: Resets your <color=yellow>Piercing Arrow</color> ability, and
     your next shot is at maximum charge.
-  icons:
-  - {fileID: 21300000, guid: 08c6e894d03cb4bbe8f21b341f76e4eb, type: 3}
-  - {fileID: 21300000, guid: a62406d7c62a34e8a813cb08b251de0b, type: 3}
-  - {fileID: 21300000, guid: a62406d7c62a34e8a813cb08b251de0b, type: 3}
-  t1Skin:
+  t1Skins:
+  - animationSetName: Default
     animations:
+    - animationName: Icon
+      frames:
+      - {fileID: 21300000, guid: 08c6e894d03cb4bbe8f21b341f76e4eb, type: 3}
+      fps: 60
+      looping: 0
+      resetToDefault: 0
+      ignoreTimeScale: 0
     - animationName: Default
       frames:
       - {fileID: 21300000, guid: 08c6e894d03cb4bbe8f21b341f76e4eb, type: 3}
-      fps: 1
-      looping: 1
-      ignoreTimeScale: 0
-    - animationName: Charge1
-      frames:
-      - {fileID: 21300002, guid: 08c6e894d03cb4bbe8f21b341f76e4eb, type: 3}
       fps: 60
-      looping: 1
-      ignoreTimeScale: 0
-    - animationName: Charge2
-      frames:
-      - {fileID: 21300004, guid: 08c6e894d03cb4bbe8f21b341f76e4eb, type: 3}
-      fps: 60
-      looping: 1
-      ignoreTimeScale: 0
-    - animationName: Charge3
-      frames:
-      - {fileID: 21300006, guid: 08c6e894d03cb4bbe8f21b341f76e4eb, type: 3}
-      fps: 60
-      looping: 1
-      ignoreTimeScale: 0
-    - animationName: Shoot
-      frames:
-      - {fileID: 21300008, guid: 08c6e894d03cb4bbe8f21b341f76e4eb, type: 3}
-      - {fileID: 21300010, guid: 08c6e894d03cb4bbe8f21b341f76e4eb, type: 3}
-      - {fileID: 21300000, guid: 08c6e894d03cb4bbe8f21b341f76e4eb, type: 3}
-      fps: 10
       looping: 0
+      resetToDefault: 0
       ignoreTimeScale: 0
     - animationName: Move
       frames:
@@ -89,56 +68,37 @@ MonoBehaviour:
       - {fileID: 21300014, guid: 08c6e894d03cb4bbe8f21b341f76e4eb, type: 3}
       fps: 10
       looping: 1
-      ignoreTimeScale: 0
-    player: {fileID: 0}
-  t2Skin:
-    animations:
-    - animationName: Default
-      frames:
-      - {fileID: 21300000, guid: a62406d7c62a34e8a813cb08b251de0b, type: 3}
-      fps: 60
-      looping: 1
+      resetToDefault: 0
       ignoreTimeScale: 0
     - animationName: Charge1
       frames:
-      - {fileID: 21300002, guid: a62406d7c62a34e8a813cb08b251de0b, type: 3}
+      - {fileID: 21300002, guid: 08c6e894d03cb4bbe8f21b341f76e4eb, type: 3}
       fps: 60
-      looping: 1
+      looping: 0
+      resetToDefault: 0
       ignoreTimeScale: 0
     - animationName: Charge2
       frames:
-      - {fileID: 21300004, guid: a62406d7c62a34e8a813cb08b251de0b, type: 3}
+      - {fileID: 21300004, guid: 08c6e894d03cb4bbe8f21b341f76e4eb, type: 3}
       fps: 60
       looping: 1
+      resetToDefault: 0
       ignoreTimeScale: 0
     - animationName: Charge3
       frames:
-      - {fileID: 21300006, guid: a62406d7c62a34e8a813cb08b251de0b, type: 3}
+      - {fileID: 21300006, guid: 08c6e894d03cb4bbe8f21b341f76e4eb, type: 3}
       fps: 60
       looping: 1
+      resetToDefault: 0
       ignoreTimeScale: 0
     - animationName: Shoot
       frames:
-      - {fileID: 21300008, guid: a62406d7c62a34e8a813cb08b251de0b, type: 3}
-      - {fileID: 21300010, guid: a62406d7c62a34e8a813cb08b251de0b, type: 3}
-      - {fileID: 21300000, guid: a62406d7c62a34e8a813cb08b251de0b, type: 3}
-      fps: 10
+      - {fileID: 21300008, guid: 08c6e894d03cb4bbe8f21b341f76e4eb, type: 3}
+      - {fileID: 21300010, guid: 08c6e894d03cb4bbe8f21b341f76e4eb, type: 3}
+      fps: 15
       looping: 0
-      ignoreTimeScale: 0
-    - animationName: Move
-      frames:
-      - {fileID: 21300012, guid: a62406d7c62a34e8a813cb08b251de0b, type: 3}
-      - {fileID: 21300014, guid: a62406d7c62a34e8a813cb08b251de0b, type: 3}
-      fps: 10
-      looping: 1
+      resetToDefault: 1
       ignoreTimeScale: 0
     player: {fileID: 0}
-  t3Skin:
-    animations:
-    - animationName: Default
-      frames:
-      - {fileID: 0}
-      fps: 0
-      looping: 0
-      ignoreTimeScale: 0
-    player: {fileID: 0}
+  t2Skins: []
+  t3Skins: []

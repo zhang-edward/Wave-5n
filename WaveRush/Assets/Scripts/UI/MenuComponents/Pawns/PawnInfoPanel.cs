@@ -147,7 +147,7 @@ public class PawnInfoPanel : MonoBehaviour
 		statInfoTexts[StatData.CHG].text  = string.Format("{0}%", 		  stats[StatData.CHG]);
 		statInfoTexts[StatData.DEX].text  = string.Format("{0}%",		  stats[StatData.DEX] * 100);
 		statInfoTexts[StatData.CRIT].text = string.Format("{0}x",		  stats[StatData.CRIT]);
-		statInfoTexts[StatData.LUCK].text = string.Format("{0}%",		  stats[StatData.LUCK] * 100);
+		statInfoTexts[StatData.LUCK].text = string.Format("{0}%",		  (stats[StatData.LUCK] + 1.0f) * 100);
 	}
 
 	public void ShowStatHelp(int statIndex) {

@@ -19,13 +19,13 @@ public class HeroTypeIcon : MonoBehaviour {
 		// Set portrait animation
 		switch (tier) {
 			case HeroTier.tier1:
-				animPlayer.anim = data.t1Skin.GetAnimation("Default");
+				animPlayer.anim = data.t1Skins[0].GetAnimation("Default");
 				break;
 			case HeroTier.tier2:
-				animPlayer.anim = data.t2Skin.GetAnimation("Default");
+				animPlayer.anim = data.t2Skins[0].GetAnimation("Default");
 				break;
 			case HeroTier.tier3:
-				animPlayer.anim = data.t3Skin.GetAnimation("Default");
+				animPlayer.anim = data.t3Skins[0].GetAnimation("Default");
 				break;
 		}
 		animPlayer.looping = true;

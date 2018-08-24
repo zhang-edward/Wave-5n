@@ -321,7 +321,7 @@ public class Enemy : MonoBehaviour, IDamageable {
 	{
 		float rangeValue = Mathf.Sqrt(maxHealth);
 		float rangeNoise = rangeValue * 0.2f;
-		int moneyValue = (int)(Random.Range (rangeValue - rangeNoise, rangeValue + rangeNoise) * moneyValueMultiplier);
+		int moneyValue = (int)(Random.Range (rangeValue - rangeNoise, rangeValue + rangeNoise) * moneyValueMultiplier * 0.5f);
 		if (moneyValue <= 0)
 			return;
 		GameObject o = ObjectPooler.GetObjectPooler(POOL_MONEY).GetPooledObject();

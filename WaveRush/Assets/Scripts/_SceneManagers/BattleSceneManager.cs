@@ -21,7 +21,7 @@ public class BattleSceneManager : MonoBehaviour
 	public Player player;
 	public GUIManager gui;
 	[Header("UI")]
-public StageEndMenu losePanel;
+	public StageEndMenu stageEndMenu;
 	public DialogueView dialogueView;
 	public GameObject stageCompleteOptions;
 	public ModalSelectionView stageCompleteModal;
@@ -73,11 +73,11 @@ public StageEndMenu losePanel;
 	{
 		// Get data from GameManager
 		Pawn[] pawns = gm.selectedPawns;
-		// if (gm.debugMode) {
-		// 	for (int i = 0; i < pawns.Length; i ++) {
-		// 		pawns[i] = new Pawn(gm.selectedPawns[i].type, gm.selectedPawns[i].tier, gm.selectedPawns[i].level);
-		// 	}
-		// }
+		if (gm.debugMode) {
+			for (int i = 0; i < pawns.Length; i ++) {
+				pawns[i] = new Pawn(gm.selectedPawns[i].type, gm.selectedPawns[i].tier, gm.selectedPawns[i].level);
+			}
+		}
 		StageData stage = gm.GetStage(gm.selectedSeriesIndex, gm.selectedStageIndex);
 
 		pawnMetaData = new PawnMetaData[pawns.Length];		
@@ -156,9 +156,13 @@ public StageEndMenu losePanel;
 	// }
 
 	private void UpdateData(bool completedStage) {
-		// Do music
+		// Stage complete or not
 		if (completedStage) {
 			StartCoroutine(PlayVictorySounds());
+			if (OnStageCompleted != null)
+				OnStageCompleted();
+			if (IsPlayerOnLatestStage())
+				gm.UnlockNextStage();
 		}
 		else {
 			SoundManager.instance.FadeMusic(0);
@@ -201,23 +205,21 @@ public StageEndMenu losePanel;
 				gm.save.LoseExperience(pawnMetaData[i].id, lostExperience);
 			}
 		}
+		float maxLuck = 0;
+		// Do start, end state and retrieve highest luck stat to calculate bonus money
 		for (int i = 0; i < pawnMetaData.Length; i ++) {
 			expData[i] = new HeroExpMenu.HeroExpMenuData(
 				startState: pawnMetaData[i].startingState,
 				endState: 	gm.save.GetPawn(pawnMetaData[i].id)
 			);
+			float luck = pawnMetaData[i].startingState.GetStatsArray()[StatData.LUCK];
+			if (luck > maxLuck)
+				maxLuck = luck;
 		}
+		int bonusMoney = (int)(moneyEarned * (maxLuck + 1f));
 
 		gui.gameOverUI.SetActive(true);
-		losePanel.Init(scoreData, expData, gm.GetStage(gm.selectedSeriesIndex, gm.selectedStageIndex).stageName);
-	
-		if (completedStage) {
-			if (OnStageCompleted != null)
-				OnStageCompleted();
-			if (IsPlayerOnLatestStage()) {
-				gm.UnlockNextStage();
-			}
-		}
+		stageEndMenu.Init(scoreData, expData, bonusMoney, gm.GetStage(gm.selectedSeriesIndex, gm.selectedStageIndex).stageName);
 
 		int enemiesDefeated = enemyManager.enemiesKilled;
 		int wavesSurvived = enemyManager.waveNumber;

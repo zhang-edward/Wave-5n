@@ -33,6 +33,15 @@ public class ScoreReport : MonoBehaviour {
 		//StartCoroutine (ReportScoreTimed (data));
 	}
 
+	public void UpdateMoney(int money) {
+		moneyText.transform.parent.parent.GetComponent<Animator>().CrossFade("Pop", 0f);
+		moneyText.DisplayNumber(money);
+	}
+
+	public bool DoneUpdating() {
+		return moneyText.doneUpdating && moneyEarned.doneUpdating && soulsText.doneUpdating && soulsEarned.doneUpdating;
+	}
+
 	// private IEnumerator ReportScoreTimed(ScoreReportData data)
 	// {
 	// 	// yield return new WaitForSeconds(.0f);
