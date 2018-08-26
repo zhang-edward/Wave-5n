@@ -38,13 +38,13 @@ public class StageData : ScriptableObject
 	public MapType mapType;
 	public int difficultyLevel;
 	public int maxPartySize = 1;
+	public HeroTier maxTier = HeroTier.tier3;
 	[Range(1, 50)] public int levelRaw = 1;
 	[Header("Difficulty Curve Variables")]
 	public float upperLimit = 15;					// The maximum number of enemies possible
 	public float lowerLimit = 5;					// The minimum number of enemies possible
 	[Header("Stage Events")]
-	public int goalWave = 5;                            // what wave the player must reach for the stage to be completed
-	//public int shopWave = 3;
+	public int goalWave = 5;                            // What wave the player must reach for the stage to be completed
 	public int bossWave = 5;
 	[Header("Enemies")]
 	public List<EnemySpawnProperties> enemyPrefabs;  	// set of all enemies spawnable for this stage

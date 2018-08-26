@@ -23,12 +23,10 @@ public class HeroSelectMenu : MonoBehaviour  {
 	private int numPawnsAllowed = 1;
 	private int numPawnsInParty;
 
-	public void Init()
-	{
+	public void Init() {
 		/** Initialize pawn selection view */
 		pawnSelectionView.Init(GameManager.instance.save.pawns, PawnSelectionView.PawnSortMode.Sorted);
-		foreach (PawnIcon pawnIcon in pawnSelectionView.pawnIcons)
-		{
+		foreach (PawnIcon pawnIcon in pawnSelectionView.pawnIcons) {
 			// Set the onClick
 			PawnIconStandard pawnIconStandard = (PawnIconStandard)pawnIcon;
 			pawnIconStandard.onClick = (PawnIconStandard iconData) => {
@@ -119,8 +117,11 @@ public class HeroSelectMenu : MonoBehaviour  {
 				partyPlaceholders[i].SetActive(true);
 			}
 		}
+		// Reset party view
 		numPawnsInParty = 0;
 		selectedIcons.Clear();
+		// Refresh pawn selection
+		RefreshPawnSelection(selectedStage);
 	}
 
 	void OnDisable() {
@@ -134,5 +135,15 @@ public class HeroSelectMenu : MonoBehaviour  {
 
 	public void SetNumPawnsAllowed(int num) {
 		numPawnsAllowed = num;
+	}
+
+	// Helper Functions
+	private void RefreshPawnSelection(StageData selectedStage) {
+		foreach (PawnIconStandard icon in pawnSelectionView.pawnIcons) {
+			if (icon.pawnData.tier > selectedStage.maxTier)
+				icon.button.interactable = false;
+			else
+				icon.button.interactable = true;
+		}
 	}
 }

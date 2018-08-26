@@ -29,7 +29,7 @@ public class HeroTypesMenu : MonoBehaviour {
 			bool unlocked = GameManager.instance.save.UnlockedHeroes[i];
 			heroTypeIcon.Init((HeroType)i, HeroTier.tier1, unlocked);
 		}
-		Debug.Break();
+		// Debug.Break();
 		scrollView.Init();
 		scrollView.OnSelectedContentChanged += OnSelectedContentChanged;
 		OnSelectedContentChanged();

@@ -7,6 +7,8 @@ public class StageIcon : MonoBehaviour
 	public delegate void OnClicked(GameObject obj);
 	public OnClicked onClicked;
 
+	public Image[] panels;
+	public Sprite[] tierPanelSprites;
 	public TMP_Text stageNameText;
 	public TMP_Text stageLevelText;
 	public Button highlightButton;      // the button that the user presses to expand the highlight menu
@@ -17,20 +19,30 @@ public class StageIcon : MonoBehaviour
 	public int seriesIndex;
 	public int stageIndex;
 
-	void Start()
-	{
+	void Start() {
 		highlightButton.onClick.AddListener(() => OnClick());
 	}
 
-	public void Init(StageData stage)
-	{
+	public void Init(StageData stage) {
 		this.stage = stage;
 		stageNameText.text = (stageIndex + 1) + " - " + stage.stageName;
 		stageLevelText.text = "lv" + stage.difficultyLevel.ToString();
+
+		Sprite panelSprite = tierPanelSprites[0];
+		switch (stage.maxTier) {
+			case HeroTier.tier2:
+				panelSprite = tierPanelSprites[1];
+				break;
+			case HeroTier.tier3:
+				panelSprite = tierPanelSprites[2];
+				break;
+		}
+		foreach (Image img in panels) {
+			img.sprite = panelSprite;
+		}
 	}
 
-	private void OnClick()
-	{
+	private void OnClick() {
 		if (onClicked != null)
 			onClicked(this.gameObject);
 	}

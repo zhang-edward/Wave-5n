@@ -39,7 +39,7 @@ public class NewFeatureIndicator : MonoBehaviour{
 	public void RegisterKey(string k)
 	{
 		this.key = KEY_PREFIX + k;
-		print("Registered: " + key);
+		// print("Registered: " + key);
 		if (!PlayerPrefs.HasKey(key)) {
 			PlayerPrefs.SetInt(key, 0);
 		}
@@ -51,7 +51,7 @@ public class NewFeatureIndicator : MonoBehaviour{
 
 	protected virtual void UpdateShouldEnable()
 	{
-		print("Checking " + key);
+		// print("Checking " + key);
 		bool shouldEnable = PlayerPrefs.GetInt(key) == 0;
 		// The object should only be enabled if the dictionary indicates that the player has not viewed the feature
 		gameObject.SetActive(shouldEnable);

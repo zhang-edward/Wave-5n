@@ -28,6 +28,11 @@ public class PawnInfoPanel : MonoBehaviour
 	public GameObject heroPowerUpInfoPrefab;
 	private GameObject[] heroPowerUpInfoIcons;
 
+	// Description Texts
+	private string heroDescription;
+	[SerializeField] private string abilitiesTabInfo;
+	[SerializeField] private string powersTabInfo;
+
 	void Awake()
 	{
 		heroPowerUpInfoIcons = new GameObject[HeroPowerUpListData.powerUpUnlockLevels.Length];
@@ -40,6 +45,7 @@ public class PawnInfoPanel : MonoBehaviour
 			newPowers[i] = o.GetComponent<HeroPowerUpInfoIcon>().newPowerUp;
 			heroPowerUpInfoIcons[i] = o;
 		}
+		midPanelScrollView.OnSelectedContentChanged += OnSelectedContentChanged;
 	}
 
 	void OnEnable()
@@ -76,8 +82,9 @@ public class PawnInfoPanel : MonoBehaviour
 		// Initialize ScrollView
 		StartCoroutine(ForcePosAfter1Frame());
 		// Initialize the scrolling text to display info about the hero
-		infoText.defaultText = heroData.heroDescription;
-		infoText.SetToDefaultText();
+		heroDescription = heroData.heroDescription;
+		// infoText.defaultText = heroData.heroDescription;
+		// infoText.SetToDefaultText();
 		// Initialize NewFeatureIndicator
 		newAbility[0].RegisterKey(GetViewedAbilityKey('0'));
 		newAbility[1].RegisterKey(GetViewedAbilityKey('1'));
@@ -152,5 +159,21 @@ public class PawnInfoPanel : MonoBehaviour
 
 	public void ShowStatHelp(int statIndex) {
 		infoText.UpdateText(DataManager.instance.statData.statDescriptions[statIndex]);
+	}
+
+	private void OnSelectedContentChanged() {
+
+		switch (midPanelScrollView.selectedContentIndex) {
+			case 0:
+				infoText.defaultText = abilitiesTabInfo;
+				break;
+			case 1:
+				infoText.defaultText = heroDescription;
+				break;
+			case 2:
+				infoText.defaultText = powersTabInfo;
+				break;
+		}
+		infoText.SetToDefaultText(); 
 	}
 }
