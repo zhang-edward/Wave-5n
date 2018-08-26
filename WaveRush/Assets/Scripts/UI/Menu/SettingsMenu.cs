@@ -4,6 +4,9 @@ using TMPro;
 
 public class SettingsMenu : MonoBehaviour {
 
+	public string MUSIC_KEY = "Setting_MusicMuted";
+	public string SFX_KEY = "Setting_SFXMuted";
+
 	public Color onColor, offColor;
 	
 	[Header("Audio Settings")]
@@ -15,35 +18,40 @@ public class SettingsMenu : MonoBehaviour {
 	public CycledButton deleteSaveButton;
 	public TMP_Text deleteSaveButtonText;
 
+
 	void Start() {
+		LoadSettings();
+		gameObject.SetActive(false);
+		// Set up events
 		musicSetting.OnButtonPressed += MusicSettingButtonPressed;
 		sfxSetting.OnButtonPressed	 += SFxSettingButtonPressed;
 		deleteSaveButton.OnButtonPressed += DeleteSaveButtonPresssed;
 	}
 
 	private void MusicSettingButtonPressed(int index) {
-		if (index == 0) {
-			musicSetting.button.targetGraphic.color = onColor;
-			musicSettingText.text = "On";
-			SoundManager.instance.MuteMusic(false);
-		}
-		else {
-			musicSetting.button.targetGraphic.color = offColor;
-			musicSettingText.text = "Off";
-			SoundManager.instance.MuteMusic(true);
-		}
+		// If index == 0, music is on
+		SetToggle(musicSetting, musicSettingText, index == 0);
+		SoundManager.instance.MuteMusic(index != 0);
+		PlayerPrefs.SetInt(MUSIC_KEY, index);
 	}
 
 	private void SFxSettingButtonPressed(int index) {
-		if (index == 0) {
-			sfxSetting.button.targetGraphic.color = onColor;
-			sfxSettingText.text = "On";
-			SoundManager.instance.MuteSFX(false);
+		// If index == 0, sfx is on
+		SetToggle(sfxSetting, sfxSettingText, index == 0);
+		SoundManager.instance.MuteSFX(index != 0);
+		PlayerPrefs.SetInt(SFX_KEY, index);
+	}
+
+	private void SetToggle(CycledButton cycledButton, TMP_Text text, bool on) {
+		if (on) {
+			cycledButton.button.targetGraphic.color = onColor;
+			cycledButton.cycleIndex = 0;
+			text.text = "On";
 		}
 		else {
-			sfxSetting.button.targetGraphic.color = offColor;
-			sfxSettingText.text = "Off";
-			SoundManager.instance.MuteSFX(true);
+			cycledButton.button.targetGraphic.color = offColor;
+			cycledButton.cycleIndex = 1;
+			text.text = "Off";
 		}
 	}
 
@@ -67,5 +75,12 @@ public class SettingsMenu : MonoBehaviour {
 				GameManager.instance.GoToScene(GameManager.SCENE_STARTSCREEN);
 				break;
 		}
+	}
+
+	private void LoadSettings() {
+		int musicOn = PlayerPrefs.GetInt(MUSIC_KEY, 0);
+		int sfxOn = PlayerPrefs.GetInt(SFX_KEY, 0);
+		MusicSettingButtonPressed(musicOn);
+		SFxSettingButtonPressed(sfxOn);
 	}
 }

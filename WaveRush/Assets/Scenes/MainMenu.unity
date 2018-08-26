@@ -11630,7 +11630,8 @@ Prefab:
       propertyPath: m_fontSizeBase
       value: 6
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 114626600231951788, guid: a3388d936902b4ec7959566159b8bef8, type: 2}
   m_SourcePrefab: {fileID: 100100000, guid: a3388d936902b4ec7959566159b8bef8, type: 2}
   m_IsPrefabAsset: 0
 --- !u!224 &606538134 stripped
@@ -12099,11 +12100,11 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 1
+  m_havePropertiesChanged: 0
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 1
+  m_isInputParsingRequired: 0
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_subTextObjects:
@@ -12623,7 +12624,8 @@ Prefab:
       propertyPath: m_fontSizeBase
       value: 6
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 114626600231951788, guid: a3388d936902b4ec7959566159b8bef8, type: 2}
   m_SourcePrefab: {fileID: 100100000, guid: a3388d936902b4ec7959566159b8bef8, type: 2}
   m_IsPrefabAsset: 0
 --- !u!224 &651431408 stripped
@@ -13941,7 +13943,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &762693428
 RectTransform:
   m_ObjectHideFlags: 0
@@ -13973,6 +13975,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c526cebf5708b4c35ab1b48c111982c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MUSIC_KEY: Setting_MusicMuted
+  SFX_KEY: Setting_SFXMuted
   onColor: {r: 0.21020763, g: 0.7941176, b: 0.23839642, a: 1}
   offColor: {r: 0.834, g: 0.305244, b: 0.305244, a: 1}
   musicSetting: {fileID: 1368720046}
@@ -28865,11 +28869,11 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 1
+  m_havePropertiesChanged: 0
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 1
+  m_isInputParsingRequired: 0
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_subTextObjects:
@@ -31339,6 +31343,11 @@ Prefab:
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: ShowRewardedAd
+      objectReference: {fileID: 0}
+    - target: {fileID: 114492908456151760, guid: a3388d936902b4ec7959566159b8bef8,
+        type: 2}
+      propertyPath: m_Interactable
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a3388d936902b4ec7959566159b8bef8, type: 2}
@@ -36421,11 +36430,11 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 1
+  m_havePropertiesChanged: 0
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 1
+  m_isInputParsingRequired: 0
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_subTextObjects:

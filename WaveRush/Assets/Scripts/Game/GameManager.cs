@@ -45,9 +45,7 @@ public class GameManager : MonoBehaviour {
 
 	public bool debugMode;
 
-
-	void Awake()
-	{
+	void Awake() {
 		if (instance == null)
 			instance = this;
 		else if (instance != this)
@@ -67,11 +65,9 @@ public class GameManager : MonoBehaviour {
 			StatusBarManager.Show(true);
 		}
 #endif
-
 	}
 
-	void Start()
-	{
+	void Start() {
 		if (OnSceneLoaded != null)
 			OnSceneLoaded();
 
@@ -79,52 +75,43 @@ public class GameManager : MonoBehaviour {
 		StartCoroutine(FPS());
 	}
 
-	void Update()
-	{
+	void Update() {
 #if UNITY_EDITOR
-		if (Input.GetKeyDown(KeyCode.BackQuote))
-		{
+		if (Input.GetKeyDown(KeyCode.BackQuote)) {
 			debugPanel.SetActive(!debugPanel.activeInHierarchy);
 		}
 #endif
 	}
 
-	private void OnApplicationFocus(bool focus)
-	{
-		if (!focus)
-		{
+	private void OnApplicationFocus(bool focus) {
+		if (!focus) {
 			//print("Application Paused");
 			PlayerPrefs.SetString(RealtimeTimerCounter.LAST_CLOSED_KEY, System.DateTime.Now.ToString());
 			if (OnAppClosed != null)
 				OnAppClosed();
 		}
-		else
-		{
+		else {
 			//print("Application Unpaused");
 			if (OnAppLoaded != null)
 				OnAppLoaded();
 		}
 	}
 
-	private void OnApplicationPause(bool pause)
-	{
-		if (pause)
-		{
+	private void OnApplicationPause(bool pause) {
+		if (pause) {
 			//print("Application Paused");
 			PlayerPrefs.SetString(RealtimeTimerCounter.LAST_CLOSED_KEY, System.DateTime.Now.ToString());
 			if (OnAppClosed != null)
 				OnAppClosed();
 		}
-		else
-		{
+		else {
 			//print("Application Unpaused");
 			if (OnAppLoaded != null)
 				OnAppLoaded();
 		}
 	}
 
-	private void OnApplicationQuit()
-	{
+	private void OnApplicationQuit() {
 		PlayerPrefs.SetString(RealtimeTimerCounter.LAST_CLOSED_KEY, System.DateTime.Now.ToString());
 		print("Application Quit");
 		if (OnAppClosed != null)
@@ -133,16 +120,14 @@ public class GameManager : MonoBehaviour {
 		SaveLoad.Save(sg);
 	}
 
-	public void GoToScene(string sceneName, float fadeInSpeed = 1f)
-	{
+	public void GoToScene(string sceneName, float fadeInSpeed = 1f) {
 		//didInitializeGameScene = false;
 		Time.timeScale = 1;
 		StartCoroutine (LoadScene(sceneName, fadeInSpeed));
 		ObjectPooler.objectPoolers.Clear ();
 	}
 
-	private IEnumerator LoadScene(string scene, float fadeInSpeed)
-	{
+	private IEnumerator LoadScene(string scene, float fadeInSpeed) {
 		//Debug.Log ("Loading scene");
 		StartCoroutine(ActivateLoadingScreen ());
 		while (loadingOverlay.color.a < 0.95f)
@@ -171,8 +156,7 @@ public class GameManager : MonoBehaviour {
 	/// </summary>
 	/// <returns>The number of stages unlocked.</returns>
 	/// <param name="seriesName">Series name.</param>
-	public int NumStagesUnlocked(string seriesName)
-	{
+	public int NumStagesUnlocked(string seriesName) {
 		if (!IsSeriesUnlocked(seriesName))
 			return 0;
 
@@ -183,44 +167,37 @@ public class GameManager : MonoBehaviour {
 			return save.LatestStageIndex + 1;
 	}
 
-	public bool UnlockNextStage()
-	{
+	public bool UnlockNextStage() {
 		if (save.LatestSeriesIndex >= regularStages.series.Length)
 			return false;
 		if (save.LatestStageIndex < regularStages.series[save.LatestSeriesIndex].stages.Length - 1)
 			sg.saveDict[SaveGame.LATEST_UNLOCKED_STAGE_INDEX_KEY]++;
-		else
-		{
+		else {
 			sg.saveDict[SaveGame.LATEST_UNLOCKED_SERIES_INDEX_KEY]++;
 			sg.saveDict[SaveGame.LATEST_UNLOCKED_STAGE_INDEX_KEY] = 0;
 		}
 		return true;
 	}
 
-	public StageSeriesData GetLatestSeries()
-	{
+	public StageSeriesData GetLatestSeries() {
 		int latestSeries = Mathf.Min(save.LatestSeriesIndex, regularStages.series.Length - 1);
 		return regularStages.series[latestSeries];
 	}
 
-	public bool IsSeriesUnlocked(string seriesName)
-	{
+	public bool IsSeriesUnlocked(string seriesName) {
 		List<StageSeriesData> unlockedSeries = GetAllUnlockedSeries();
-		foreach(StageSeriesData series in unlockedSeries)
-		{
+		foreach(StageSeriesData series in unlockedSeries) {
 			if (seriesName.Equals(series.seriesName))
 				return true;
 		}
 		return false;
 	}
 
-	public StageData GetStage(int seriesIndex, int stageIndex)
-	{
+	public StageData GetStage(int seriesIndex, int stageIndex) {
 		return regularStages.series[seriesIndex].stages[stageIndex];
 	}
 
-	private List<StageSeriesData> GetAllUnlockedSeries()
-	{
+	private List<StageSeriesData> GetAllUnlockedSeries() {
 		List<StageSeriesData> answer = new List<StageSeriesData>();
 		int latestSeries = Mathf.Min(save.LatestSeriesIndex, regularStages.series.Length - 1);
 		for (int i = 0; i <= latestSeries; i ++) {
@@ -229,12 +206,9 @@ public class GameManager : MonoBehaviour {
 		return answer;
 	}
 
-	private StageSeriesData GetSeries(string seriesName)
-	{
-		foreach (StageSeriesData series in regularStages.series)
-		{
-			if (series.seriesName.Equals(seriesName))
-			{
+	private StageSeriesData GetSeries(string seriesName) {
+		foreach (StageSeriesData series in regularStages.series) {
+			if (series.seriesName.Equals(seriesName)) {
 				return series;
 			}
 		}
@@ -242,8 +216,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	// TODO: Remove these scores from the game
-	public void UpdateScores(int enemiesKilled, int wavesSurvived, int maxCombo)
-	{
+	public void UpdateScores(int enemiesKilled, int wavesSurvived, int maxCombo) {
 		//HeroType type = selectedPawn.type;
 		scoreManager.SubmitScore(HeroType.Knight, new ScoreManager.Score (enemiesKilled, wavesSurvived, maxCombo));
 		SaveLoad.Save(sg);
@@ -299,7 +272,7 @@ public class GameManager : MonoBehaviour {
 			OnDeletedData();
 		PlayerPrefs.SetInt(SaveGame.TUTORIAL_COMPLETE_KEY, 0);
 		CreateNewSave();
-
+		PlayerPrefs.DeleteAll();
 		SaveLoad.Save(sg);
 	}
 

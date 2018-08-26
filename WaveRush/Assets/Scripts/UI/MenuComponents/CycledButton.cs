@@ -5,7 +5,7 @@ public class CycledButton : MonoBehaviour {
 
 	[HideInInspector] public Button button;
 	public int maxCycleIndex = 2;
-	public int cycleIndex { get; private set; }
+	public int cycleIndex { get; set; }
 	
 	public delegate void ButtonPressed(int cycleIndex);
 	public event ButtonPressed OnButtonPressed;
