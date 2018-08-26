@@ -8,7 +8,6 @@ public class PawnShop {
 	public List<Pawn> AvailablePawns { get; private set; }	// The available pawns in the pawn shop
 	public SaveModifier.PawnStateUpdate OnPawnListUpdated;
 
-
 	/// <summary>
 	/// Initializes a new instance of the <see cref="PawnShop"/> class.
 	/// </summary>

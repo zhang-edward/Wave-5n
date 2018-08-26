@@ -50,4 +50,11 @@ public static class Formulas {
 			ans ++;
 		return ans;
 	}
+
+	public static void BoxCost(out int money, out int souls) {
+		int baseCost = 1000;
+		int formula = (int)(0 + (0.1f * (GameManager.instance.save.money - 500)));
+		money = Mathf.Max(baseCost, formula);
+		souls = 10;
+	}
 }

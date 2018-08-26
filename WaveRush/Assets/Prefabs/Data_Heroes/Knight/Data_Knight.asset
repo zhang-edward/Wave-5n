@@ -43,20 +43,9 @@ MonoBehaviour:
   specialDescription: <color=yellow>Tap this icon, then swipe</color> to do a powerful
     dash through up to 15 enemies.
   parryDescription: Stuns the attacker for 5 seconds.
-  icons:
-  - {fileID: 21300000, guid: ba48fe4404b02447f97ebc1d9bf4f1f1, type: 3}
-  - {fileID: 21300000, guid: e81998aed81ae4b70a48ba3c9d8a9f9d, type: 3}
-  - {fileID: 21300000, guid: 7d1b8eb68db394076bc24ecb65839bc1, type: 3}
   t1Skins:
   - animationSetName: Default
     animations:
-    - animationName: Icon
-      frames:
-      - {fileID: 21300000, guid: ba48fe4404b02447f97ebc1d9bf4f1f1, type: 3}
-      fps: 60
-      looping: 0
-      resetToDefault: 0
-      ignoreTimeScale: 0
     - animationName: Default
       frames:
       - {fileID: 21300000, guid: ba48fe4404b02447f97ebc1d9bf4f1f1, type: 3}
@@ -68,7 +57,7 @@ MonoBehaviour:
       frames:
       - {fileID: 21300006, guid: ba48fe4404b02447f97ebc1d9bf4f1f1, type: 3}
       - {fileID: 21300004, guid: ba48fe4404b02447f97ebc1d9bf4f1f1, type: 3}
-      fps: 15
+      fps: 10
       looping: 1
       resetToDefault: 0
       ignoreTimeScale: 0
@@ -89,5 +78,161 @@ MonoBehaviour:
       resetToDefault: 0
       ignoreTimeScale: 0
     player: {fileID: 0}
-  t2Skins: []
-  t3Skins: []
+  - animationSetName: Rust
+    animations:
+    - animationName: Default
+      frames:
+      - {fileID: 21300018, guid: e4d9824cf374a4c0c8441e1cd84ae1ed, type: 3}
+      fps: 60
+      looping: 0
+      resetToDefault: 0
+      ignoreTimeScale: 0
+    - animationName: Rush
+      frames:
+      - {fileID: 21300024, guid: e4d9824cf374a4c0c8441e1cd84ae1ed, type: 3}
+      - {fileID: 21300022, guid: e4d9824cf374a4c0c8441e1cd84ae1ed, type: 3}
+      fps: 10
+      looping: 1
+      resetToDefault: 0
+      ignoreTimeScale: 0
+    - animationName: Shield
+      frames:
+      - {fileID: 21300026, guid: e4d9824cf374a4c0c8441e1cd84ae1ed, type: 3}
+      fps: 15
+      looping: 0
+      resetToDefault: 0
+      ignoreTimeScale: 0
+    - animationName: Special
+      frames:
+      - {fileID: 21300030, guid: e4d9824cf374a4c0c8441e1cd84ae1ed, type: 3}
+      - {fileID: 21300032, guid: e4d9824cf374a4c0c8441e1cd84ae1ed, type: 3}
+      - {fileID: 21300034, guid: e4d9824cf374a4c0c8441e1cd84ae1ed, type: 3}
+      fps: 15
+      looping: 0
+      resetToDefault: 0
+      ignoreTimeScale: 0
+    player: {fileID: 0}
+  - animationSetName: Forest
+    animations:
+    - animationName: Default
+      frames:
+      - {fileID: 21300018, guid: dc41ab0bee30140fda3f2cd01cf9d594, type: 3}
+      fps: 60
+      looping: 0
+      resetToDefault: 0
+      ignoreTimeScale: 0
+    - animationName: Rush
+      frames:
+      - {fileID: 21300024, guid: dc41ab0bee30140fda3f2cd01cf9d594, type: 3}
+      - {fileID: 21300022, guid: dc41ab0bee30140fda3f2cd01cf9d594, type: 3}
+      fps: 10
+      looping: 1
+      resetToDefault: 0
+      ignoreTimeScale: 0
+    - animationName: Shield
+      frames:
+      - {fileID: 21300026, guid: dc41ab0bee30140fda3f2cd01cf9d594, type: 3}
+      fps: 15
+      looping: 0
+      resetToDefault: 0
+      ignoreTimeScale: 0
+    - animationName: Special
+      frames:
+      - {fileID: 21300030, guid: dc41ab0bee30140fda3f2cd01cf9d594, type: 3}
+      - {fileID: 21300032, guid: dc41ab0bee30140fda3f2cd01cf9d594, type: 3}
+      - {fileID: 21300034, guid: dc41ab0bee30140fda3f2cd01cf9d594, type: 3}
+      fps: 15
+      looping: 0
+      resetToDefault: 0
+      ignoreTimeScale: 0
+    player: {fileID: 0}
+  - animationSetName: Pinky
+    animations:
+    - animationName: Default
+      frames:
+      - {fileID: 21300018, guid: ec3a5ad5c800d4c2e93a99d4cdc9a749, type: 3}
+      fps: 60
+      looping: 0
+      resetToDefault: 0
+      ignoreTimeScale: 0
+    - animationName: Rush
+      frames:
+      - {fileID: 21300024, guid: ec3a5ad5c800d4c2e93a99d4cdc9a749, type: 3}
+      - {fileID: 21300022, guid: ec3a5ad5c800d4c2e93a99d4cdc9a749, type: 3}
+      fps: 10
+      looping: 1
+      resetToDefault: 0
+      ignoreTimeScale: 0
+    - animationName: Shield
+      frames:
+      - {fileID: 21300026, guid: ec3a5ad5c800d4c2e93a99d4cdc9a749, type: 3}
+      fps: 15
+      looping: 0
+      resetToDefault: 0
+      ignoreTimeScale: 0
+    - animationName: Special
+      frames:
+      - {fileID: 21300030, guid: ec3a5ad5c800d4c2e93a99d4cdc9a749, type: 3}
+      - {fileID: 21300032, guid: ec3a5ad5c800d4c2e93a99d4cdc9a749, type: 3}
+      - {fileID: 21300034, guid: ec3a5ad5c800d4c2e93a99d4cdc9a749, type: 3}
+      fps: 15
+      looping: 0
+      resetToDefault: 0
+      ignoreTimeScale: 0
+    player: {fileID: 0}
+  - animationSetName: Vampire
+    animations:
+    - animationName: Default
+      frames:
+      - {fileID: 21300018, guid: 371eb0515cda1402ea84b38f27734747, type: 3}
+      fps: 60
+      looping: 0
+      resetToDefault: 0
+      ignoreTimeScale: 0
+    - animationName: Rush
+      frames:
+      - {fileID: 21300024, guid: 371eb0515cda1402ea84b38f27734747, type: 3}
+      - {fileID: 21300022, guid: 371eb0515cda1402ea84b38f27734747, type: 3}
+      fps: 10
+      looping: 1
+      resetToDefault: 0
+      ignoreTimeScale: 0
+    - animationName: Shield
+      frames:
+      - {fileID: 21300026, guid: 371eb0515cda1402ea84b38f27734747, type: 3}
+      fps: 15
+      looping: 0
+      resetToDefault: 0
+      ignoreTimeScale: 0
+    - animationName: Special
+      frames:
+      - {fileID: 21300030, guid: 371eb0515cda1402ea84b38f27734747, type: 3}
+      - {fileID: 21300032, guid: 371eb0515cda1402ea84b38f27734747, type: 3}
+      - {fileID: 21300034, guid: 371eb0515cda1402ea84b38f27734747, type: 3}
+      fps: 15
+      looping: 0
+      resetToDefault: 0
+      ignoreTimeScale: 0
+    player: {fileID: 0}
+  t2Skins:
+  - animationSetName: Default
+    animations:
+    - animationName: Default
+      frames:
+      - {fileID: 0}
+      fps: 0
+      looping: 0
+      resetToDefault: 0
+      ignoreTimeScale: 0
+    player: {fileID: 0}
+  t3Skins:
+  - animationSetName: Default
+    animations:
+    - animationName: Default
+      frames:
+      - {fileID: 0}
+      fps: 0
+      looping: 0
+      resetToDefault: 0
+      ignoreTimeScale: 0
+    player: {fileID: 0}

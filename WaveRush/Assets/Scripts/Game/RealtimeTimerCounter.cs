@@ -14,7 +14,8 @@ public class RealtimeTimerCounter : MonoBehaviour {
 	/// </summary>
 	public static readonly Dictionary<string, int> KEY_LIST = new Dictionary<string, int>
 	{
-		{ PawnShopMenu.TIMER_KEY , 7200 }		// 4 hours = 14400
+		{ PawnShopMenu.TIMER_KEY, 7200 },		// 4 hours = 14400
+		{ BoxesMenu.TIMER_KEY, 200 }			// 1 day = 86400
 	};
 	public static string LAST_CLOSED_KEY = "TimeLastClosed";
 	public static RealtimeTimerCounter instance;

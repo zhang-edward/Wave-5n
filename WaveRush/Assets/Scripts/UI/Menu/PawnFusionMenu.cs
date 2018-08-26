@@ -204,7 +204,7 @@ public class PawnFusionMenu : MonoBehaviour {
 			return false;
 		}
 		if (!CanAffordFusion(pawn1, pawn2)) {
-			resourceReqAnim.CrossFade("Warning", 0);
+			resourceReqAnim.Play("Warning", -1, 0);
 			return false;
 		}
 		return true;

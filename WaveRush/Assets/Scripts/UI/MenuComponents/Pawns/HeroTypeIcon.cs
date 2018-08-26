@@ -8,24 +8,24 @@ public class HeroTypeIcon : MonoBehaviour {
 	public SimpleAnimationPlayerImage animPlayer;
 	public Image stripe;
 	public Sprite[] tierSprites;
-	public bool updateUnlocked = true;
+	// public bool updateUnlocked = true;
 	public HeroType type { get; private set; }
 	public HeroTier tier { get; private set; }
 
-	public virtual void Init(HeroType type, HeroTier tier) {
+	public virtual void Init(HeroType type, HeroTier tier, bool unlocked = true, int skin = 0) {
 		this.type = type;
 		this.tier = tier;
 		HeroData data = DataManager.GetHeroData(type);
 		// Set portrait animation
 		switch (tier) {
 			case HeroTier.tier1:
-				animPlayer.anim = data.t1Skins[0].GetAnimation("Default");
+				animPlayer.anim = data.t1Skins[skin].GetAnimation("Default");
 				break;
 			case HeroTier.tier2:
-				animPlayer.anim = data.t2Skins[0].GetAnimation("Default");
+				animPlayer.anim = data.t2Skins[skin].GetAnimation("Default");
 				break;
 			case HeroTier.tier3:
-				animPlayer.anim = data.t3Skins[0].GetAnimation("Default");
+				animPlayer.anim = data.t3Skins[skin].GetAnimation("Default");
 				break;
 		}
 		animPlayer.looping = true;
@@ -33,13 +33,14 @@ public class HeroTypeIcon : MonoBehaviour {
 		// Set stripe sprite
 		stripe.sprite = tierSprites[(int)tier];
 		// Set unlocked-ness
-		if (updateUnlocked) {
-			if (!GameManager.instance.save.UnlockedHeroes[(3 * (int)type) + (int)tier]) {
+		// if (updateUnlocked) {
+			// if (!GameManager.instance.save.UnlockedHeroes[(3 * (int)type) + (int)tier]) {
+			if (!unlocked) {
 				animPlayer.image.color = Color.black;
 			}
 			else {
 				animPlayer.image.color = Color.white;
 			}
-		}
+		// }
 	}
 }

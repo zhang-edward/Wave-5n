@@ -40,7 +40,7 @@ public class PawnIconStandard : PawnIcon {
 		// initialize display items
 		SetLevel(pawnData.level);
 		heroNameText.text = pawnData.type.ToString();
-		heroPortrait.sprite = pawnData.GetAnimationSet().GetAnimation("Icon").frames[0];
+		heroPortrait.sprite = pawnData.GetAnimationSet().GetAnimation("Default").frames[0];
 		int numBoosts = pawnData.GetNumBoosts();
 		if (numBoosts > 0) {
 			boostsText.gameObject.SetActive(true);

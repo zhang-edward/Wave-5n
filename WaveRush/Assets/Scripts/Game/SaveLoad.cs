@@ -36,9 +36,13 @@ public class SaveLoad {
 			string saveJson = aes.Decrypt(encryptedSaveJson);
 			Debug.Log("Decrypted JSON: " + saveJson);
 
-			sg = JsonConvert.DeserializeObject<SaveGame>(saveJson);
-			Debug.Log(sg);
-			// Debug.Log(JsonConvert.SerializeObject(sg));
+			if (saveJson != null) {
+				sg = JsonConvert.DeserializeObject<SaveGame>(saveJson);
+			}
+			else {
+				GameManager.instance.CreateNewSave();
+			}
+
 			GameManager.instance.LoadSaveFile();
 		}
 		else {

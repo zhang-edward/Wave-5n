@@ -63,6 +63,7 @@ public class Pawn : System.IComparable<Pawn>
 		this.tier = other.tier;
 		this.level = other.level;
 		this.Experience = other.Experience;
+		this.skin = other.skin;
 		MaxExperience = Formulas.ExperienceFormula(level, (int)tier);
 		boosts = new int[StatData.NUM_STATS];
 		other.boosts.CopyTo(this.boosts, 0);

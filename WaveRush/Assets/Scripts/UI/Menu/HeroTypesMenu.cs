@@ -26,8 +26,10 @@ public class HeroTypesMenu : MonoBehaviour {
 			o.transform.SetParent(scrollView.panel, false);
 			HeroTypeIcon heroTypeIcon = o.GetComponent<HeroTypeIcon>();
 			icons[i] = heroTypeIcon;
-			heroTypeIcon.Init((HeroType)i, HeroTier.tier1);
+			bool unlocked = GameManager.instance.save.UnlockedHeroes[i];
+			heroTypeIcon.Init((HeroType)i, HeroTier.tier1, unlocked);
 		}
+		Debug.Break();
 		scrollView.Init();
 		scrollView.OnSelectedContentChanged += OnSelectedContentChanged;
 		OnSelectedContentChanged();
@@ -46,7 +48,9 @@ public class HeroTypesMenu : MonoBehaviour {
 	}
 
 	public void UpdateTier(int tier) {
-		icons[scrollView.selectedContentIndex].Init((HeroType)scrollView.selectedContentIndex, (HeroTier)tier);
+		int type = scrollView.selectedContentIndex;
+		bool unlocked = GameManager.instance.save.UnlockedHeroes[SaveModifier.HeroTypeTier2Index(type, tier)];
+		icons[scrollView.selectedContentIndex].Init((HeroType)type, (HeroTier)tier, unlocked);
 		OnSelectedContentChanged();
 	}
 
@@ -57,7 +61,7 @@ public class HeroTypesMenu : MonoBehaviour {
 		// Update tier buttons
 		for (int tier = 1; tier < tierButtonIndicators.Length; tier ++) {
 			NewFeatureIndicator nfi = tierButtonIndicators[tier];
-			if (GameManager.instance.save.UnlockedHeroes[((int)selectedType * 3) + tier]) {
+			if (GameManager.instance.save.UnlockedHeroes[SaveModifier.HeroTypeTier2Index((int)selectedType, tier)]) {
 				nfi.RegisterKey(GetKey((int)selectedType, tier));
 			}
 			else {
@@ -67,7 +71,7 @@ public class HeroTypesMenu : MonoBehaviour {
 		
 		// Update locked-ness of this hero
 		HeroTier selectedTier = selectedIcon.tier;
-		if (!GameManager.instance.save.UnlockedHeroes[((int)selectedType * 3) + (int)selectedTier]) {
+		if (!GameManager.instance.save.UnlockedHeroes[SaveModifier.HeroTypeTier2Index((int)selectedType, (int)selectedTier)]) {
 			lockedPanel.SetActive(false);
 			lockedPanel.SetActive(true);
 			Quests.Quest quest = DataManager.GetPlayerHero(selectedType).GetComponent<PlayerHero>().GetUnlockQuest(selectedTier);

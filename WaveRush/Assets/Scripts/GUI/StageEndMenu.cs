@@ -86,7 +86,9 @@ public class StageEndMenu : MonoBehaviour {
 		//}
 	}
 
-	private void OnRewardClaimed() {
+	private void OnRewardClaimed(int id) {
+		if (id != 0)
+			return;
 		GameManager.instance.save.AddMoney(bonusMoney);
 		bonusMoneyText.DisplayNumber(0);
 		scoreReport.UpdateMoney(bonusMoney + scoreReportData.moneyEarned + scoreReportData.money);

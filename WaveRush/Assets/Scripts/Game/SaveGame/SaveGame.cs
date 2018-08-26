@@ -15,21 +15,29 @@ public class SaveGame
 	public PawnWallet 	pawnWallet;
 	/** Miscellaneous saved values */
 	public Dictionary<string, int> saveDict;    // Dictionary containing integers
+	public List<Pawn> availableHeroes;			// Heroes available for hire at the PawnShop
+	/** Unlocked values: Increments of 3 per type, where #0-2 = knight t1, t2, t3, #3-5 = pyro t1, t2, t3, etc. */
 	public bool[] unlockedHeroes;				// Types of heroes potentially available for hire
-												// Increments of 3 per type, where #0-2 = knight t1, t2, t3, #3-5 = pyro t1, t2, t3, etc.
-	public List<Pawn> availableHeroes;			// Heroes available for hire
+	public string[] unlockedSkins;				// Types of skins available to be worn by a hero
 
 	[JsonConstructor]
 	public SaveGame(Wallet wallet,
 					PawnWallet pawnWallet,
 					Dictionary<string, int> saveDict,
 					bool[] unlockedHeroes,
+					string[] unlockedSkins,
 					List<Pawn> availableHeroes) {
 		this.wallet = wallet;
 		this.pawnWallet = pawnWallet;
 		this.saveDict = saveDict;
-		this.unlockedHeroes = unlockedHeroes;
 		this.availableHeroes = availableHeroes;
+
+		// Special initialization for array types
+		int numHeroTypes = Enum.GetValues(typeof(HeroType)).Length * 3;
+		this.unlockedHeroes = new bool  [numHeroTypes];
+		this.unlockedSkins  = new string[numHeroTypes];
+		if (unlockedHeroes != null) unlockedHeroes.CopyTo(this.unlockedHeroes, 0);
+		if (unlockedSkins  != null) unlockedSkins .CopyTo(this.unlockedSkins, 0);
 	}
 
 	public SaveGame() {
@@ -46,6 +54,7 @@ public class SaveGame
 		// Get hero types
 		int numHeroTypes = Enum.GetValues(typeof(HeroType)).Length * 3;
 		unlockedHeroes = new bool[numHeroTypes];
+		unlockedSkins = new string[numHeroTypes];
 		unlockedHeroes[0] = true;
 	}
 }
