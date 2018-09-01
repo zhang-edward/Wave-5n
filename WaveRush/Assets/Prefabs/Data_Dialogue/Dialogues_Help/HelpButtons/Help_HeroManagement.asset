@@ -3,7 +3,7 @@
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
@@ -17,5 +17,10 @@ MonoBehaviour:
   firstAppearance: 1
   dialogues:
   - expression: Default
-    text: Here you can view your party of <color=blue>heroes</color> and <color=yellow>retire</color>
-      them if you need to.
+    text: Here you can view your party of <color=yellow>heroes</color>.
+  - expression: 
+    text: Click the <color=yellow>info</color> button if you want to see a hero's
+      <color=yellow>character card</color>.
+  - expression: 
+    text: Click the <color=yellow>retire</color> button to retire a hero in exchange
+      for some <color=yellow>gold</color>.

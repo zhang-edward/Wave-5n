@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37d5d23629e1248d888af00e3959de60, type: 3}
+  m_Name: Help_BoxShop
+  m_EditorClassIdentifier: 
+  character: {fileID: 11400000, guid: 3288ead2923c7416db9e854268c92571, type: 2}
+  position: 0
+  exitAtEnd: 0
+  firstAppearance: 1
+  dialogues:
+  - expression: Default
+    text: Hello and welcome to my shop, hehe!
+  - expression: 
+    text: Open up any of these boxes for a chance to win a <color=yellow>rare skin</color>!
+  - expression: 
+    text: You like these boxes? I call them <color=yellow>Skinner Boxes</color>.
+  - expression: 
+    text: Don't like the name? Me neither, but it sure rolls off the tongue a whole
+      lot more than "operant conditioning chamber"! Hehehehehe!
+  - expression: 
+    text: Once you win a skin, any of your heroes can equip that skin. You can look
+      good while fighting good!
