@@ -20,7 +20,6 @@ public class SettingsMenu : MonoBehaviour {
 
 
 	void Start() {
-		LoadSettings();
 		gameObject.SetActive(false);
 		// Set up events
 		musicSetting.OnButtonPressed += MusicSettingButtonPressed;
@@ -31,6 +30,8 @@ public class SettingsMenu : MonoBehaviour {
 	private void MusicSettingButtonPressed(int index) {
 		// If index == 0, music is on
 		SetToggle(musicSetting, musicSettingText, index == 0);
+		if (index != 0)
+			print ("Muting music");
 		SoundManager.instance.MuteMusic(index != 0);
 		PlayerPrefs.SetInt(MUSIC_KEY, index);
 	}
@@ -77,7 +78,7 @@ public class SettingsMenu : MonoBehaviour {
 		}
 	}
 
-	private void LoadSettings() {
+	public void LoadSettings() {
 		int musicOn = PlayerPrefs.GetInt(MUSIC_KEY, 0);
 		int sfxOn = PlayerPrefs.GetInt(SFX_KEY, 0);
 		MusicSettingButtonPressed(musicOn);

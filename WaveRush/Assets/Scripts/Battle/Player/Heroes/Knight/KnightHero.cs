@@ -232,7 +232,7 @@ public class KnightHero : PlayerHero {
 	{
 		if (!e.invincible && e.health > 0)
 		{
-			e.Damage (dmg, player);
+			e.Damage (dmg, player, true);
 			player.TriggerOnEnemyDamagedEvent(dmg);
 			player.TriggerOnEnemyLastHitEvent (e);
 

@@ -386,23 +386,31 @@ MonoBehaviour:
   baseHealth: 25
   moneyValueMultiplier: 1
   healable: 1
-  canBeDisabledOnHit: 1
+  canBeDisabled: 1
   invincible: 0
   movingAnimState: Moving
   spawnAnimState: Spawn
   anim:
+    animationSetName: 
     animations:
     - animationName: Default
       frames:
-      - {fileID: 21300000, guid: 6ce502e5e28eb470cb7c989a28c65d14, type: 3}
+      - {fileID: 21300006, guid: 6ce502e5e28eb470cb7c989a28c65d14, type: 3}
+      fps: 60
+      looping: 0
+      resetToDefault: 1
+      ignoreTimeScale: 0
+    - animationName: Hurt
+      frames:
+      - {fileID: 21300010, guid: 6ce502e5e28eb470cb7c989a28c65d14, type: 3}
       fps: 60
       looping: 0
       resetToDefault: 1
       ignoreTimeScale: 0
     - animationName: Moving
       frames:
-      - {fileID: 21300002, guid: 6ce502e5e28eb470cb7c989a28c65d14, type: 3}
-      - {fileID: 21300000, guid: 6ce502e5e28eb470cb7c989a28c65d14, type: 3}
+      - {fileID: 21300008, guid: 6ce502e5e28eb470cb7c989a28c65d14, type: 3}
+      - {fileID: 21300006, guid: 6ce502e5e28eb470cb7c989a28c65d14, type: 3}
       fps: 10
       looping: 1
       resetToDefault: 1
@@ -412,7 +420,7 @@ MonoBehaviour:
   - {fileID: 114000013800757160, guid: aca170b55774e40a49227b94bf6ea2ba, type: 2}
   statuses: []
   deathProps:
-  - {fileID: 21300004, guid: 6ce502e5e28eb470cb7c989a28c65d14, type: 3}
+  - {fileID: 0}
   movementMethod: {fileID: 114016132030854528}
   action: {fileID: 114881301132582700}
   spawnMethod: 2
@@ -495,7 +503,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -301
+  m_SortingOrder: -361
   m_Sprite: {fileID: 21300002, guid: 6ce502e5e28eb470cb7c989a28c65d14, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -504,7 +512,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!212 &212134530233308854

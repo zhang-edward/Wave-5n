@@ -191,33 +191,41 @@ MonoBehaviour:
   movingAnimState: Moving
   spawnAnimState: Spawn
   anim:
+    animationSetName: 
     animations:
     - animationName: Default
       frames:
-      - {fileID: 21300000, guid: efaf1177a508145a7aabf7dfdb3b3ade, type: 3}
+      - {fileID: 21300014, guid: efaf1177a508145a7aabf7dfdb3b3ade, type: 3}
       fps: 60
       looping: 0
       resetToDefault: 1
       ignoreTimeScale: 0
     - animationName: Moving
       frames:
-      - {fileID: 21300002, guid: efaf1177a508145a7aabf7dfdb3b3ade, type: 3}
-      - {fileID: 21300000, guid: efaf1177a508145a7aabf7dfdb3b3ade, type: 3}
+      - {fileID: 21300016, guid: efaf1177a508145a7aabf7dfdb3b3ade, type: 3}
+      - {fileID: 21300014, guid: efaf1177a508145a7aabf7dfdb3b3ade, type: 3}
       fps: 10
       looping: 1
       resetToDefault: 1
       ignoreTimeScale: 0
+    - animationName: Hurt
+      frames:
+      - {fileID: 21300024, guid: efaf1177a508145a7aabf7dfdb3b3ade, type: 3}
+      fps: 60
+      looping: 0
+      resetToDefault: 0
+      ignoreTimeScale: 0
     - animationName: Charge
       frames:
-      - {fileID: 21300004, guid: efaf1177a508145a7aabf7dfdb3b3ade, type: 3}
+      - {fileID: 21300018, guid: efaf1177a508145a7aabf7dfdb3b3ade, type: 3}
       fps: 60
       looping: 0
       resetToDefault: 0
       ignoreTimeScale: 0
     - animationName: Attack
       frames:
-      - {fileID: 21300006, guid: efaf1177a508145a7aabf7dfdb3b3ade, type: 3}
-      - {fileID: 21300008, guid: efaf1177a508145a7aabf7dfdb3b3ade, type: 3}
+      - {fileID: 21300020, guid: efaf1177a508145a7aabf7dfdb3b3ade, type: 3}
+      - {fileID: 21300022, guid: efaf1177a508145a7aabf7dfdb3b3ade, type: 3}
       fps: 10
       looping: 0
       resetToDefault: 0
@@ -226,8 +234,8 @@ MonoBehaviour:
   abilities: []
   statuses: []
   deathProps:
-  - {fileID: 21300010, guid: efaf1177a508145a7aabf7dfdb3b3ade, type: 3}
-  - {fileID: 21300012, guid: efaf1177a508145a7aabf7dfdb3b3ade, type: 3}
+  - {fileID: 21300028, guid: efaf1177a508145a7aabf7dfdb3b3ade, type: 3}
+  - {fileID: 21300026, guid: efaf1177a508145a7aabf7dfdb3b3ade, type: 3}
   movementMethod: {fileID: 114797385849614482}
   action: {fileID: 114310805039165518}
   spawnMethod: 0
@@ -451,7 +459,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initialTimerValue: 0
   cooldown: 2
-  interruptAmt: 0.3
+  interruptAmt: 0
 --- !u!114 &114310805039165518
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2379bde86d183432688c3e33d4537570, type: 3}
+  m_Name: Team-Up
+  m_EditorClassIdentifier: 
+  dialogueSets:
+  - {fileID: 0}
+  stageName: Team Up
+  mapType: 0
+  difficultyLevel: 3
+  maxPartySize: 2
+  maxTier: 2
+  levelRaw: 3
+  upperLimit: 15
+  lowerLimit: 5
+  goalWave: 8
+  bossWave: 4
+  enemyPrefabs:
+  - prefab: {fileID: 177460, guid: 54fe2fdc3252847f08f15a8590667d5b, type: 2}
+    spawnFrequency: 1
+    waveLimit: 1
+  - prefab: {fileID: 187912, guid: 284e652b2eabe43a9a8e564bf3fd4337, type: 2}
+    spawnFrequency: 1
+    waveLimit: 1
+  - prefab: {fileID: 147880, guid: 15e9f10dbfa7c46efa83cfa7afe1f851, type: 2}
+    spawnFrequency: 1
+    waveLimit: 1
+  bossPrefabs: []
+  waveProperties:
+  - waveNumber: 0
+    numEnemies: 0
+    maxNumActiveEnemies: 8
+    enemies: []

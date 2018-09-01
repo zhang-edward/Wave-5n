@@ -1,23 +1,21 @@
 fileFormatVersion: 2
-guid: e999555d9c029478abf598de7fda3bc0
+guid: 1c404c8fd8137476487cfeb1166cc76b
 TextureImporter:
   fileIDToRecycleName:
-    21300000: goblin_healer_0
-    21300002: goblin_healer_1
-    21300004: goblin_healer_2
-    21300006: goblin_healer_3
-    21300008: goblin_healer_6
-    21300010: goblin_healer_7
-    21300012: goblin_healer_8
-    21300014: goblin_healer_9
-    21300016: goblin_healer_10
-    21300018: goblin_healer_11
-    21300020: goblin_healer_12
-    21300022: goblin_healer_13
-    21300024: goblin_healer_14
-    21300026: goblin_healer_15
-    21300028: goblin_healer_16
-    21300030: goblin_healer_17
+    21300000: enemy_goblin_healer_0
+    21300002: enemy_goblin_healer_1
+    21300004: enemy_goblin_healer_2
+    21300006: enemy_goblin_healer_3
+    21300008: enemy_goblin_healer_4
+    21300010: enemy_goblin_healer_5
+    21300012: enemy_goblin_healer_6
+    21300014: enemy_goblin_healer_7
+    21300016: enemy_goblin_healer_8
+    21300018: enemy_goblin_healer_9
+    21300020: enemy_goblin_healer_10
+    21300022: enemy_goblin_healer_11
+    21300024: enemy_goblin_healer_12
+    21300026: enemy_goblin_healer_13
   externalObjects: {}
   serializedVersion: 5
   mipmaps:
@@ -41,12 +39,12 @@ TextureImporter:
   generateCubemap: 6
   cubemapConvolution: 0
   seamlessCubemap: 0
-  textureFormat: 1
+  textureFormat: -2
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
+    aniso: 16
     mipBias: -1
     wrapU: 1
     wrapV: 1
@@ -76,7 +74,7 @@ TextureImporter:
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: -1
+    textureFormat: 2
     textureCompression: 2
     compressionQuality: 50
     crunchedCompression: 0
@@ -87,7 +85,7 @@ TextureImporter:
     buildTarget: Standalone
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: -1
+    textureFormat: 2
     textureCompression: 2
     compressionQuality: 50
     crunchedCompression: 0
@@ -98,7 +96,7 @@ TextureImporter:
     buildTarget: iPhone
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: -1
+    textureFormat: 2
     textureCompression: 2
     compressionQuality: 50
     crunchedCompression: 0
@@ -109,7 +107,7 @@ TextureImporter:
     buildTarget: Android
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: -1
+    textureFormat: 2
     textureCompression: 2
     compressionQuality: 50
     crunchedCompression: 0
@@ -120,7 +118,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: goblin_healer_0
+      name: enemy_goblin_healer_0
       rect:
         serializedVersion: 2
         x: 0
@@ -132,15 +130,15 @@ TextureImporter:
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 1780b6121a1a94463ac96180f5e0a178
+      spriteID: 4da7058f65f26478abf5a5e624bb5f34
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: goblin_healer_1
+      name: enemy_goblin_healer_1
       rect:
         serializedVersion: 2
         x: 16
@@ -152,55 +150,15 @@ TextureImporter:
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 5bd9ae5a1d13d48d28e4d7edcd1059a6
+      spriteID: 37015169a8d53474f94c207a27ea7263
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: goblin_healer_2
-      rect:
-        serializedVersion: 2
-        x: 32
-        y: 48
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 8aa98e165034747aabf23bd28d58bee4
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: goblin_healer_3
-      rect:
-        serializedVersion: 2
-        x: 48
-        y: 48
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 62fb4ae30e73a4030b3d26a695ae82ea
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: goblin_healer_6
+      name: enemy_goblin_healer_2
       rect:
         serializedVersion: 2
         x: 0
@@ -212,15 +170,15 @@ TextureImporter:
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: ae9b288aeb3114dcf82ff7a577a982d6
+      spriteID: d1ee65d63c641438985bab276a10a0fd
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: goblin_healer_7
+      name: enemy_goblin_healer_3
       rect:
         serializedVersion: 2
         x: 16
@@ -232,15 +190,15 @@ TextureImporter:
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 58cdc88f80416447ca0e0a04205e1e39
+      spriteID: 8a0fb0caec49b4b97bd7e171c3d8a50b
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: goblin_healer_8
+      name: enemy_goblin_healer_4
       rect:
         serializedVersion: 2
         x: 32
@@ -252,15 +210,15 @@ TextureImporter:
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 4ca660724221c43d3882f6f50e66ae72
+      spriteID: f06864bf05a4d4cf4a9f812c37454fac
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: goblin_healer_9
+      name: enemy_goblin_healer_5
       rect:
         serializedVersion: 2
         x: 48
@@ -272,15 +230,15 @@ TextureImporter:
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: f64c0cee186374b4eac983265cb7a3b5
+      spriteID: d5dd7f32114a648f9bc635e0c85e7225
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: goblin_healer_10
+      name: enemy_goblin_healer_6
       rect:
         serializedVersion: 2
         x: 64
@@ -292,15 +250,15 @@ TextureImporter:
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 9a1e5cc44ce184f658e3fae086d1528f
+      spriteID: 0529b82fa2cf94e539c104eb22ad823e
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: goblin_healer_11
+      name: enemy_goblin_healer_7
       rect:
         serializedVersion: 2
         x: 80
@@ -312,15 +270,15 @@ TextureImporter:
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 70c2039ce76dc4b38ad17f6acb4da579
+      spriteID: 20d88fdc2b9784563a576c1d4ff84fa1
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: goblin_healer_12
+      name: enemy_goblin_healer_8
       rect:
         serializedVersion: 2
         x: 0
@@ -332,15 +290,15 @@ TextureImporter:
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 92525cf0fb0b64161b1e3838c7714e20
+      spriteID: ef83a9c398c29450c8c7ed58d22e28dc
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: goblin_healer_13
+      name: enemy_goblin_healer_9
       rect:
         serializedVersion: 2
         x: 16
@@ -352,15 +310,15 @@ TextureImporter:
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: c57aef0672cd448719433322d4b4656a
+      spriteID: 23dff2dd8e2a2497d8f70161f4040862
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: goblin_healer_14
+      name: enemy_goblin_healer_10
       rect:
         serializedVersion: 2
         x: 32
@@ -372,15 +330,15 @@ TextureImporter:
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 2cb40c94a78264be5a62e1923de3a558
+      spriteID: 78eb56329500d4a25aec07940e94d0d7
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: goblin_healer_15
+      name: enemy_goblin_healer_11
       rect:
         serializedVersion: 2
         x: 48
@@ -392,15 +350,15 @@ TextureImporter:
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: d21d2a9e3efac42a796724c781c9ee8a
+      spriteID: 64cf2360d626545b8a9b4537a24da0af
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: goblin_healer_16
+      name: enemy_goblin_healer_12
       rect:
         serializedVersion: 2
         x: 64
@@ -412,15 +370,15 @@ TextureImporter:
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 8d3b3c9ec471f4d2c9ed6bc4a9376211
+      spriteID: 63cbe971bc5a84613b2c3738462efe4f
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: goblin_healer_17
+      name: enemy_goblin_healer_13
       rect:
         serializedVersion: 2
         x: 80
@@ -432,9 +390,9 @@ TextureImporter:
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: e7e9d35c0144f46ef8f2949031f7d201
+      spriteID: a5121e75b4d98433b96c5034f2b97279
       vertices: []
       indices: 
       edges: []

@@ -148,6 +148,7 @@ public class SaveModifier {
 	}
 
 	public void UnlockSkin(HeroType heroType, HeroTier heroTier, int index) {
+		Debug.Log("Trying to unlock: " + index);
 		int skinIndex = HeroTypeTier2Index((int)heroType, (int)heroTier);
 		string skins = sg.unlockedSkins[skinIndex];
 		// Use StringBuilder to modify the string at a certain index
@@ -160,14 +161,18 @@ public class SaveModifier {
 	public bool IsSkinUnlocked(HeroType heroType, HeroTier heroTier, int skinIndex) {
 		int index = SaveModifier.HeroTypeTier2Index((int)heroType, (int)heroTier);
 		string skins = UnlockedSkins[index];
+		Debug.Log("Checking " + skins);
 		// We initially don't completely initialize the unlockedSkins string, so we initialize it as we encounter new skins
 		if (skins == null) skins = "1";
+		Debug.Log((skinIndex - skins.Length) + 1);
 		if (skins.Length - 1 < skinIndex) {
 			// If the string doesn't contain a skin's index, we haven't unlocked it
-			for (int i = 0; i < skinIndex - skins.Length + 1; i ++) {
+			for (int i = 0; i < (skinIndex - skins.Length) + 1; i ++) {
 				skins += '0';
+				Debug.Log("Modified: " + skins);
 			}
 			sg.unlockedSkins[index] = skins;
+			Debug.Log("Modified: " + skins);
 			return false;
 		}
 		else

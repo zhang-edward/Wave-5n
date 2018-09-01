@@ -456,6 +456,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 891}
+  - component: {fileID: 172}
   m_Layer: 5
   m_Name: ExternalMenus
   m_TagString: Untagged
@@ -463,6 +464,18 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 171}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f1ecb9983ad443b99624396636a024e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  settingsMenu: {fileID: 762693429}
 --- !u!1 &188
 GameObject:
   m_ObjectHideFlags: 0
@@ -568,7 +581,7 @@ GameObject:
   - component: {fileID: 1399}
   - component: {fileID: 1398}
   m_Layer: 5
-  m_Name: BottomNav
+  m_Name: Options_BottomNav
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -656,7 +669,7 @@ GameObject:
   - component: {fileID: 620}
   - component: {fileID: 1421}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: BG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -760,7 +773,7 @@ GameObject:
   - component: {fileID: 1005}
   - component: {fileID: 671}
   m_Layer: 5
-  m_Name: BottomNav (Container)
+  m_Name: BottomNav
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4293,8 +4306,8 @@ MonoBehaviour:
     m_FadeDuration: 0
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 21300002, guid: b8326da31adbd41c18d46ebbd2ae603a, type: 3}
+    m_DisabledSprite: {fileID: 21300002, guid: b8326da31adbd41c18d46ebbd2ae603a, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
@@ -4588,8 +4601,8 @@ MonoBehaviour:
     m_FadeDuration: 0
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 21300002, guid: b8326da31adbd41c18d46ebbd2ae603a, type: 3}
+    m_DisabledSprite: {fileID: 21300002, guid: b8326da31adbd41c18d46ebbd2ae603a, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
@@ -11326,6 +11339,8 @@ GameObject:
   - component: {fileID: 606275794}
   - component: {fileID: 606275793}
   - component: {fileID: 606275792}
+  - component: {fileID: 606275796}
+  - component: {fileID: 606275791}
   - component: {fileID: 606275795}
   m_Layer: 5
   m_Name: Statistics
@@ -11353,6 +11368,53 @@ RectTransform:
   m_AnchoredPosition: {x: 54, y: -30}
   m_SizeDelta: {x: 24, y: 24}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &606275791
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 606275789}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1862395651, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 2
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 606275796}
+          m_MethodName: Play
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: down
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
+        Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  - eventID: 3
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 606275796}
+          m_MethodName: Play
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: up
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
+        Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  delegates: []
 --- !u!114 &606275792
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11453,6 +11515,24 @@ MonoBehaviour:
   series: 0
   stage: 2
   makeUninteractable: 0
+--- !u!95 &606275796
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 606275789}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 22838bb953add47f9994477b77e1a517, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &606538133
 Prefab:
   m_ObjectHideFlags: 0
@@ -11676,7 +11756,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.0000076293945, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -231.95296, y: 0}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &606564885
@@ -13943,7 +14023,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &762693428
 RectTransform:
   m_ObjectHideFlags: 0
@@ -19727,8 +19807,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 939b9a13ab8ee4b7b8a3022240888520, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  button: {fileID: 0}
+  button: {fileID: 1368720050}
   maxCycleIndex: 2
+--- !u!114 &1368720050 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114492908456151760, guid: a3388d936902b4ec7959566159b8bef8,
+    type: 2}
+  m_PrefabInternal: {fileID: 651431407}
+  m_Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 --- !u!1 &1370565131
 GameObject:
   m_ObjectHideFlags: 0
@@ -20776,6 +20862,8 @@ GameObject:
   - component: {fileID: 1484891051}
   - component: {fileID: 1484891050}
   - component: {fileID: 1484891049}
+  - component: {fileID: 1484891048}
+  - component: {fileID: 1484891053}
   - component: {fileID: 1484891052}
   m_Layer: 5
   m_Name: DailyRecruits
@@ -20803,6 +20891,24 @@ RectTransform:
   m_AnchoredPosition: {x: -54, y: -30}
   m_SizeDelta: {x: 24, y: 24}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!95 &1484891048
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1484891046}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 22838bb953add47f9994477b77e1a517, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &1484891049
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20903,6 +21009,53 @@ MonoBehaviour:
   series: 0
   stage: 1
   makeUninteractable: 0
+--- !u!114 &1484891053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1484891046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1862395651, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 2
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1484891048}
+          m_MethodName: Play
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: down
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
+        Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  - eventID: 3
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1484891048}
+          m_MethodName: Play
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: up
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
+        Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  delegates: []
 --- !u!1001 &1500004517
 Prefab:
   m_ObjectHideFlags: 0
@@ -29922,6 +30075,7 @@ GameObject:
   - component: {fileID: 1816626945}
   - component: {fileID: 1816626947}
   - component: {fileID: 1816626946}
+  - component: {fileID: 1816626948}
   m_Layer: 5
   m_Name: NavButton
   m_TagString: Untagged
@@ -29998,8 +30152,8 @@ MonoBehaviour:
     m_FadeDuration: 0
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 21300002, guid: b8326da31adbd41c18d46ebbd2ae603a, type: 3}
+    m_DisabledSprite: {fileID: 21300002, guid: b8326da31adbd41c18d46ebbd2ae603a, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
@@ -30027,6 +30181,20 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.Toggle+ToggleEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_IsOn: 0
+--- !u!114 &1816626948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1816626944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8af430d401d645f69ce750ea25ffcd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  series: 0
+  stage: 6
+  makeUninteractable: 0
 --- !u!1 &1823560356 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1390189278810042, guid: a7a2e72e01669453e84824e8973861ae,
@@ -30753,8 +30921,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 939b9a13ab8ee4b7b8a3022240888520, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  button: {fileID: 0}
+  button: {fileID: 1940355635}
   maxCycleIndex: 2
+--- !u!114 &1940355635 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114492908456151760, guid: a3388d936902b4ec7959566159b8bef8,
+    type: 2}
+  m_PrefabInternal: {fileID: 606538133}
+  m_Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 --- !u!1 &1943618746
 GameObject:
   m_ObjectHideFlags: 0

@@ -228,14 +228,15 @@ MonoBehaviour:
   body: {fileID: 11436008}
   animationSetPlayer: {fileID: 114911047058366154}
   level: 0
-  baseHealth: 4
+  baseHealth: 1000
   moneyValueMultiplier: 1
   healable: 1
-  canBeDisabledOnHit: 1
+  canBeDisabled: 1
   invincible: 0
   movingAnimState: Moving
   spawnAnimState: Spawn
   anim:
+    animationSetName: 
     animations:
     - animationName: Default
       frames:
@@ -252,18 +253,25 @@ MonoBehaviour:
       looping: 1
       resetToDefault: 1
       ignoreTimeScale: 0
-    - animationName: Charge
+    - animationName: Hurt
       frames:
       - {fileID: 21300004, guid: 02b43725acc7c4ec0bbe5f4de9815365, type: 3}
+      fps: 60
+      looping: 0
+      resetToDefault: 0
+      ignoreTimeScale: 0
+    - animationName: Charge
+      frames:
       - {fileID: 21300006, guid: 02b43725acc7c4ec0bbe5f4de9815365, type: 3}
+      - {fileID: 21300008, guid: 02b43725acc7c4ec0bbe5f4de9815365, type: 3}
       fps: 10
       looping: 0
       resetToDefault: 0
       ignoreTimeScale: 0
     - animationName: Shoot
       frames:
-      - {fileID: 21300008, guid: 02b43725acc7c4ec0bbe5f4de9815365, type: 3}
       - {fileID: 21300010, guid: 02b43725acc7c4ec0bbe5f4de9815365, type: 3}
+      - {fileID: 21300012, guid: 02b43725acc7c4ec0bbe5f4de9815365, type: 3}
       - {fileID: 21300000, guid: 02b43725acc7c4ec0bbe5f4de9815365, type: 3}
       fps: 10
       looping: 0
@@ -281,8 +289,8 @@ MonoBehaviour:
   abilities: []
   statuses: []
   deathProps:
-  - {fileID: 21300012, guid: 02b43725acc7c4ec0bbe5f4de9815365, type: 3}
   - {fileID: 21300014, guid: 02b43725acc7c4ec0bbe5f4de9815365, type: 3}
+  - {fileID: 21300016, guid: 02b43725acc7c4ec0bbe5f4de9815365, type: 3}
   movementMethod: {fileID: 114532239706675488}
   action: {fileID: 114320900790138348}
   spawnMethod: 0
@@ -736,7 +744,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initialTimerValue: 0
   cooldown: 6
-  interruptAmt: 0.3
+  interruptAmt: 0
 --- !u!114 &114776145995340282
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -768,7 +776,7 @@ MonoBehaviour:
   projectileAnimation:
     animationName: 
     frames:
-    - {fileID: 21300016, guid: 02b43725acc7c4ec0bbe5f4de9815365, type: 3}
+    - {fileID: 21300018, guid: 02b43725acc7c4ec0bbe5f4de9815365, type: 3}
     fps: 10
 --- !u!114 &114828925103783760
 MonoBehaviour:

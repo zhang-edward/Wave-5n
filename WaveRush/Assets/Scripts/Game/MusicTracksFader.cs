@@ -5,7 +5,7 @@ public class MusicTracksFader : MonoBehaviour
 {
 	public AudioSource[] musicSrc;
 
-	void Start() {
+	void Awake() {
 		foreach (AudioSource src in musicSrc) {
 			SoundManager.instance.RegisterMusicSrc(src);
 		}

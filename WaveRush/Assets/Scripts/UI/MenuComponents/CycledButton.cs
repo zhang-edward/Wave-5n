@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class CycledButton : MonoBehaviour {
 
-	[HideInInspector] public Button button;
+	public Button button;
 	public int maxCycleIndex = 2;
 	public int cycleIndex { get; set; }
 	

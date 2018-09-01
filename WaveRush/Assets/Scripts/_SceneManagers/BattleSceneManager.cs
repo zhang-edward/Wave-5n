@@ -73,11 +73,11 @@ public class BattleSceneManager : MonoBehaviour
 	{
 		// Get data from GameManager
 		Pawn[] pawns = gm.selectedPawns;
-		// if (gm.debugMode) {
-		// 	for (int i = 0; i < pawns.Length; i ++) {
-		// 		pawns[i] = new Pawn(gm.selectedPawns[i].type, gm.selectedPawns[i].tier, gm.selectedPawns[i].level);
-		// 	}
-		// }
+		if (gm.debugMode) {
+			for (int i = 0; i < pawns.Length; i ++) {
+				pawns[i] = new Pawn(gm.selectedPawns[i].type, gm.selectedPawns[i].tier, gm.selectedPawns[i].level);
+			}
+		}
 		StageData stage = gm.GetStage(gm.selectedSeriesIndex, gm.selectedStageIndex);
 
 		pawnMetaData = new PawnMetaData[pawns.Length];		

@@ -21,14 +21,14 @@ public class SoundManager : MonoBehaviour {
 
 	public bool playingMusic { get; private set; }
 
-	void Awake()
-	{
+	void Awake() {
 		// make this a singleton
 		if (instance == null)
 			instance = this;
 		else if (instance != this)
 			Destroy (this.gameObject);
 		
+		GameManager.instance.OnSceneLoaded += RefreshMusicSources;
 		ui = GetComponent<AudioSource> ();
 		music = GameObject.Find ("Music").GetComponent<AudioSource> ();
 		sfx = GameObject.Find ("SFX").GetComponent<AudioSource> ();
@@ -38,23 +38,19 @@ public class SoundManager : MonoBehaviour {
 		music.volume = musicVolume;
 	}
 
-	public void RegisterSfxSrc(AudioSource src)
-	{
+	public void RegisterSfxSrc(AudioSource src) {
 		sfxSources.Add(src);
 	}
 
-	public void UnregisterSfxSrc(AudioSource src)
-	{
+	public void UnregisterSfxSrc(AudioSource src) {
 		sfxSources.Remove(src);
 	}
 
-	public void RegisterMusicSrc(AudioSource src)
-	{
+	public void RegisterMusicSrc(AudioSource src) {
 		musicSources.Add(src);
 	}
 
-	public void UnregisterMusicSrc(AudioSource src)
-	{
+	public void UnregisterMusicSrc(AudioSource src) {
 		musicSources.Remove(src);
 	}
 
@@ -63,21 +59,18 @@ public class SoundManager : MonoBehaviour {
 	/// </summary>
 	/// <param name="clip">Clip.</param>
 	/// <param name="stacking">whether or not this clip can be stacked with others (bad for many sounds played at the same time)</param>
-	public void RandomizeSFX(AudioClip clip)
-	{
+	public void RandomizeSFX(AudioClip clip) {
 		float randomPitch = Random.Range (lowPitchRange, highPitchRange);
 		sfx.pitch = randomPitch;
 		sfx.PlayOneShot (clip);
 	}
 
-	public void PlayInterrupt(AudioClip clip)
-	{
+	public void PlayInterrupt(AudioClip clip) {
 		sfx.clip = clip;
 		sfx.Play ();
 	}
 
-	public void PlaySingle(AudioClip clip)
-	{
+	public void PlaySingle(AudioClip clip) {
 		sfx.pitch = 1.0f;
 		sfx.PlayOneShot(clip);
 	}
@@ -86,21 +79,17 @@ public class SoundManager : MonoBehaviour {
 	/// Plays a sound and also lowers the volume of the background music while the clip is playing
 	/// </summary>
 	/// <param name="clip">Clip.</param>
-	public void PlayImportantSound(AudioClip clip)
-	{
+	public void PlayImportantSound(AudioClip clip) {
 		sfx.clip = clip;
 		StartCoroutine (ImportantSound ());
 	}
 
-	public void PlayUISound(AudioClip clip)
-	{
+	public void PlayUISound(AudioClip clip) {
 		ui.clip = clip;
 		ui.Play ();
 	}
 
-	public void PlayMusicLoop(AudioClip clip, bool fadeIn = false, AudioClip intro = null)
-	{
-//		Debug.Log ("Playing new music loop: " + clip);
+	public void PlayMusicLoop(AudioClip clip, bool fadeIn = false, AudioClip intro = null) {
 		if (fadeIn) {
 			StopAllCoroutines();
 			music.volume = 0;
@@ -188,5 +177,10 @@ public class SoundManager : MonoBehaviour {
 		foreach (AudioSource src in sfxSources) {
 			src.mute = mute;
 		}
+	}
+
+	private void RefreshMusicSources() {
+		musicSources.RemoveAll(src => src == null);
+		sfxSources.RemoveAll(src => src == null);
 	}
 }

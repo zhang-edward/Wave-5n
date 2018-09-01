@@ -240,6 +240,7 @@ public class Enemy : MonoBehaviour, IDamageable {
 
 	// This is what is generally used for attacks
 	public virtual bool Disable(float time) {
+		ForceStopAllStates();
 		if (!canBeDisabled || !action.TryInterrupt())
 			return false;
 		hitDisableState = StartCoroutine (HitDisableState (time, 0));
@@ -247,8 +248,7 @@ public class Enemy : MonoBehaviour, IDamageable {
 	}
 
 	// Used to force this enemy to be disabled
-	public virtual void ForceDisable(float time)
-	{
+	public virtual void ForceDisable(float time) {
 		ForceStopAllStates();
 		if (action != null)		// Special enemies have no action (trapped heroes)
 			action.Interrupt();
@@ -262,9 +262,11 @@ public class Enemy : MonoBehaviour, IDamageable {
 		hitDisabled = true;
 		body.ragdolled = true;
 		body.AddRandomImpulse (randomImpulse);
+		anim.Play("Hurt");
 
 		yield return new WaitForSeconds (time);
 
+		print ("Hit Disabled = false");
 		anim.player.ResetToDefault();
 		hitDisabled = false;
 		body.ragdolled = false;
@@ -350,8 +352,9 @@ public class Enemy : MonoBehaviour, IDamageable {
 			if (canBeDisabled && !hitDisabled && disable)	{
 				action.TryInterrupt();
 				// Stop all states
-				StopAllCoroutines();
-				StartCoroutine(HitDisableState(0.05f, 3f));
+				print ("stopping all states");
+				ForceStopAllStates();
+				StartCoroutine(HitDisableState(0.3f, 3f));
 			}
 			StartCoroutine(FlashColor(Color.red));
 		}
