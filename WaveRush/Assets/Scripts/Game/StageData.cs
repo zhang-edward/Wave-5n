@@ -52,6 +52,8 @@ public class StageData : ScriptableObject
 	[Header("Waves")]
 	public List<WaveProperties> waveProperties;
 
+	
+
 
 	// retrieve the list of available enemies for spawning based on the amount of points available
 	public List<EnemySpawnProperties> GetRandomEnemyPool(int waveNumber)

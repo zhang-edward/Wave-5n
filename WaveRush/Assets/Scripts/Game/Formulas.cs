@@ -35,8 +35,8 @@ public static class Formulas {
 	}
 
 	public static void PawnCost(Pawn pawn, out int money, out int souls) {
-		int baseCost = 700;
-		int levelCost = pawn.level * pawn.level * 20;
+		int baseCost = 200;
+		int levelCost = pawn.level * pawn.level * 10;
 		int tierScaleFactor = (int)pawn.tier + 1;
 		money = (baseCost + levelCost) * tierScaleFactor;
 		souls = (2 * pawn.GetNumBoosts());
@@ -52,7 +52,7 @@ public static class Formulas {
 	}
 
 	public static void BoxCost(out int money, out int souls) {
-		int baseCost = 1000;
+		int baseCost = 500;
 		int formula = (int)(0 + (0.1f * (GameManager.instance.save.money - 500)));
 		money = Mathf.Max(baseCost, formula);
 		souls = 10;

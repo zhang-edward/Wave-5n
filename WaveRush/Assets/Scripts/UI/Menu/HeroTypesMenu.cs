@@ -26,7 +26,7 @@ public class HeroTypesMenu : MonoBehaviour {
 			o.transform.SetParent(scrollView.panel, false);
 			HeroTypeIcon heroTypeIcon = o.GetComponent<HeroTypeIcon>();
 			icons[i] = heroTypeIcon;
-			bool unlocked = GameManager.instance.save.UnlockedHeroes[i];
+			bool unlocked = GameManager.instance.save.UnlockedHeroes[i * 3];	// i * 3 because we want the t1 hero of each type
 			heroTypeIcon.Init((HeroType)i, HeroTier.tier1, unlocked);
 		}
 		// Debug.Break();

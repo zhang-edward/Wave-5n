@@ -226,6 +226,7 @@ public class BoxesMenu : MonoBehaviour {
 				Debug.LogError("Unexpected tier!");
 				break;
 		}
+		UnityEngine.Assertions.Assert.IsTrue(skins.Length > 1);
 		int unlockedSkinIndex = Random.Range(1, skins.Length);
 		skinRewardIcon.Init(heroType, heroTier, true, unlockedSkinIndex);
 		skinNameText.text = skins[unlockedSkinIndex].animationSetName;

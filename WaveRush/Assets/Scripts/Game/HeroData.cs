@@ -20,6 +20,7 @@ public class HeroData : ScriptableObject
 		public float	luckMax = 0.15f;
 	}
 	public HeroType heroType;
+	public string heroName;
 
 	[Header("Hero Data")]
 	public Sprite[] abilityIcons;

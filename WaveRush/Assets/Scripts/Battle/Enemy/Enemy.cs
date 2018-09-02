@@ -321,7 +321,7 @@ public class Enemy : MonoBehaviour, IDamageable {
 
 	protected void SpawnMoneyPickup()
 	{
-		float rangeValue = Mathf.Sqrt(maxHealth);
+		float rangeValue = EnemyMoneyEquation(level);
 		float rangeNoise = rangeValue * 0.2f;
 		int moneyValue = (int)(Random.Range (rangeValue - rangeNoise, rangeValue + rangeNoise) * moneyValueMultiplier * 0.5f);
 		if (moneyValue <= 0)
@@ -454,6 +454,10 @@ public class Enemy : MonoBehaviour, IDamageable {
 
 	private static int EnemyHealthEquation(int level, int baseHealth) {
 		return Mathf.RoundToInt(baseHealth * (0.8f * level + 10) * (Mathf.Sqrt(level) / 2));
+	}
+
+	private static int EnemyMoneyEquation(int level) {
+		return (int)(2 * Mathf.Sqrt(level));
 	}
 #endregion
 }
