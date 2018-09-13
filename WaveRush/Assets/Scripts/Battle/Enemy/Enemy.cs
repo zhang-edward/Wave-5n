@@ -195,7 +195,7 @@ public class Enemy : MonoBehaviour, IDamageable {
 			break;
 		case SpawnMethod.None:
 			body.transform.position = spawnLocation;
-			StartCoroutine (MoveState());
+			moveState = StartCoroutine (MoveState());
 			break;
 		}
 	}
@@ -208,13 +208,13 @@ public class Enemy : MonoBehaviour, IDamageable {
 		{
 			body.Move ((target - transform.position).normalized);
 			if (Vector3.Distance(transform.position, playerTransform.position) < 2f) {
-				StartCoroutine(MoveState());
+				moveState = StartCoroutine(MoveState());
 				yield break;
 			}
 			yield return null;
 		}
 		body.gameObject.layer = DEFAULT_LAYER;
-		StartCoroutine (MoveState());
+		moveState = StartCoroutine (MoveState());
 		//Debug.Log ("Done");
 	}
 
@@ -226,7 +226,7 @@ public class Enemy : MonoBehaviour, IDamageable {
 		yield return new WaitForEndOfFrame ();		// wait for the animation state to update before continuing
 		while (anim.player.isPlaying)
 			yield return null;
-		StartCoroutine (MoveState());
+		moveState = StartCoroutine (MoveState());
 	}
 #endregion
 #region HitState and MoveState
@@ -361,7 +361,7 @@ public class Enemy : MonoBehaviour, IDamageable {
 				// Stop all states
 				print ("stopping all states");
 				ForceStopAllStates();
-				StartCoroutine(HitDisableState(0.3f, 3f));
+				hitDisableState = StartCoroutine(HitDisableState(0.3f, 3f));
 			}
 			StartCoroutine(FlashColor(Color.red));
 		}

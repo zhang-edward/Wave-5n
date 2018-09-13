@@ -16,6 +16,8 @@ namespace EnemyActions
 		[Header("Audio")]
 		public AudioClip actionSound;
 
+		private Coroutine executeRoutine;
+
 
 		public override void Init(Enemy e, OnActionStateChanged onActionFinished)
 		{
@@ -26,7 +28,7 @@ namespace EnemyActions
 		public override void Execute()
 		{
 			base.Execute();
-			StartCoroutine(UpdateState());
+			executeRoutine = StartCoroutine(UpdateState());
 		}
 
 		public override void Interrupt()
