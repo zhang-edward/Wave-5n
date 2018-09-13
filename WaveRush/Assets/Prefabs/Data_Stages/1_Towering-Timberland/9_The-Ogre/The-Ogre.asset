@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2379bde86d183432688c3e33d4537570, type: 3}
+  m_Name: The-Ogre
+  m_EditorClassIdentifier: 
+  dialogueSets: []
+  stageName: The Ogre
+  mapType: 1
+  difficultyLevel: 4
+  maxPartySize: 2
+  maxTier: 0
+  levelRaw: 5
+  upperLimit: 20
+  lowerLimit: 10
+  goalWave: 8
+  bossWave: 8
+  enemyPrefabs:
+  - prefab: {fileID: 177460, guid: 54fe2fdc3252847f08f15a8590667d5b, type: 2}
+    spawnFrequency: 1
+    waveLimit: 1
+  - prefab: {fileID: 187912, guid: 284e652b2eabe43a9a8e564bf3fd4337, type: 2}
+    spawnFrequency: 1
+    waveLimit: 1
+  - prefab: {fileID: 147880, guid: 15e9f10dbfa7c46efa83cfa7afe1f851, type: 2}
+    spawnFrequency: 1
+    waveLimit: 2
+  - prefab: {fileID: 1533728438024512, guid: 41b13bf3e84134984b65f1297d136b4a, type: 2}
+    spawnFrequency: 1
+    waveLimit: 4
+  bossPrefabs:
+  - {fileID: 1716862416037616, guid: a4747371cbde742df9aefb724264be92, type: 2}
+  waveProperties:
+  - waveNumber: 0
+    numEnemies: 0
+    maxNumActiveEnemies: 10
+    enemies: []
+  - waveNumber: 8
+    numEnemies: 30
+    maxNumActiveEnemies: 10
+    enemies:
+    - prefab: {fileID: 187912, guid: 284e652b2eabe43a9a8e564bf3fd4337, type: 2}
+      numEnemies: 4
+      spawnMode: 1
+    - prefab: {fileID: 147880, guid: 15e9f10dbfa7c46efa83cfa7afe1f851, type: 2}
+      numEnemies: 8
+      spawnMode: 1
+    - prefab: {fileID: 1533728438024512, guid: 41b13bf3e84134984b65f1297d136b4a, type: 2}
+      numEnemies: 8
+      spawnMode: 2

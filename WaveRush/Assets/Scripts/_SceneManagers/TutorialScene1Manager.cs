@@ -301,4 +301,9 @@ public class TutorialScene1Manager : MonoBehaviour
 	{
 		ouchText.gameObject.SetActive(false);
 	}
+
+	public void SkipTutorial() {
+		PlayerPrefs.SetInt(SaveGame.TUTORIAL_COMPLETE_KEY, 1);
+		GameManager.instance.GoToScene("MainMenu");
+	}
 }

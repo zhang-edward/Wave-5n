@@ -59,6 +59,8 @@ public abstract class PlayerHero : MonoBehaviour {
 	private Coroutine queuedActionRoutine;
 	private bool canParry = true;
 	private int parryDisableTimerId;
+	private bool initialized;
+	protected List<GameObject> customUI = new List<GameObject>();
 	protected bool dragIndicatorEnabled = true;
 
 	/** Delegates and events */
@@ -80,7 +82,6 @@ public abstract class PlayerHero : MonoBehaviour {
 	public event Player.PlayerLifecycleEvent OnSpecialAbilityCharged;
 	public delegate void OnAbility(int i);
 	public event OnAbility OnAbilityFailed;
-	private bool initialized;
 
 #region Initialization
 	/// <summary>
@@ -128,13 +129,16 @@ public abstract class PlayerHero : MonoBehaviour {
 		player.OnPlayerDamaged += ResetCombo;
 		player.OnEnemyDamaged += IncrementCombo;
 		player.OnEnemyDamaged += IncrementSpecialAbilityCharge;
-
+		foreach (GameObject o in customUI)
+			o.SetActive(true);
 	}
 
 	void OnDisable() {
 		player.OnPlayerDamaged -= ResetCombo;
 		player.OnEnemyDamaged -= IncrementCombo;
 		player.OnEnemyDamaged -= IncrementSpecialAbilityCharge;
+		foreach (GameObject o in customUI)
+			o.SetActive(false);
 	}
 
 #region Input Handlers

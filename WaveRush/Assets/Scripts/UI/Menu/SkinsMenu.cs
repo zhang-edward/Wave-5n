@@ -104,6 +104,7 @@ public class SkinsMenu : MonoBehaviour {
 				selectedIcon.button.interactable = false;
 				bigIconDisplay.Init(clickedIcon.pawnData);
 				bigIconDisplay.gameObject.SetActive(true);
+				skinIndex = clickedIcon.pawnData.skin;
 
 				GetSkins(clickedIcon.pawnData.type, clickedIcon.pawnData.tier);
 				modifiedPawn = new Pawn(clickedIcon.pawnData);

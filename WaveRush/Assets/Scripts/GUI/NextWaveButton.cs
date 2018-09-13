@@ -8,7 +8,7 @@ public class NextWaveButton : MonoBehaviour {
 	public TMPro.TMP_Text text;
 
 	void Update() {
-		countdownImage.fillAmount = enemyManager.timeLeftBeforeNextWave / EnemyManager.WAVE_SPAWN_DELAY;
+		// countdownImage.fillAmount = enemyManager.timeLeftBeforeNextWave / EnemyManager.WAVE_SPAWN_DELAY;
 		text.text = "Next Wave in: " + ((int)enemyManager.timeLeftBeforeNextWave).ToString();
 	}
 }

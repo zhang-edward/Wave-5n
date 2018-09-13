@@ -31,7 +31,7 @@ namespace EnemyActions
 
 		public override void Interrupt()
 		{
-			print (this.gameObject + " interrupt");
+			// print (this.gameObject + " interrupt");
 			StopAllCoroutines();
 		}
 

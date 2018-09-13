@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Name: Data_Knight
   m_EditorClassIdentifier: 
   heroType: 0
+  heroName: Knight
   abilityIcons:
   - {fileID: 21300000, guid: f2b6aee341da04dfda68313510ff17ba, type: 3}
   - {fileID: 21300002, guid: f2b6aee341da04dfda68313510ff17ba, type: 3}
@@ -19,9 +20,9 @@ MonoBehaviour:
   powerUpData: {fileID: 11400000, guid: 3b689b17444a44ef880adb1f7bdfc865, type: 2}
   boostInfo:
     strMin: 1
-    strMax: 2
+    strMax: 3
     vitMin: 40
-    vitMax: 80
+    vitMax: 100
     chgMin: 1.5
     chgMax: 2.5
     dexMin: 0.02
@@ -29,10 +30,10 @@ MonoBehaviour:
     critMin: 1.5
     critMax: 2.5
     luckMin: 0.05
-    luckMax: 0.15
+    luckMax: 0.1
   tips: []
-  heroDescription: The Knight is a balanced hero who utilizes both aggressive and
-    defensive abilities to take down his foes.
+  heroDescription: The <color=yellow>Knight</color> is a balanced hero who utilizes
+    both aggressive and defensive abilities to take down his foes.
   ability1Name: Rush
   ability2Name: Shield Blast
   specialName: Super Rush

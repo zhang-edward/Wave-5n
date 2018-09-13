@@ -7,17 +7,26 @@ public class AbilityIcon : MonoBehaviour
 	public Image image { get; private set; }
 	public Image mask;
 	public GameObject highlight;
+	public TMPro.TMP_Text cooldownTime;
 
 	void Awake()
 	{
 		image = GetComponent<Image> ();
 	}
 
-	public void SetCooldown(float percent)
+	public void SetCooldown(float percent, float seconds)
 	{
 		if (percent < 0)
 			return;
 		mask.fillAmount = percent;
+		if (seconds > 0.02f) {
+			cooldownTime.gameObject.SetActive(true);
+			cooldownTime.text = string.Format("{0:0.0}", seconds);
+		}
+		else {
+			mask.fillAmount = 0;
+			cooldownTime.gameObject.SetActive(false);
+		}
 	}
 
 	public void FlashHighlight(Color color, float interval = 0.3f)

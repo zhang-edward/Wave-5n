@@ -33,7 +33,6 @@ public class Enemy : MonoBehaviour, IDamageable {
 	public float statusIconSize;
 	public bool overrideSrSize;		// true = use the inspector value for sprite size, false = use the sr bounds for sprite size
 
-
 	public EntityPhysics body;
 	// public Animator anim;
 	public AnimationSetPlayer animationSetPlayer;
@@ -208,6 +207,10 @@ public class Enemy : MonoBehaviour, IDamageable {
 		while (Vector3.Distance(transform.position, target) > 0.1f)
 		{
 			body.Move ((target - transform.position).normalized);
+			if (Vector3.Distance(transform.position, playerTransform.position) < 2f) {
+				StartCoroutine(MoveState());
+				yield break;
+			}
 			yield return null;
 		}
 		body.gameObject.layer = DEFAULT_LAYER;
@@ -240,9 +243,13 @@ public class Enemy : MonoBehaviour, IDamageable {
 
 	// This is what is generally used for attacks
 	public virtual bool Disable(float time) {
-		ForceStopAllStates();
-		if (!canBeDisabled || !action.TryInterrupt())
+		if (!canBeDisabled)
 			return false;
+		// These have to be TWO SEPARATE statements because else the TryInterrupt will automatically interrupt the action
+		// regardless of whether canBeDisabled is true or not!
+		else if (!action.TryInterrupt())
+			return false;		
+		ForceStopAllStates();
 		hitDisableState = StartCoroutine (HitDisableState (time, 0));
 		return true;
 	}
@@ -266,7 +273,7 @@ public class Enemy : MonoBehaviour, IDamageable {
 
 		yield return new WaitForSeconds (time);
 
-		print ("Hit Disabled = false");
+		// print ("Hit Disabled = false");
 		anim.player.ResetToDefault();
 		hitDisabled = false;
 		body.ragdolled = false;

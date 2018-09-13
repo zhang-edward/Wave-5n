@@ -56,6 +56,7 @@ MonoBehaviour:
   body: {fileID: 0}
   powerUpManager: {fileID: 0}
   anim:
+    animationSetName: 
     animations: []
     player: {fileID: 0}
   cooldownMultipliers: []
@@ -69,7 +70,7 @@ MonoBehaviour:
   maxComboTimer: 3
   cooldownTime:
   - 1.5
-  - 1
+  - 1.5
   piercingArrowAbility:
     duration: 0
     radius: 0.4
@@ -79,9 +80,9 @@ MonoBehaviour:
     circleCastSound: {fileID: 0}
     circleCastState: Shoot
   retreatAbility:
-    duration: 1
-    speed: 3
-    time: 1
+    duration: 1.5
+    speed: 2
+    time: 1.5
     drag: 5
   arrowRainAbility:
     duration: -1

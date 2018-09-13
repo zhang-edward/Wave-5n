@@ -31,6 +31,7 @@ public class BattleSceneManager : MonoBehaviour
 	[Header("Audio")]
 	//public AudioClip stageCompleteSound;
 	public AudioClip stageCompleteMusic;
+	public AudioClip stageDefeatMusic;
 
 	public int moneyEarned { get; private set; } 			// money earned in this session
 	public int soulsEarned { get; private set; }            // souls earned in this session
@@ -158,14 +159,14 @@ public class BattleSceneManager : MonoBehaviour
 	private void UpdateData(bool completedStage) {
 		// Stage complete or not
 		if (completedStage) {
-			StartCoroutine(PlayVictorySounds());
+			SoundManager.instance.PlayMusicLoop(stageCompleteMusic, true);
 			if (OnStageCompleted != null)
 				OnStageCompleted();
 			if (IsPlayerOnLatestStage())
 				gm.UnlockNextStage();
 		}
 		else {
-			SoundManager.instance.FadeMusic(0);
+			SoundManager.instance.PlayMusicLoop(stageDefeatMusic, true);
 		}
 		// Collect all money and souls
 		List<GameObject> moneyPickups = ObjectPooler.GetObjectPooler(Enemy.POOL_MONEY).GetAllActiveObjects();
@@ -228,14 +229,6 @@ public class BattleSceneManager : MonoBehaviour
 		gm.save.AddMoney(moneyEarned);
 		gm.save.AddSouls(soulsEarned);
 		gm.UpdateScores(enemiesDefeated, wavesSurvived, maxCombo);
-	}
-
-	private IEnumerator PlayVictorySounds() {
-		SoundManager sound = SoundManager.instance;
-		// sound.PlaySingle(stageCompleteSound);
-		// yield return new WaitForSecondsRealtime(1.0f);
-		sound.PlayMusicLoop(stageCompleteMusic, true);
-		yield return null;
 	}
 
 	private bool IsPlayerOnLatestStage()

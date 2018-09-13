@@ -150,6 +150,7 @@ public class Player : MonoBehaviour, IDamageable
 		yield return null;
 		input.isInputEnabled = true;
 	}
+	
 #endregion
 #region Update and callbacks
 	/** Update Timers */
@@ -177,6 +178,7 @@ public class Player : MonoBehaviour, IDamageable
 			return;
 		OnEnemyLastHit (e);
 	}
+
 #endregion
 #region IDamageable and damage/death handling
 	public void Damage(int amt, IDamageable source) {
@@ -194,6 +196,7 @@ public class Player : MonoBehaviour, IDamageable
 		body.AddRandomImpulse (3f);
 		HitDisable(hero.hitDisableTime);
 		FlashColor(Color.red);
+		StartTempSlowDown(0.1f);
 
 		// Post-damage effects
 		if (OnPlayerDamaged != null)
@@ -217,18 +220,18 @@ public class Player : MonoBehaviour, IDamageable
 	private IEnumerator DieRoutine()
 	{
 		sound.RandomizeSFX(gameOverSound);
-
+		SoundManager.instance.FadeMusic(0);
 		CameraControl.instance.SetOverlayColor(Color.black, 0.4f, 1.0f);
 		sr.sortingLayerName = "UI";
 		Time.timeScale = 0f;
 		yield return new WaitForSecondsRealtime(0.5f);
-		PlayDeathEffect(transform.position, deathEffect);
+		PlayDeathEffect();
 		sound.PlaySingle(heartBreakBuildUpSound);
 		sr.enabled = false;
 		yield return new WaitForSecondsRealtime(deathEffect.GetSecondsUntilFrame(10));
 		CameraControl.instance.StartFlashColor(Color.white, 0.4f, 0, 0, 1f);
 		sound.RandomizeSFX(heartBreakSound);
-		yield return new WaitForSecondsRealtime(1.0f);
+		yield return new WaitForSecondsRealtime(2.0f);
 		transform.parent.gameObject.SetActive(false);
 		Time.timeScale = 1f;
 		CameraControl.instance.DisableOverlay(1.0f);
@@ -297,18 +300,17 @@ public class Player : MonoBehaviour, IDamageable
 	// 	CameraControl.instance.DisableOverlay(1.0f);
 	// }
 
-	private void PlayDeathEffect(Vector3 position, SimpleAnimation effect)
-	{
-		GameObject o = EffectPooler.instance.GetPooledObject();
-		SimpleAnimationPlayer animPlayer = o.GetComponent<SimpleAnimationPlayer>();
-		TempObject tempObj = o.GetComponent<TempObject>();
+	private void PlayDeathEffect() {
+		// GameObject o = EffectPooler.instance.GetPooledObject();
+		TempObjectInfo info = new TempObjectInfo(true, 0f, deathEffect.TimeLength, 1f);
+		TempObject tempObj = EffectPooler.PlayEffect(deathEffect, transform.position, info);
+		SimpleAnimationPlayer animPlayer = tempObj.GetComponent<SimpleAnimationPlayer>();
 		tempObj.GetComponent<SpriteRenderer>().sortingLayerName = "UI";
-		tempObj.info = new TempObjectInfo(true, 0f, effect.TimeLength - 2f, 1f);
 		animPlayer.ignoreTimeScaling = true;
-		animPlayer.Play(effect);
-		tempObj.Init(Quaternion.identity,
-					 position,
-					 effect.frames[0]);
+		// animPlayer.Play(deathEffect);
+		// tempObj.Init(Quaternion.identity,
+		// 			 position,
+		// 			 deathEffect.frames[0]);
 	}
 
 	/// <summary>

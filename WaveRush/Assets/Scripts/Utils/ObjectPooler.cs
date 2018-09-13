@@ -12,14 +12,16 @@ public class ObjectPooler : MonoBehaviour {
 	public bool willGrow = true;
 
 	protected List<GameObject> pooledObjects; 
+	private bool initialized;
 
-	void Awake()
-	{
+	void Awake() {
 		Init();
 	}
 
-	protected virtual void Init()
+	public virtual void Init()
 	{
+		if (initialized)
+			return;
 		if (isGlobal)
 			AddSelfToGlobalList();
 		pooledObjects = new List<GameObject>();
@@ -30,6 +32,7 @@ public class ObjectPooler : MonoBehaviour {
 			obj.SetActive(false);
 			pooledObjects.Add(obj);
 		}
+		initialized = true;
 	}
 
 	protected void AddSelfToGlobalList()

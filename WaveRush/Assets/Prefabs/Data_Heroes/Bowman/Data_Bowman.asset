@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Name: Data_Bowman
   m_EditorClassIdentifier: 
   heroType: 3
+  heroName: Ranger
   abilityIcons:
   - {fileID: 21300000, guid: 01d72b0ec55e3485594d545cb794fee6, type: 3}
   - {fileID: 21300002, guid: 01d72b0ec55e3485594d545cb794fee6, type: 3}
@@ -31,8 +32,8 @@ MonoBehaviour:
     luckMin: 0.05
     luckMax: 0.15
   tips: []
-  heroDescription: The Bowman is a patient and opportunistic ranged fighter who excels
-    at positioning himself and taking out foes from a distance.
+  heroDescription: The <color=yellow>Ranger</color> is a patient and opportunistic
+    ranged fighter who excels at positioning himself and taking out foes from a distance.
   ability1Name: Piercing Arrow
   ability2Name: Retreat
   specialName: Arrow Rain
@@ -48,13 +49,6 @@ MonoBehaviour:
   t1Skins:
   - animationSetName: Default
     animations:
-    - animationName: Icon
-      frames:
-      - {fileID: 21300000, guid: 08c6e894d03cb4bbe8f21b341f76e4eb, type: 3}
-      fps: 60
-      looping: 0
-      resetToDefault: 0
-      ignoreTimeScale: 0
     - animationName: Default
       frames:
       - {fileID: 21300000, guid: 08c6e894d03cb4bbe8f21b341f76e4eb, type: 3}
@@ -70,25 +64,13 @@ MonoBehaviour:
       looping: 1
       resetToDefault: 0
       ignoreTimeScale: 0
-    - animationName: Charge1
+    - animationName: Charge
       frames:
       - {fileID: 21300002, guid: 08c6e894d03cb4bbe8f21b341f76e4eb, type: 3}
-      fps: 60
-      looping: 0
-      resetToDefault: 0
-      ignoreTimeScale: 0
-    - animationName: Charge2
-      frames:
       - {fileID: 21300004, guid: 08c6e894d03cb4bbe8f21b341f76e4eb, type: 3}
-      fps: 60
-      looping: 1
-      resetToDefault: 0
-      ignoreTimeScale: 0
-    - animationName: Charge3
-      frames:
       - {fileID: 21300006, guid: 08c6e894d03cb4bbe8f21b341f76e4eb, type: 3}
-      fps: 60
-      looping: 1
+      fps: 0
+      looping: 0
       resetToDefault: 0
       ignoreTimeScale: 0
     - animationName: Shoot

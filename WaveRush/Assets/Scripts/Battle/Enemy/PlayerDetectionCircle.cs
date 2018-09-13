@@ -1,19 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
+[RequireComponent(typeof(CollisionDetector))]
 public class PlayerDetectionCircle : MonoBehaviour
 {
-	public SpriteRenderer sr;
-	public CollisionDetector collision;
+	public SpriteRenderer enemySpriteRenderer;
 	public bool dynamic;
 	//public float radius;
+	private CollisionDetector collision;
 	private Vector3 pos;
 	private IDamageable playerDamageable;
 	
-
 	void Awake()
 	{
 		pos = transform.localPosition;
+		collision = GetComponent<CollisionDetector>();
 		collision.OnTriggerEnter += TriggerEnter;
 		collision.OnTriggerExit += TriggerExit;
 	}
@@ -22,7 +23,7 @@ public class PlayerDetectionCircle : MonoBehaviour
 	{
 		if (dynamic)
 			return;
-		if (sr.flipX)
+		if (enemySpriteRenderer.flipX)
 			transform.localPosition = new Vector3(pos.x * -1, pos.y);
 		else
 			transform.localPosition = new Vector3(pos.x, pos.y);

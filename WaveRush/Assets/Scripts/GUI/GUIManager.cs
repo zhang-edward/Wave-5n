@@ -13,10 +13,12 @@ public class GUIManager : MonoBehaviour {
 	public TMP_Text waveIndicatorText;
 	public IncrementingText moneyEarnedText;
 	public IncrementingText soulsEarnedText;
+	[Header("Inter-wave menus")]
 	public PartyView partyView;
-	public GameObject partyViewContainer;
-	public UIAnimatorControl partyViewMenu;
-	public UIAnimatorControl nextWaveButton;
+	public GameObject interWaveMenuContainer;
+	[Tooltip("Components you want to animate out upon the interwave menus closing")]
+	public UIAnimatorControl[] interWaveMenus;
+	[Header("Custom UI")]
 	public Transform customUI;					// Used for heroes to have custom hero-specific ui elements (located under pause button)
 
 	[Header("Game Over Panel")]
@@ -56,14 +58,13 @@ public class GUIManager : MonoBehaviour {
 	}
 
 	private void EnableWaveCompletedMenus() {
-		nextWaveButton.gameObject.SetActive(true);
-		partyViewMenu.gameObject.SetActive(true);
+		interWaveMenuContainer.SetActive(true);
+		foreach (UIAnimatorControl uiac in interWaveMenus)
+			uiac.gameObject.SetActive(false);
 	}
 
 	private void DisableWaveCompletedMenus(int foo) {
-		nextWaveButton.AnimateOut();
-		partyViewMenu.AnimateOut();
-		partyViewContainer.gameObject.SetActive(false);
+		interWaveMenuContainer.GetComponent<UIAnimatorControl>().AnimateOut();
 	}
 
 	public void GameOverUI(ScoreReport.ScoreReportData data)

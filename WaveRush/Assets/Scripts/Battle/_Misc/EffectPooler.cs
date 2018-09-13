@@ -8,7 +8,7 @@ public class EffectPooler : ObjectPooler
 	public static EffectPooler instance;
 	public const string EFFECT_POOL_NAME = "Effect";
 
-	protected override void Init()
+	public override void Init()
 	{
 		poolType = EFFECT_POOL_NAME;
 		base.Init();

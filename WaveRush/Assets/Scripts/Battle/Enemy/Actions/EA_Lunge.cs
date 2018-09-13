@@ -59,8 +59,8 @@ namespace EnemyActions
 			{
 				if (attacking)
 				{
-					Player player = col.GetComponentInChildren<Player>();
-					int damage = Formulas.EnemyDamage(baseDamage, player.hero.level - e.level);
+					IDamageable player = col.GetComponentInChildren<IDamageable>();
+					int damage = Formulas.EnemyDamage(baseDamage, e.GetLevelDiff());
 					player.Damage(damage, e);
 				}
 			}

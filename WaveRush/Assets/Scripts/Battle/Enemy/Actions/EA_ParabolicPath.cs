@@ -33,7 +33,7 @@ namespace EnemyActions {
 				Vector3 position = Vector3.Lerp(startPos, targetPos, t) + verticalOffset;		// Object position with "elevation
 				shadow.position = position - verticalOffset;
 				e.transform.parent.position = position;
-				t += Time.deltaTime * travelSpeed;
+				t += Time.deltaTime;
 				yield return null;
 			}
 			e.invincible = false;

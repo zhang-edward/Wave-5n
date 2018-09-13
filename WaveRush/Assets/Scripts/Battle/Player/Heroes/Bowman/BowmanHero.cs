@@ -113,7 +113,10 @@ public class BowmanHero : PlayerHero {
 	private void InitAbilities() {
 		piercingArrowAbility.Init(player, HandlePiercingArrowDamage);
 		retreatAbility.Init(player);
-		retreatAbility.OnActionFinished += anim.player.ResetToDefault;
+		retreatAbility.OnActionFinished += () => {
+			if (!anim.player.IsPlayingAnimation("Charge"))
+				anim.player.ResetToDefault();
+		};
 		arrowRainAbility.Init(player, SpecialAbilityHitEnemy);
 		arrowRainAbility.shootEffect.OnActionFinished += ResetSpecialAbility;
 		arrowRainAbility.OnActionFinished += ResetSpecialAbility;
@@ -129,22 +132,15 @@ public class BowmanHero : PlayerHero {
 			piercingArrowChargeLevel ++;
 			piercingArrowCharge = 0;
 		}
-		switch (piercingArrowChargeLevel) {
-			case 0:
-				anim.Play("Charge1");
-				break;
-			case 1:
-				anim.Play("Charge2");
-				break;
-			case 2:
-				anim.Play("Charge3");
-				break;
-		}
+		if (!anim.player.IsPlayingAnimation("Charge"))
+			anim.Play("Charge");
+		player.sr.sprite = anim.GetAnimation("Charge").frames[piercingArrowChargeLevel];
 		body.rb2d.drag = CHARGE_DRAG;
 		// Set input listener on charge
 		onDragRelease = null;
 		onTouchEnded = PiercingArrow;
 		onDragHold = ChargePiercingArrow;
+		body.Move(Vector2.zero, 0);	// Cancel movement
 		// Set drag indicator
 		dragIndicatorEnabled = false;
 	}
@@ -155,10 +151,10 @@ public class BowmanHero : PlayerHero {
 		ResetCooldownTimer(0);
 		// Set the body's direction
 		body.Move(dir);
-		body.Move(Vector2.zero);
+		body.Move(Vector2.zero, 0);
 
 		// Set damage multiplier
-		damageMultiplier = Mathf.Lerp(1.0f, 2.0f, piercingArrowChargeLevel);
+		damageMultiplier = Mathf.Lerp(1.0f, 2.0f, (piercingArrowChargeLevel) - 1 / 2);
 		// Effect
 		arrowTrail.Init(transform.position + dir.normalized, player.transform.position + dir.normalized * PIERCING_ARROW_RANGE);
 		// Sound
@@ -239,7 +235,7 @@ public class BowmanHero : PlayerHero {
 #region Parry
 	protected override void ParryEffect(IDamageable src) {
 		cooldownTimers[0] = 0;
-		piercingArrowChargeLevel = 2;
+		piercingArrowChargeLevel = 1;
 		Vector3 dir = (transform.position - ((MonoBehaviour)src).transform.position).normalized * 2.0f;
 		body.Move(dir, 0);
 	}
@@ -250,7 +246,7 @@ public class BowmanHero : PlayerHero {
 		if (!e.invincible && e.health > 0)
 		{
 			// print ("dealt " + dmg + " dmg");
-			e.Damage (dmg, player);
+			e.Damage (dmg, player, true);
 			player.TriggerOnEnemyDamagedEvent(dmg);
 			player.TriggerOnEnemyLastHitEvent (e);
 

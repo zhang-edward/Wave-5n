@@ -105,6 +105,7 @@ public class KnightHero : PlayerHero {
 			o.transform.SetParent(BattleSceneManager.instance.gui.customUI, false);
 		}
 		o.GetComponent<KnightShieldMeter>().Init(this);
+		customUI.Add(o);
 	}
 
 	private void InitAbilities()
@@ -280,7 +281,7 @@ public class KnightHero : PlayerHero {
 		player.invincibility.Add(0.5f);		// Add a little invincibility after shield is broken to prevent any cheap hits from active hitboxes
 	}
 
-	private void PushEnemyBack(Enemy e, float strength, float time) {
+	public void PushEnemyBack(Enemy e, float strength, float time) {
 		Vector2 awayFromPlayerDir = (e.transform.position - transform.position).normalized;
 		if (e.Disable(0.5f))
 			e.body.AddImpulse(awayFromPlayerDir, strength);
