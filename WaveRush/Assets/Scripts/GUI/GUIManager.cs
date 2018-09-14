@@ -21,12 +21,6 @@ public class GUIManager : MonoBehaviour {
 	[Header("Custom UI")]
 	public Transform customUI;					// Used for heroes to have custom hero-specific ui elements (located under pause button)
 
-	[Header("Game Over Panel")]
-	public GameObject gameOverUI;   	// game over panel
-	public ScoreReport scorePanel;  	// score report in game over panel
-	//public GameObject upgradeButton;    // button for upgrading the player character
-	//public HeroesRescuedMenu heroesRescuedMenu;
-
 	[Header("Data")]
 	public EnemyManager enemyManager;
 	public Player player;
@@ -67,11 +61,6 @@ public class GUIManager : MonoBehaviour {
 		interWaveMenuContainer.GetComponent<UIAnimatorControl>().AnimateOut();
 	}
 
-	public void GameOverUI(ScoreReport.ScoreReportData data)
-	{
-		StartCoroutine(GameOverUIRoutine(data));
-	}
-
 	public void TryShowStageCompleteView()
 	{
 		StartCoroutine(StageCompleteViewRoutine());
@@ -92,20 +81,6 @@ public class GUIManager : MonoBehaviour {
 	public void InitializeHeroesRescuedMenu()
 	{
 		//heroesRescuedMenu.Init(BattleSceneManager.instance.acquiredPawns);
-	}
-
-	private IEnumerator GameOverUIRoutine(ScoreReport.ScoreReportData data)
-	{
-		yield return new WaitForSeconds(1f);
-		gameUI.SetActive(false);
-		gameOverUI.SetActive(true);
-		scorePanel.moneyText.text.text = data.money.ToString();
-		scorePanel.moneyEarned.text.text = data.moneyEarned.ToString();
-		scorePanel.soulsText.text.text = data.souls.ToString();
-		scorePanel.soulsEarned.text.text = data.soulsEarned.ToString();
-
-		yield return new WaitForSeconds(0.5f);
-		scorePanel.ReportScore(data);
 	}
 
 	private IEnumerator StageCompleteViewRoutine()

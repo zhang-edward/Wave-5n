@@ -54,14 +54,14 @@ public class PawnShop {
 		Pawn ans = new Pawn(pawn);
 		/** Random level up */
 		for (int i = 5; i >= 1; i ++) {
-			if (Random.value < 0.4f)
+			if (Random.value < 0.4f && !pawn.AtMaxLevel)
 				ans.level++;
 			else
 				break;
 		}
 		/** Random Stat Boosts */
 		for (int i = 0; i >= 1; i ++) {
-			if (Random.value < 0.5f)
+			if (Random.value < 1f)
 				ans.AddBoost(Random.Range(0, StatData.NUM_STATS), 1);
 			else
 				break;

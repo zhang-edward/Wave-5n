@@ -27,10 +27,7 @@ public class ObjectPooler : MonoBehaviour {
 		pooledObjects = new List<GameObject>();
 		for (int i = 0; i < poolAmount; i++)
 		{
-			GameObject obj = Instantiate(pooledObject) as GameObject;
-			obj.transform.SetParent(this.transform, false);
-			obj.SetActive(false);
-			pooledObjects.Add(obj);
+			CreateObject();
 		}
 		initialized = true;
 	}
@@ -59,12 +56,18 @@ public class ObjectPooler : MonoBehaviour {
 
 		if (willGrow)
 		{
-			GameObject obj = Instantiate (pooledObject);
-			obj.transform.SetParent (this.transform);
-			pooledObjects.Add (obj);
-			return obj;
+			return CreateObject();
 		}
 		return null;
+	}
+
+	private GameObject CreateObject()
+	{
+		GameObject obj = Instantiate(pooledObject);
+		obj.transform.SetParent(this.transform, false);
+		obj.SetActive(false);
+		pooledObjects.Add(obj);
+		return obj;
 	}
 
 	public List<GameObject> GetAllActiveObjects() {

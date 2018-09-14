@@ -42,6 +42,7 @@ public class HeroExpMenu : MonoBehaviour
 			pawnIcons[i] = Instantiate(pawnIconAnimatedPrefab).GetComponent<PawnIconAnimated>();
 			pawnIcons[i].transform.SetParent(contentFolder, false);
 			pawnIcons[i].Init(data[i].startState, data[i].endState);
+			pawnIcons[i].gameObject.SetActive(false);
 		}
 		StartCoroutine(StartAnimation());
 	}
@@ -49,7 +50,8 @@ public class HeroExpMenu : MonoBehaviour
 	private IEnumerator StartAnimation() {
 		yield return new WaitForSeconds(0.5f);
 		foreach (PawnIconAnimated pawnIcon in pawnIcons) {
-			yield return new WaitForSeconds(0.5f);
+			pawnIcon.gameObject.SetActive(true);
+			yield return new WaitForSeconds(1.0f);
 			pawnIcon.AnimateGetExperience();
 		}
 		doneAnimating = true;

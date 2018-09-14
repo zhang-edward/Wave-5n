@@ -22,7 +22,6 @@ public class IncrementingText : MonoBehaviour {
 	void Awake()
 	{
 		text = GetComponent<TMP_Text>();
-		//audioSrc = GetComponent<AudioSource> ();
 		text.text = prefix + initialValue.ToString() + postfix;
 		doneUpdating = true;
 	}

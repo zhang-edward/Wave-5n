@@ -8,7 +8,8 @@ using System.Collections.Generic;
 /// </summary>
 public class BattleSceneManager : MonoBehaviour
 {
-	public struct PawnMetaData {
+	public struct PawnMetaData
+	{
 		public Pawn startingState;
 		public int id;
 	}
@@ -33,7 +34,7 @@ public class BattleSceneManager : MonoBehaviour
 	public AudioClip stageCompleteMusic;
 	public AudioClip stageDefeatMusic;
 
-	public int moneyEarned { get; private set; } 			// money earned in this session
+	public int moneyEarned { get; private set; }            // money earned in this session
 	public int soulsEarned { get; private set; }            // souls earned in this session
 	public bool leaveOrContinueOptionOpen { get; private set; }
 
@@ -61,12 +62,14 @@ public class BattleSceneManager : MonoBehaviour
 		//gm.OnSceneLoaded += Init;
 	}
 
-	void Start() {
+	void Start()
+	{
 		Init();
 	}
 
 	// Init main game environment
-	private void Init() {
+	private void Init()
+	{
 		StartCoroutine(InitRoutine());
 	}
 
@@ -74,15 +77,20 @@ public class BattleSceneManager : MonoBehaviour
 	{
 		// Get data from GameManager
 		Pawn[] pawns = gm.selectedPawns;
-		if (gm.debugMode) {
-			for (int i = 0; i < pawns.Length; i ++) {
+		// DEBUG
+		if (gm.debugMode)
+		{
+			for (int i = 0; i < pawns.Length; i++)
+			{
 				pawns[i] = new Pawn(gm.selectedPawns[i].type, gm.selectedPawns[i].tier, gm.selectedPawns[i].level);
 			}
 		}
+		// Get stage data
 		StageData stage = gm.GetStage(gm.selectedSeriesIndex, gm.selectedStageIndex);
 
-		pawnMetaData = new PawnMetaData[pawns.Length];		
-		for (int i = 0; i < pawns.Length; i ++) {
+		pawnMetaData = new PawnMetaData[pawns.Length];
+		for (int i = 0; i < pawns.Length; i++)
+		{
 			pawnMetaData[i].id = pawns[i].Id;
 			pawnMetaData[i].startingState = new Pawn(pawns[i]);
 		}
@@ -111,143 +119,148 @@ public class BattleSceneManager : MonoBehaviour
 		//gm.OnSceneLoaded -= Init;   // Remove the listener because it is only run once per scene
 	}
 
-	private IEnumerator StageCompleteRoutine() {
+	private IEnumerator StageCompleteRoutine()
+	{
 		SoundManager.instance.FadeMusic(0f);
 		Time.timeScale = 0.2f;
-		yield return new WaitForSecondsRealtime (1.0f);
+		yield return new WaitForSecondsRealtime(1.0f);
 		Time.timeScale = 1f;
 	}
 
-	// private IEnumerator StageCompleteRoutine()
-	// {
-	// 	SoundManager.instance.FadeMusic(0.5f);
-	// 	enemyManager.paused = true;
-	// 	// Delay before showing end dialogue
-	// 	yield return new WaitForSecondsRealtime(1.0f);
-	// 	stageCompleteOptions.SetActive(true);
-	// 	leaveOrContinueOptionOpen = true;
-	// 	// Modal View Selection
-	// 	int selection = -1;
-	// 	stageCompleteModal.OnOptionSelected += (s) => {
-	// 		selection = s;
-	// 	};
-	// 	while (leaveOrContinueOptionOpen)
-	// 	{
-	// 		pauseButton.gameObject.SetActive(false);
-	// 		// "Leave" option selected
-	// 		if (selection == 1)
-	// 		{
-	// 			player.transform.parent.gameObject.SetActive(false);
-	// 			stageCompleteOptions.GetComponent<UIAnimatorControl>().AnimateOut();
-	// 			UpdateData(true);
-	// 			yield break;
-	// 		}
-	// 		// "Continue" option selected
-	// 		if (selection == 0)
-	// 		{
-	// 			leaveOrContinueOptionOpen = false;
-	// 		}
-	// 		yield return null;
-	// 	}
-	// 	SoundManager.instance.FadeMusic(1);
-	// 	pauseButton.gameObject.SetActive(true);
-	// 	enemyManager.paused = false;
-	// 	stageCompleteOptions.GetComponent<UIAnimatorControl>().AnimateOut();
-	// 	//print("No sacrifice detected; continue");
-	// }
-
-	private void UpdateData(bool completedStage) {
-		// Stage complete or not
-		if (completedStage) {
-			SoundManager.instance.PlayMusicLoop(stageCompleteMusic, true);
+	private void UpdateData(bool completedStage)
+	{
+		// Event Call
+		if (completedStage)
+		{
 			if (OnStageCompleted != null)
 				OnStageCompleted();
 			if (IsPlayerOnLatestStage())
 				gm.UnlockNextStage();
+			// Music
+			SoundManager.instance.PlayMusicLoop(stageCompleteMusic, true);
 		}
-		else {
+		else
 			SoundManager.instance.PlayMusicLoop(stageDefeatMusic, true);
-		}
-		// Collect all money and souls
-		List<GameObject> moneyPickups = ObjectPooler.GetObjectPooler(Enemy.POOL_MONEY).GetAllActiveObjects();
-		List<GameObject> soulPickups = ObjectPooler.GetObjectPooler(BossEnemy.POOL_SOULS).GetAllActiveObjects();
-		int leftoverMoney = 0;
-		int leftoverSouls = 0;
-		foreach (GameObject o in moneyPickups) {
-			leftoverMoney += o.GetComponent<MoneyPickup>().value;
-		}
-		foreach (GameObject o in soulPickups) {
-			leftoverSouls ++;
-		}
-		AddMoney(leftoverMoney);
-		AddSouls(leftoverSouls);
-		// Money report data
-		ScoreReport.ScoreReportData scoreData = new ScoreReport.ScoreReportData(
-			money: 				gm.save.money,
-			moneyEarned: 		moneyEarned,
-			souls: 				gm.save.souls,
-			soulsEarned:		soulsEarned
-		);
 
+		// Generate Score Report Data
+		CollectStrayResources();
+		ScoreReport.ScoreReportData scoreData = new ScoreReport.ScoreReportData(
+			money: gm.save.money,
+			moneyEarned: moneyEarned,
+			souls: gm.save.souls,
+			soulsEarned: soulsEarned,
+			bonusMoney: GetBonusMoney()
+		);
+		gm.save.AddMoney(moneyEarned);
+		gm.save.AddSouls(soulsEarned);
+
+		// Generate Pawn EXP Data
+		UpdatePawnExperience(completedStage);
 		HeroExpMenu.HeroExpMenuData[] expData = new HeroExpMenu.HeroExpMenuData[pawnMetaData.Length];
-		// Add or subtract experience from pawns
-		if (completedStage) {
+		for (int i = 0; i < pawnMetaData.Length; i++)
+		{
+			expData[i] = new HeroExpMenu.HeroExpMenuData(
+				startState: pawnMetaData[i].startingState,
+				endState: gm.save.GetPawn(pawnMetaData[i].id)
+			);
+		}
+
+		stageEndMenu.gameObject.SetActive(true);
+		stageEndMenu.Init(scoreData, expData, gm.GetStage(gm.selectedSeriesIndex, gm.selectedStageIndex).stageName);
+		gm.Save();
+	}
+
+	/// <summary>
+	/// Updates the experience and level each pawn in the save file based on 
+	/// whether the stage was completed or not.
+	/// </summary>
+	/// <param name="completedStage">Whether the stage was completed</param>
+	private void UpdatePawnExperience(bool completedStage)
+	{
+		// Add exp
+		if (completedStage)
+		{
 			int stagesCompleted = enemyManager.waveNumber / enemyManager.stageData.goalWave;
-			//int gainedExperience = (int)(Mathf(Formulas.ExperienceFormula(enemyManager.level)) * 0.4f * stagesCompleted * enemyManager.stageData.maxPartySize / pawnMetaData.Length);
 			int gainedExperience = Formulas.StageExperience(enemyManager.level, enemyManager.waveNumber, enemyManager.stageData.maxPartySize, pawnMetaData.Length);
-			for (int i = 0; i < pawnMetaData.Length; i ++) {
+			for (int i = 0; i < pawnMetaData.Length; i++)
+			{
 				gm.save.AddExperience(pawnMetaData[i].id, gainedExperience);
 			}
 		}
-		else {
-			for (int i = 0; i < pawnMetaData.Length; i ++) {
+		// Subtract exp
+		else
+		{
+			for (int i = 0; i < pawnMetaData.Length; i++)
+			{
 				Pawn pawn = gm.save.GetPawn(pawnMetaData[i].id);
 				int lostExperience = (int)(Formulas.ExperienceFormula(pawn.level, (int)pawn.tier) * 0.2f);
 				gm.save.LoseExperience(pawnMetaData[i].id, lostExperience);
 			}
 		}
+	}
+
+	/// <summary>
+	/// Collects any active uncollected resource pickups and adds them 
+	/// to their corresponding "earned" field 
+	/// </summary>
+	private void CollectStrayResources()
+	{
+		List<GameObject> moneyPickups = ObjectPooler.GetObjectPooler(Enemy.POOL_MONEY).GetAllActiveObjects();
+		List<GameObject> soulPickups = ObjectPooler.GetObjectPooler(BossEnemy.POOL_SOULS).GetAllActiveObjects();
+		int leftoverMoney = 0;
+		int leftoverSouls = 0;
+		foreach (GameObject o in moneyPickups)
+		{
+			leftoverMoney += o.GetComponent<MoneyPickup>().value;
+		}
+		foreach (GameObject o in soulPickups)
+		{
+			leftoverSouls++;
+		}
+		AddMoney(leftoverMoney);
+		AddSouls(leftoverSouls);
+	}
+
+	/// <summary>
+	/// Calculates the maximum luck, then calculates bonus money based on the 
+	/// amount of money earned.
+	/// </summary>
+	/// <returns>Bonus money</returns>
+	private int GetBonusMoney()
+	{
 		float maxLuck = 0;
-		// Do start, end state and retrieve highest luck stat to calculate bonus money
-		for (int i = 0; i < pawnMetaData.Length; i ++) {
-			expData[i] = new HeroExpMenu.HeroExpMenuData(
-				startState: pawnMetaData[i].startingState,
-				endState: 	gm.save.GetPawn(pawnMetaData[i].id)
-			);
+		for (int i = 0; i < pawnMetaData.Length; i++)
+		{
 			float luck = pawnMetaData[i].startingState.GetStatsArray()[StatData.LUCK];
 			if (luck > maxLuck)
 				maxLuck = luck;
 		}
-		int bonusMoney = (int)(moneyEarned * (maxLuck + 1f));
-
-		gui.gameOverUI.SetActive(true);
-		stageEndMenu.Init(scoreData, expData, bonusMoney, gm.GetStage(gm.selectedSeriesIndex, gm.selectedStageIndex).stageName);
-
-		int enemiesDefeated = enemyManager.enemiesKilled;
-		int wavesSurvived = enemyManager.waveNumber;
-		int maxCombo = player.hero.maxCombo;
-
-		gm.save.AddMoney(moneyEarned);
-		gm.save.AddSouls(soulsEarned);
-		gm.UpdateScores(enemiesDefeated, wavesSurvived, maxCombo);
+		return (int)(moneyEarned * (maxLuck + 1f));
 	}
 
+	/// <summary>
+	/// Checks if the player is currently playing the latest unlocked stage
+	/// </summary>
 	private bool IsPlayerOnLatestStage()
 	{
-		return (gm.selectedStageIndex  == gm.save.LatestStageIndex &&
-		        gm.selectedSeriesIndex == gm.save.LatestSeriesIndex);
+		return (gm.selectedStageIndex == gm.save.LatestStageIndex &&
+				gm.selectedSeriesIndex == gm.save.LatestSeriesIndex);
 	}
 
-	//public void AddPawn(Pawn pawn)
-	//{
-	//	acquiredPawns.Add(pawn);
-	//}
-
+	/// <summary>
+	/// Adds an amount of money to the moneyEarned for this stage
+	/// </summary>
+	/// <param name="amt">Amount of money to add</param>
 	public void AddMoney(int amt)
 	{
 		moneyEarned += amt;
 		gui.UpdateMoney(moneyEarned);
 	}
 
+	/// <summary>
+	/// Adds an amount of souls to the moneyEarned for this stage
+	/// </summary>
+	/// <param name="amt">Amount of souls to add</param>
 	public void AddSouls(int amt)
 	{
 		soulsEarned += amt;
@@ -255,7 +268,8 @@ public class BattleSceneManager : MonoBehaviour
 	}
 
 	// DEBUG
-	public void DebugCompleteStage() {
+	public void DebugCompleteStage()
+	{
 		StartCoroutine(StageCompleteRoutine());
 		gui.OnStageCompletedText();
 	}
