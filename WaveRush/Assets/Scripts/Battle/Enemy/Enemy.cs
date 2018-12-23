@@ -37,6 +37,8 @@ public class Enemy : MonoBehaviour, IDamageable {
 	// public Animator anim;
 	public AnimationSetPlayer animationSetPlayer;
 
+	// State indicators
+	public bool moving { get; private set; }
 	public bool hitDisabled{ get; private set; }
 
 	[Header("Enemy Properties")]
@@ -233,8 +235,10 @@ public class Enemy : MonoBehaviour, IDamageable {
 
 	private void ForceStopAllStates() {
 		// print ("All states stopped");
+		moving = false;
 		if (moveState != null)
 			StopCoroutine(moveState);
+		hitDisabled = false;
 		if (hitDisableState != null)
 			StopCoroutine(hitDisableState);
 		if (spawnState != null)
@@ -243,14 +247,16 @@ public class Enemy : MonoBehaviour, IDamageable {
 
 	// This is what is generally used for attacks
 	public virtual bool Disable(float time) {
-		if (!canBeDisabled)
+		if (!canBeDisabled)		
 			return false;
+		// This next check only applies if the enemy is moving; otherwise, if the enemy is currently
+		// performing an action, the "interruptable" field determines whether or not this enemy will be disabled
 		// These have to be TWO SEPARATE statements because else the TryInterrupt will automatically interrupt the action
 		// regardless of whether canBeDisabled is true or not!
-		else if (!action.TryInterrupt())
+		else if (!moving && !action.TryInterrupt())
 			return false;		
 		ForceStopAllStates();
-		hitDisableState = StartCoroutine (HitDisableState (time, 0));
+		hitDisableState = StartCoroutine (HitDisableState (time));
 		return true;
 	}
 
@@ -260,15 +266,14 @@ public class Enemy : MonoBehaviour, IDamageable {
 		if (action != null)		// Special enemies have no action (trapped heroes)
 			action.Interrupt();
 		// print ("disabled");
-		hitDisableState = StartCoroutine (HitDisableState (time, 0));
+		hitDisableState = StartCoroutine (HitDisableState (time));
 	}
 
-	private IEnumerator HitDisableState(float time, float randomImpulse)
+	private IEnumerator HitDisableState(float time)
 	{
 		// Set properties
 		hitDisabled = true;
 		body.ragdolled = true;
-		body.AddRandomImpulse (randomImpulse);
 		anim.Play("Hurt");
 
 		yield return new WaitForSeconds (time);
@@ -283,6 +288,7 @@ public class Enemy : MonoBehaviour, IDamageable {
 
 	protected virtual IEnumerator MoveState()
 	{
+		moving = true;
 		yield return new WaitForEndOfFrame ();
 		//print("Updating whatever moveState is: " + movementMethod);
 		for (;;)
@@ -292,6 +298,7 @@ public class Enemy : MonoBehaviour, IDamageable {
 			if (action.CanExecute ())
 			{
 				action.Execute ();
+				moving = false;
 				yield break;
 			}
 			yield return null;
@@ -356,12 +363,9 @@ public class Enemy : MonoBehaviour, IDamageable {
 			OnEnemyDamaged(amt);
 		if (health > 0)
 		{
-			if (canBeDisabled && !hitDisabled && disable)	{
-				action.TryInterrupt();
-				// Stop all states
-				print ("stopping all states");
-				ForceStopAllStates();
-				hitDisableState = StartCoroutine(HitDisableState(0.3f, 3f));
+			if (canBeDisabled && !hitDisabled && disable) {
+				Disable(0.3f);
+				body.AddRandomImpulse();
 			}
 			StartCoroutine(FlashColor(Color.red));
 		}

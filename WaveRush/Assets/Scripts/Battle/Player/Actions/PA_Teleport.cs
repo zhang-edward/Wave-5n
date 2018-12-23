@@ -43,10 +43,6 @@
 
 		private IEnumerator ExecuteRoutine()
 		{
-			/** Set animation lengths */
-			hero.anim.GetAnimation(teleportOutState).SetTimeLength(teleportOutTime);
-			hero.anim.GetAnimation(teleportInState).SetTimeLength(teleportInTime);
-
 			/** Set player properties */
 			if (invincibleDuringTeleport)
 				player.invincibility.Add(teleportOutTime + teleportInTime);
@@ -54,7 +50,12 @@
 			/** Teleport out */
 			if (teleportOutEffect.frames.Length > 0)
 				EffectPooler.PlayEffect(teleportOutEffect, hero.transform.position, teleportOutEffectProperties);
-			hero.anim.Play(teleportOutState);
+			/** Animation */
+			if (teleportOutState != "")
+			{
+				hero.anim.GetAnimation(teleportOutState).SetTimeLength(teleportOutTime);
+				hero.anim.Play(teleportOutState);
+			}
 			if (disableInput)
 				player.inputDisabled.Add(duration);
 			sound.RandomizeSFX(teleportOutSound);
@@ -67,7 +68,12 @@
 			/** Teleport In */
 			if (teleportInEffect.frames.Length > 0)
 				EffectPooler.PlayEffect(teleportInEffect, hero.transform.position, teleportInEffectProperties);
-			hero.anim.Play(teleportInState);
+			/** Animation */
+			if (teleportInState != "") 
+			{
+				hero.anim.GetAnimation(teleportInState).SetTimeLength(teleportInTime);
+				hero.anim.Play(teleportInState);
+			}
 			sound.RandomizeSFX(teleportInSound);
 			if (OnTeleportIn != null)
 				OnTeleportIn();

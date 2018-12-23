@@ -567,7 +567,7 @@ MonoBehaviour:
   projectileAnimation:
     animationName: 
     frames:
-    - {fileID: 21300016, guid: 02b43725acc7c4ec0bbe5f4de9815365, type: 3}
+    - {fileID: 21300018, guid: 02b43725acc7c4ec0bbe5f4de9815365, type: 3}
     fps: 10
 --- !u!114 &114154955384403112
 MonoBehaviour:
@@ -672,7 +672,7 @@ MonoBehaviour:
   baseHealth: 25
   moneyValueMultiplier: 1
   healable: 1
-  canBeDisabled: 0
+  canBeDisabled: 1
   invincible: 0
   movingAnimState: Moving
   spawnAnimState: Spawn
@@ -829,7 +829,7 @@ MonoBehaviour:
   projectileAnimation:
     animationName: 
     frames:
-    - {fileID: 21300016, guid: 02b43725acc7c4ec0bbe5f4de9815365, type: 3}
+    - {fileID: 21300018, guid: 02b43725acc7c4ec0bbe5f4de9815365, type: 3}
     fps: 10
 --- !u!114 &114849149611808102
 MonoBehaviour:
@@ -874,7 +874,7 @@ MonoBehaviour:
   projectileAnimation:
     animationName: 
     frames:
-    - {fileID: 21300016, guid: 02b43725acc7c4ec0bbe5f4de9815365, type: 3}
+    - {fileID: 21300018, guid: 02b43725acc7c4ec0bbe5f4de9815365, type: 3}
     fps: 10
 --- !u!114 &114890345833118072
 MonoBehaviour:
@@ -915,7 +915,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   conditions: []
-  interruptable: 1
+  interruptable: 0
   actions:
   - {fileID: 114001117203283464}
   - {fileID: 114435627591698292}

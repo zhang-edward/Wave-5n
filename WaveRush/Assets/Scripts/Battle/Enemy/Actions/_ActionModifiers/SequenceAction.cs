@@ -16,7 +16,7 @@ namespace EnemyActions
 		public override void Init(Enemy e, OnActionStateChanged onActionFinished)
 		{
 			base.Init(e, onActionFinished);
-			for (int i = 0; i < actions.Length - 1; i ++)
+			for (int i = 0; i < actions.Length - 1; i++)
 				actions[i].Init(e, Execute);
 			actions[actions.Length - 1].Init(e, onActionFinished);
 		}
@@ -28,17 +28,8 @@ namespace EnemyActions
 			return currentAction.CanExecute();
 		}
 
-		private void TryExecuteNextAction() {
-			print("Sequence action next executing: " + currentAction);
-			if (CanExecute()) {
-				Execute();
-			}
-			else {
-				print("Sequence action failed to execute: " + currentAction);
-			}
-		}
-
-		public override void Execute() {
+		public override void Execute()
+		{
 			base.Execute();
 			currentAction.Execute();
 			index++;
@@ -48,7 +39,7 @@ namespace EnemyActions
 
 		public override void Interrupt()
 		{
-			// print ("Interrupted");
+			print ("Interrupted");
 			// Interrupt ALL actions
 			foreach (EnemyAction action in actions)
 				action.Interrupt();

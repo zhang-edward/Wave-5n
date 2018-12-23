@@ -13,6 +13,7 @@
 		public PA_EffectAttached effect;
 		public CollisionDetector collision;
 		public bool lockInput;
+		public bool persistAnimation;
 		public int maxHit;				// the maxmimum number of enemies that can be collided with during the rush
 		[Header("Effects and SFX")]
 		public string     rushState = "Default";
@@ -56,8 +57,9 @@
 				player.inputDisabled.Add(duration);
 
 			yield return new WaitForSeconds(duration);
-
-			player.animPlayer.ResetToDefault();	// Animation
+			
+			if (!persistAnimation)
+				player.animPlayer.ResetToDefault();	// Animation
 			hitEnemies.Clear();             	// Reset hit list
 			rushHitBoxOn = false;
 		}

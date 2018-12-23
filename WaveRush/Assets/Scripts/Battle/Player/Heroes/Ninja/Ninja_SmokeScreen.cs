@@ -31,7 +31,7 @@ public class Ninja_SmokeScreen : HeroPowerUp
 	{
 		if (activated)
 		{
-			ninja.SmokeBomb(1f);
+			// ninja.SmokeBomb(1f);
 			activated = false;
 		}
 	}

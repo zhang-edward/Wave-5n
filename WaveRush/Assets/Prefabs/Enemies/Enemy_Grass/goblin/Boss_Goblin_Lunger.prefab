@@ -36,6 +36,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4405617588246884}
   - component: {fileID: 114229173667964468}
+  - component: {fileID: 114250620515285150}
+  - component: {fileID: 114591041407230220}
   m_Layer: 0
   m_Name: SequenceAction
   m_TagString: Untagged
@@ -52,8 +54,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4584697775702284}
   - component: {fileID: 114417908862246742}
-  - component: {fileID: 114731228869252104}
-  - component: {fileID: 114330232784214796}
   - component: {fileID: 58320973720656000}
   m_Layer: 0
   m_Name: LungeActionStart
@@ -438,7 +438,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8aee00dba01e243f6bcbc416df9a5197, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  conditions: []
+  conditions:
+  - {fileID: 114250620515285150}
+  - {fileID: 114591041407230220}
   interruptable: 0
   actions:
   - {fileID: 114417908862246742}
@@ -446,20 +448,19 @@ MonoBehaviour:
   - {fileID: 114635265291128416}
   - {fileID: 114635265291128416}
   - {fileID: 114809944292435650}
---- !u!114 &114330232784214796
+--- !u!114 &114250620515285150
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1149442418720306}
+  m_GameObject: {fileID: 1132528761435192}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 691d2465ff1d04d379162511b29c55d4, type: 3}
+  m_Script: {fileID: 11500000, guid: 7c5967af2b5994684834cdebb14a31e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialTimerValue: 3
-  cooldown: 6
-  interruptAmt: 0.1
+  min: 0
+  range: 3
 --- !u!114 &114417908862246742
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -471,15 +472,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7e940970a4154db3b285906b53685ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  conditions:
-  - {fileID: 114731228869252104}
-  - {fileID: 114330232784214796}
+  conditions: []
   interruptable: 0
   chargeTime: 1
   actionTime: 0.2
   endLagTime: 0
   chargeState: Charge
-  actionState: Lunge
+  actionState: Attack
   actionSound: {fileID: 8300000, guid: f060497aec99e4cd4bf530c80169e8a6, type: 3}
   lungeSpeed: 10
   baseDamage: 1
@@ -497,6 +496,20 @@ MonoBehaviour:
   sr: {fileID: 212094576085893250}
   moveSpeed: 1.5
   ragdolled: 0
+--- !u!114 &114591041407230220
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1132528761435192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 691d2465ff1d04d379162511b29c55d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  initialTimerValue: 3
+  cooldown: 6
+  interruptAmt: 0.1
 --- !u!114 &114606483359638634
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -509,7 +522,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveState: Moving
-  waitTime: 10
+  waitTime: 1
   walkRadius: 2
 --- !u!114 &114635265291128416
 MonoBehaviour:
@@ -528,23 +541,10 @@ MonoBehaviour:
   actionTime: 0.2
   endLagTime: 0.1
   chargeState: Charge
-  actionState: Lunge
+  actionState: Attack
   actionSound: {fileID: 8300000, guid: f060497aec99e4cd4bf530c80169e8a6, type: 3}
   lungeSpeed: 10
   baseDamage: 1
---- !u!114 &114731228869252104
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1149442418720306}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c5967af2b5994684834cdebb14a31e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  min: 0
-  range: 3
 --- !u!114 &114809944292435650
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -562,7 +562,7 @@ MonoBehaviour:
   actionTime: 0.2
   endLagTime: 1
   chargeState: Charge
-  actionState: Lunge
+  actionState: Attack
   actionSound: {fileID: 8300000, guid: f060497aec99e4cd4bf530c80169e8a6, type: 3}
   lungeSpeed: 14
   baseDamage: 2
@@ -637,7 +637,7 @@ MonoBehaviour:
       ignoreTimeScale: 0
     - animationName: Charge
       frames:
-      - {fileID: 21300014, guid: efaf1177a508145a7aabf7dfdb3b3ade, type: 3}
+      - {fileID: 21300018, guid: efaf1177a508145a7aabf7dfdb3b3ade, type: 3}
       fps: 60
       looping: 0
       resetToDefault: 0

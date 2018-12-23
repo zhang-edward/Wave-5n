@@ -16,6 +16,8 @@
 
 		protected override void DoAction()
 		{
+			if (anim == null)
+				return;
 			if (offsetMatchesFlipX)
 			{
 				int sign = offsetMatchesFlipX ? -1 : 1; // set the sign of the X position based on whether the player 

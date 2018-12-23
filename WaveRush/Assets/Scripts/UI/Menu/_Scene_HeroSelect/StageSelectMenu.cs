@@ -26,6 +26,9 @@ public class StageSelectMenu : MonoBehaviour
 	public GameObject highlightMenu;
 	public TMP_Text descriptionText;
 
+	[Header("Audio")]
+	public AudioClip selectStageSound;	
+
 	public delegate void OnStageIconSelected();
 	public event OnStageIconSelected StageIconSelected;
 
@@ -145,6 +148,8 @@ public class StageSelectMenu : MonoBehaviour
 
 		if (StageIconSelected != null)
 			StageIconSelected();
+		
+		SoundManager.instance.PlaySingle(selectStageSound);
 	}
 
 	public void DeselectStageIcon()	{

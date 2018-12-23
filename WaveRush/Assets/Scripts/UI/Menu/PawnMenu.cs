@@ -13,6 +13,9 @@ public class PawnMenu : MonoBehaviour {
 	public PawnSelectionView pawnSelectionView;
 	public CanvasGroup optionsGroup;
 
+	[Header("Audio")]
+	public AudioClip onPawnSelectedSound;
+
 	private GameManager gm;
 	private PawnIconStandard selectedIcon;
 
@@ -45,6 +48,7 @@ public class PawnMenu : MonoBehaviour {
 				int costMoney, costSouls;
 				Formulas.PawnCost(selectedIcon.pawnData, out costMoney, out costSouls);
 				retireMoneyText.text = ((int)((costMoney + 2 * costSouls) * 0.2f)).ToString();
+				SoundManager.instance.RandomizeSFX(onPawnSelectedSound);
 			};
 		}
 	}

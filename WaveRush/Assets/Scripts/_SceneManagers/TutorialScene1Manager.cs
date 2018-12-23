@@ -172,12 +172,12 @@ public class TutorialScene1Manager : MonoBehaviour
 		attackingDummy.invincible = true;
 		knight.onParrySuccess += IncrementParryCount;
 		tutorialTaskView.SetCompleted(false);
-		while (parryCount < 5)
+		while (parryCount < 2)
 		{
-			tutorialTaskView.SetText(string.Format("Parry 5 times ({0}/5)", parryCount));
+			tutorialTaskView.SetText(string.Format("Parry 2 times ({0}/2)", parryCount));
 			yield return null;
 		}
-		tutorialTaskView.Init("Parry 5 times (5/5)", true);
+		tutorialTaskView.Init("Parry 2 times (2/2)", true);
 		sound.PlayUISound(taskCompleteSound);
 		yield return new WaitForSeconds(TASK_DELAY_INTERVAL);
 		attackingDummy.invincible = false;

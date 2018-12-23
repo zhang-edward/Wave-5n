@@ -5,34 +5,34 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class NinjaHero : PlayerHero {
-
-	private const float PARRY_SMOKEBOMB_RADIUS = 2;
+	// private const float PARRY_SMOKEBOMB_RADIUS = 2;
+	// private const int MAX_HIT = 3;
 	private const int SHADOW_BACKUP_ACTIONFRAME = 3;
-	private const int MAX_HIT = 5;
+	private const float DASH_DISTANCE = 3.0f;
+	private const float DASH_TIMEOUT = 1.5f;
 
 	[Header("Abilities")]
+	// Dash
+	public PA_Teleport dashTeleportAbility;
+	public PA_CircleCast dashAttackAbility;
+	public PA_Rush rushAbility;
+	// Ninja Star
 	public PA_ShootProjectile ninjaStarAbility;
-	public PA_Teleport 		  dashAbility;
-	public PA_AreaEffect 	  shadowBackupDetector;
-	public PA_EffectCallback  shadowBackup;
+	// Shadow Backup
+	public PA_AreaEffect shadowBackupDetector;
+	public PA_EffectCallback shadowBackup;
 
-	private Projectile lastShotNinjaStar;
-	private Vector3 lastDashOutPos;
-	private Vector3 lastDashInPos;
-	private Queue<Enemy> enemiesToAttack = new Queue<Enemy>();
-
-	private RuntimeObjectPooler projectilePool;
 	[Header("Prefabs")]
 	public GameObject projectilePrefab;
 	public GameObject specialProjectilePrefab;
 	public GameObject smokeBombPrefab;
-	// public int smokeBombRange = 2;
-	public float dashDistance = 4;
+	public ContinuousAnimatedLine lightningTrail;
 
 	[Header("Effects")]
 	public SimpleAnimation hitEffect;
 	public SimpleAnimation smokeBombEffect;
 	public SimpleAnimation ninjaStarAnim;
+	public SimpleAnimation[] shadowBackupEffects;
 
 	[HideInInspector]
 	public bool activatedSpecialAbility = false;
@@ -45,7 +45,14 @@ public class NinjaHero : PlayerHero {
 	public AudioClip powerUpSound;
 	public AudioClip powerDownSound;
 
-	//public int damage = 1;
+	// Private members
+	private Projectile lastShotNinjaStar;
+	private Queue<Enemy> enemiesToAttack = new Queue<Enemy>();
+	private RuntimeObjectPooler projectilePool;
+	private int currentDashIndex;
+	private float dashCooldown;
+
+	// Events
 	public delegate void NinjaCreatedObject(GameObject o);
 	public delegate void NinjaActivatedAbility();
 	public event NinjaActivatedAbility OnNinjaThrewStar;
@@ -54,70 +61,128 @@ public class NinjaHero : PlayerHero {
 	public override void Init(EntityPhysics body, Player player, Pawn heroData)
 	{
 		cooldownTimers = new float[2];
-		base.Init (body, player, heroData);
+		base.Init(body, player, heroData);
 		projectilePool = (RuntimeObjectPooler)projectilePrefab.GetComponent<Projectile>().GetObjectPooler();
 
-		onDragRelease = DashAttack;
-		onTap = NinjaStar;
+		onTap = DoDashAttackSequential;
+		onDragRelease = NinjaStar;
 		InitAbilities();
 	}
 
 	private void InitAbilities()
 	{
-		ninjaStarAbility.Init	 (player, projectilePool);
-		dashAbility.Init		 (player);
+		ninjaStarAbility.Init(player, projectilePool);
+		dashAttackAbility.Init(player, DamageEnemy);
+		dashTeleportAbility.Init(player);
+		rushAbility.Init(player, HandleRushHitEnemy);
 		shadowBackupDetector.Init(player, StartSpawnShadowBackupRoutine);
-		shadowBackup.Init		 (player, SHADOW_BACKUP_ACTIONFRAME);
+		shadowBackup.Init(player, SHADOW_BACKUP_ACTIONFRAME);
 
 		shadowBackup.onFrameReached += HandleShadowBackupFrameReached;
-		dashAbility.OnTeleportIn += OnDashIn;
+		dashTeleportAbility.OnTeleportIn += OnDashIn;
 	}
 
 	protected override void ParryEffect(IDamageable src)
 	{
-		body.Move(UtilMethods.DegreeToVector2(Random.Range(0, 360f)) * 0.5f);
-		SmokeBomb(PARRY_SMOKEBOMB_RADIUS);
 	}
 
-	public void SmokeBomb(float radius)
+	#region FlashStrike
+	private void DoDashAttackSequential(Vector3 dir)
 	{
-		GameObject smokeBomb = Instantiate(smokeBombPrefab, transform.position, Quaternion.identity) as GameObject;
-		EffectPooler.PlayEffect(smokeBombEffect, transform.position, false, 0.2f);
-		smokeBomb.transform.SetParent(ObjectPooler.GetObjectPooler("Effect").transform);
-		smokeBomb.GetComponent<CircleCollider2D>().radius = radius;
-		smokeBomb.GetComponent<EnemyDetectionZone>().SetOnDetectEnemyCallback(StunEnemySmokeBomb);
-		// Particle Properties
-		ParticleSystem particleSystem = smokeBomb.GetComponent<ParticleSystem>();
-		ParticleSystem.ShapeModule shape = particleSystem.shape;
-		ParticleSystem.MinMaxCurve rateOverTime = particleSystem.emission.rateOverTime;
-		shape.radius = radius;
-		rateOverTime.constant = radius * (2 / 5f);
-
+		if (!CheckIfCooledDownNotify(0, HandleTap, dir))
+			return;
+		if (currentDashIndex == 0 || currentDashIndex == 2) {
+			DashAttack(dir);
+		}
+		else
+			RushAttack(dir);
+		currentDashIndex = (currentDashIndex + 1) % 3;
+		if (currentDashIndex == 0)
+		{
+			Invoke(nameof(ResetAnimation), 1.0f);
+			dashCooldown = 0;
+			ResetCooldownTimer(0);
+		}
+		else
+			dashCooldown = DASH_TIMEOUT;
 	}
 
 	private void DashAttack(Vector3 dir)
 	{
-		if (!CheckIfCooledDownNotify(0, HandleDragRelease, dir))
-			return;
-		ResetCooldownTimer (0);
-
 		// Get values
-		float distance = GetDashDistanceClamped(transform.position, dir.normalized);
+		float distance = GetDashDistanceBounded(transform.position, dir.normalized);
 		Vector3 dest = (Vector3)dir.normalized * distance + player.transform.parent.position;
 		// Assign origin and dest
-		lastDashOutPos = transform.position;
-		lastDashInPos = dest;
+		dashAttackAbility.SetCast(transform.position, dir, distance);
+		lightningTrail.Init(transform.position, dest, true);
 		// Execute Ability
-		dashAbility.SetDestination(dest);
-		dashAbility.Execute();
+		dashTeleportAbility.SetDestination(dest);
+		dashTeleportAbility.Execute();
 	}
 
-	public override void SpecialAbility ()
+	private void OnDashIn()
+	{
+		body.rb2d.drag = 9;
+		body.Move(dashAttackAbility.dir.normalized);
+		lightningTrail.CreateLine();
+		if (OnNinjaDash != null)
+			OnNinjaDash();
+		dashAttackAbility.Execute();
+	}
+
+	/// <summary>
+	/// Gets the distance for the dash, bounded to be within the map
+	/// </summary>
+	/// <param name="start"></param>
+	/// <param name="dir"></param>
+	private float GetDashDistanceBounded(Vector3 start, Vector2 dir)
+	{
+		RaycastHit2D hit = Physics2D.Raycast(start, dir, DASH_DISTANCE, 1 << LayerMask.NameToLayer("MapCollider"));
+		if (hit.collider != null)
+		{
+			if (hit.collider.CompareTag("MapBorder"))
+			{
+				//Debug.Log (hit);
+				Debug.DrawRay(start, dir * hit.distance, new Color(1, 1, 1), 5.0f);
+				return hit.distance - 0.5f;     // compensate for linecast starting from middle of body
+			}
+		}
+		Debug.DrawRay(start, dir * DASH_DISTANCE, new Color(1, 1, 1), 5.0f);
+		return DASH_DISTANCE;
+	}
+
+	private void RushAttack(Vector3 dir)
+	{
+		rushAbility.SetDirection(dir);
+		rushAbility.Execute();
+	}
+
+	protected override void Update()
+	{
+		base.Update();
+		if (dashCooldown > 0)
+			dashCooldown -= Time.deltaTime;
+		if (dashCooldown < 0)
+		{
+			dashCooldown = 0;
+			currentDashIndex = 0;
+			ResetCooldownTimer(0);
+			anim.player.ResetToDefault();
+		}
+	}
+
+	private void ResetAnimation()
+	{
+		anim.player.ResetToDefault();
+	}
+	#endregion
+
+	public override void SpecialAbility()
 	{
 		if (specialAbilityCharge < SPECIAL_ABILITY_CHARGE_CAPACITY || activatedSpecialAbility)
 			return;
-		dashAbility.OnTeleportIn += DetectShadowBackup;
-		Invoke ("ResetSpecialAbility", 5.0f);
+		dashTeleportAbility.OnTeleportIn += DetectShadowBackup;
+		Invoke("ResetSpecialAbility", 5.0f);
 	}
 
 	private void DetectShadowBackup()
@@ -135,9 +200,10 @@ public class NinjaHero : PlayerHero {
 	{
 		yield return new WaitForSeconds(Random.Range(0, 1f));
 		enemiesToAttack.Enqueue(e);
-		float f = UtilMethods.RandSign();	// Which side the shadow attacks from
-		// Set action properties and execute
+		float f = UtilMethods.RandSign();   // Which side the shadow attacks from
+											// Set action properties and execute
 		Vector3 position = e.transform.position + new Vector3(f * 0.5f, 0); // offset sprite
+		shadowBackup.effect = shadowBackupEffects[Random.Range(0, shadowBackupEffects.Length)];
 		shadowBackup.SetPosition(position);
 		shadowBackup.Execute();
 		// Set effect properties
@@ -155,7 +221,7 @@ public class NinjaHero : PlayerHero {
 
 	private void ResetSpecialAbility()
 	{
-		dashAbility.OnTeleportIn -= shadowBackupDetector.Execute;
+		dashTeleportAbility.OnTeleportIn -= shadowBackupDetector.Execute;
 	}
 
 	private void NinjaStar(Vector3 dir)
@@ -174,13 +240,14 @@ public class NinjaHero : PlayerHero {
 		ninjaStarAbility.Execute();
 
 		Projectile ninjaStar = ninjaStarAbility.GetProjectile();
-		ninjaStar.GetComponentInChildren<DamageAction>().damage = Mathf.CeilToInt(damage * 1.5f);
-		ninjaStar.OnDamagedTarget += PoisonEnemy;
+		ninjaStar.GetComponentInChildren<DamageAction>().damage = Mathf.CeilToInt(damage);
 		lastShotNinjaStar = ninjaStar;
 
 		// set direction
-		body.Move(dir);
-		body.rb2d.velocity = Vector2.zero;
+		body.rb2d.drag = 10f;
+		body.moveSpeed = 5;
+		body.Move(dir.normalized * 3f);
+		anim.Play("Shoot");
 
 		if (OnNinjaThrewStar != null)
 			OnNinjaThrewStar();
@@ -188,73 +255,26 @@ public class NinjaHero : PlayerHero {
 
 	public GameObject InitNinjaStar(Vector2 dir)
 	{
-		Projectile ninjaStar = projectilePool.GetPooledObject ().GetComponent<Projectile>();
-		ninjaStar.Init (transform.position, dir, player);
+		Projectile ninjaStar = projectilePool.GetPooledObject().GetComponent<Projectile>();
+		ninjaStar.Init(transform.position, dir, player);
 		return ninjaStar.gameObject;
 	}
 
-	/// <summary>
-	/// Do the circle cast attack with origin being the original player position and dest
-	/// the final player position before and after the dash attack
-	/// </summary>
-	/// <param name="origin">Origin.</param>
-	/// <param name="dest">Destination.</param>
-	private void OnDashIn()
+	private void HandleRushHitEnemy(Enemy e)
 	{
-		//body.Move (dir.normalized);		
-
-		if (OnNinjaDash != null)
-			OnNinjaDash();
-
-		// Do Dash circle cast
-		bool damagedEnemy = false;
-		int numEnemiesHit = 0;
-		RaycastHit2D[] hits = Physics2D.CircleCastAll (lastDashOutPos, 0.5f, (lastDashInPos - lastDashOutPos), dashDistance);
-		foreach (RaycastHit2D hit in hits)
-		{
-			if (hit.collider.CompareTag("Enemy"))
-			{
-				numEnemiesHit++;
-				if (numEnemiesHit < MAX_HIT)
-				{
-					damagedEnemy = true;
-					Enemy e = hit.collider.GetComponentInChildren<Enemy> ();
-					DamageEnemy (e);
-				}
-			}
-		}
-		if (damagedEnemy)
-		{
-			SoundManager.instance.PlaySingle(hitSounds[Random.Range(0, hitSounds.Length)]);
-			cooldownTimers[1] -= 0.5f;
-		}
-	}
-
-	private float GetDashDistanceClamped(Vector3 start, Vector2 dir)
-	{
-		RaycastHit2D hit = Physics2D.Raycast (start, dir, dashDistance, 1 << LayerMask.NameToLayer("MapCollider"));
-		if (hit.collider != null)
-		{
-			if (hit.collider.CompareTag ("MapBorder"))
-			{
-				//Debug.Log (hit);
-				Debug.DrawRay(start, dir * hit.distance, new Color(1, 1, 1), 5.0f);
-				return hit.distance - 0.5f;		// compensate for linecast starting from middle of body
-			}
-		}
-		Debug.DrawRay(start, dir * dashDistance, new Color(1, 1, 1), 5.0f);
-		return dashDistance;
+		DamageEnemy(e);
+		// LightningEnemy(e);
 	}
 
 	public void DamageEnemy(Enemy e)
 	{
 		if (!e.invincible && e.health > 0)
 		{
-			e.Damage (damage, player);
+			e.Damage(damage, player, true);
 			EffectPooler.PlayEffect(hitEffect, e.transform.position, true, 0.2f);
 
 			player.TriggerOnEnemyDamagedEvent(damage);
-			player.TriggerOnEnemyLastHitEvent (e);
+			player.TriggerOnEnemyLastHitEvent(e);
 		}
 	}
 
@@ -279,16 +299,30 @@ public class NinjaHero : PlayerHero {
 
 	}
 
-	protected override Quests.Quest UnlockQuest(HeroTier tier) {
-		switch (tier) {
+	private void LightningEnemy(IDamageable damageable)
+	{
+		Enemy e = (Enemy)damageable;
+		GameObject o = Instantiate(StatusEffectContainer.instance.GetStatus("Lightning"));
+		LightningStatus lightning = o.GetComponent<LightningStatus>();
+		lightning.duration = 5f;
+		lightning.lightningBounceRange = 5.0f;
+		lightning.numBounces = 2;
+		lightning.damage = (int)(noiselessDamage);
+		e.AddStatus(o);
+	}
+
+	protected override Quests.Quest UnlockQuest(HeroTier tier)
+	{
+		switch (tier)
+		{
 			case HeroTier.tier1:
 				return null;
 			case HeroTier.tier2:
 				return null;
 			case HeroTier.tier3:
-				return null;	// TODO: Do this
+				return null;    // TODO: Do this
 			default:
 				return null;
-		}	
+		}
 	}
 }

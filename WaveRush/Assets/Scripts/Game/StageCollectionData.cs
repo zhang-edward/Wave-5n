@@ -7,7 +7,7 @@ public class StageCollectionData : ScriptableObject {
 	public string collectionName;
 	public StageSeriesData[] series;
 	
-	public Dictionary<string, StageSeriesData> seriesDict;
+	public Dictionary<string, StageSeriesData> seriesDict = new Dictionary<string, StageSeriesData>();
 
 	void Awake() {
 		for (int i = 0; i < series.Length; i ++) {

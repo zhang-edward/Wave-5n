@@ -23,6 +23,10 @@ public class PawnShopMenu : MonoBehaviour
 	public Animator resourceReqsAnim;
 	public TMP_Text refreshTimerText;
 	public PawnInfoPanel infoPanel;
+	[Header("Audio")]
+	public AudioClip onPawnSelectedSound;
+	public AudioClip onRecruitFailedSound;
+	public AudioClip onRecruitSuccessSound;
 
 	private int selectedPawnCostMoney;
 	private int selectedPawnCostSouls;
@@ -110,10 +114,12 @@ public class PawnShopMenu : MonoBehaviour
 		if (selectedPawnCostMoney > gm.save.money ||
 			selectedPawnCostSouls > gm.save.souls) {
 			resourceReqsAnim.Play("Warning", -1);
+			SoundManager.instance.PlaySingle(onRecruitFailedSound);
 		}
 		// Not enough room in party
 		else if (!gm.save.AddPawn(selectedIcon.pawnData)) {
 			gm.DisplayAlert("You can't recruit any more pawns!");
+			SoundManager.instance.PlaySingle(onRecruitFailedSound);
 		}
 		else {
 			gm.save.TrySpendMoney(selectedPawnCostMoney);
@@ -121,6 +127,7 @@ public class PawnShopMenu : MonoBehaviour
 			selectedIcon.button.interactable = false;
 			pawnShop.RemovePawn(selectedIcon.pawnData);
 			DeselectIcon();
+			SoundManager.instance.PlaySingle(onRecruitSuccessSound);
 		}
 	}
 
@@ -153,6 +160,7 @@ public class PawnShopMenu : MonoBehaviour
 					SelectIcon(pawnIcon);
 				else
 					DeselectIcon();
+				SoundManager.instance.RandomizeSFX(onPawnSelectedSound);
 			};
 		}
 	}

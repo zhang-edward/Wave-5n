@@ -41,6 +41,7 @@ GameObject:
   - component: {fileID: 95843551962522880}
   - component: {fileID: 114654390598250050}
   - component: {fileID: 114939112015740164}
+  - component: {fileID: 114035401268365288}
   m_Layer: 5
   m_Name: StageSeriesIcon
   m_TagString: Untagged
@@ -84,6 +85,20 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &114035401268365288
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1549340328265002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0517fa5d90d3d41f588d9e96efa35e04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clips:
+  - {fileID: 8300000, guid: 2a4bf4489cd334011b1c816f4ce233cf, type: 3}
+  - {fileID: 8300000, guid: 18e8a771dc1cc442c807fcab05004050, type: 3}
 --- !u!114 &114219043817336434
 MonoBehaviour:
   m_ObjectHideFlags: 1

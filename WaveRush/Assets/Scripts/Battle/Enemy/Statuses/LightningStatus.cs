@@ -5,6 +5,7 @@ public class LightningStatus : EnemyStatus
 {
 	public float lightningBounceRange = 5.0f;
 	public int numBounces = 3;
+	public int damage = 1;
 	public GameObject lightningBoltPrefab;
 	[Header("Arc Effect")]
 	public SimpleAnimation[] lightningArcAnimations;
@@ -41,13 +42,12 @@ public class LightningStatus : EnemyStatus
 		//enemy.sr.color = Color.white;
 		anim.enabled = false;
 
-		Deactivate(1f);
+		Deactivate(0.5f);
 	}
 
 	private void LightningArcEffect()
 	{
-		anim.anim = lightningArcAnimations [Random.Range (0, lightningArcAnimations.Length)];
-		anim.Play ();
+		anim.Play(lightningArcAnimations[Random.Range(0, lightningArcAnimations.Length)]);
 	}
 
 	private void Bounce()
@@ -65,7 +65,7 @@ public class LightningStatus : EnemyStatus
 					GameObject toAdd = Instantiate (this.gameObject);
 					toAdd.GetComponent<LightningStatus> ().numBounces = numBounces - 1;
 					e.AddStatus (toAdd);
-					e.Damage (1, null);
+					e.Damage (damage, null);
 
 					lightning.Init (transform.position, e.transform.position);
 

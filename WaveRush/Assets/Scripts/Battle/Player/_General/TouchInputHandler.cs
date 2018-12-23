@@ -94,8 +94,6 @@ public class TouchInputHandler : MonoBehaviour {
 
 	public void HandleTouchHeld(Vector2 viewportPos)
 	{
-		if (!touchStarted)
-			return;
 		float touchTime = Time.time - touchStartTime;
 		if (isDragging)
 			OnDragHold(viewportPos - touchStartPos);

@@ -14,7 +14,7 @@ namespace PlayerActions
 		public bool		loseMomentum;					// Whether or not this ability causes the player to stand still
 		public bool		disableInput = true;
 		public Vector2  startPos { protected get; set; }	// The position of the area effect
-		public Vector2  dir { protected get; set; }
+		public Vector2  dir { get; set; }
 		public float	distance { protected get; set; }
 		[Header("Effects and SFX")]
 		public AudioClip circleCastSound;
@@ -40,12 +40,12 @@ namespace PlayerActions
 			this.distance = distance;
 		}
 
-		protected override void DoAction()
-		{
+		protected override void DoAction() {
 			// Sound
 			sound.RandomizeSFX(circleCastSound);
 			// Animation
-			hero.anim.Play(circleCastState);
+			if (circleCastState != "")
+				hero.anim.Play(circleCastState);
 			// Player properties
 			if (disableInput)
 				player.inputDisabled.Add(duration);
@@ -58,7 +58,6 @@ namespace PlayerActions
 			int numEnemiesHit = 0;
 			if (OnHitEnemy != null) {
 				foreach(Enemy e in hitEnemies) {
-					Debug.Log (e.transform.parent);
 					if (numEnemiesHit < maxHit) {
 						OnHitEnemy(e);
 						numEnemiesHit ++;

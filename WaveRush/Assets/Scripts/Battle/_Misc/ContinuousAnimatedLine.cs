@@ -9,15 +9,15 @@ public class ContinuousAnimatedLine : MonoBehaviour {
 	public float segmentWidth;		// the width of one lightning bolt segment
 	private Vector3 start, end;
 
-	public void Init(Vector3 start, Vector3 end)
+	public void Init(Vector3 start, Vector3 end, bool initOnly = false)
 	{
 		this.start = start;
 		this.end = end;
-
-		CreateBolt ();
+		if (!initOnly)
+			CreateLine ();
 	}
 
-	public void CreateBolt()
+	public void CreateLine()
 	{
 		GameObject startHead = Instantiate (boltHead, start, Quaternion.identity) as GameObject;
 		GameObject endHead = Instantiate (boltHead, end, Quaternion.identity) as GameObject;

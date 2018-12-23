@@ -108,6 +108,7 @@ public class BowmanHero : PlayerHero {
 		onTapHoldDown = ChargePiercingArrow;
 		onTap = PiercingArrow;
 		onDragRelease = Retreat;
+		player.OnPlayerDamaged += InterruptCharge;
 	}
 
 	private void InitAbilities() {
@@ -138,11 +139,16 @@ public class BowmanHero : PlayerHero {
 		body.rb2d.drag = CHARGE_DRAG;
 		// Set input listener on charge
 		onDragRelease = null;
-		onTouchEnded = PiercingArrow;
+		onTouchEnded = PiercingArrow;		// Want the "touch ended" dir, not the "drag release" dir
 		onDragHold = ChargePiercingArrow;
 		body.Move(Vector2.zero, 0);	// Cancel movement
 		// Set drag indicator
 		dragIndicatorEnabled = false;
+	}
+
+	private void InterruptCharge(int foo) {
+		piercingArrowCharge = 0;
+		piercingArrowChargeLevel = 0;
 	}
 
 	private void PiercingArrow(Vector3 dir) {

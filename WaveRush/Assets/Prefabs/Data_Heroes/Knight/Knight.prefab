@@ -111,15 +111,15 @@ MonoBehaviour:
   hitDisableTime: 0.2
   maxComboTimer: 10
   cooldownTime:
-  - 1.25
+  - 1.5
   - 25
   rushAbility:
     duration: 0.5
     movement:
       duration: 0
-      speed: 14
-      time: 0.2
-      drag: 7
+      speed: 9
+      time: 0.3
+      drag: 6
     effect:
       duration: 0.4
       effect:
@@ -132,6 +132,7 @@ MonoBehaviour:
       offsetMatchesFlipX: 0
     collision: {fileID: 114649125542082660}
     lockInput: 0
+    persistAnimation: 0
     maxHit: 5
     rushState: Rush
     rushSound: {fileID: 8300000, guid: 9ee280140e1df47e2a5dc4600c92da89, type: 3}
@@ -179,6 +180,7 @@ MonoBehaviour:
         offsetMatchesFlipX: 0
       collision: {fileID: 114844941905777280}
       lockInput: 1
+      persistAnimation: 0
       maxHit: 20
       rushState: Rush
       rushSound: {fileID: 8300000, guid: 82456ad0590664622b80d1eed4b6717e, type: 3}
@@ -194,7 +196,7 @@ MonoBehaviour:
     - {fileID: 21300006, guid: 45778dbe309ae4b08932278db1b2c7dc, type: 3}
     - {fileID: 21300008, guid: 45778dbe309ae4b08932278db1b2c7dc, type: 3}
     - {fileID: 21300010, guid: 45778dbe309ae4b08932278db1b2c7dc, type: 3}
-    fps: 15
+    fps: 10
   specialHitAnim:
     animationName: SpecialHit
     frames:

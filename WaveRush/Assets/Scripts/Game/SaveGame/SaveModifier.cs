@@ -13,7 +13,13 @@ public class SaveModifier {
 	public int souls { get { return wallet.souls; } }
 	public Pawn[] pawns { get { return pawnWallet.pawns; } }
 
+	/// <summary>
+	/// Latest incomplete series index
+	/// </summary>
 	public int LatestSeriesIndex  { get { return sg.saveDict[SaveGame.LATEST_UNLOCKED_SERIES_INDEX_KEY]; } }
+	/// <summary>
+	/// Latest incomplete stage index
+	/// </summary>
 	public int LatestStageIndex   { get { return sg.saveDict[SaveGame.LATEST_UNLOCKED_STAGE_INDEX_KEY] ; } }
 	public bool[] UnlockedHeroes  { get { return sg.unlockedHeroes; } }
 	public string[] UnlockedSkins { get { return sg.unlockedSkins; } }
