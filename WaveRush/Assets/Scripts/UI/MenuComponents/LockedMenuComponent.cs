@@ -22,6 +22,6 @@ public class LockedMenuComponent : MonoBehaviour {
 	}
 
 	private bool CheckStage() {
-		return gm.save.LatestSeriesIndex >= series || (gm.save.LatestSeriesIndex == series && gm.save.LatestStageIndex >= stage);
+		return gm.save.LatestSeriesIndex > series || (gm.save.LatestSeriesIndex == series && gm.save.LatestStageIndex >= stage);
 	}	
 }

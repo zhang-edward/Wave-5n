@@ -1,13 +1,13 @@
 fileFormatVersion: 2
-guid: f2d4488bff83747d594eddf9297d2304
+guid: 89bf2980b530741eab648c29e976ae2f
 TextureImporter:
   fileIDToRecycleName:
-    21300000: knight_specialHit_0
-    21300002: knight_specialHit_1
-    21300004: knight_specialHit_2
-    21300006: knight_specialHit_3
-    21300008: knight_specialHit_4
-    21300010: knight_specialHit_5
+    21300000: hit_knight_shield_0
+    21300002: hit_knight_shield_1
+    21300004: hit_knight_shield_2
+    21300006: hit_knight_shield_3
+    21300008: hit_knight_shield_4
+    21300010: hit_knight_shield_5
   externalObjects: {}
   serializedVersion: 7
   mipmaps:
@@ -112,13 +112,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: knight_specialHit_0
+      name: hit_knight_shield_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 32
-        height: 32
+        width: 24
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -126,19 +126,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1d70ac92189d14d9a812edb662c7c531
+      spriteID: 91542ba2cbdf84ea1b43d150202cf3be
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: knight_specialHit_1
+      name: hit_knight_shield_1
       rect:
         serializedVersion: 2
-        x: 32
+        x: 24
         y: 0
-        width: 32
-        height: 32
+        width: 24
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -146,19 +146,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 20ff939d103fe4af485dddbe4d849cfb
+      spriteID: 3bbe4072acb924403bd7adf6abb1156d
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: knight_specialHit_2
+      name: hit_knight_shield_2
       rect:
         serializedVersion: 2
-        x: 64
+        x: 48
         y: 0
-        width: 32
-        height: 32
+        width: 24
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -166,19 +166,39 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2e7b0e7790eea482591c672fcb1e2abc
+      spriteID: d4c56d3c7c42444e0b7db714371bd5a1
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: knight_specialHit_3
+      name: hit_knight_shield_3
+      rect:
+        serializedVersion: 2
+        x: 72
+        y: 0
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c7442ea4585f44ae29fa9f24fdaba8d8
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hit_knight_shield_4
       rect:
         serializedVersion: 2
         x: 96
         y: 0
-        width: 32
-        height: 32
+        width: 24
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -186,19 +206,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 87779239e027c44ffa91307f2b9ab643
+      spriteID: 39adc60d5545d47cb9937c86b2faab40
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: knight_specialHit_4
+      name: hit_knight_shield_5
       rect:
         serializedVersion: 2
-        x: 128
+        x: 120
         y: 0
-        width: 32
-        height: 32
+        width: 24
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -206,27 +226,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 831dae63afafe4cd0a9e54fa29ff09db
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: knight_specialHit_5
-      rect:
-        serializedVersion: 2
-        x: 160
-        y: 0
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 4955ee261183d40ccafd73696b31ed3f
+      spriteID: fa2a208b9e60941b9832f008f8efcd70
       vertices: []
       indices: 
       edges: []
@@ -234,7 +234,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: f7457916aa37a4fdd805267c80e60d1d
+    spriteID: 363931addc4a0438eab93acf347a0dc1
     vertices: []
     indices: 
     edges: []

@@ -98,7 +98,6 @@ public abstract class PlayerHero : MonoBehaviour {
 		// AnimationSet
 		anim = heroData.GetAnimationSet();
 		anim.Init(player.animPlayer);
-		anim.player.Init();
 
 		stats = heroData.GetStatsArray();
 		level = heroData.level;

@@ -46,7 +46,8 @@ public class KnightHero : PlayerHero {
 
 	[Header("Abilities")]
 	public PA_Rush rushAbility;
-	public PA_AreaEffect areaAttackAbility;
+	public PA_AreaEffect areaAttractEffect;
+	public PA_AreaEffect areaAttackEffect;
 	public PA_SpecialRush specialRushAbility;
 	[Header("Effects")]
 	public GameObject rushEffect;
@@ -54,8 +55,11 @@ public class KnightHero : PlayerHero {
 	public GameObject shieldIndicator;
 	[Header("Animation")]
 	public SimpleAnimation hitEffect;
-	public SimpleAnimation specialHitAnim;
+	public SimpleAnimation specialHitEffect;
+	public SimpleAnimation shieldAttackEffect;
 	public SimpleAnimation shieldHitAnim;
+	public AnimationSet shieldAnimSet;
+	public AnimationSetPlayer shieldAnimPlayer;
 	[Header("Audio")]
 	public AudioClip[] hitSounds;
 	public AudioClip[] specialHitSounds;
@@ -93,7 +97,7 @@ public class KnightHero : PlayerHero {
 		InitAbilities();
 		// Handle input
 		onDragRelease = Rush;
-		onTap = AreaAttack;
+		onTap = ActivateShield;
 		player.OnPlayerTryHit += CheckKnightShieldHit;
 
 		// Instantiate meter
@@ -106,12 +110,14 @@ public class KnightHero : PlayerHero {
 		}
 		o.GetComponent<KnightShieldMeter>().Init(this);
 		customUI.Add(o);
+		shieldAnimSet.Init(shieldAnimPlayer);
 	}
 
 	private void InitAbilities()
 	{
 		rushAbility.Init	   (player, onHitEnemyCallback: HandleRushHitEnemy);
-		areaAttackAbility.Init (player, onHitEnemyCallback: (enemy) => { PushEnemyBack(enemy, 10f, 0.25f); });
+		areaAttractEffect.Init (player, onHitEnemyCallback: (enemy) => { PushEnemyBack(enemy, -10f, 0.25f); });
+		areaAttackEffect.Init  (player, onHitEnemyCallback: (enemy) => { DamageEnemy(enemy, damage, shieldHitAnim, false, specialHitSounds); });
 		specialRushAbility.Init(player, onHitEnemyCallback: HandleSpecialOnDamageEnemy);
 			specialRushAbility.specialRush.OnExecutedAction += () => { 
 			specialAbilityCharge = 0; 
@@ -127,10 +133,18 @@ public class KnightHero : PlayerHero {
 		base.Update();
 		if (shieldTimer > 0)
 		{
+			// Shield Timer
 			shieldIndicator.SetActive(true);
 			shieldTimer -= Time.deltaTime;
 			if (shieldTimer <= 0) {
 				DestroyShield();
+			}
+			// Shield Animation
+			if (!shieldAnimPlayer.isPlaying) {
+				if (shieldHealth == 2)
+					shieldAnimSet.Play("Flash");
+				else if (shieldHealth == 1)
+					shieldAnimSet.Play("Flash2");
 			}
 		}
 		timeSinceLastShieldHit += Time.deltaTime;
@@ -155,24 +169,75 @@ public class KnightHero : PlayerHero {
 			OnKnightRush();
 	}
 
-	public void AreaAttack(Vector3 dir)
+#region Shield
+	public void ActivateShield(Vector3 dir)
 	{
 		// check cooldown
 		if (!CheckIfCooledDownNotify (1))
 			return;
-		ResetCooldownTimer (1);
-		sound.RandomizeSFX(shieldSound);
-		// Play the indicator effect
-		shieldIndicator.SetActive(false);
-		shieldIndicator.SetActive(true);
-		// Properties
-		AddShieldTimer(SHIELD_TIME);
-		// areaAttackAbility.SetPosition(transform.position);
-		// areaAttackAbility.Execute();
+
+		// Action to take if player doesn't have shield up yet
+		if (shieldTimer <= 0) {
+			// Animation
+			shieldAnimSet.Play("In");
+			// Properties
+			AddShieldTimer(SHIELD_TIME);
+			areaAttractEffect.SetPosition(transform.position);
+			areaAttractEffect.Execute();
+		}
+		// Action to take if player does have shield up
+		else {
+			// Animation
+			shieldAnimSet.Play("Attack");
+			// Properties
+			DestroyShield();
+			areaAttackEffect.SetPosition(transform.position);
+			areaAttackEffect.Execute();
+			ResetCooldownTimer(1);
+		}
 
 		if (OnKnightShield != null)
 			OnKnightShield();
 	}
+
+	public void AddShieldTimer(float amt)
+	{
+		shieldTimer += amt;
+		shieldHealth = SHIELD_MAXHEALTH;
+		shieldTimerId = player.invincibility.Add(shieldTimer);
+	}
+
+	private void CheckKnightShieldHit(IDamageable source)
+	{
+		if (shieldTimer <= 0 || timeSinceLastShieldHit < 0.2f)
+			return;
+		// EffectPooler.PlayEffect(shieldHitAnim, transform.position, false, 0.2f);
+		shieldAnimSet.Play("Damage");
+		sound.RandomizeSFX(shieldHitSound);
+
+		Enemy e = source as Enemy;
+		if (e != null && Vector2.Distance(transform.position, e.transform.position) < 2f)
+		{
+			PushEnemyBack(e, 4f, 0.5f);
+		}
+		timeSinceLastShieldHit = 0;
+		shieldHealth--;
+		if (shieldHealth <= 0) {
+			shieldAnimSet.Play("Out");
+			DestroyShield();
+		}
+		if (OnKnightShieldHit != null)
+			OnKnightShieldHit(source);
+	}
+
+	private void DestroyShield()
+	{
+		shieldTimer = 0;
+		// shieldIndicator.GetComponent<IndicatorEffect>().AnimateOut();
+		player.invincibility.RemoveTimer(shieldTimerId);
+		player.invincibility.Add(0.5f);     // Add a little invincibility after shield is broken to prevent any cheap hits from active hitboxes
+	}
+#endregion
 
 	public override void SpecialAbility () {
 		if (specialAbilityCharge < SPECIAL_ABILITY_CHARGE_CAPACITY || specialActivated)
@@ -214,7 +279,7 @@ public class KnightHero : PlayerHero {
 
 		// Damage enemy
 		if (TryCriticalDamage(ref damageDealt))
-			DamageEnemy(e, damageDealt, specialHitAnim, true, specialHitSounds);
+			DamageEnemy(e, damageDealt, specialHitEffect, true, specialHitSounds);
 		else
 			DamageEnemy(e, damageDealt, hitEffect, false, hitSounds);
 		
@@ -226,7 +291,7 @@ public class KnightHero : PlayerHero {
 	private void HandleSpecialOnDamageEnemy(Enemy e)
 	{
 		int specialDamage = Mathf.RoundToInt(damage * 1.5f);
-		DamageEnemy(e, specialDamage, specialHitAnim, true, specialHitSounds);
+		DamageEnemy(e, specialDamage, specialHitEffect, true, specialHitSounds);
 	}
 
 	public void DamageEnemy(Enemy e, int dmg, SimpleAnimation effect, bool tempSlowDown, AudioClip[] sfx)
@@ -246,39 +311,6 @@ public class KnightHero : PlayerHero {
 				CameraControl.instance.StartFlashColor(Color.white, 0.5f, 0, 0, 1.0f);
 			}
 		}
-	}
-
-	public void AddShieldTimer(float amt)
-	{
-		shieldTimer += amt;
-		shieldHealth = SHIELD_MAXHEALTH;
-		shieldTimerId = player.invincibility.Add(shieldTimer);
-	}
-
-	private void CheckKnightShieldHit(IDamageable source)
-	{
-		if (shieldTimer <= 0 || timeSinceLastShieldHit < 0.2f)
-			return;
-		EffectPooler.PlayEffect(shieldHitAnim, transform.position, false, 0.2f);
-		sound.RandomizeSFX(shieldHitSound);
-
-		Enemy e = source as Enemy;
-		if (e != null && Vector2.Distance(transform.position, e.transform.position) < 2f) {
-			PushEnemyBack(e, 4f, 0.5f);
-		}
-		timeSinceLastShieldHit = 0;
-		shieldHealth --;
-		if (shieldHealth <= 0)
-			DestroyShield();
-		if (OnKnightShieldHit != null)
-			OnKnightShieldHit(source);
-	}
-
-	private void DestroyShield () {
-		shieldTimer = 0;
-		shieldIndicator.GetComponent<IndicatorEffect>().AnimateOut();
-		player.invincibility.RemoveTimer(shieldTimerId);
-		player.invincibility.Add(0.5f);		// Add a little invincibility after shield is broken to prevent any cheap hits from active hitboxes
 	}
 
 	public void PushEnemyBack(Enemy e, float strength, float time) {

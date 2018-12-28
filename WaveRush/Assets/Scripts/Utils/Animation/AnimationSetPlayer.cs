@@ -6,20 +6,12 @@ public class AnimationSetPlayer : SimpleAnimationPlayer
 	public AnimationSetAnim defaultAnim;
 	public bool willResetToDefault = true;
 
-	public void Init() {
-		StartCoroutine(ResetToDefaultAnimation());	
-	}
-
-	private IEnumerator ResetToDefaultAnimation()
+	void Update()
 	{
-		for (;;)
+		if (!isPlaying && willResetToDefault)
 		{
-			if (!isPlaying && willResetToDefault)
-			{
-				looping = true;
-				Play(defaultAnim);
-			}
-			yield return null;
+			looping = true;
+			Play(defaultAnim);
 		}
 	}
 

@@ -114,7 +114,6 @@ public class Enemy : MonoBehaviour, IDamageable {
 
 		// Animation
 		anim.Init(animationSetPlayer);
-		animationSetPlayer.Init();
 
 		// Movement and action
 		movementMethod.Init(this, playerTransform);		

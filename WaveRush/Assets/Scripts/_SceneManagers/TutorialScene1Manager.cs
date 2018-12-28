@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class TutorialScene1Manager : MonoBehaviour
 {
@@ -37,7 +38,7 @@ public class TutorialScene1Manager : MonoBehaviour
 
 	private KnightHero knight;
 	private PlayerHero.DirectionalInputAction storedOnSwipe, storedOnTap;
-
+	private List<Enemy> dummies = new List<Enemy>();
 	private int knightRushCount;
 	private int knightShieldCount;
 	private int parryCount;
@@ -102,6 +103,12 @@ public class TutorialScene1Manager : MonoBehaviour
 
 		/** Step -1: Learn swipe controls */
 		tutorialTaskView.SetCompleted(false);
+		// Spawn training dummies
+		for (int i = 0; i <= 1; i ++) {
+			for (int j = 0; j <= 1; j ++) {
+				dummies.Add(enemyManager.SpawnEnemy(trainingDummyPrefab, map.CenterPosition + new Vector3(i * 1.5f, j * 1.5f)).GetComponentInChildren<Enemy>());
+			}
+		}
 		while (knightRushCount < 3)
 		{
 			tutorialTaskView.SetText(string.Format("Use your Rush Ability 3 times ({0}/3)", knightRushCount));
@@ -120,7 +127,7 @@ public class TutorialScene1Manager : MonoBehaviour
 		yield return new WaitUntil(() => !dialogueView.dialoguePlaying);
 		cam.ResetFocus();
 
-		tutorialTaskView.Init("Use your Shield Ability", false);
+		tutorialTaskView.Init("Use your Shield Ability (0/2)", false);
 		//controlPointer.gameObject.SetActive(true);
 		//controlPointer.CrossFade("Tap", 0f);
 		//abilitiesBar.abilityIcons[1].FlashHighlight(Color.white);
@@ -129,19 +136,23 @@ public class TutorialScene1Manager : MonoBehaviour
 		knight.OnKnightShield += IncrementShieldCount;
 
 		/** Tip about cooldown timers */
-		while (knightShieldCount < 1)
+		while (knightShieldCount < 2) {
+			tutorialTaskView.SetText(string.Format("Use your Shield Ability ({0}/2)", knightShieldCount));
 			yield return null;
+		}
+		tutorialTaskView.Init("Use your Shield Ability (2/2)", true);
 		yield return new WaitForSecondsRealtime(1.0f);
 		highlighter.Highlight(abilitiesBar.abilityIcons[1].image.rectTransform.position,
 							  abilitiesBar.abilityIcons[1].image.rectTransform.sizeDelta);
 		tipText.UpdateText("Keep an eye on your cooldown timers. You can't use an ability while it is cooling down!");
 		while (highlighter.gameObject.activeInHierarchy)
 			yield return null;
-
-		tutorialTaskView.Init("Use your Shield Ability", true);
-		sound.PlayUISound(taskCompleteSound);
-		yield return new WaitForSeconds(TASK_DELAY_INTERVAL);
 		abilitiesBar.abilityIcons[1].StopFlashHighlight();
+		sound.PlayUISound(taskCompleteSound);
+		foreach (Enemy dummy in dummies) {
+			dummy.Damage(999, null);
+		}
+		yield return new WaitForSeconds(TASK_DELAY_INTERVAL);
 		//controlPointer.gameObject.SetActive(false);
 		knightShieldCount = 0;
 		knight.OnKnightShield -= IncrementShieldCount;
@@ -181,7 +192,7 @@ public class TutorialScene1Manager : MonoBehaviour
 		sound.PlayUISound(taskCompleteSound);
 		yield return new WaitForSeconds(TASK_DELAY_INTERVAL);
 		attackingDummy.invincible = false;
-		attackingDummy.GetComponentInChildren<Enemy>().Damage(999, null);
+		attackingDummy.Damage(999, null);
 		parryCount = 0;
 		knight.onParrySuccess -= IncrementParryCount;
 		yield return new WaitForSeconds(TASK_DELAY_INTERVAL);
