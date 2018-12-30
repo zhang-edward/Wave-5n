@@ -348,14 +348,11 @@ public class Player : MonoBehaviour, IDamageable
 			Time.timeScale = 1;
 	}
 
-	public void StartTempSlowDown(float time)
-	{
-		StartCoroutine (TempSlowDown(time));
-	}
+	public void StartTempSlowDown(float time, float timeScale = 0.2f) { StartCoroutine (TempSlowDown(time, timeScale)); }
 
-	private IEnumerator TempSlowDown(float time)
+	private IEnumerator TempSlowDown(float time, float timeScale)
 	{
-		Time.timeScale = 0.2f;
+		Time.timeScale = timeScale;
 		yield return new WaitForSecondsRealtime (time);
 		Time.timeScale = 1f;
 	}

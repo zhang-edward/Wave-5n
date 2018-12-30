@@ -292,6 +292,7 @@ public abstract class PlayerHero : MonoBehaviour {
 		player.invincibility.Add(1.0f);
 		player.sr.color = Color.white;
 		player.OnPlayerTryHit -= Parry;
+		player.StartTempSlowDown(0.1f, 0);
 		StopCoroutine(listenForParryRoutine);
 		// Sound
 		sound.PlaySingle(player.parrySuccessSound);

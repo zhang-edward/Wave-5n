@@ -45,6 +45,7 @@ public class KnightHero : PlayerHero {
 	public const int   SHIELD_MAXHEALTH = 4;
 
 	[Header("Abilities")]
+	public PA_Animate rushAnticipation;
 	public PA_Rush rushAbility;
 	public PA_AreaEffect areaAttractEffect;
 	public PA_AreaEffect areaAttackEffect;
@@ -115,6 +116,10 @@ public class KnightHero : PlayerHero {
 
 	private void InitAbilities()
 	{
+		rushAnticipation.Init  (player);
+		rushAnticipation.OnActionFinished += () => {
+			rushAbility.Execute();
+		};
 		rushAbility.Init	   (player, onHitEnemyCallback: HandleRushHitEnemy);
 		areaAttractEffect.Init (player, onHitEnemyCallback: (enemy) => { PushEnemyBack(enemy, -10f, 0.25f); });
 		areaAttackEffect.Init  (player, onHitEnemyCallback: (enemy) => { DamageEnemy(enemy, damage, shieldHitAnim, false, specialHitSounds); });
@@ -164,7 +169,7 @@ public class KnightHero : PlayerHero {
 			return;
 		ResetCooldownTimer (0);
 		rushAbility.SetDirection(dir);
-		rushAbility.Execute();
+		rushAnticipation.Execute();
 		if (OnKnightRush != null)
 			OnKnightRush();
 	}
