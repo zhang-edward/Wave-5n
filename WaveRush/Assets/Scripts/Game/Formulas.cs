@@ -18,6 +18,8 @@ public static class Formulas {
 	}
 
 	public static int ExperienceFormula(int level, int tier) {
+		if (level == 1 && tier == 0)
+			return 1;
 		float tierScalingFactor = tier * 0.5f;
 		float baseExperience = 50 + level * level;
 		return (int)(baseExperience + (baseExperience * tierScalingFactor));

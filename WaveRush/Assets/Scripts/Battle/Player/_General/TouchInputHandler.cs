@@ -90,6 +90,11 @@ public class TouchInputHandler : MonoBehaviour {
 			isDragging = false;
 			OnDragCancel();
 		}
+		else {
+			float touchTime = Time.time - touchStartTime;
+			if (touchStartTime > maxTapTime)
+				OnTapHold((Vector2)Camera.main.ViewportToWorldPoint(viewportPos / PlayerInput.INPUT_POSITION_SCALAR));
+		}
 	}
 
 	public void HandleTouchHeld(Vector2 viewportPos)

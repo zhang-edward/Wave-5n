@@ -20,8 +20,8 @@ MonoBehaviour:
   maxPartySize: 1
   maxTier: 0
   levelRaw: 2
-  upperLimit: 20
-  lowerLimit: 10
+  upperLimit: 16
+  lowerLimit: 8
   goalWave: 4
   bossWave: 4
   enemyPrefabs:
@@ -46,16 +46,16 @@ MonoBehaviour:
     maxNumActiveEnemies: 6
     enemies: []
   - waveNumber: 1
-    numEnemies: 15
+    numEnemies: 8
     maxNumActiveEnemies: 4
     enemies:
     - prefab: {fileID: 1533728438024512, guid: 41b13bf3e84134984b65f1297d136b4a, type: 3}
-      numEnemies: 3
+      numEnemies: 2
       spawnMode: 1
     - prefab: {fileID: 1533728438024512, guid: 41b13bf3e84134984b65f1297d136b4a, type: 3}
-      numEnemies: 3
+      numEnemies: 2
       spawnMode: 2
   - waveNumber: 4
-    numEnemies: 20
-    maxNumActiveEnemies: 10
+    numEnemies: 16
+    maxNumActiveEnemies: 6
     enemies: []

@@ -14,7 +14,7 @@ public class Map : MonoBehaviour {
 	public MapData[] mapData;
 	public MapType chosenMap;
 
-	public GameObject bossSpawn { get; set; }
+	// public GameObject bossSpawn { get; set; }
 
 	private SpriteRenderer[,] terrainSpriteMap = new SpriteRenderer[size, size];
 	private List<GameObject> terrainObjects = new List<GameObject>();
@@ -36,7 +36,7 @@ public class Map : MonoBehaviour {
 	private const int CORNER_TILE = 3;
 
 	public Texture2D terrainMap, collidersMap, objectsMap;
-	public Vector3 bossSpawnPosition;
+	// public Vector3 bossSpawnPosition;
 	public int[,] terrain = new int[size, size];
 	public int[,] colliders = new int[size, size];
 
@@ -143,18 +143,18 @@ public class Map : MonoBehaviour {
 		terrainObjects.Add (obj);
 	}
 
-	private void CreateBossSpawn()
-	{
-		GameObject obj = Instantiate (data.bossSpawnPrefab);
-		obj.transform.SetParent (objectsFolder);
-		obj.transform.position = bossSpawnPosition;
-		terrainObjects.Add (obj);
-		bossSpawn = obj;
-	}
+	// private void CreateBossSpawn()
+	// {
+	// 	GameObject obj = Instantiate (data.bossSpawnPrefab);
+	// 	obj.transform.SetParent (objectsFolder);
+	// 	obj.transform.position = bossSpawnPosition;
+	// 	terrainObjects.Add (obj);
+	// 	bossSpawn = obj;
+	// }
 
 	public void CreateMap()
 	{
-		CreateBossSpawn ();
+		// CreateBossSpawn ();
 		for (int x = 0; x < size; x++)
 		{
 			for (int y = 0; y < size; y++)

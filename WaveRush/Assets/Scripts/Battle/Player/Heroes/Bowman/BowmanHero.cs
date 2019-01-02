@@ -71,11 +71,12 @@ public class BowmanHero : PlayerHero {
 			sound.RandomizeSFX(shootSound);
 		}
 	}
-	public const float PIERCING_ARROW_CHARGETIME_PER_LEVEL = 0.3f;
+	public const float PIERCING_ARROW_CHARGETIME_PER_LEVEL = 0.6f;
 	public const float PIERCING_ARROW_RANGE = 10f;
 	public const float CHARGE_DRAG = 3f;
 
 	[Header("Actions")]
+	public PA_Animate	 piercingArrowAnticipation;
 	public PA_CircleCast piercingArrowAbility;
 	public PA_Move		 retreatAbility;
 	public PA_ArrowRain	 arrowRainAbility;
@@ -106,18 +107,28 @@ public class BowmanHero : PlayerHero {
 		arrowTrail = Instantiate(arrowTrailPrefab).GetComponent<ContinuousAnimatedLine>();
 		// Handle input
 		onTapHoldDown = ChargePiercingArrow;
-		onTap = PiercingArrow;
+		onTap = TapShoot;
 		onDragRelease = Retreat;
 		player.OnPlayerDamaged += InterruptCharge;
 	}
 
 	private void InitAbilities() {
+		// Piercing Arrow Anticipation
+		piercingArrowAnticipation.Init(player);
+		piercingArrowAnticipation.OnActionFinished += () => { piercingArrowAbility.Execute(); };
+		// Piercing Arrow
 		piercingArrowAbility.Init(player, HandlePiercingArrowDamage);
+		piercingArrowAbility.OnExecutedAction += () => {
+			Vector3 dir = piercingArrowAbility.dir;
+			arrowTrail.Init(transform.position + dir.normalized, player.transform.position + dir.normalized * PIERCING_ARROW_RANGE);
+		};
+		// Retreat
 		retreatAbility.Init(player);
 		retreatAbility.OnActionFinished += () => {
-			if (!anim.player.IsPlayingAnimation("Charge"))
+			if (anim.player.IsPlayingAnimation("Move") && body.rb2d.velocity.magnitude < body.moveSpeed)
 				anim.player.ResetToDefault();
 		};
+		// Arrow Rain
 		arrowRainAbility.Init(player, SpecialAbilityHitEnemy);
 		arrowRainAbility.shootEffect.OnActionFinished += ResetSpecialAbility;
 		arrowRainAbility.OnActionFinished += ResetSpecialAbility;
@@ -139,7 +150,7 @@ public class BowmanHero : PlayerHero {
 		body.rb2d.drag = CHARGE_DRAG;
 		// Set input listener on charge
 		onDragRelease = null;
-		onTouchEnded = PiercingArrow;		// Want the "touch ended" dir, not the "drag release" dir
+		onTouchEnded = Shoot;		// Want the "touch ended" dir, not the "drag release" dir
 		onDragHold = ChargePiercingArrow;
 		body.Move(Vector2.zero, 0);	// Cancel movement
 		// Set drag indicator
@@ -151,23 +162,31 @@ public class BowmanHero : PlayerHero {
 		piercingArrowChargeLevel = 0;
 	}
 
-	private void PiercingArrow(Vector3 dir) {
-		if (!CheckIfCooledDownNotify(0))
-			return;
-		ResetCooldownTimer(0);
+	private void Shoot(Vector3 dir) {
+		PiercingArrow(dir, true);
+	}
+
+	private void TapShoot(Vector3 dir) {
+		PiercingArrow(dir, false);
+	}
+
+	private void PiercingArrow(Vector3 dir, bool charged, bool resetCooldown = true) {
+		if (resetCooldown) {
+			if (!CheckIfCooledDownNotify(0))
+				return;
+			ResetCooldownTimer(0);
+		}
 		// Set the body's direction
 		body.Move(dir);
 		body.Move(Vector2.zero, 0);
 
 		// Set damage multiplier
-		damageMultiplier = Mathf.Lerp(1.0f, 2.0f, (piercingArrowChargeLevel) - 1 / 2);
-		// Effect
-		arrowTrail.Init(transform.position + dir.normalized, player.transform.position + dir.normalized * PIERCING_ARROW_RANGE);
-		// Sound
-		sound.RandomizeSFX(shootSounds[Random.Range(0, shootSounds.Length)]);
-		// PA
+		damageMultiplier = Mathf.Lerp(1.0f, 3.0f, (piercingArrowChargeLevel) - 1 / 2);
 		piercingArrowAbility.SetCast(player.transform.position, dir, PIERCING_ARROW_RANGE);
-		piercingArrowAbility.Execute();
+		if (charged)
+			piercingArrowAbility.Execute();
+		else
+			piercingArrowAnticipation.Execute();
 		// Reset properties
 		damageMultiplier = 1;
 		piercingArrowChargeLevel = 0;
@@ -208,7 +227,7 @@ public class BowmanHero : PlayerHero {
 		if (specialAbilityCharge < SPECIAL_ABILITY_CHARGE_CAPACITY || specialActivated)
 			return;
 		sound.RandomizeSFX(specialChargeSound);
-		onTap -= PiercingArrow;
+		onTap -= TapShoot;
 		onTapHoldDown -= ChargePiercingArrow;
 		arrowRainAbility.Execute();
 		arrowRainAbility.areaEffect.OnExecutedAction += () => { specialAbilityCharge = 0; };
@@ -218,7 +237,7 @@ public class BowmanHero : PlayerHero {
 	private void ResetSpecialAbility() {
 		if (!specialActivated)
 			return;
-		onTap += PiercingArrow;
+		onTap += TapShoot;
 		onTapHoldDown += ChargePiercingArrow;
 		specialActivated = false;
 	}
@@ -240,10 +259,19 @@ public class BowmanHero : PlayerHero {
 #endregion
 #region Parry
 	protected override void ParryEffect(IDamageable src) {
-		cooldownTimers[0] = 0;
-		piercingArrowChargeLevel = 1;
-		Vector3 dir = (transform.position - ((MonoBehaviour)src).transform.position).normalized * 2.0f;
+		// cooldownTimers[0] = 0;
+		// piercingArrowChargeLevel = 1;
+		Vector3 dir = (transform.position - ((MonoBehaviour)src).transform.position).normalized * 4.0f;
 		body.Move(dir, 0);
+		anim.Play("Move");
+		if (src as Enemy != null) {
+			StartCoroutine(ParryEffectRoutine((Enemy)src));
+		}
+	}
+
+	private IEnumerator ParryEffectRoutine(Enemy e) {
+		yield return new WaitForSeconds(0.2f);
+		PiercingArrow(e.transform.position - player.transform.position, true, false);
 	}
 #endregion
 #region Misc

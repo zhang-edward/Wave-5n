@@ -1,21 +1,11 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &100100000
-Prefab:
-  m_ObjectHideFlags: 1
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications: []
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1484269624840130}
-  m_IsPrefabAsset: 1
 --- !u!1 &1484269624840130
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4957890699186260}
@@ -30,9 +20,10 @@ GameObject:
   m_IsActive: 0
 --- !u!4 &4957890699186260
 Transform:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1484269624840130}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -43,9 +34,10 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &114228614489618940
 MonoBehaviour:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1484269624840130}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -71,13 +63,16 @@ MonoBehaviour:
   cooldownTime:
   - 1.5
   - 1.5
+  piercingArrowAnticipation:
+    duration: 0.3
+    state: Anticipation
   piercingArrowAbility:
     duration: 0
     radius: 0.4
     maxHit: 5
     loseMomentum: 0
     disableInput: 1
-    circleCastSound: {fileID: 0}
+    circleCastSound: {fileID: 8300000, guid: 36b63129366b74da9ac9688040545878, type: 3}
     circleCastState: Shoot
   retreatAbility:
     duration: 1.5
@@ -87,7 +82,7 @@ MonoBehaviour:
   arrowRainAbility:
     duration: -1
     arrowRainParticlesPrefab: {fileID: 1254860484030048, guid: f72628cda52e9428dbdf6a434f7d5281,
-      type: 2}
+      type: 3}
     areaEffect:
       duration: 2
       range: 4
@@ -116,7 +111,7 @@ MonoBehaviour:
     shootSound: {fileID: 8300000, guid: 1d753ac6ac4df42d6beb13b71d03efae, type: 3}
     areaEffectSound: {fileID: 8300000, guid: f254ca76191d047da84beb655f89f8fe, type: 3}
   arrowTrailPrefab: {fileID: 1779908263273456, guid: dbe80fab546fa4b8a96fbb37fe254a1c,
-    type: 2}
+    type: 3}
   hitEffect:
     animationName: HitEffect
     frames:
@@ -137,16 +132,15 @@ MonoBehaviour:
     - {fileID: 21300008, guid: 119360f6783c9475daf33e8f041283f2, type: 3}
     - {fileID: 21300010, guid: 119360f6783c9475daf33e8f041283f2, type: 3}
     fps: 10
-  shootSounds:
-  - {fileID: 8300000, guid: 36b63129366b74da9ac9688040545878, type: 3}
-  - {fileID: 8300000, guid: 63c2b2247a27d4e1593f710bb761098e, type: 3}
+  shootSounds: []
   specialHitSound: {fileID: 8300000, guid: 1f580ace47b11418094d3fc2310d742d, type: 3}
   specialChargeSound: {fileID: 8300000, guid: 40fd5dcf54837455c9bc07108b6a6d6e, type: 3}
 --- !u!114 &114731331671095352
 MonoBehaviour:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1484269624840130}
   m_Enabled: 1
   m_EditorHideFlags: 0

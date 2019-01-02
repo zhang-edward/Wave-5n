@@ -141,7 +141,10 @@ public class KnightHero : PlayerHero {
 			// Shield Timer
 			shieldIndicator.SetActive(true);
 			shieldTimer -= Time.deltaTime;
+			// Shield ran out of time
 			if (shieldTimer <= 0) {
+				ResetCooldownTimer(1);
+				shieldAnimSet.Play("Out");
 				DestroyShield();
 			}
 			// Shield Animation
@@ -227,7 +230,9 @@ public class KnightHero : PlayerHero {
 		}
 		timeSinceLastShieldHit = 0;
 		shieldHealth--;
+		// Shield got destroyed
 		if (shieldHealth <= 0) {
+			ResetCooldownTimer(1);
 			shieldAnimSet.Play("Out");
 			DestroyShield();
 		}

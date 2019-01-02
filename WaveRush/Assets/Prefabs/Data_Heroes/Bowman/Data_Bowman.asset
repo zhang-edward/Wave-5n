@@ -4,7 +4,8 @@
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -37,7 +38,7 @@ MonoBehaviour:
   ability1Name: Piercing Arrow
   ability2Name: Retreat
   specialName: Arrow Rain
-  ability1Description: <color=yellow>Tap</color> to shoot an arrow which pierces up
+  ability1Description: <color=yellow>Tap</color> to shoot an arrow which damages up
     to 5 enemies. <color=yellow>Tap and hold</color> to charge the shot, dealing up
     to 2x damage.
   ability2Description: <color=yellow>Swipe</color> to move in a direction. Performing
@@ -51,35 +52,43 @@ MonoBehaviour:
     animations:
     - animationName: Default
       frames:
-      - {fileID: 21300000, guid: 08c6e894d03cb4bbe8f21b341f76e4eb, type: 3}
+      - {fileID: 21300000, guid: 6580c712040d447c7a844752a2c271c2, type: 3}
       fps: 60
       looping: 0
       resetToDefault: 0
       ignoreTimeScale: 0
     - animationName: Move
       frames:
-      - {fileID: 21300012, guid: 08c6e894d03cb4bbe8f21b341f76e4eb, type: 3}
-      - {fileID: 21300014, guid: 08c6e894d03cb4bbe8f21b341f76e4eb, type: 3}
+      - {fileID: 21300014, guid: 6580c712040d447c7a844752a2c271c2, type: 3}
+      - {fileID: 21300016, guid: 6580c712040d447c7a844752a2c271c2, type: 3}
       fps: 10
       looping: 1
       resetToDefault: 0
       ignoreTimeScale: 0
     - animationName: Charge
       frames:
-      - {fileID: 21300002, guid: 08c6e894d03cb4bbe8f21b341f76e4eb, type: 3}
-      - {fileID: 21300004, guid: 08c6e894d03cb4bbe8f21b341f76e4eb, type: 3}
-      - {fileID: 21300006, guid: 08c6e894d03cb4bbe8f21b341f76e4eb, type: 3}
+      - {fileID: 21300004, guid: 6580c712040d447c7a844752a2c271c2, type: 3}
+      - {fileID: 21300006, guid: 6580c712040d447c7a844752a2c271c2, type: 3}
+      - {fileID: 21300008, guid: 6580c712040d447c7a844752a2c271c2, type: 3}
       fps: 0
       looping: 0
       resetToDefault: 0
       ignoreTimeScale: 0
     - animationName: Shoot
       frames:
-      - {fileID: 21300008, guid: 08c6e894d03cb4bbe8f21b341f76e4eb, type: 3}
-      - {fileID: 21300010, guid: 08c6e894d03cb4bbe8f21b341f76e4eb, type: 3}
+      - {fileID: 21300010, guid: 6580c712040d447c7a844752a2c271c2, type: 3}
+      - {fileID: 21300012, guid: 6580c712040d447c7a844752a2c271c2, type: 3}
       fps: 15
       looping: 0
       resetToDefault: 1
+      ignoreTimeScale: 0
+    - animationName: Anticipation
+      frames:
+      - {fileID: 21300002, guid: 6580c712040d447c7a844752a2c271c2, type: 3}
+      - {fileID: 21300004, guid: 6580c712040d447c7a844752a2c271c2, type: 3}
+      fps: 10
+      looping: 0
+      resetToDefault: 0
       ignoreTimeScale: 0
     player: {fileID: 0}
   t2Skins:

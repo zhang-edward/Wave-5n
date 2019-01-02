@@ -6,7 +6,7 @@ public class BossEnemy : Enemy {
 	
 	protected EnemyManager enemyManager;
 	[Header("Boss Attributes")]
-	public AudioClip deathSound;
+	public AudioClip deathExplosionSound;
 	public bool dying { get; private set; }
 
 	private SimpleAnimation deathEffect;
@@ -71,7 +71,7 @@ public class BossEnemy : Enemy {
 		EffectPooler.PlayEffect(deathEffect, transform.position);
 		float delay = deathEffect.SecondsPerFrame * 3f;
 		yield return new WaitForSeconds(delay);
-		SoundManager.instance.RandomizeSFX (deathSound);
+		SoundManager.instance.RandomizeSFX (deathExplosionSound);
 		cam.StartShake (0.5f, 0.05f, false, true);
 		cam.StartFlashColor (Color.white, 1, 0, 0, 1);
 		dying = false;

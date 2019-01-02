@@ -61,7 +61,7 @@ public class Enemy : MonoBehaviour, IDamageable {
 	public List<EnemyStatus> statuses;
 
 	[Header("Death Props")]
-	//public Sprite deathSprite;
+	public AudioClip deathSound;
 	public Sprite[] deathProps;
 	protected ObjectPooler deathPropPool;
 
@@ -387,6 +387,7 @@ public class Enemy : MonoBehaviour, IDamageable {
 		//ResetVars ();
 		SpawnDeathProps ();
 		SpawnMoneyPickup ();
+		SoundManager.instance.RandomizeSFX(deathSound);
 		transform.parent.gameObject.SetActive (false);
 		if (OnEnemyObjectDisabled != null)
 			OnEnemyObjectDisabled (this);

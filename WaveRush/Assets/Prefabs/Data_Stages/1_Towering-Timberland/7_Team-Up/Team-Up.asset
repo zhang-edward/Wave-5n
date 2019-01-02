@@ -4,7 +4,8 @@
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -24,19 +25,19 @@ MonoBehaviour:
   goalWave: 8
   bossWave: 4
   enemyPrefabs:
-  - prefab: {fileID: 177460, guid: 54fe2fdc3252847f08f15a8590667d5b, type: 2}
+  - prefab: {fileID: 177460, guid: 54fe2fdc3252847f08f15a8590667d5b, type: 3}
     spawnFrequency: 1
     waveLimit: 1
-  - prefab: {fileID: 187912, guid: 284e652b2eabe43a9a8e564bf3fd4337, type: 2}
+  - prefab: {fileID: 187912, guid: 284e652b2eabe43a9a8e564bf3fd4337, type: 3}
     spawnFrequency: 1
     waveLimit: 1
-  - prefab: {fileID: 147880, guid: 15e9f10dbfa7c46efa83cfa7afe1f851, type: 2}
+  - prefab: {fileID: 147880, guid: 15e9f10dbfa7c46efa83cfa7afe1f851, type: 3}
     spawnFrequency: 1
     waveLimit: 1
-  - prefab: {fileID: 177460, guid: 54fe2fdc3252847f08f15a8590667d5b, type: 2}
+  - prefab: {fileID: 177460, guid: 54fe2fdc3252847f08f15a8590667d5b, type: 3}
     spawnFrequency: 1
     waveLimit: 1
-  - prefab: {fileID: 1533728438024512, guid: 41b13bf3e84134984b65f1297d136b4a, type: 2}
+  - prefab: {fileID: 1533728438024512, guid: 41b13bf3e84134984b65f1297d136b4a, type: 3}
     spawnFrequency: 0.7
     waveLimit: 1
   bossPrefabs: []
@@ -47,11 +48,11 @@ MonoBehaviour:
     enemies: []
   - waveNumber: 3
     numEnemies: 20
-    maxNumActiveEnemies: 10
+    maxNumActiveEnemies: 8
     enemies:
-    - prefab: {fileID: 1533728438024512, guid: 41b13bf3e84134984b65f1297d136b4a, type: 2}
+    - prefab: {fileID: 1533728438024512, guid: 41b13bf3e84134984b65f1297d136b4a, type: 3}
       numEnemies: 8
       spawnMode: 0
-    - prefab: {fileID: 147880, guid: 15e9f10dbfa7c46efa83cfa7afe1f851, type: 2}
+    - prefab: {fileID: 147880, guid: 15e9f10dbfa7c46efa83cfa7afe1f851, type: 3}
       numEnemies: 10
       spawnMode: 0

@@ -21,8 +21,7 @@ public class EnemyManager : MonoBehaviour {
 	public StageData stageData { get; private set; }
 
 	public EnemyHealthBar bossHealthBar;
-	private BossSpawn bossSpawn;
-	private float bossSpawnDelay = 8f;
+	private float bossSpawnDelay = 0f;
 	private bool hasBossSpawned = true;
 
 	[Header("Pickups and Prefabs")]
@@ -63,7 +62,6 @@ public class EnemyManager : MonoBehaviour {
 		this.stageData = data;
 		this.level = data.levelRaw;
 		UnityEngine.Assertions.Assert.IsTrue(level > 0);
-		bossSpawn = map.bossSpawn.GetComponent<BossSpawn> ();
 		GenerateNewEnemyQueue(1);
 		StartCoroutine (StartSpawningEnemies ());
 	}
@@ -243,12 +241,12 @@ public class EnemyManager : MonoBehaviour {
 	{
 		//SpawnTrappedHeroes();
 		hasBossSpawned = true;
-		bossSpawn.PlayAnimation ();
+		// bossSpawn.PlayAnimation ();
 		GameObject o = Instantiate (stageData.bossPrefabs [Random.Range (0, stageData.bossPrefabs.Count)]);
-		o.transform.SetParent (transform);
+		o.transform.SetParent(transform);
 
 		Enemy e = o.GetComponentInChildren<Enemy> ();
-		InitEnemy(e, bossSpawn.transform.position);
+		InitEnemy(e, map.CenterPosition);
 		e.OnEnemyObjectDisabled += RemoveEnemyFromBossesList;
 		BossEnemy boss = (BossEnemy)e;
 
