@@ -92,7 +92,7 @@ public class TouchInputHandler : MonoBehaviour {
 		}
 		else {
 			float touchTime = Time.time - touchStartTime;
-			if (touchStartTime > maxTapTime)
+			if (touchTime > maxTapTime)
 				OnTapHold((Vector2)Camera.main.ViewportToWorldPoint(viewportPos / PlayerInput.INPUT_POSITION_SCALAR));
 		}
 	}

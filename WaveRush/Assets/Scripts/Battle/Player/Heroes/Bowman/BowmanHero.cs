@@ -271,6 +271,7 @@ public class BowmanHero : PlayerHero {
 
 	private IEnumerator ParryEffectRoutine(Enemy e) {
 		yield return new WaitForSeconds(0.2f);
+		piercingArrowChargeLevel = 1;
 		PiercingArrow(e.transform.position - player.transform.position, true, false);
 	}
 #endregion
